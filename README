@@ -1,0 +1,13 @@
+= Plugin Mantis
+
+Plugin générique à reverser à la communauté.
+
+Création d’un ticket Mantis à partir des données d’un ticket GLPI via un onglet.
+
+Échange d’URL avec les ID entre GLPI et Mantis via les Web Service.
+
+Nécessite un compte Mantis ayant les droits de création.
+
+Le statut du ticket Mantis sera affiché dans le ticket GLPI
+
+Le statut Fermer de Mantis déclenche le statut Clos dans GLPI

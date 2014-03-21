@@ -6,11 +6,6 @@
  */
 function plugin_mantis_install(){
 
-
-
-
-
-
     return true;
 
 }

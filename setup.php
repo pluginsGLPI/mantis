@@ -2,7 +2,7 @@
 
 /**
 *function to define the version for glpi for plugin
-*@return type
+*@return array
 */
 function plugin_version_mantis(){
 
@@ -30,10 +30,9 @@ function plugin_mantis_check_prerequisites() {
 }
 
 
-
 /**
  * function to check the initial configuration
- * @param type $verbose
+ * @param boolean $verbose
  * @return boolean
  */
 function plugin_mantis_check_config($verbose = false){
@@ -60,5 +59,7 @@ function plugin_init_mantis(){
 
     $PLUGIN_HOOKS['csrf_compliant']['mantis'] = true;
     $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
+    Plugin::registerClass('PluginMantisProfile');
+
 
 }

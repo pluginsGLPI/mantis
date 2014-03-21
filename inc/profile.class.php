@@ -5,6 +5,5 @@
  */
 class PluginMantisProfile extends CommonDBTM {
 
-
-
+echo "coucou"
 }

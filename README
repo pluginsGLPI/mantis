@@ -1,4 +1,4 @@
-= Plugin Mantis
+# Plugin Mantis
 
 Plugin générique à reverser à la communauté.
 
@@ -11,3 +11,26 @@ Nécessite un compte Mantis ayant les droits de création.
 Le statut du ticket Mantis sera affiché dans le ticket GLPI
 
 Le statut Fermer de Mantis déclenche le statut Clos dans GLPI
+
+## Notes specs 
+
+Utilisation de Mantis pour le bugtracking à cette occasion :
+- un ticket GLPI peut-être escaladé dans Mantis
+- une clôture/mise à jour dans Mantis doit être transférée au ticket initial GLPI
+
+Un onglet "Mantis" est présent dans un ticket GLPI (si l'utilisateur a au moins le droit lecture mantis) :
+- si le ticket est déjà lié à un bug mantis, l'état du bug est affiché avec un lien vers le bug Mantis
+- sinon, un lien pour escalader le ticket vers Mantis est affiché
+
+-- quand on clique sur ce lien, on affiche un formulaire permettant au chef de projet de choisir :
+---> choisir le projet Mantis
+---> le résumé Mantis, la description Mantis et les étapes à reproduire Mantis
+---> envoyer les pièces jointes GLPI vers le Mantis
+---> les informations du ticket GLPI sont mises dans le champ Informations complémentaires GLPI
+---> l'url du ticket GLPI est dans à mettre dans le champ "Ref WINCALL"
+
+Etat (fermé) dans Mantis -> Passe le ticket en "Résolu" dans GLPI.
+
+http://mantis.conseil-etat.fr/api/soap/mantisconnect.php?wsdl
+
+http://mantis.conseil-etat.fr/api/soap/mantisconnect.php

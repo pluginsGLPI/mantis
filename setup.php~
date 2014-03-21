@@ -1,0 +1,12 @@
+<?php
+
+function plugin_version_mantis(){
+
+    return array ('name' 	   => 'mantis',
+                  'version' 	   => '1.0.0',
+                  'author'         => 'Stanislas KITA',
+                  'license'        => 'GPLv2+',
+                  'homepage'       => '',
+                  'minGlpiVersion' => '0.84');
+
+}

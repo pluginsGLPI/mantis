@@ -9,15 +9,7 @@ function plugin_mantis_install(){
     global $DB;
 
 
-    // création de la table des champs glpi
-    if (!TableExists("glpi_plugin_mantis_linkfields")) {
-        $query = "CREATE TABLE glpi_plugin_mantis_linkfields (
-               id int(11) PRIMARY KEY NOT NULL,
-                fieldMantis int(11) NOT NULL)";
-        $DB->query($query) or die($DB->error());
-    }
-    include_once("inc/linkfield.class.php");
-    PluginMantisLinkfield::createLink();
+
 
 
 
@@ -25,7 +17,8 @@ function plugin_mantis_install(){
     if (!TableExists("glpi_plugin_mantis_champsglpis")) {
         $query = "CREATE TABLE glpi_plugin_mantis_champsglpis (
                id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-              libelle char(30) NOT NULL default '')";
+              libelle char(30) NOT NULL default '',
+               indexName char(30) NOT NULL default '')";
         $DB->query($query) or die($DB->error());
     }
     include_once("inc/champsglpi.class.php");
@@ -41,6 +34,17 @@ function plugin_mantis_install(){
     }
     include_once("inc/champsmantisbt.class.php");
     PluginMantisChampsmantisbt::createChampsMantis();
+
+
+    // création de la table des lien entre les champs glpi et les champs mantis
+    if (!TableExists("glpi_plugin_mantis_linkfields")) {
+        $query = "CREATE TABLE glpi_plugin_mantis_linkfields (
+               id int(11) PRIMARY KEY NOT NULL,
+                fieldMantis int(11) NOT NULL)";
+        $DB->query($query) or die($DB->error());
+    }
+    include_once("inc/linkfield.class.php");
+    PluginMantisLinkfield::createLink();
 
 
 

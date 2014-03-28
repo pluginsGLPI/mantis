@@ -37,15 +37,14 @@ class PluginMantisMantisws {
      * function to test the connectivity of the web service
      * @return bool
      */
-    function testConnectionWS($host, $url, $login, $password){
-
-        $client = new SoapClient("http://".$host."/".$url);
+    function testConnectionWS($host, $url , $login , $password){
 
         try{
-            $client->mc_version();
+            $client = new SoapClient("http://".$host."/".$url);
+            $client->mc_project_get_issues($login,$password, 1 , 1 , 10);
             return true;
-        }catch (Exception $e){
-            return $e->getMessage();
+        }catch (SoapFault $sf){
+            return false;
         }
 
     }
@@ -56,11 +55,11 @@ class PluginMantisMantisws {
 
 
 
-    function getProject($client){
+    function getProject(){
 
         try {
 
-            $response = $client->mc_project_get_issues($this->_login,$this->_password, 1 , 1 , 10);
+            $response = $this->_client->mc_project_get_issues($this->_login,$this->_password, 1 , 1 , 10);
             var_dump($response);
 
         }catch (SoapFault $e){
@@ -81,6 +80,8 @@ class PluginMantisMantisws {
         }
     }
 
+
+
     /**
      * @param mixed $client
      */
@@ -96,22 +97,6 @@ class PluginMantisMantisws {
     {
         return $this->_client;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

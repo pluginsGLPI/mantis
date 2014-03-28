@@ -47,27 +47,49 @@ class PluginMantisMantis extends CommonDBTM {
 
     public function showForm($item)
     {
-        var_dump($item);
+        //var_dump($item);
+        include_once("config.class.php");
+        include_once("mantisWS.class.php");
+        //on recupere la config de mantis
+        $config = new PluginMantisConfig();
+        $config->getFromDB(1);
 
+        //on test si le plugin (WebService) est bien configurer
+        $ws = new PluginMantisMantisws();
+        if($ws->testConnectionWS($config->getField('host'),$config->getField('url'),$config->getField('login'),$config->getField('pwd'))){
 
-        global $CFG_GLPI;
-        $target = array('target' => $CFG_GLPI["root_doc"] .
+            global $CFG_GLPI;
+            $target = array('target' => $CFG_GLPI["root_doc"] .
                 "/plugins/mantis/front/mantis.form.php");
 
-        $find = $this->getFromDBByQuery($this->getTable() . " WHERE `" . "`.`idTicket` = '" . Toolbox::cleanInteger($item->getField('id')) . "'");
+            $find = $this->getFromDBByQuery($this->getTable() . " WHERE `" . "`.`idTicket` = '" . Toolbox::cleanInteger($item->getField('id')) . "'");
 
 
-        if($find){
-            $this->getFormForDisplayInfo($item);
+            if($find){
+                $this->getFormForDisplayInfo($item);
+            }else{
+                $this->getFormForExportTicketGlpiToMantisBT($item,$target);
+            }
+
         }else{
-            $this->getFormForExportTicketGlpiToMantisBT($item,$target);
+
+            global $CFG_GLPI;
+            echo"<idv class='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
+            echo"<b>Merci de configurer le plugin Mantis</b></div>";
+
         }
+
+
+
 
     }
 
-
-    private function getFormForExportTicketGlpiToMantisBT($item, $option = array())
-    {
+    /**
+     * Form to climb glpi ticket to MantisBT
+     * @param $item
+     * @param array $option
+     */
+    private function getFormForExportTicketGlpiToMantisBT($item, $option = array()){
 
         $target = $this->getFormURL();
         if (isset($options['target'])) {
@@ -80,19 +102,18 @@ class PluginMantisMantis extends CommonDBTM {
         $mantisWS->initializeConnection();
 
 
-
         echo "<form method='post' action=".$target." >";
         echo "<table class='tab_cadre_fixe' cellpadding='5'>";
         echo "<tr class='headerRow'><th colspan='6'>Escalader ticket vers MantisBT</th></tr>";
 
         echo "<tr class='tab_bg_1'>";
         echo "<th>Projet</th><td>";
-        Dropdown::showItemTypes(array(),array());
+        echo "dropdown";
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_1'>";
         echo "<th>Catégorie</th><td>";
-        Dropdown::showItemTypes(array(),array());
+        echo "dropdown";
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_1'>";
@@ -120,11 +141,14 @@ class PluginMantisMantis extends CommonDBTM {
 
         echo "</table>";
         Html::closeForm();
+
     }
 
 
-
-
+    /**
+     * Form to display information from MantisBT
+     * @param $item
+     */
     private function getFormForDisplayInfo($item)
     {
 
@@ -172,16 +196,15 @@ class PluginMantisMantis extends CommonDBTM {
     }
 
 
-
-
-    public function exportGlpiIssueToMantisBT($_POST)
+    /**
+     * function to climb glpi ticket to mantis issue
+     * @param $_myPost
+     */
+    public function exportGlpiIssueToMantisBT($_myPost)
     {
 
-
-
         //creation d'une entré dans la base pour lié le ticket Glpi a MantisBT
-        $this->add($_POST);
-
+        $this->add($_myPost);
 
     }
 

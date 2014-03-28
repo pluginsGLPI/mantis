@@ -10,7 +10,7 @@ if(isset($_POST["action"])){
             require_once('../inc/mantisWS.class.php');
 
             $ws = new PluginMantisMantisws();
-            echo $ws->testConnectionWS($_POST["host"],$_POST["url"],$_POST["login"],$_POST["pwd"]);
+            echo $ws->testConnectionWS($_POST["host"],$_POST["url"],$_POST["login"] , $_POST["pwd"]);
 
             break;
 

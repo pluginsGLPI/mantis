@@ -34,7 +34,13 @@ function testConnexionMantisWS(){
 }
 
 
-function testIP(id , element){
+/**
+ * function to update a link between glpi ticket field and mantis issue field
+ * @param id of linkField Tto
+ * @param element <OPTION selected='selected'></OPTION>
+ * @returns {boolean}
+ */
+function updateLinkField(id , element){
 
     var idLinktoUpdate = id;
     var idValueSelected = element.selectedIndex;
@@ -66,3 +72,26 @@ function testIP(id , element){
     return false; // permet de rester sur la même page à la soumission du formulaire
 
 }
+
+
+/**
+ * function to check IP Format
+ * @returns {boolean}
+ */
+function testIP(){
+
+    //alert();
+
+    var ip = $("#host").val();
+    var $div = $("#resultIP");
+
+        if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip))
+        {
+            $div.html('<img id="img" src="../pics/check24.png" />');
+            return (true)
+        }else{
+            $div.html('<img id="img" src="../pics/cross24.png" />');
+            return (false)
+        }
+}
+

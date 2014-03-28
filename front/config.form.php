@@ -3,12 +3,34 @@
 include ('../../../inc/includes.php');
 require_once('../inc/config.class.php');
 
-Session::checkRight("config","w");
+
+Html::header("Mantis", $_SERVER["PHP_SELF"],
+    "plugins", "Mantis", "configuration");
+
+$plugin = new Plugin();
+
+if($plugin->isActivated("Mantis")){
+
+    $config = new PluginMantisConfig();
+
+    if(isset($_POST["update"])){
+
+        session::checkRight("config","w");
+        $config->update($_POST);
+        Html::back();
+
+    }else{
+
+        $config->showConfigForm();
+
+    }
 
 
-Html::header("Configuration de MantisBT", $_SERVER["PHP_SELF"],"plugins", "mantis", "configuration");
+}else{
 
-$PluginMantisConfig = new PluginMantisConfig();
-$PluginMantisConfig->showConfigForm($PluginMantisConfig);
+    echo"<idv class='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
+    echo"<b>Merci d'activer le plugin</b></div>";
+
+}
 
 Html::footer();

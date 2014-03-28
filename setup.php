@@ -58,8 +58,24 @@ function plugin_init_mantis(){
     global $PLUGIN_HOOKS;
 
     $PLUGIN_HOOKS['csrf_compliant']['mantis'] = true;
+    $PLUGIN_HOOKS['menu_entry']['mantis'] = 'front/config.form.php';
     $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
+    $PLUGIN_HOOKS['add_javascript']['mantis'] = array('scripts/scriptMantis.js',
+                                                      'scripts/jquery-1.11.0.min.js');
+
+
+
+    Plugin::registerClass('PluginMantisChampsglpi');
+    Plugin::registerClass('PluginMantisLinkfield');
+    Plugin::registerClass('PluginMantisChampsmantisbt');
     Plugin::registerClass('PluginMantisProfile');
+    Plugin::registerClass('PluginMantisConfig');
+    Plugin::registerClass('PluginMantisMantisws');
+    Plugin::registerClass('PluginMantisMantis', array('addtabon' => array('Ticket')));
 
 
+}
+
+function plugin_mantis_haveRight($a,$b){
+    return true;
 }

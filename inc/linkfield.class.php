@@ -25,27 +25,26 @@ class PluginMantisLinkfield extends CommonDBTM {
 
 
 
+    /**
+     * ccreating links between glpi fields adns mantis fields
+     */
     static function createLink() {
-
-        echo "create insert";
 
         include_once("champsglpi.class.php");
         $champsGlpi = new PluginMantisChampsglpi();
         $field = $champsGlpi->getAllFields();
-
-
 
         for ($i = 1; $i <= count($field); $i++) {
             $myChamps = new self();
             $myChamps->add(array('id' => $i,'fieldMantis' => 0));
         }
 
-
-
     }
 
 
-
+    /**
+     * @return arrayFunction to recover all links between glpi fields and mantis fields
+     */
     public function getAllLink(){
 
         global $DB;
@@ -61,16 +60,6 @@ class PluginMantisLinkfield extends CommonDBTM {
         return $field;
     }
 
-
-    function updateLinkField($_myPost){
-
-        //$this->getFromDB($_POST['idGlpi']);
-        $resp =  $this->update($_myPost);
-        //var_dump($resp);
-        return $resp;
-
-
-    }
 
 
 }

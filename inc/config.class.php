@@ -25,21 +25,24 @@ class PluginMantisConfig extends CommonDBTM {
 
 
 
+
+
     /**
-     * Function to show the form for configurate the plugin Mantis
+     * Function to show form for configurate the plugin Mantis
      */
     function showConfigForm(){
 
         $this->showConfigWS();
-
         echo "</br>";
-
         $this->showConfigFields();
-
 
     }
 
 
+    /**
+     * Function to display form to configure
+     * connection to WS MantisBT
+     */
     function showConfigWS(){
 
         require_once('mantisIssue.class.php');
@@ -98,11 +101,10 @@ class PluginMantisConfig extends CommonDBTM {
     }
 
 
-
-
-
-
-
+    /**
+     * Function to display form to configure link
+     * between glpi fields and mantis fields
+     */
     function showConfigFields(){
 
 
@@ -111,12 +113,16 @@ class PluginMantisConfig extends CommonDBTM {
         require_once('linkfield.class.php');
         require_once('../tools/tools.php');
 
+
+        //we recover all glpi field
         $champsGlpi = new PluginMantisChampsglpi();
         $allChampsGlpi = $champsGlpi->getAllFields();
 
+        //we recover all field mantis
         $champsMantis = new PluginMantisChampsmantisbt();
         $allChampsMantis = $champsMantis->getAllFields();
 
+        //we recover all link between glpi fields and mantis field
         $linkChamps = new PluginMantisLinkfield();
         $allLink = $linkChamps->getAllLink();
 
@@ -126,6 +132,7 @@ class PluginMantisConfig extends CommonDBTM {
         echo "<tr><th colspan='6'>Configuration des champs</th></tr>";
 
 
+        //foreach link
         for ($i = 1; $i <= count($allLink); $i++) {
 
             $nomChampsGlpi = $allChampsGlpi[$i];
@@ -138,9 +145,6 @@ class PluginMantisConfig extends CommonDBTM {
             echo "<td><div id='infoAjaxLink".$i."'></div></td></tr>";
 
         }
-
-
-
 
         echo "</table>";
         Html::closeForm();

@@ -22,6 +22,74 @@ class PluginMantisProfile extends CommonDBTM {
         return false;
     }
 
+
+
+
+    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+
+        if ($item->getType() == 'Profile') {
+            return "Mantis";
+        }
+        return '';
+    }
+
+
+    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+
+        if ($item->getType() == 'Profile') {
+            $prof = new self();
+            $ID = $item->getField('id');
+            // j'affiche le formulaire
+            $prof->showForm($ID);
+        }
+        return true;
+    }
+
+
+    private function showForm($id)
+    {
+        $target = $this->getFormURL();
+        if (isset($options['target'])) {
+            $target = $options['target'];
+        }
+
+        if (!Session::haveRight("profile","r")) {
+            return false;
+        }
+
+        $canedit = Session::haveRight("profile", "w");
+        $prof = new Profile();
+        if ($id){
+            $this->getFromDB($id);
+            $prof->getFromDB($id);
+        }
+
+        echo "<form action='".$target."' method='post'>";
+        echo "<table class='tab_cadre_fixe'>";
+        echo "<tr><th colspan='2' class='center b'>".sprintf(__('%1$s %2$s'), ('gestion des droits :'),
+                Dropdown::getDropdownName("glpi_profiles",
+                    $this->fields["id"]));
+        echo "</th></tr>";
+
+        echo "<tr class='tab_bg_2'>";
+        echo "<td>Utiliser Mon Plugin</td><td>";
+        Profile::dropdownNoneReadWrite("droit", $this->fields["droit"], 1, 1, 1);
+        echo "</td></tr>";
+
+        if ($canedit) {
+            echo "<tr class='tab_bg_1'>";
+            echo "<td class='center' colspan='2'>";
+            echo "<input type='hidden' name='id' value=$id>";
+            echo "<input type='submit' name='update_user_profile' value='Mettre à jour'
+                class='submit'>";
+            echo "</td></tr>";
+        }
+        echo "</table>";
+        Html::closeForm();
+    }
+
+
+
     static function createAdminAccess($ID) {
 
         $myProf = new self();
@@ -31,5 +99,7 @@ class PluginMantisProfile extends CommonDBTM {
             $myProf->add(array('id' => $ID,'droit' => 'w'));
         }
     }
+
+
 
 }

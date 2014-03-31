@@ -47,7 +47,7 @@ class PluginMantisMantis extends CommonDBTM {
 
     public function showForm($item)
     {
-        //var_dump($item);
+        var_dump($item);
         include_once("config.class.php");
         include_once("mantisWS.class.php");
         //on recupere la config de mantis
@@ -151,6 +151,11 @@ class PluginMantisMantis extends CommonDBTM {
      */
     private function getFormForDisplayInfo($item)
     {
+
+
+
+        //on charge l'issue MantisBT
+        // on la met a jour dans la talbe mantis de Glpi
 
         echo "<form method='post' action='#' >";
         echo "<table class='tab_cadre_fixe' cellpadding='5'>";

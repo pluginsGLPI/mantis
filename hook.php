@@ -9,10 +9,6 @@ function plugin_mantis_install(){
     global $DB;
 
 
-
-
-
-
     // création de la table des champs glpi
     if (!TableExists("glpi_plugin_mantis_champsglpis")) {
         $query = "CREATE TABLE glpi_plugin_mantis_champsglpis (
@@ -46,9 +42,6 @@ function plugin_mantis_install(){
     include_once("inc/linkfield.class.php");
     PluginMantisLinkfield::createLink();
 
-
-
-
     // création de la table du plugin
     if (!TableExists("glpi_plugin_mantis_mantis")) {
         $query = "CREATE TABLE glpi_plugin_mantis_mantis (
@@ -60,8 +53,6 @@ function plugin_mantis_install(){
         $DB->query($query) or die($DB->error());
     }
 
-
-
     //création de la table pour la gestion des profiles du plugin
     if (!TableExists("glpi_plugin_mantis_profiles")) {
         $query = "CREATE TABLE glpi_plugin_mantis_profiles (
@@ -71,7 +62,7 @@ function plugin_mantis_install(){
 
         //creation du premier accès nécessaire lors de l'installation du plugin
         include_once("inc/profile.class.php");
-        PluginMantisProfile::createAdminAccess(Session::getLoginUserID());
+        PluginMantisProfile::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
     }
 
     //création de la table pour la configuration du plugin
@@ -93,9 +84,6 @@ function plugin_mantis_install(){
 
         return true;
     }
-
-
-
 
 }
 

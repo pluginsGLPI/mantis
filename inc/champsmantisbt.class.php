@@ -21,7 +21,6 @@ class PluginMantisChampsmantisbt extends CommonDBTM {
 
     static function createChampsMantis() {
 
-
         $myChamps = new self();
         // ajout des champs de mantisBT
         //les champs commenté correspondent aux champs complétés par le user dans le formulaire d'escalade du icket glpi vers mantis

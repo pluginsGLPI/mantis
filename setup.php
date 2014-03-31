@@ -68,7 +68,7 @@ function plugin_init_mantis(){
     Plugin::registerClass('PluginMantisChampsglpi');
     Plugin::registerClass('PluginMantisLinkfield');
     Plugin::registerClass('PluginMantisChampsmantisbt');
-    Plugin::registerClass('PluginMantisProfile');
+    Plugin::registerClass('PluginMantisProfile',array('addtabon' => array('Profile')));
     Plugin::registerClass('PluginMantisConfig');
     Plugin::registerClass('PluginMantisMantisws');
     Plugin::registerClass('PluginMantisMantis', array('addtabon' => array('Ticket')));

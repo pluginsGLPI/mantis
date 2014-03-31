@@ -5,6 +5,8 @@ if(isset($_POST["action"])){
 
     switch ($_POST["action"]){
 
+
+
         case "testConnexionMantisWS":
 
             require_once('../inc/mantisWS.class.php');
@@ -20,7 +22,7 @@ if(isset($_POST["action"])){
             require_once('../inc/linkfield.class.php');
 
             $linkField = new PluginMantisLinkfield();
-            echo $linkField->updateLinkField($_POST);
+            echo $linkField->update($_POST);
 
             break;
 

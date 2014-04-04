@@ -1,18 +1,25 @@
 <?php
-
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 require_once('../inc/mantis.class.php');
 
+$mantis = new PluginMantisMantis();
 
-    $mantis = new PluginMantisMantis();
+if (isset($_GET['action']) && $_GET['action'] == 'linkToIssue') {
 
-    if(isset($_POST["escalade"])){
+    Html::popHeader('Mantis', $_SERVER['PHP_SELF']);
+    $mantis->getFormForLinkGlpiTicketToMantisTicket($_GET['idTicket']);
+    Html::popFooter();
 
-        //session::checkRight("Ticket","w");
-        $mantis->exportGlpiIssueToMantisBT($_POST);
-        Html::back();
+} else if (isset($_GET['action']) && $_GET['action'] == 'linkToProject') {
 
-    }
-    Html::back();
+    Html::popHeader('Mantis', $_SERVER['PHP_SELF']);
+    $mantis->getFormForLinkGlpiTicketToMantisProject($_GET['idTicket']);
+    Html::popFooter();
+
+}
+
+
+
+
 
 

@@ -1,10 +1,11 @@
 <?php
 
 
-class PluginMantisIssue {
+class PluginMantisIssue
+{
 
 
-    public static $champUrlGlpi = array('none'=>'----','note'=> 'note','additional_information' => 'additional_information');
+    public static $champsMantis = array('none' => '----', 'note' => 'note', 'additional_information' => 'additional_information');
 
 
     public $id;
@@ -33,10 +34,10 @@ class PluginMantisIssue {
     public $target_version;
     public $description;
     public $steps_to_reproduce;
-    public $additional_information;
+    public $additional_information = "";
     public $attachments;
     public $relationships;
-    public $notes;
+    public $notes = "";
     public $custom_fields;
     public $due_date;
     public $monitors;
@@ -87,8 +88,12 @@ class PluginMantisIssue {
      * @param Array $_tags
      * @return MantisStructIssueData
      */
-    public function __construct(){
+    public function __construct()
+    {
+
+
     }
+
     /**
      * Get id value
      * @return integer|null
@@ -97,6 +102,7 @@ class PluginMantisIssue {
     {
         return $this->id;
     }
+
     /**
      * Set id value
      * @param integer $_id the id
@@ -106,6 +112,7 @@ class PluginMantisIssue {
     {
         return ($this->id = $_id);
     }
+
     /**
      * Get view_state value
      * @return MantisStructObjectRef|null
@@ -114,6 +121,7 @@ class PluginMantisIssue {
     {
         return $this->view_state;
     }
+
     /**
      * Set view_state value
      * @param MantisStructObjectRef $_view_state the view_state
@@ -123,6 +131,7 @@ class PluginMantisIssue {
     {
         return ($this->view_state = $_view_state);
     }
+
     /**
      * Get last_updated value
      * @return dateTime|null
@@ -131,6 +140,7 @@ class PluginMantisIssue {
     {
         return $this->last_updated;
     }
+
     /**
      * Set last_updated value
      * @param dateTime $_last_updated the last_updated
@@ -140,6 +150,7 @@ class PluginMantisIssue {
     {
         return ($this->last_updated = $_last_updated);
     }
+
     /**
      * Get project value
      * @return MantisStructObjectRef|null
@@ -148,6 +159,7 @@ class PluginMantisIssue {
     {
         return $this->project;
     }
+
     /**
      * Set project value
      * @param MantisStructObjectRef $_project the project
@@ -157,6 +169,7 @@ class PluginMantisIssue {
     {
         return ($this->project = $_project);
     }
+
     /**
      * Get category value
      * @return string|null
@@ -165,6 +178,7 @@ class PluginMantisIssue {
     {
         return $this->category;
     }
+
     /**
      * Set category value
      * @param string $_category the category
@@ -174,6 +188,7 @@ class PluginMantisIssue {
     {
         return ($this->category = $_category);
     }
+
     /**
      * Get priority value
      * @return MantisStructObjectRef|null
@@ -182,6 +197,7 @@ class PluginMantisIssue {
     {
         return $this->priority;
     }
+
     /**
      * Set priority value
      * @param MantisStructObjectRef $_priority the priority
@@ -191,6 +207,7 @@ class PluginMantisIssue {
     {
         return ($this->priority = $_priority);
     }
+
     /**
      * Get severity value
      * @return MantisStructObjectRef|null
@@ -199,6 +216,7 @@ class PluginMantisIssue {
     {
         return $this->severity;
     }
+
     /**
      * Set severity value
      * @param MantisStructObjectRef $_severity the severity
@@ -208,6 +226,7 @@ class PluginMantisIssue {
     {
         return ($this->severity = $_severity);
     }
+
     /**
      * Get status value
      * @return MantisStructObjectRef|null
@@ -216,6 +235,7 @@ class PluginMantisIssue {
     {
         return $this->status;
     }
+
     /**
      * Set status value
      * @param MantisStructObjectRef $_status the status
@@ -225,6 +245,7 @@ class PluginMantisIssue {
     {
         return ($this->status = $_status);
     }
+
     /**
      * Get reporter value
      * @return MantisStructAccountData|null
@@ -233,6 +254,7 @@ class PluginMantisIssue {
     {
         return $this->reporter;
     }
+
     /**
      * Set reporter value
      * @param MantisStructAccountData $_reporter the reporter
@@ -242,6 +264,7 @@ class PluginMantisIssue {
     {
         return ($this->reporter = $_reporter);
     }
+
     /**
      * Get summary value
      * @return string|null
@@ -250,6 +273,7 @@ class PluginMantisIssue {
     {
         return $this->summary;
     }
+
     /**
      * Set summary value
      * @param string $_summary the summary
@@ -259,6 +283,7 @@ class PluginMantisIssue {
     {
         return ($this->summary = $_summary);
     }
+
     /**
      * Get version value
      * @return string|null
@@ -267,6 +292,7 @@ class PluginMantisIssue {
     {
         return $this->version;
     }
+
     /**
      * Set version value
      * @param string $_version the version
@@ -276,6 +302,7 @@ class PluginMantisIssue {
     {
         return ($this->version = $_version);
     }
+
     /**
      * Get build value
      * @return string|null
@@ -284,6 +311,7 @@ class PluginMantisIssue {
     {
         return $this->build;
     }
+
     /**
      * Set build value
      * @param string $_build the build
@@ -293,6 +321,7 @@ class PluginMantisIssue {
     {
         return ($this->build = $_build);
     }
+
     /**
      * Get platform value
      * @return string|null
@@ -301,6 +330,7 @@ class PluginMantisIssue {
     {
         return $this->platform;
     }
+
     /**
      * Set platform value
      * @param string $_platform the platform
@@ -310,6 +340,7 @@ class PluginMantisIssue {
     {
         return ($this->platform = $_platform);
     }
+
     /**
      * Get os value
      * @return string|null
@@ -318,6 +349,7 @@ class PluginMantisIssue {
     {
         return $this->os;
     }
+
     /**
      * Set os value
      * @param string $_os the os
@@ -327,6 +359,7 @@ class PluginMantisIssue {
     {
         return ($this->os = $_os);
     }
+
     /**
      * Get os_build value
      * @return string|null
@@ -335,6 +368,7 @@ class PluginMantisIssue {
     {
         return $this->os_build;
     }
+
     /**
      * Set os_build value
      * @param string $_os_build the os_build
@@ -344,6 +378,7 @@ class PluginMantisIssue {
     {
         return ($this->os_build = $_os_build);
     }
+
     /**
      * Get reproducibility value
      * @return MantisStructObjectRef|null
@@ -352,6 +387,7 @@ class PluginMantisIssue {
     {
         return $this->reproducibility;
     }
+
     /**
      * Set reproducibility value
      * @param MantisStructObjectRef $_reproducibility the reproducibility
@@ -361,6 +397,7 @@ class PluginMantisIssue {
     {
         return ($this->reproducibility = $_reproducibility);
     }
+
     /**
      * Get date_submitted value
      * @return dateTime|null
@@ -369,6 +406,7 @@ class PluginMantisIssue {
     {
         return $this->date_submitted;
     }
+
     /**
      * Set date_submitted value
      * @param dateTime $_date_submitted the date_submitted
@@ -378,6 +416,7 @@ class PluginMantisIssue {
     {
         return ($this->date_submitted = $_date_submitted);
     }
+
     /**
      * Get sponsorship_total value
      * @return integer|null
@@ -386,6 +425,7 @@ class PluginMantisIssue {
     {
         return $this->sponsorship_total;
     }
+
     /**
      * Set sponsorship_total value
      * @param integer $_sponsorship_total the sponsorship_total
@@ -395,6 +435,7 @@ class PluginMantisIssue {
     {
         return ($this->sponsorship_total = $_sponsorship_total);
     }
+
     /**
      * Get handler value
      * @return MantisStructAccountData|null
@@ -403,6 +444,7 @@ class PluginMantisIssue {
     {
         return $this->handler;
     }
+
     /**
      * Set handler value
      * @param MantisStructAccountData $_handler the handler
@@ -412,6 +454,7 @@ class PluginMantisIssue {
     {
         return ($this->handler = $_handler);
     }
+
     /**
      * Get projection value
      * @return MantisStructObjectRef|null
@@ -420,6 +463,7 @@ class PluginMantisIssue {
     {
         return $this->projection;
     }
+
     /**
      * Set projection value
      * @param MantisStructObjectRef $_projection the projection
@@ -429,6 +473,7 @@ class PluginMantisIssue {
     {
         return ($this->projection = $_projection);
     }
+
     /**
      * Get eta value
      * @return MantisStructObjectRef|null
@@ -437,6 +482,7 @@ class PluginMantisIssue {
     {
         return $this->eta;
     }
+
     /**
      * Set eta value
      * @param MantisStructObjectRef $_eta the eta
@@ -446,6 +492,7 @@ class PluginMantisIssue {
     {
         return ($this->eta = $_eta);
     }
+
     /**
      * Get resolution value
      * @return MantisStructObjectRef|null
@@ -454,6 +501,7 @@ class PluginMantisIssue {
     {
         return $this->resolution;
     }
+
     /**
      * Set resolution value
      * @param MantisStructObjectRef $_resolution the resolution
@@ -463,6 +511,7 @@ class PluginMantisIssue {
     {
         return ($this->resolution = $_resolution);
     }
+
     /**
      * Get fixed_in_version value
      * @return string|null
@@ -471,6 +520,7 @@ class PluginMantisIssue {
     {
         return $this->fixed_in_version;
     }
+
     /**
      * Set fixed_in_version value
      * @param string $_fixed_in_version the fixed_in_version
@@ -480,6 +530,7 @@ class PluginMantisIssue {
     {
         return ($this->fixed_in_version = $_fixed_in_version);
     }
+
     /**
      * Get target_version value
      * @return string|null
@@ -488,6 +539,7 @@ class PluginMantisIssue {
     {
         return $this->target_version;
     }
+
     /**
      * Set target_version value
      * @param string $_target_version the target_version
@@ -497,6 +549,7 @@ class PluginMantisIssue {
     {
         return ($this->target_version = $_target_version);
     }
+
     /**
      * Get description value
      * @return string|null
@@ -505,6 +558,7 @@ class PluginMantisIssue {
     {
         return $this->description;
     }
+
     /**
      * Set description value
      * @param string $_description the description
@@ -514,6 +568,7 @@ class PluginMantisIssue {
     {
         return ($this->description = $_description);
     }
+
     /**
      * Get steps_to_reproduce value
      * @return string|null
@@ -522,6 +577,7 @@ class PluginMantisIssue {
     {
         return $this->steps_to_reproduce;
     }
+
     /**
      * Set steps_to_reproduce value
      * @param string $_steps_to_reproduce the steps_to_reproduce
@@ -531,6 +587,7 @@ class PluginMantisIssue {
     {
         return ($this->steps_to_reproduce = $_steps_to_reproduce);
     }
+
     /**
      * Get additional_information value
      * @return string|null
@@ -539,6 +596,7 @@ class PluginMantisIssue {
     {
         return $this->additional_information;
     }
+
     /**
      * Set additional_information value
      * @param string $_additional_information the additional_information
@@ -546,8 +604,9 @@ class PluginMantisIssue {
      */
     public function setAdditional_information($_additional_information)
     {
-        return ($this->additional_information = $_additional_information);
+        return ($this->additional_information .= $_additional_information);
     }
+
     /**
      * Get attachments value
      * @return Array|null
@@ -556,6 +615,7 @@ class PluginMantisIssue {
     {
         return $this->attachments;
     }
+
     /**
      * Set attachments value
      * @param Array $_attachments the attachments
@@ -565,6 +625,7 @@ class PluginMantisIssue {
     {
         return ($this->attachments = $_attachments);
     }
+
     /**
      * Get relationships value
      * @return Array|null
@@ -573,6 +634,7 @@ class PluginMantisIssue {
     {
         return $this->relationships;
     }
+
     /**
      * Set relationships value
      * @param Array $_relationships the relationships
@@ -582,6 +644,7 @@ class PluginMantisIssue {
     {
         return ($this->relationships = $_relationships);
     }
+
     /**
      * Get notes value
      * @return Array|null
@@ -590,6 +653,7 @@ class PluginMantisIssue {
     {
         return $this->notes;
     }
+
     /**
      * Set notes value
      * @param Array $_notes the notes
@@ -597,8 +661,9 @@ class PluginMantisIssue {
      */
     public function setNotes($_notes)
     {
-        return ($this->notes = $_notes);
+        return ($this->notes .= $_notes);
     }
+
     /**
      * Get custom_fields value
      * @return Array|null
@@ -607,6 +672,7 @@ class PluginMantisIssue {
     {
         return $this->custom_fields;
     }
+
     /**
      * Set custom_fields value
      * @param Array $_custom_fields the custom_fields
@@ -616,6 +682,7 @@ class PluginMantisIssue {
     {
         return ($this->custom_fields = $_custom_fields);
     }
+
     /**
      * Get due_date value
      * @return dateTime|null
@@ -624,6 +691,7 @@ class PluginMantisIssue {
     {
         return $this->due_date;
     }
+
     /**
      * Set due_date value
      * @param dateTime $_due_date the due_date
@@ -633,6 +701,7 @@ class PluginMantisIssue {
     {
         return ($this->due_date = $_due_date);
     }
+
     /**
      * Get monitors value
      * @return Array|null
@@ -641,6 +710,7 @@ class PluginMantisIssue {
     {
         return $this->monitors;
     }
+
     /**
      * Set monitors value
      * @param Array $_monitors the monitors
@@ -650,6 +720,7 @@ class PluginMantisIssue {
     {
         return ($this->monitors = $_monitors);
     }
+
     /**
      * Get sticky value
      * @return boolean|null
@@ -658,6 +729,7 @@ class PluginMantisIssue {
     {
         return $this->sticky;
     }
+
     /**
      * Set sticky value
      * @param boolean $_sticky the sticky
@@ -667,6 +739,7 @@ class PluginMantisIssue {
     {
         return ($this->sticky = $_sticky);
     }
+
     /**
      * Get tags value
      * @return Array|null
@@ -675,6 +748,7 @@ class PluginMantisIssue {
     {
         return $this->tags;
     }
+
     /**
      * Set tags value
      * @param Array $_tags the tags
@@ -684,6 +758,7 @@ class PluginMantisIssue {
     {
         return ($this->tags = $_tags);
     }
+
     /**
      * Method called when an object has been exported with var_export() functions
      * It allows to return an object instantiated with the values
@@ -692,10 +767,11 @@ class PluginMantisIssue {
      * @param array $_array the exported values
      * @return MantisStructIssueData
      */
-    public static function __set_state(array $_array,$_className = __CLASS__)
+    public static function __set_state(array $_array, $_className = __CLASS__)
     {
-        return parent::__set_state($_array,$_className);
+        return parent::__set_state($_array, $_className);
     }
+
     /**
      * Method returning the class name
      * @return string __CLASS__
@@ -704,4 +780,406 @@ class PluginMantisIssue {
     {
         return __CLASS__;
     }
+
+
+    public function linkisuetoProjectMantis($_post)
+    {
+
+
+        $categorie = $_post['categorie'];
+        $resume = $_post['resume'];
+        $description = $_post['description'];
+        $stepToReproduce = $_post['stepToReproduce'];
+        $followAttachment = $_post['followAttachment'];
+        $idTicket = $_post['idTicket'];
+        $nameMantisProject = $_post['nameMantisProject'];
+        $idUser = $_post['user'];
+        $date = $_post['dateEscalade'];
+
+
+        require_once('mantisProject.class.php');
+        require_once('mantisWS.class.php');
+        require_once('config.class.php');
+        require_once('mantis.class.php');
+        require_once('../../../inc/ticket.class.php');
+        require_once('../../../inc/itilcategory.class.php');
+        require_once('../../../inc/tickettask.class.php');
+        require_once('../../../inc/ticketfollowup.class.php');
+        require_once('../../../inc/requesttype.class.php');
+        require_once("../../../inc/document.class.php");
+        require_once("../../../inc/user.class.php");
+
+
+        $ws = new PluginMantisMantisws();
+        $ws->initializeConnection();
+
+        $conf = new PluginMantisConfig();
+        $conf->getFromDB(1);
+        $champsGlpi = $conf->fields["champsGlpi"];
+        $champsUrl = $conf->fields["champsUrlGlpi"];
+
+        $ticket = new Ticket();
+        $ticket->getFromDB($idTicket);
+
+        $mantis = new PluginMantisMantis();
+
+        $itilCategorie = new ITILCategory();
+        $task = new TicketTask();
+
+
+
+
+        $id_note = 0;
+        $id_mantis = 0;
+        $id_attachment = array();
+        $post = array();
+
+
+
+
+
+        //si le projet existe
+        if ($ws->existProjectWithName($nameMantisProject)) {
+
+
+            //on creer un projet avec l'id juste pour creer l'issue mantis
+            $project = new PluginMantisProject();
+            $project->setId($ws->getProjectIdWithName($nameMantisProject));
+
+
+            //on remplit l'issue Mantis
+            $this->setProject($project);
+            $this->setCategory($categorie);
+            $this->setDescription($description);
+            $this->setSteps_to_reproduce($stepToReproduce);
+            $this->setSummary($resume);
+            $this->setAdditional_information($this->getAdditionalInfo($champsGlpi, $champsUrl, $ticket, $itilCategorie));
+
+
+
+
+
+
+            //on insert lissue
+            $idIssueCreate = $ws->addIssue($this);
+
+
+            //si l'issue mantis n'est pas creé
+            if (!$idIssueCreate) {
+                return "Erreur : Le processus à été interrompu (voir les logs glpi/files/_log/mantis.log)";
+            } else {
+
+
+                //creation d'un lien glpi -> mantis
+                $mantis = new PluginMantisMantis();
+                $post['idTicket'] = $idTicket;
+                $post['idMantis'] = $idIssueCreate;
+                $post['dateEscalade'] = $date;
+                $post['user'] = $idUser;
+
+                //si peut pas créé le lien
+                if (!$id_mantis = $mantis->add($post)) {
+                    //on log et on supprime l'issue crée
+                    error_log("Erreur lors de la création de lien entre l'issue Glpi et l'issue MantisBT.\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                    error_log("Suppression de l'issue Mantis n° " . $idIssueCreate . " précédemment créé.\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                    $ws->deleteIssue($idIssueCreate);
+                    return "Erreur : Le processus à été interrompu (voir les logs glpi/files/_log/mantis.log)";
+
+                } else {
+
+                    $error = "";
+
+                    //on s'occupe des note
+                    if($this->needNote($champsGlpi, $champsUrl)){
+                        $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, $ws, $idIssueCreate);
+                        if(!$id_note)$error .= "Erreur lors de la création de la note export interrompu";
+                    }
+
+
+
+
+
+
+                    // check si on follow les pieces jointe
+                    if ($followAttachment == 'true') {
+
+                        Global $DB;
+
+                        $res = $DB->query("SELECT `glpi_documents_items`.*
+                        FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = 'Ticket'
+                        AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idTicket) . "'");
+
+
+                        if ($res->num_rows > 0) {
+
+                            while ($row = $res->fetch_assoc()) {
+                                $doc = new Document();
+                                $doc->getFromDB($row["documents_id"]);
+                                $path = GLPI_DOC_DIR . "/" . $doc->getField('filepath');
+
+                                if (file_exists($path)) {
+
+                                    $data = file_get_contents($path);
+                                    if (!$data) {
+
+                                        error_log("Erreur lors de l'importation de la piece jointe " . $doc->getField('filename') . " (" . $path . ").\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                                        $error .= "Impossible d'ouvrir le fichier " . $doc->getField('filename') . " export interrompu.<br>";
+                                    } else {
+
+                                        error_log("je passe dans le else", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                                        $data = base64_encode($data);
+                                        $id_data = $ws->addAttachmentToIssue($idIssueCreate, $doc->getField('filename'), $doc->getField('mime'), $data);
+                                        if (!$id_data ) {
+
+                                            $id_attachment[] = $id_data;
+                                            error_log("Impossible d'envoyer les pieces jointes " . $doc->getField('filename') . " à Mantis , export interrompu.<br>\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                                            $error .= "Impossible d'envoyer les pieces jointes " . $doc->getField('filename') . " à Mantis , export interrompu.<br>";
+                                        }
+                                    }
+                                } else {
+
+                                    error_log("Erreur la pièce jointe " . $doc->getField('filename') . " n'éxiste pas (" . $path . ").\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                                    $error .= "La pièce jointe " . $doc->getField('filename') . " n'existe pas, export interrompu.<br>";
+                                }
+                            }
+                        }
+
+
+
+
+
+
+                    }
+
+
+
+
+                    if($error != ""){
+
+                        error_log("Supression des éléments créer\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                        try{
+                            foreach($id_attachment as &$id){
+                                $ws->deleteAttachment($id);
+                            }
+                        }catch(Exception $e){}
+
+                        try{
+                            $ws->deleteNote($id_note);
+                        }catch(Exception $e){}
+
+                        try{
+                            $post['id'] = $id_mantis;
+                            $mantis->delete($post);
+                        }catch(Exception $e){ }
+
+                        try{
+                            $ws->deleteIssue($idIssueCreate);
+                        }catch(Exception $e){}
+
+
+
+                        return $error;
+                    }else return true;
+
+
+
+
+                }
+
+
+            }
+
+
+        } else {
+            error_log("Le projet  '" . $nameMantisProject . "' n'existe pas\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+            echo "Le projet  '" . $nameMantisProject . "' n'existe pas";
+            die;
+        }
+
+
+    }
+
+
+    private function getAdditionalInfo($champsGlpi, $champsUrl, $ticket, $itilCategorie)
+    {
+        $infoTicket = "";
+
+
+
+
+
+        if ($champsGlpi == 'additional_information') {
+            $infoTicket .= "Titre = " . $ticket->fields["name"] . "<br>";
+            $infoTicket .= "Description = " . $ticket->fields["content"] . "<br>";
+
+            $infoTicket .= $this->getFollowUpFromticket($ticket);
+            $infoTicket .= $this->getTaskFromticket($ticket);
+
+
+            if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
+                $infoTicket .= "<br>Categorie = " . $itilCategorie->fields["name"];
+        }
+
+        if ($champsUrl == 'additional_information') {
+            $infoTicket .= "Lien vers le ticket Glpi : " . $_SERVER['HTTP_REFERER'] . "<br>";
+        }
+        return $infoTicket;
+    }
+
+
+    private function createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, $ws, $idIssueCreate)
+    {
+
+        $note = "";
+
+        if ($champsGlpi == 'note') {
+            $note .= "Titre = " . $ticket->fields["name"] . "<br>";
+            $note .= "Description = " . $ticket->fields["content"] . "<br>";
+
+            if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
+                $note .= "Categorie = " . $itilCategorie->fields["name"] . "<br>";
+        }
+        if ($champsUrl == 'note') {
+            $note .= "Lien vers le ticket Glpi : " . $_SERVER['HTTP_REFERER'] . "<br>";
+        }
+
+        require_once("mantisStructIssueNoteData.class.php");
+        $issueNote = new PluginMantisStructIssueNoteData();
+        $issueNote->setDate_submitted(date("Y-m-d"));
+        $issueNote->setText($note);
+
+
+        return $ws->addNoteToIssue($idIssueCreate, $issueNote);
+
+    }
+
+    private function createIssueAttachment($ws, $idTicket, $idIssueCreate)
+    {
+
+        $error = "";
+        Global $DB;
+
+        $res = $DB->query("SELECT `glpi_documents_items`.*
+                        FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = 'Ticket'
+                        AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idTicket) . "'");
+
+
+        if ($res->num_rows > 0) {
+
+            while ($row = $res->fetch_assoc()) {
+                $doc = new Document();
+                $doc->getFromDB($row["documents_id"]);
+                $path = GLPI_DOC_DIR . "/" . $doc->getField('filepath');
+
+                if (file_exists($path)) {
+
+                    $data = file_get_contents($path);
+                    if (!$data) {
+                        error_log("Erreur lors de l'importation de la piece jointe " . $doc->getField('filename') . " (" . $path . ").\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                        $error .= "Impossible d'ouvrir le fichier " . $doc->getField('filename') . " export annulé.<br>";
+                    } else {
+                        $data = base64_encode($data);
+                        if (!$ws->addAttachmentToIssue($idIssueCreate, $doc->getField('filename'), $doc->getField('mime'), $data)) {
+                            $error .= "Impossible d'envoyer les pieces jointes " . $doc->getField('filename') . " à Mantis , export annulé.<br>";
+                        }
+                    }
+                } else {
+                    error_log("Erreur la pièce jointe " . $doc->getField('filename') . " n'éxiste pas (" . $path . ").\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                    $error .= "La pièce jointe " . $doc->getField('filename') . " n'existe pas, export annulé.<br>";
+                }
+            }
+        }
+
+        if ($error !== "") return $error;
+        else return true;
+
+
+    }
+
+    /**
+     * Function to determine if the issue need a note
+     * @param $champsGlpi
+     * @param $champsUrl
+     * @return bool
+     */
+    private function needNote($champsGlpi, $champsUrl)
+    {
+
+        if ($champsGlpi == 'note' || $champsUrl == 'note')return true;
+        else return false;
+    }
+
+
+    /**
+     * Function to get the information of ticketFollowup
+     * @param $ticket
+     * @return string content
+     */
+    private function getFollowUpFromticket($ticket)
+    {
+
+        global $DB;
+
+        $content = '';
+
+
+        $res = $DB->query("SELECT `glpi_ticketfollowups`.*
+                        FROM `glpi_ticketfollowups` WHERE `glpi_ticketfollowups`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'");
+
+        if ($res->num_rows > 0) {
+            while ($row = $res->fetch_assoc()) {
+
+                $ticket_followUp = new TicketFollowup();
+                $ticket_followUp->getFromDB($row["id"]);
+
+                $request_type = new RequestType();
+                $request_type->getFromDB($row["requesttypes_id"]);
+
+                $user = new User();
+                $user->getFromDB($row["users_id"]);
+
+                $content .= 'Suivi '.$ticket_followUp->fields['id'].' -> date : '.$ticket_followUp->fields['date'].', type de demande : '.$request_type->fields['name'].', utilisateur : '. $user->getField('realname') . " " . $user->getfield('firstname').'</br>';
+
+            }
+        }else{
+            $content .= 'Pas de suivi';
+        }
+
+
+
+        return $content;
+    }
+
+    /**
+     * Function to get tasks string from glpi ticket
+     * @param $ticket
+     */
+    private function getTaskFromticket($ticket)
+    {
+
+        global $DB;
+
+        $content = '';
+
+        $res = $DB->query("SELECT `glpi_tickettasks`.*
+                        FROM `glpi_tickettasks` WHERE `glpi_tickettasks`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'");
+
+        if ($res->num_rows > 0) {
+            while ($row = $res->fetch_assoc()) {
+                $task = new TicketTask();
+                $task->getFromDB($row["id"]);
+
+                $user = new User();
+                $user->getFromDB($row["users_id"]);
+
+                $content .= 'Tâche '.$task->fields['id'].' -> date : '.$task->fields['date'].', description : '.$task->fields['content'];
+            }
+        }else{
+            $content .= 'Pas de tâche';
+        }
+
+        return $content;
+
+    }
+
 }

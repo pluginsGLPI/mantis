@@ -61,13 +61,15 @@ function plugin_init_mantis(){
     $PLUGIN_HOOKS['menu_entry']['mantis'] = 'front/config.form.php';
     $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
     $PLUGIN_HOOKS['add_javascript']['mantis'] = array('scripts/scriptMantis.js',
-                                                      'scripts/jquery-1.11.0.min.js');
+                                                      'scripts/jquery-1.11.0.min.js',
+        'scripts/jquery.collapse_cookie_storage.js',
+        'scripts/jquery.collapse_storage');
 
 
 
-    Plugin::registerClass('PluginMantisChampsglpi');
-    Plugin::registerClass('PluginMantisLinkfield');
-    Plugin::registerClass('PluginMantisChampsmantisbt');
+    //Plugin::registerClass('PluginMantisChampsglpi');
+    //Plugin::registerClass('PluginMantisLinkfield');
+    //Plugin::registerClass('PluginMantisChampsmantisbt');
     Plugin::registerClass('PluginMantisProfile',array('addtabon' => array('Profile')));
     Plugin::registerClass('PluginMantisConfig');
     Plugin::registerClass('PluginMantisMantisws');

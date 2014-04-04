@@ -1,7 +1,7 @@
 <?php
-include ("../../../inc/includes.php");
+include ('../../../inc/includes.php');
 
-Session::checkRight("profile", "r");
+Session::checkRight('profile', 'r');
 
 $prof = new PluginMantisProfile();
 

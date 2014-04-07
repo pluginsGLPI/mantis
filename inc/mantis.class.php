@@ -119,7 +119,11 @@ class PluginMantisMantis extends CommonDBTM
 
 
    public function getFormToDelLinkOrissue($id, $idTicket, $idMantis){
+      $ws = new PluginMantisMantisws();
+      $ws->initializeConnection();
+      $issue = $ws->getIssueById($idMantis);
 
+      
       echo "<form action='#' id=".$id.">";
 
       echo "<table id=".$id." class='tab_cadre' cellpadding='5' >";
@@ -131,7 +135,10 @@ class PluginMantisMantis extends CommonDBTM
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td><INPUT type='checkbox'  id='deleteIssue".$id."' >".__("Delete the  MantisBT ticket","mantis")."</td>";
+
+      if(!$issue)echo "<td><INPUT type='checkbox' disabled id='deleteIssue".$id."' >".__("Delete the  MantisBT ticket","mantis")."</td>";
+      else echo "<td><INPUT type='checkbox' id='deleteIssue".$id."' >".__("Delete the  MantisBT ticket","mantis")."</td>";
+
       echo "<td>".__("(Also removes the link in GLPI)","mantis")."</td>";
       echo "</tr>";
 

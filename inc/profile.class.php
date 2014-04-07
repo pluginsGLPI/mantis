@@ -30,7 +30,7 @@ class PluginMantisProfile extends CommonDBTM
     {
 
         if ($item->getType() == 'Profile') {
-            return 'Mantis';
+            return 'MantisBT';
         }
         return '';
     }
@@ -75,12 +75,12 @@ class PluginMantisProfile extends CommonDBTM
 
         echo '<form action=\'' . $target . '\' method=\'post\'>';
         echo '<table class=\'tab_cadre_fixe\'>';
-        echo '<tr><th colspan=\'2\' class=\'center b\'>' . sprintf(__('%1$s %2$s'), ('gestion des droits :'),
+        echo '<tr><th colspan=\'2\' class=\'center b\'>' . sprintf(__('%1$s %2$s'), ('rights management :'),
                 Dropdown::getDropdownName('glpi_profiles',$this->fields['id']));
         echo '</th></tr>';
 
         echo '<tr class=\'tab_bg_2\'>';
-        echo '<td>Utiliser le plugin mantis</td><td>';
+        echo '<td>'.__("Use the plugin MantisBT","mantis").'</td><td>';
         Profile::dropdownNoneReadWrite('droit', $this->fields['droit'], 1, 1, 1);
         echo '</td></tr>';
 
@@ -88,7 +88,7 @@ class PluginMantisProfile extends CommonDBTM
             echo '<tr class=\'tab_bg_1\'>';
             echo '<td class=\'center\' colspan=\'2\'>';
             echo '<input type=\'hidden\' name=\'id\' value=$id>';
-            echo '<input type=\'submit\' name=\'update_user_profile\' value=\'Mettre à jour\' class=\'submit\'>';
+            echo '<input type=\'submit\' name=\'update_user_profile\' value='.__("Update","mantis").' class=\'submit\'>';
             echo '</td></tr>';
         }
 

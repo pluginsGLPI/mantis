@@ -1,17 +1,17 @@
 <?php
 
 /**
-*function to define the version for glpi for plugin
-*@return array
-*/
-function plugin_version_mantis(){
+ *function to define the version for glpi for plugin
+ * @return array
+ */
+function plugin_version_mantis() {
 
-    return array ('name' 	       => 'Mantis',
-                  'version' 	   => '1.0.0',
-                  'author'         => 'Stanislas KITA (teclib\')',
-                  'license'        => 'GPLv2+',
-                  'homepage'       => 'http://www.teclib.com',
-                  'minGlpiVersion' => '0.84');
+   return array('name' => 'Mantis',
+      'version' => '1.0.0',
+      'author' => 'Stanislas KITA (teclib\')',
+      'license' => 'GPLv2+',
+      'homepage' => 'http://www.teclib.com',
+      'minGlpiVersion' => '0.84');
 
 }
 
@@ -21,12 +21,13 @@ function plugin_version_mantis(){
  */
 function plugin_mantis_check_prerequisites() {
 
-    if (version_compare(GLPI_VERSION,'0.84','lt')
-        || version_compare(GLPI_VERSION,'0.85','ge')) {
-        echo "This plugin requires GLPI = 0.84";
-        return false;
-    }
-    return true;
+   if (version_compare(GLPI_VERSION, '0.84', 'lt')
+      || version_compare(GLPI_VERSION, '0.85', 'ge')
+   ) {
+      echo "This plugin requires GLPI = 0.84";
+      return false;
+   }
+   return true;
 }
 
 
@@ -35,49 +36,42 @@ function plugin_mantis_check_prerequisites() {
  * @param boolean $verbose
  * @return boolean
  */
-function plugin_mantis_check_config($verbose = false){
+function plugin_mantis_check_config($verbose = false) {
 
-    if (true){
-        //your configuration check
-        return true;
-    }
+   if (true) {
+      //your configuration check
+      return true;
+   }
 
-    if($verbose){
-        echo 'Installed / not configured';
-    }
+   if ($verbose) {
+      echo 'Installed / not configured';
+   }
 
-    return false;
+   return false;
 }
 
 /**
  * function to initialize the plugin
  * @global array $PLUGIN_HOOKS
  */
-function plugin_init_mantis(){
+function plugin_init_mantis() {
 
-    global $PLUGIN_HOOKS;
+   global $PLUGIN_HOOKS;
 
-    $PLUGIN_HOOKS['csrf_compliant']['mantis'] = true;
-    $PLUGIN_HOOKS['menu_entry']['mantis'] = 'front/config.form.php';
-    $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
-    $PLUGIN_HOOKS['add_javascript']['mantis'] = array('scripts/scriptMantis.js',
-                                                      'scripts/jquery-1.11.0.min.js',
-        'scripts/jquery.collapse_cookie_storage.js',
-        'scripts/jquery.collapse_storage');
+   $PLUGIN_HOOKS['csrf_compliant']['mantis'] = true;
+   $PLUGIN_HOOKS['menu_entry']['mantis'] = 'front/config.form.php';
+   $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
+   $PLUGIN_HOOKS['add_javascript']['mantis'] = array('scripts/scriptMantis.js',
+                                                   'scripts/jquery-1.11.0.min.js');
 
-
-
-    //Plugin::registerClass('PluginMantisChampsglpi');
-    //Plugin::registerClass('PluginMantisLinkfield');
-    //Plugin::registerClass('PluginMantisChampsmantisbt');
-    Plugin::registerClass('PluginMantisProfile',array('addtabon' => array('Profile')));
-    Plugin::registerClass('PluginMantisConfig');
-    Plugin::registerClass('PluginMantisMantisws');
-    Plugin::registerClass('PluginMantisMantis', array('addtabon' => array('Ticket')));
+   Plugin::registerClass('PluginMantisProfile', array('addtabon' => array('Profile')));
+   Plugin::registerClass('PluginMantisConfig');
+   Plugin::registerClass('PluginMantisMantisws');
+   Plugin::registerClass('PluginMantisMantis', array('addtabon' => array('Ticket')));
 
 
 }
 
-function plugin_mantis_haveRight($a,$b){
-    return true;
+function plugin_mantis_haveRight($a, $b) {
+   return true;
 }

@@ -759,18 +759,7 @@ class PluginMantisIssue
         return ($this->tags = $_tags);
     }
 
-    /**
-     * Method called when an object has been exported with var_export() functions
-     * It allows to return an object instantiated with the values
-     * @see MantisWsdlClass::__set_state()
-     * @uses MantisWsdlClass::__set_state()
-     * @param array $_array the exported values
-     * @return MantisStructIssueData
-     */
-    public static function __set_state(array $_array, $_className = __CLASS__)
-    {
-        return parent::__set_state($_array, $_className);
-    }
+
 
     /**
      * Method returning the class name
@@ -784,7 +773,6 @@ class PluginMantisIssue
 
     public function linkisuetoProjectMantis($_post)
     {
-
 
         $categorie = $_post['categorie'];
         $resume = $_post['resume'];
@@ -822,20 +810,13 @@ class PluginMantisIssue
         $ticket->getFromDB($idTicket);
 
         $mantis = new PluginMantisMantis();
-
         $itilCategorie = new ITILCategory();
-        $task = new TicketTask();
 
 
-
-
-        $id_note = 0;
-        $id_mantis = 0;
-        $id_attachment = array();
-        $post = array();
-
-
-
+        $id_note = 0; //id de la note creer si besoin
+        $id_mantis = 0; // id du lien mantis si besoin
+        $id_attachment = array(); //id des pieces jointe si besoin
+        $post = array(); //info mantis lors de la creation du lien
 
 
         //si le projet existe
@@ -856,17 +837,13 @@ class PluginMantisIssue
             $this->setAdditional_information($this->getAdditionalInfo($champsGlpi, $champsUrl, $ticket, $itilCategorie));
 
 
-
-
-
-
             //on insert lissue
             $idIssueCreate = $ws->addIssue($this);
 
 
             //si l'issue mantis n'est pas creé
             if (!$idIssueCreate) {
-                return "Erreur : Le processus à été interrompu (voir les logs glpi/files/_log/mantis.log)";
+                return __("Error: The process was interrupted (see logs -> glpi/files/_log/mantis.log)","mantis");
             } else {
 
 
@@ -879,11 +856,11 @@ class PluginMantisIssue
 
                 //si peut pas créé le lien
                 if (!$id_mantis = $mantis->add($post)) {
-                    //on log et on supprime l'issue crée
-                    error_log("Erreur lors de la création de lien entre l'issue Glpi et l'issue MantisBT.\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
-                    error_log("Suppression de l'issue Mantis n° " . $idIssueCreate . " précédemment créé.\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
-                    $ws->deleteIssue($idIssueCreate);
-                    return "Erreur : Le processus à été interrompu (voir les logs glpi/files/_log/mantis.log)";
+                   //on log et on supprime l'issue crée
+                   error_log(__("Error creating link between Glpi and mantisBT","mantis")."\n",3, GLPI_ROOT . "/files/_log/mantis.log");
+                   error_log(__("Deleting MantisBT ticket previously created","mantis")."\n", 3,GLPI_ROOT . "/files/_log/mantis.log");
+                   $ws->deleteIssue($idIssueCreate);
+                   return __("Error: The process was interrupted (see logs -> glpi/files/_log/mantis.log)","mantis");
 
                 } else {
 
@@ -892,13 +869,9 @@ class PluginMantisIssue
                     //on s'occupe des note
                     if($this->needNote($champsGlpi, $champsUrl)){
                         $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, $ws, $idIssueCreate);
-                        if(!$id_note)$error .= "Erreur lors de la création de la note export interrompu";
+                       //Erreur lors de la création de la note
+                        if(!$id_note)$error .= __("Error creating the note,the process was interrupted (see logs -> glpi/files/_log/mantis.log)","mantis");
                     }
-
-
-
-
-
 
                     // check si on follow les pieces jointe
                     if ($followAttachment == 'true') {
@@ -922,41 +895,30 @@ class PluginMantisIssue
                                     $data = file_get_contents($path);
                                     if (!$data) {
 
-                                        error_log("Erreur lors de l'importation de la piece jointe " . $doc->getField('filename') . " (" . $path . ").\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
-                                        $error .= "Impossible d'ouvrir le fichier " . $doc->getField('filename') . " export interrompu.<br>";
+                                       error_log(sprintf(__('Can\'t load the attachment \'%1$s\' to MantisBT, the process was interrupted (see logs -> glpi/files/_log/mantis.log)','mantis'),$doc->getField('filename'))."\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                                       $error.=  sprintf(__('Can\'t load the attachment \'%1$s\' to MantisBT, the process was interrupted (see logs -> glpi/files/_log/mantis.log)','mantis'),$doc->getField('filename'));
                                     } else {
 
-                                        error_log("je passe dans le else", 3, GLPI_ROOT . "/files/_log/mantis.log");
                                         $data = base64_encode($data);
                                         $id_data = $ws->addAttachmentToIssue($idIssueCreate, $doc->getField('filename'), $doc->getField('mime'), $data);
                                         if (!$id_data ) {
-
-                                            $id_attachment[] = $id_data;
-                                            error_log("Impossible d'envoyer les pieces jointes " . $doc->getField('filename') . " à Mantis , export interrompu.<br>\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
-                                            $error .= "Impossible d'envoyer les pieces jointes " . $doc->getField('filename') . " à Mantis , export interrompu.<br>";
+                                           $id_attachment[] = $id_data;
+                                           error_log(sprintf(__('Can\'t send the attachment \'%1$s\' to MantisBT, the process was interrupted (see logs -> glpi/files/_log/mantis.log)','mantis'),$doc->getField('filename'))."\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                                           $error.=  sprintf(__('Can\'t send the attachment \'%1$s\' to MantisBT, the process was interrupted (see logs -> glpi/files/_log/mantis.log)','mantis'),$doc->getField('filename'));
                                         }
                                     }
                                 } else {
-
-                                    error_log("Erreur la pièce jointe " . $doc->getField('filename') . " n'éxiste pas (" . $path . ").\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
-                                    $error .= "La pièce jointe " . $doc->getField('filename') . " n'existe pas, export interrompu.<br>";
+                                   error_log(sprintf(__('Attachment \'%1$s\' does not exist,the process was interrupted (see logs -> glpi/files/_log/mantis.log)','mantis'),$doc->getField('filename'))."\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                                   $error.=  sprintf(__('Attachment \'%1$s\' does not exist,the process was interrupted (see logs -> glpi/files/_log/mantis.log)','mantis'),$doc->getField('filename'));
                                 }
                             }
                         }
-
-
-
-
-
-
                     }
-
-
 
 
                     if($error != ""){
 
-                        error_log("Supression des éléments créer\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+                        error_log(__("Deleting items previously created","mantis")."\n",3, GLPI_ROOT . "/files/_log/mantis.log");
                         try{
                             foreach($id_attachment as &$id){
                                 $ws->deleteAttachment($id);
@@ -981,19 +943,16 @@ class PluginMantisIssue
                         return $error;
                     }else return true;
 
-
-
-
                 }
-
 
             }
 
 
         } else {
-            error_log("Le projet  '" . $nameMantisProject . "' n'existe pas\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
-            echo "Le projet  '" . $nameMantisProject . "' n'existe pas";
-            die;
+           error_log(sprintf(__('Project \'%1$s\' does not exist.','mantis'),$nameMantisProject)."\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+           echo sprintf(__('Project \'%1$s\' does not exist.','mantis'), $nameMantisProject);
+
+           die;
         }
 
 
@@ -1005,23 +964,21 @@ class PluginMantisIssue
         $infoTicket = "";
 
 
-
-
-
+       //sprintf(__('Project \'%1$s\' does not exist.','mantis'), $nameMantisProject);
         if ($champsGlpi == 'additional_information') {
-            $infoTicket .= "Titre = " . $ticket->fields["name"] . "<br>";
-            $infoTicket .= "Description = " . $ticket->fields["content"] . "<br>";
+           $infoTicket .= sprintf(__('Title = %1$s <br>','mantis'), $ticket->fields["name"]);
+           $infoTicket .= sprintf(__('Description = %1$s <br>','mantis'), $ticket->fields["content"]);
 
             $infoTicket .= $this->getFollowUpFromticket($ticket);
             $infoTicket .= $this->getTaskFromticket($ticket);
 
 
             if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
-                $infoTicket .= "<br>Categorie = " . $itilCategorie->fields["name"];
+               $infoTicket .= sprintf(__('Category = %1$s <br>','mantis'), $itilCategorie->fields["name"]);
         }
 
         if ($champsUrl == 'additional_information') {
-            $infoTicket .= "Lien vers le ticket Glpi : " . $_SERVER['HTTP_REFERER'] . "<br>";
+           $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br>','mantis'), $_SERVER['HTTP_REFERER']);
         }
         return $infoTicket;
     }
@@ -1033,14 +990,17 @@ class PluginMantisIssue
         $note = "";
 
         if ($champsGlpi == 'note') {
-            $note .= "Titre = " . $ticket->fields["name"] . "<br>";
-            $note .= "Description = " . $ticket->fields["content"] . "<br>";
+           $note .= sprintf(__('Title = %1$s <br>','mantis'), $ticket->fields["name"]);
+           $note .= sprintf(__('Description = %1$s <br>','mantis'), $ticket->fields["content"]);
+
+            $note .= $this->getFollowUpFromticket($ticket);
+            $note .= $this->getTaskFromticket($ticket);
 
             if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
-                $note .= "Categorie = " . $itilCategorie->fields["name"] . "<br>";
+               $note .= sprintf(__('Category = %1$s <br>','mantis'), $itilCategorie->fields["name"]);
         }
         if ($champsUrl == 'note') {
-            $note .= "Lien vers le ticket Glpi : " . $_SERVER['HTTP_REFERER'] . "<br>";
+            $note .= sprintf(__('Link to Glpi ticket = %1$s <br>','mantis'), $_SERVER['HTTP_REFERER']);
         }
 
         require_once("mantisStructIssueNoteData.class.php");
@@ -1053,48 +1013,6 @@ class PluginMantisIssue
 
     }
 
-    private function createIssueAttachment($ws, $idTicket, $idIssueCreate)
-    {
-
-        $error = "";
-        Global $DB;
-
-        $res = $DB->query("SELECT `glpi_documents_items`.*
-                        FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = 'Ticket'
-                        AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idTicket) . "'");
-
-
-        if ($res->num_rows > 0) {
-
-            while ($row = $res->fetch_assoc()) {
-                $doc = new Document();
-                $doc->getFromDB($row["documents_id"]);
-                $path = GLPI_DOC_DIR . "/" . $doc->getField('filepath');
-
-                if (file_exists($path)) {
-
-                    $data = file_get_contents($path);
-                    if (!$data) {
-                        error_log("Erreur lors de l'importation de la piece jointe " . $doc->getField('filename') . " (" . $path . ").\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
-                        $error .= "Impossible d'ouvrir le fichier " . $doc->getField('filename') . " export annulé.<br>";
-                    } else {
-                        $data = base64_encode($data);
-                        if (!$ws->addAttachmentToIssue($idIssueCreate, $doc->getField('filename'), $doc->getField('mime'), $data)) {
-                            $error .= "Impossible d'envoyer les pieces jointes " . $doc->getField('filename') . " à Mantis , export annulé.<br>";
-                        }
-                    }
-                } else {
-                    error_log("Erreur la pièce jointe " . $doc->getField('filename') . " n'éxiste pas (" . $path . ").\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
-                    $error .= "La pièce jointe " . $doc->getField('filename') . " n'existe pas, export annulé.<br>";
-                }
-            }
-        }
-
-        if ($error !== "") return $error;
-        else return true;
-
-
-    }
 
     /**
      * Function to determine if the issue need a note
@@ -1108,6 +1026,9 @@ class PluginMantisIssue
         if ($champsGlpi == 'note' || $champsUrl == 'note')return true;
         else return false;
     }
+
+
+
 
 
     /**
@@ -1138,11 +1059,11 @@ class PluginMantisIssue
                 $user = new User();
                 $user->getFromDB($row["users_id"]);
 
-                $content .= 'Suivi '.$ticket_followUp->fields['id'].' -> date : '.$ticket_followUp->fields['date'].', type de demande : '.$request_type->fields['name'].', utilisateur : '. $user->getField('realname') . " " . $user->getfield('firstname').'</br>';
+               $content .= sprintf(__('Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s,   <br>','mantis'),$ticket_followUp->fields['id'] ,$ticket_followUp->fields['date'],$request_type->fields['name'],$user->getField('realname') . " " . $user->getfield('firstname')   );
 
             }
         }else{
-            $content .= 'Pas de suivi';
+            $content .= '.__("No follow-up","mantis").';
         }
 
 
@@ -1172,10 +1093,11 @@ class PluginMantisIssue
                 $user = new User();
                 $user->getFromDB($row["users_id"]);
 
-                $content .= 'Tâche '.$task->fields['id'].' -> date : '.$task->fields['date'].', description : '.$task->fields['content'];
+               $content .= sprintf(__('Task = %1$s -> date : %2$s, description : %3$s, time : %4$s,   </br>','mantis'),$task->fields['id'] ,$task->fields['date'],$task->fields['content'],Html::timestampToString($task->fields['actiontime']) );
+                //$content .= 'Tâche '.$task->fields['id'].' -> date : '.$task->fields['date'].', description : '.$task->fields['content'].', temps :'.Html::timestampToString($task->fields['actiontime']).' </br>';
             }
         }else{
-            $content .= 'Pas de tâche';
+            $content .= '.__("No task","mantis").';
         }
 
         return $content;

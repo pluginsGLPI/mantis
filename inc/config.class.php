@@ -47,53 +47,47 @@ class PluginMantisConfig extends CommonDBTM
 
         echo "<form method='post' action='./config.form.php' method='post'>";
         echo "<table class='tab_cadre' cellpadding='5'>";
-        echo "<tr><th colspan='6'>Configuration du plugin Mantis</th></tr>";
+        echo "<tr><th colspan='6'>".__("Mantis plugin setup","mantis")."</th></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>Host du serveur Mantis</td>";
+        echo "<td>".__("MantisBT serveur IP","mantis")."</td>";
         echo "<td><input id='host' type='text' name='host' onblur='testIP();' value='" . $this->fields["host"] . "'/></td>";
-        echo "<td id='resultIP'></td>";
         echo "<td>ex: 128.65.25.74</td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>Uri du fichier WSDL</td>";
+        echo "<td>".__("Wsdl file path","mantis")."</td>";
         echo "<td><input id='url' type='text' name='url' value='" . $this->fields["url"] . "'/></td>";
-        echo "<td id='resultUrl'></td>";
         echo "<td>ex: mantis/api/soap/mantisconnect.php?wsdl</td></td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>Login de l'utilisateur mantis</td>";
+        echo "<td>".__("MantisBT user login","mantis")."</td>";
         echo "<td><input  id='login' type='text' name='login' value='" . $this->fields["login"] . "'/></td>";
-        echo "<td></td>";
         echo "<td></td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>Password de l'utilisateur mantis</td>";
+        echo "<td>".__("MantisBT user password","mantis")."</td>";
         echo "<td><input  id='pwd' type='password' name='pwd' value='" . $this->fields["pwd"] . "'/></td>";
-        echo "<td></td>";
         echo "<td></td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>Champ MantisBT pour le lien vers le ticket Glpi</td>";
+        echo "<td>".__("MantisBT field for the link to the ticket GLPI","mantis")."</td>";
         echo "<td>";
         DropDown::showFromArray('champsUrlGlpi', PluginMantisIssue::$champsMantis, array('value' => $this->fields["champsUrlGlpi"]));
         echo "</td>";
-        echo "<td></td>";
         echo "<td></td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>Champ MantisBT pour les champs Glpi </br>(titre, description, catégorie, suivis, tâches)</td>";
+        echo "<td>".__("MantisBT field for GLPI fields</br>(title, description,category, followed, tasks)","mantis")."</td>";
         echo "<td>";
         DropDown::showFromArray('champsGlpi', PluginMantisIssue::$champsMantis, array('value' => $this->fields["champsGlpi"]));
         echo "</td>";
-        echo "<td></td>";
         echo "<td></td></tr>";
 
         echo "<tr class='tab_bg_1'>";
         echo "<td><input type='hidden' name='id' value='1' class='submit'>";
-        echo "<input id='update' type='submit' name='update' value='modifier' class='submit'></td>";
-        echo "<td><input id='test' onclick='testConnexionMantisWS();' name='test' value='Tester la connection' class='submit'></td>";
-        echo "<td></td><td><div id='infoAjax'></div></td></tr>";
+        echo "<input id='update' type='submit' name='update' value='".__("Update","mantis")."' class='submit'></td>";
+        echo "<td><input id='test' onclick='testConnexionMantisWS();' name='test' value='".__("Test the connection","mantis")."'class='submit'></td>";
+        echo "<td><div id='infoAjax'></div></td></tr>";
 
         echo "</table>";
         Html::closeForm();

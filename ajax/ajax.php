@@ -44,7 +44,7 @@ if (isset($_POST['action'])) {
 
          //on verifie que l'id du ticket mantis existe
          if (!$ws->existIssueWithId($id_mantis_issue)) {
-            echo __("MAntisBT issue does not exist","mantis");
+            echo __("MantisBT issue does not exist","mantis");
          } else {
             $mantis = new PluginMantisMantis();
             //on verifie si un lien est deja creé

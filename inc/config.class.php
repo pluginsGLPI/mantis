@@ -47,10 +47,10 @@ class PluginMantisConfig extends CommonDBTM
 
         echo "<form method='post' action='./config.form.php' method='post'>";
         echo "<table class='tab_cadre' cellpadding='5'>";
-        echo "<tr><th colspan='6'>".__("Mantis plugin setup","mantis")."</th></tr>";
+        echo "<tr><th colspan='6'>".__("MantisBT plugin setup","mantis")."</th></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__("MantisBT serveur IP","mantis")."</td>";
+        echo "<td>".__("MantisBT server IP","mantis")."</td>";
         echo "<td><input id='host' type='text' name='host' onblur='testIP();' value='" . $this->fields["host"] . "'/></td>";
         echo "<td>ex: 128.65.25.74</td></tr>";
 
@@ -77,7 +77,7 @@ class PluginMantisConfig extends CommonDBTM
         echo "<td></td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td>".__("MantisBT field for GLPI fields</br>(title, description,category, followed, tasks)","mantis")."</td>";
+        echo "<td>".__("MantisBT field for GLPI fields</br>(title, description, category, follow-up, tasks)","mantis")."</td>";
         echo "<td>";
         DropDown::showFromArray('champsGlpi', PluginMantisIssue::$champsMantis, array('value' => $this->fields["champsGlpi"]));
         echo "</td>";

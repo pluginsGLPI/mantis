@@ -165,7 +165,7 @@ class PluginMantisMantis extends CommonDBTM
       echo "<tr><th colspan='6'>Lier un ticket Glpi à un ticket MantisBT</th></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<th width='100'>".__('Id MantisBT ticket','mantis')."</th>";
+      echo "<th width='100'>".__('Id Ticket','mantis')."</th>";
       echo "<td ><input size=35 id='idMantis' type='text' name='idMantis'/></td>";
       echo "</tr>";
 
@@ -336,9 +336,9 @@ class PluginMantisMantis extends CommonDBTM
       } else {
 
          //
-         echo "<table class='tab_cadre' cellpadding='5'>";
+         echo "<table class='tab_cadre_fixe' cellpadding='5'>";
          echo "<tr class='headerRow'><th colspan='6'>".__("Info ticket MantisBT","mantis")."</th></tr>";
-         echo "<td>".__("GLPI ticket is not attached to any MantisBT ticket(s)","mantis")."</td>";
+         echo "<td class='center'>".__("GLPI ticket is not attached to any MantisBT ticket(s)","mantis")."</td>";
          echo "</table>";
 
       }

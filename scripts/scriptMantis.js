@@ -6,6 +6,8 @@
  */
 function testConnexionMantisWS(){
 
+   var $div = $( "#infoAjax" );
+
             $.ajax({ // fonction permettant de faire de l'ajax
                 type: "POST", // methode de transmission des données au fichier php
                 url: "../ajax/ajax.php", // url du fichier php
@@ -16,18 +18,12 @@ function testConnexionMantisWS(){
                     "pwd="+$("#pwd").val(), // données à transmettre
                 success: function(msg){ // si l'appel a bien fonctionné
 
-                    var $div = $( "#infoAjax" );
 
-                    if(msg==true) {
-                        $div.html('<img id="img" src="../pics/check24.png" />');
-                    }
-                    else {
-                        $div.html('<img id="img" src="../pics/cross24.png" />');
-                    }
+                        $div.html(msg);
 
                 },
                 error : function(){
-                    $( "#infoAjax" ).html('<img id="img" src="../pics/cross24.png" />Ajax Problem !');
+                   $div.html('Ajax Problem !');
                 }
 
             });
@@ -36,34 +32,9 @@ function testConnexionMantisWS(){
 }
 
 
-
-
-/**
- * function to check IP Format
- * @returns {boolean}
- */
-function testIP(){
-
-    //alert();
-
-    var ip = $("#host").val();
-    var $div = $("#resultIP");
-
-        if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip))
-        {
-            $div.html('<img id="img" src="../pics/check24.png" />');
-            return (true)
-        }else{
-            $div.html('<img id="img" src="../pics/cross24.png" />');
-            return (false)
-        }
-}
-
-
-
 function ifExistissueWithId(){
 
-
+   var $div = $( "#infoFindIssueMantis");
 
     var id = $("#idMantis").val();
 
@@ -73,19 +44,10 @@ function ifExistissueWithId(){
         data: "action=findIssueById&" +
             "id="+id, // données à transmettre
         success: function(msg){ // si l'appel a bien fonctionné
-
-            var $div = $( "#infoFindIssueMantis");
-
-            if(msg==true) {
-                $div.html('<img id="img" src="../../glpi/plugins/mantis/pics/check24.png" />');
-            }
-            else {
-                $div.html('<img id="img" src="../../glpi/plugins/mantis/pics/cross24.png" />');
-            }
-
+             $div.html(msg);
         },
         error : function(){
-            $( "infoFindIssueMantis" ).html("<img id='img' src='../../glpi/plugins/mantis/pics/cross24.png' /> Problème Ajax !");
+           $div.html("Ajax problem !");
         }
 
     });
@@ -163,8 +125,7 @@ function findProjectByName(){
     var name = $("#nameMantisProject").val();
     var img = $("#resultImg");
     var dropdown = $("#dropdown_categorie");
-
-   var div_wait = $("#waitForLinkIssueGlpiToProjectMantis");
+    var div_wait = $("#waitForLinkIssueGlpiToProjectMantis");
 
     div_wait.css('display', 'block');
     img.remove();
@@ -176,23 +137,20 @@ function findProjectByName(){
             "name="+name, // données à transmettre
         success: function(msg){ // si l'appel a bien fonctionné
 
-            if(msg==true) {
-                td.append('<img id="resultImg" src="../../glpi/plugins/mantis/pics/check24.png" />');
-                addOptionToSelect(dropdown,name);
-                div_wait.css('display', 'none');
+           td.append(msg);
 
-            }
-            else {
-                td.append('<img id="resultImg" src="../../glpi/plugins/mantis/pics/cross24.png" />');
-                removeOptionOfSelect(dropdown);
-                div_wait.css('display', 'none');
-            }
+           if(msg.indexOf('check') != -1){
+              addOptionToSelect(dropdown,name);
+              div_wait.css('display', 'none');
+           }else{
+              removeOptionOfSelect(dropdown);
+              div_wait.css('display', 'none');
+           }
 
         },
         error : function(){
             div_wait.css('display', 'none');
-            td.append("<img id='resultImg' src='../../glpi/plugins/mantis/pics/cross24.png' /> Ajax problem !");
-
+            td.append("Ajax problem !");
         }
 
     });
@@ -346,10 +304,6 @@ function deleteLinkGlpiMantis(id , idticket, idMantis , deleteAll){
 
 }
 
-
-
-
-
 function delLinkAndOrIssue(id,idMantis,idTicket){
 
    var checkIssue = $('#deleteIssue'+id);
@@ -360,11 +314,6 @@ function delLinkAndOrIssue(id,idMantis,idTicket){
 
    var popupName = "popupToDelete"+id;
    var popup = $('input[name="'+popupName+'"]');
-
-
-
-
-   //alert(id+" --- "+idTicket+" --- "+idMantis);
 
    if(checkIssue.is(':checked') && !checkLink.is(':checked') ||
       checkIssue.is(':checked') && checkLink.is(':checked')){
@@ -433,3 +382,20 @@ function delLinkAndOrIssue(id,idMantis,idTicket){
 }
 
 
+function getBaseURL() {
+   var url = location.href;
+   var baseURL = url.substring(0, url.indexOf('/', 14));
+
+   if (baseURL.indexOf('http://localhost') != -1) {
+      var pathname = location.pathname;
+      var index1 = url.indexOf(pathname);
+      var index2 = url.indexOf("/", index1 + 1);
+      var baseLocalUrl = url.substr(0, index2);
+
+      return alert(baseLocalUrl);
+   }
+   else {
+      return alert(baseURL);
+   }
+
+}

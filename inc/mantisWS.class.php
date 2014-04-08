@@ -10,6 +10,7 @@ class PluginMantisMantisws
     private $_password;
     private $_client;
 
+
     function __construct()
     {
 
@@ -22,6 +23,7 @@ class PluginMantisMantisws
      */
     function initializeConnection()
     {
+
         require_once('../inc/config.class.php');
         $conf = new PluginMantisConfig();
         $conf->getFromDB(1);
@@ -49,7 +51,7 @@ class PluginMantisMantisws
          $client->mc_project_get_issues($login, $password, 1, 1, 10);
          return true;
       } catch (SoapFault $e) {
-         error_log(sprintf(__('Error to connect to the web service MantisBT => \'%1$s\'', 'mantis'),$e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(__('Error to connect to the web service MantisBT => \'%1$s\'', 'mantis'),$e->getMessage()) ."\n");
          return false;
       }
    }
@@ -66,7 +68,8 @@ class PluginMantisMantisws
          $response = $this->_client->mc_project_get_categories($this->_login, $this->_password, $id);
          return ($response);
       } catch (SoapFault $e) {
-         error_log(sprintf(__('Error retrieving category from the project id \'%1$s\' => \'%2$s\'', 'mantis'), $id, $e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(sprintf(__('Error retrieving category from the project id \'%1$s\' => \'%2$s\'', 'mantis'),
+            $id, $e->getMessage()))."\n");
          return false;
       }
    }
@@ -81,7 +84,9 @@ class PluginMantisMantisws
          $response = $this->_client->mc_issue_exists($this->_login, $this->_password, $_issue_id);
          return ($response);
       } catch (SoapFault $e) {
-         error_log(sprintf(__('Error when checking existence of the MantisBT ticket \'%1$s\' => \'%2$s\'', 'mantis'), $_issue_id, $e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(sprintf(__('Error when checking existence of the MantisBT ticket \'%1$s\' => \'%2$s\'', 'mantis'),
+            $_issue_id, $e->getMessage()))."\n");
+
          return false;
       }
    }
@@ -96,7 +101,8 @@ class PluginMantisMantisws
       try {
          return $this->_client->mc_issue_delete($this->_login, $this->_password, $_issue_id);
       } catch (SoapFault $e) {
-         error_log(sprintf(__('Error while deleting the ticket \'%1$s\' => \'%2$s\'', 'mantis'),$_issue_id, $e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(__('Error while deleting the ticket \'%1$s\' => \'%2$s\'', 'mantis'),
+            $_issue_id, $e->getMessage())."\n");
          return false;
       }
    }
@@ -109,10 +115,12 @@ class PluginMantisMantisws
     * @return integer
     */
    public function addNoteToIssue($_issue_id, PluginMantisStructIssueNoteData $_note) {
+      global $CFG_GLPI;
       try {
          return $this->_client->mc_issue_note_add($this->_login, $this->_password, $_issue_id, $_note);
       } catch (SoapFault $e) {
-         error_log(sprintf(__('error while creating note => \'%1$s\'', 'mantis'),$e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(__('error while creating note => \'%1$s\'', 'mantis'),
+            $e->getMessage())."\n");
          return false;
       }
    }
@@ -127,10 +135,11 @@ class PluginMantisMantisws
     * @return integer
     */
    public function addAttachmentToIssue($_issue_id, $_name, $_file_type, $_content) {
+      global $CFG_GLPI;
       try {
          return $this->_client->mc_issue_attachment_add($this->_login, $this->_password, $_issue_id, $_name, $_file_type, $_content);
       } catch (SoapFault $e) {
-         error_log(sprintf(__('error while creating attachment => \'%1$s\'', 'mantis'),$e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(__('error while creating attachment => \'%1$s\'', 'mantis'), $e->getMessage())."\n");
          return false;
       }
    }
@@ -142,10 +151,12 @@ class PluginMantisMantisws
     * @return Integer
     */
    function addIssue($issue) {
+      global $CFG_GLPI;
       try {
          return $this->_client->mc_issue_add($this->_login, $this->_password, $issue);
       } catch (SoapFault $e) {
-         error_log(sprintf(__('Error creating MantisBT ticket \'%1$s\'', 'mantis'), $e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(__('Error creating MantisBT ticket \'%1$s\'', 'mantis'),
+            $e->getMessage())."\n");
          return false;
       }
    }
@@ -157,11 +168,13 @@ class PluginMantisMantisws
     * @return bool
     */
    function getIssueById($idIssue) {
+      global $CFG_GLPI;
       try {
          $response = $this->_client->mc_issue_get($this->_login, $this->_password, $idIssue);
          return $response;
       } catch (SoapFault $e) {
-         error_log(sprintf(__('Error searching MantisBT ticket \'%1$s\' => \'%2$s\'', 'mantis'), $idIssue, $e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(__('Error searching MantisBT ticket \'%1$s\' => \'%2$s\'', 'mantis'),
+            $idIssue, $e->getMessage())."\n");
          return false;
       }
    }
@@ -172,10 +185,12 @@ class PluginMantisMantisws
     * @return mixed
     */
    public function getProjectIdWithName($name) {
+      global $CFG_GLPI;
       try {
          return $this->_client->mc_project_get_id_from_name($this->_login, $this->_password, $name);
       } catch (SoapFault $e) {
-         error_log(sprintf(__('Error retrieving the id of the project by it\'s name  \'%1$s\' => \'%2$s\'', 'mantis'), $name, $e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(__('Error retrieving the id of the project by it\'s name  \'%1$s\' => \'%2$s\'', 'mantis'),
+            $name, $e->getMessage())."\n");
          echo "ERROR -> " . $e->getMessage();
       }
    }
@@ -187,12 +202,14 @@ class PluginMantisMantisws
     * @return bool
     */
    public function existProjectWithName($name) {
+      global $CFG_GLPI;
       try {
          $response = $this->_client->mc_project_get_id_from_name($this->_login, $this->_password, $name);
          if ($response == 0) return false;
          else return true;
       } catch (SoapFault $e) {
-         error_log(sprintf(__('Error when checking the  existence of the project by his name \'%1$s\' => \'%2$s\'', 'mantis'), $name, $e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(__('Error when checking the  existence of the project by his name \'%1$s\' => \'%2$s\'', 'mantis'),
+            $name, $e->getMessage())."\n");
          return false;
       }
    }
@@ -204,10 +221,12 @@ class PluginMantisMantisws
     * @return boolean
     */
    public function deleteNote($_issue_note_id) {
+      global $CFG_GLPI;
       try {
          return $this->_client->mc_issue_note_delete($this->_login, $this->_password, $_issue_note_id);
       } catch (SoapFault $e) {
-         error_log(sprintf(__('Error when deleting note \'%1$s\' => \'%2$s\'', 'mantis'), $_issue_note_id, $e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(__('Error when deleting note \'%1$s\' => \'%2$s\'', 'mantis'),
+            $_issue_note_id, $e->getMessage())."\n");
       }
    }
 
@@ -218,10 +237,12 @@ class PluginMantisMantisws
     * @return boolean
     */
    public function deleteAttachment($_issue_attachment_id) {
+      global $CFG_GLPI;
       try {
          return $this->_client->mc_issue_attachment_delete($this->_login, $this->_password, $_issue_attachment_id);
       } catch (SoapFault $e) {
-         error_log(sprintf(__('Error when deleting attachment \'%1$s\' => \'%2$s\'', 'mantis'), $_issue_attachment_id, $e->getMessage()) . "\n", 3, GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',sprintf(__('Error when deleting attachment \'%1$s\' => \'%2$s\'', 'mantis'),
+            $_issue_attachment_id, $e->getMessage())."\n");
       }
    }
 
@@ -232,10 +253,12 @@ class PluginMantisMantisws
     * @return string
     */
    public function mc_config_get_string($_config_var) {
+      global $CFG_GLPI;
       try {
          return $this->_client->mc_config_get_string($this->_login, $this->_password, $_config_var);
       } catch (SoapFault $soapFault) {
-         error_log(__("Error when loading the configuration", "mantis") . "\n", 3,GLPI_ROOT . "/files/_log/mantis.log");
+         Toolbox::logInFile('mantis',__("Error when loading the configuration", "mantis")."\n");
+         return "";
       }
    }
 

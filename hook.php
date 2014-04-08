@@ -21,6 +21,36 @@ function plugin_mantis_install()
         $DB->query($query) or die($DB->error());
     }
 
+
+
+
+
+
+
+
+
+
+
+
+   // Création de la table uniquement lors de la première installation
+   if (!TableExists("glpi_plugin_mantis_profiles")) {
+
+      // requete de création de la table
+      $query = "CREATE TABLE `glpi_plugin_mantis_profiles` (
+               `id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
+               `right` char(1) collate utf8_unicode_ci default NULL,
+               PRIMARY KEY  (`id`)
+             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+
+      $DB->queryOrDie($query, $DB->error());
+
+
+      //creation du premier accès nécessaire lors de l'installation du plugin
+      include_once("inc/profile.class.php");
+      PluginMantisProfile::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
+
+}
+   /*
     //création de la table pour la gestion des profiles du plugin
     if (!TableExists("glpi_plugin_mantis_profiles")) {
         $query = "CREATE TABLE glpi_plugin_mantis_profiles (
@@ -32,6 +62,16 @@ function plugin_mantis_install()
         include_once("inc/profile.class.php");
         PluginMantisProfile::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
     }
+
+      */
+
+
+
+
+
+
+
+
 
     //création de la table pour la configuration du plugin
     if (!TableExists("glpi_plugin_mantis_configs")) {

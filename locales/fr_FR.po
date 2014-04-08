@@ -16,312 +16,320 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ajax/ajax.php:47
+#: ajax/ajax.php:55
 msgid "MantisBT issue does not exist"
 msgstr "Le ticket MantisBT n'éxiste pas"
 
-#: ajax/ajax.php:52
+#: ajax/ajax.php:60
 msgid "This Glpi ticket is already linked to this MantisBT ticket"
-msgstr "Ce ticket Glpi est déjà lié au ticket MantisBT"
+msgstr "Ce ticket Glpi est déjà lié à ce ticket MantisBT"
 
-#: ajax/ajax.php:76 ajax/ajax.php:94
+#: ajax/ajax.php:83 ajax/ajax.php:98
 msgid "Error while deleting the link between Glpi ticket and MantisBT ticket"
-msgstr "Erreur pendant la suppression du lien entre le ticket glpi et le ticket MantisBT"
-
-#: ajax/ajax.php:97
-msgid "Error while deleting the mantisBD ticket"
-msgstr "Erreur pendant la suppression du ticket MantisBT"
+msgstr "Erreur lors de la suppression du lien entre le ticket Glpi et le ticket MantisBT"
 
 #: ajax/ajax.php:101
+msgid "Error while deleting the mantisBD ticket"
+msgstr "Erreur lors de la suppression du ticket MantisBT"
+
+#: ajax/ajax.php:105
 msgid "The MantisBT ticket does not exist"
-msgstr "Le ticket MantisBT n'existe pas"
+msgstr "Le ticket MantisBT n'éxiste pas"
 
 #: front/config.form.php:5
 msgid "Setup - MantisBT"
 msgstr "Configuration - MantisBT"
 
-#: front/config.form.php:22
+#: front/config.form.php:23
 msgid "Thank you to activate plugin"
-msgstr "Merci d'activer le plugin"
+msgstr "Merci d'activer le plugin Mantis"
 
-#: inc/config.class.php:50
+#: inc/config.class.php:60
 msgid "MantisBT plugin setup"
 msgstr "Configuration du plugin MantisBT"
 
-#: inc/config.class.php:53
+#: inc/config.class.php:64
 msgid "MantisBT server IP"
-msgstr "IP du serveur mantisBT"
+msgstr "IP du serveur MantisBT"
 
-#: inc/config.class.php:58
+#: inc/config.class.php:70
 msgid "Wsdl file path"
-msgstr "Chemin du fichier Wsdl"
+msgstr "Chemin du fichier WSDL"
 
-#: inc/config.class.php:63
+#: inc/config.class.php:76
 msgid "MantisBT user login"
-msgstr "Login de l'utilisateur MantisBT"
+msgstr "Login utilisateur MantisBT"
 
-#: inc/config.class.php:68
+#: inc/config.class.php:82
 msgid "MantisBT user password"
-msgstr "Mot de passe de l'utilisateur MantisBT"
+msgstr "Password utilisateur MantisBT"
 
-#: inc/config.class.php:73
+#: inc/config.class.php:88
 msgid "MantisBT field for the link to the ticket GLPI"
 msgstr "Champ MantisBT pour le lien vers le ticket Glpi"
 
-#: inc/config.class.php:80
+#: inc/config.class.php:97
 msgid "MantisBT field for GLPI fields</br>(title, description, category, follow-up, tasks)"
-msgstr "Champs MantisBT pour les champs Glpi </br>(titre, description, categorie, suivi(s), tâche(s))"
+msgstr "Champ MantisBT pour les champs Glpi</vr>(titre, description, catégorie,suivi(s),tâche(s))"
 
-#: inc/config.class.php:88 inc/profile.class.php:91
+#: inc/config.class.php:107 inc/profile.class.php:83
 msgid "Update"
 msgstr "Modifier"
 
-#: inc/config.class.php:89
+#: inc/config.class.php:108
 msgid "Test the connection"
 msgstr "Tester la connexion"
 
-#: inc/mantis.class.php:79
+#: inc/mantis.class.php:82
 msgid "Thank you configure the mantis plugin"
 msgstr "Merci de configurer le plugin MantisBT"
 
-#: inc/mantis.class.php:110
+#: inc/mantis.class.php:114
 msgid "Link a Glpi ticket to MantisBT"
 msgstr "Lier un ticket Glpi à MantisBT"
 
-#: inc/mantis.class.php:112
+#: inc/mantis.class.php:120
 msgid "Link to a ticket MantisBT"
 msgstr "Lier à un ticket MantisBT"
 
-#: inc/mantis.class.php:113
+#: inc/mantis.class.php:124
 msgid "Create MantisBT ticket"
 msgstr "Créer un ticket MantisBT"
 
-#: inc/mantis.class.php:126
+#: inc/mantis.class.php:144
 msgid "What do you do ?"
-msgstr "Que voulez-vous faire ?"
+msgstr "Que voulez-vous faire"
 
-#: inc/mantis.class.php:129
+#: inc/mantis.class.php:149
 msgid "Delete link of the MantisBT ticket"
-msgstr "Supprimer le lien vers le ticket MantisBT"
+msgstr "Supprimer le lien entre le ticket Glpi et le ticket MantisBT"
 
-#: inc/mantis.class.php:130
+#: inc/mantis.class.php:150
 msgid "(Does not delete the MantisBT ticket)"
 msgstr "(Ne supprime pas le ticket MantisBT)"
 
-#: inc/mantis.class.php:134
+#: inc/mantis.class.php:156 inc/mantis.class.php:159
 msgid "Delete the  MantisBT ticket"
 msgstr "Supprimer le ticket MantisBT"
 
-#: inc/mantis.class.php:135
+#: inc/mantis.class.php:161
 msgid "(Also removes the link in GLPI)"
-msgstr "(Supprime également le liens vers le ticket MantisBT)"
+msgstr "(Supprime également le lien entre le ticket Glpi et le ticket MantisBT)"
 
-#: inc/mantis.class.php:139 inc/mantis.class.php:298
+#: inc/mantis.class.php:165 inc/mantis.class.php:352
 msgid "Delete"
 msgstr "Supprimer"
 
-#: inc/mantis.class.php:168
-msgid "Id MantisBT ticket"
+#: inc/mantis.class.php:201
+msgid "Id Ticket"
 msgstr "Id du ticket MantisBT"
 
-#: inc/mantis.class.php:201
+#: inc/mantis.class.php:241
 msgid "Link a Glpi ticket to a MantisBT project"
-msgstr "Lier un ticket Glpi à un ticket MantisBT"
+msgstr "Lier un ticket Glpi à un projet MantisBT"
 
-#: inc/mantis.class.php:210 inc/mantis.class.php:274
+#: inc/mantis.class.php:251 inc/mantis.class.php:326
 msgid "Category"
 msgstr "Catégorie"
 
-#: inc/mantis.class.php:215 inc/mantis.class.php:273
+#: inc/mantis.class.php:257 inc/mantis.class.php:325
 msgid "Summary"
 msgstr "Titre"
 
-#: inc/mantis.class.php:219
+#: inc/mantis.class.php:261
 msgid "Description"
 msgstr "Description"
 
-#: inc/mantis.class.php:223
+#: inc/mantis.class.php:266
 msgid "Steps to reproduce"
 msgstr "Étapes pour reproduire"
 
-#: inc/mantis.class.php:227
+#: inc/mantis.class.php:271
 msgid "Attachments"
-msgstr "Pièces jointes"
+msgstr "Pièce(s) jointe(s)"
 
-#: inc/mantis.class.php:228
+#: inc/mantis.class.php:273
 msgid "To forward attachments"
 msgstr "Faire suivre les pièces jointes"
 
-#: inc/mantis.class.php:234 inc/mantis.class.php:271
+#: inc/mantis.class.php:283 inc/mantis.class.php:323
 msgid "Link"
 msgstr "Lien"
 
-#: inc/mantis.class.php:272
+#: inc/mantis.class.php:324
 msgid "Id"
 msgstr "Id"
 
-#: inc/mantis.class.php:275
+#: inc/mantis.class.php:327
 msgid "MantisBT status"
-msgstr "Statut MantisBT"
+msgstr "État MantisBT"
 
-#: inc/mantis.class.php:276
+#: inc/mantis.class.php:328
 msgid "Date"
 msgstr "Date"
 
-#: inc/mantis.class.php:277
+#: inc/mantis.class.php:329
 msgid "User"
 msgstr "Utilisateur"
 
-#: inc/mantis.class.php:308
+#: inc/mantis.class.php:365 inc/mantis.class.php:372
 msgid "This ticket does not in the  MantisBT database"
-msgstr "Ce ticket n'est plus dans la base de MantisBT"
+msgstr "Ce ticket n'éxiste plus/pas dans la base de donnée MantisBT"
 
-#: inc/mantis.class.php:309 inc/mantis.class.php:323
+#: inc/mantis.class.php:368 inc/mantis.class.php:394
 msgid "Delete link"
 msgstr "Supprimer le lien"
 
-#: inc/mantis.class.php:340
+#: inc/mantis.class.php:407
 msgid "Info ticket MantisBT"
-msgstr "Informations du/des ticket(s) MantisBT"
+msgstr "Info(s) du/des ticket(s) MantisBT"
 
-#: inc/mantis.class.php:341
+#: inc/mantis.class.php:409
 msgid "GLPI ticket is not attached to any MantisBT ticket(s)"
-msgstr "Le ticket Glpi n'est attaché à aucun ticket MantisBT"
+msgstr "Ce ticket Glpi n'est attaché à aucun ticket MantisBT"
 
-#: inc/mantisIssue.class.php:846 inc/mantisIssue.class.php:863
-msgid "Error: The process was interrupted (see logs -> glpi/files/_log/mantis.log)"
-msgstr "Erreur: le processus à été interrompu (logs -> glpi/files/_log/mantis.log)"
+#: inc/mantisIssue.class.php:848 inc/mantisIssue.class.php:865
+msgid "Error: The process was interrupted"
+msgstr "Erreur : Le processus à été interrompu"
 
-#: inc/mantisIssue.class.php:860
+#: inc/mantisIssue.class.php:862
 msgid "Error creating link between Glpi and mantisBT"
-msgstr "Erreir lors de la création du lien entre le ticket Glpi et le ticket MantisBT"
+msgstr "Erreur lors de la création du lien entre le ticket Glpi et le ticket MantisBT"
 
-#: inc/mantisIssue.class.php:861
+#: inc/mantisIssue.class.php:863
 msgid "Deleting MantisBT ticket previously created"
-msgstr "Suppression du ticket MantisBT précédemment creé"
+msgstr "Suppression du ticket MantisBT précédemment créé"
 
-#: inc/mantisIssue.class.php:873
-msgid "Error creating the note,the process was interrupted (see logs -> glpi/files/_log/mantis.log)"
-msgstr "Erreur lors de la création de la note, le processus à été interrompu (logs -> glpi/files/_log/mantis.log "
+#: inc/mantisIssue.class.php:876
+msgid "Error creating the note, the process was interrupted"
+msgstr "Erreur lors de la création de la note, le processus à été interrompu"
 
-#: inc/mantisIssue.class.php:898 inc/mantisIssue.class.php:899
+#: inc/mantisIssue.class.php:900 inc/mantisIssue.class.php:901
 #, php-format
-msgid "Can't load the attachment '%1$s' to MantisBT, the process was interrupted (see logs -> glpi/files/_log/mantis.log)"
-msgstr "impossible de charger la pièce jointe '%1$s' dans MantisBT, le processus à été interrompu (logs -> glpi/files/_log/mantis.log)"
+msgid "Can't load the attachment '%1$s', the process was interrupted "
+msgstr "Impossible de charger la pièces jointe '%1$s', le processus à été interrompu"
 
-#: inc/mantisIssue.class.php:906 inc/mantisIssue.class.php:907
+#: inc/mantisIssue.class.php:909 inc/mantisIssue.class.php:910
 #, php-format
-msgid "Can't send the attachment '%1$s' to MantisBT, the process was interrupted (see logs -> glpi/files/_log/mantis.log)"
-msgstr "Impossible d'envoyer la pièce jointe '%1$s' dans MantisBT, le processus à été interrompu (logs -> glpi/files/_log/mantis.log)"
+msgid "Can't send the attachment '%1$s' to MantisBT, the process was interrupted "
+msgstr "Impossible d'envoyer la pièces jointe '%1$s' vers MantisBT, le processus à été interrompu"
 
-#: inc/mantisIssue.class.php:911 inc/mantisIssue.class.php:912
+#: inc/mantisIssue.class.php:914 inc/mantisIssue.class.php:915
 #, php-format
-msgid "Attachment '%1$s' does not exist,the process was interrupted (see logs -> glpi/files/_log/mantis.log)"
-msgstr "La pièce jointe '%1$s' n'éxiste pas, le processus à été interrompu (see logs -> glpi/files/_log/mantis.log)"
+msgid "Attachment '%1$s' does not exist,the process was interrupted "
+msgstr "La pièce jointe '%1$s' n'éxiste pas, le processus à été interrompu"
 
-#: inc/mantisIssue.class.php:921
+#: inc/mantisIssue.class.php:924
 msgid "Deleting items previously created"
-msgstr "Suppression des éléments précédemment creés"
+msgstr "Suppression des éléments précédemment créé"
 
-#: inc/mantisIssue.class.php:952 inc/mantisIssue.class.php:953
+#: inc/mantisIssue.class.php:958 inc/mantisIssue.class.php:959
 #, php-format
 msgid "Project '%1$s' does not exist."
-msgstr "Le project '%1$s' n'éxiste pas."
+msgstr "Projet '%1$s' n'éxiste pas."
 
-#: inc/mantisIssue.class.php:969 inc/mantisIssue.class.php:993
+#: inc/mantisIssue.class.php:974 inc/mantisIssue.class.php:997
 #, php-format
 msgid "Title = %1$s <br>"
 msgstr "Titre = %1$s <br>"
 
-#: inc/mantisIssue.class.php:970 inc/mantisIssue.class.php:994
+#: inc/mantisIssue.class.php:975 inc/mantisIssue.class.php:998
 #, php-format
 msgid "Description = %1$s <br>"
 msgstr "Description = %1$s <br>"
 
-#: inc/mantisIssue.class.php:977 inc/mantisIssue.class.php:1000
+#: inc/mantisIssue.class.php:982 inc/mantisIssue.class.php:1004
 #, php-format
 msgid "Category = %1$s <br>"
-msgstr ""
+msgstr "Catégories = %1$s <br>"
 
-#: inc/mantisIssue.class.php:981 inc/mantisIssue.class.php:1003
+#: inc/mantisIssue.class.php:986 inc/mantisIssue.class.php:1007
 #, php-format
 msgid "Link to Glpi ticket = %1$s <br>"
 msgstr "Lien vers le ticket Glpi = %1$s <br>"
 
-#: inc/mantisIssue.class.php:1062
+#: inc/mantisIssue.class.php:1067
 #, php-format
-msgid "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s,   <br>"
-msgstr "Suivi = %1$s -> date : %2$s, Type de demande : %3$s, utilisateur : %4$s,   <br>"
+msgid "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s,<br>"
+msgstr "Suivi = %1$s -> date : %2$s, type de demande : %3$s, utilisateur : %4$s,<br>"
 
-#: inc/mantisIssue.class.php:1096
+#: inc/mantisIssue.class.php:1102
 #, php-format
-msgid "Task = %1$s -> date : %2$s, description : %3$s, time : %4$s,   </br>"
-msgstr "Tâche = %1$s -> date : %2$s, description : %3$s, temps : %4$s,   </br>"
+msgid "tâche = %1$s -> date : %2$s, description : %3$s, time : %4$s,</br>"
+msgstr "tâche = %1$s -> date : %2$s, description : %3$s, temps : %4$s,</br>"
 
-#: inc/mantisWS.class.php:52
+#: inc/mantisWS.class.php:54
 #, php-format
 msgid "Error to connect to the web service MantisBT => '%1$s'"
-msgstr"Erreur lors de la connexion au Web Service MantisBT => '%1$s'"
+msgstr "Erreur de connexion au Web service MantisBT => '%1$s'"
 
-#: inc/mantisWS.class.php:69
+#: inc/mantisWS.class.php:71
 #, php-format
 msgid "Error retrieving category from the project id '%1$s' => '%2$s'"
-msgstr "Erreur lors du chargement des catégories depuis le projet '%1$s' => '%2$s'"
+msgstr "Erreur lors du chargement des catégories depuis l'id du projet '%1$s' => '%2$s'"
 
-#: inc/mantisWS.class.php:84
+#: inc/mantisWS.class.php:87
 #, php-format
 msgid "Error when checking existence of the MantisBT ticket '%1$s' => '%2$s'"
-msgstr "Erreur lors du test de l'existence du ticket MantisBT '%1$s' => '%2$s'"
+msgstr "Erreur lors du test d'existence du ticket MantisBT '%1$s' => '%2$s'"
 
-#: inc/mantisWS.class.php:99
+#: inc/mantisWS.class.php:104
 #, php-format
 msgid "Error while deleting the ticket '%1$s' => '%2$s'"
 msgstr "Erreur lors de la suppression du ticket '%1$s' => '%2$s'"
 
-#: inc/mantisWS.class.php:115
+#: inc/mantisWS.class.php:122
 #, php-format
 msgid "error while creating note => '%1$s'"
-msgstr "Erreur lors de la création de la note du ticket MantisBT => '%1$s'"
+msgstr "Erreur lors de la création de la note => '%1$s'"
 
-#: inc/mantisWS.class.php:133
+#: inc/mantisWS.class.php:142
 #, php-format
 msgid "error while creating attachment => '%1$s'"
-msgstr "Erreur lors de la création de la piéces jointe => '%1$s'"
+msgstr "Erreur lors de la création de la pièce jointe => '%1$s'"
 
-#: inc/mantisWS.class.php:148
+#: inc/mantisWS.class.php:158
 #, php-format
 msgid "Error creating MantisBT ticket '%1$s'"
-msgstr "Erreur lors de la création du ticket MantisBT '%1$s'"
+msgstr "Erreur lors de la création du ticket MantisBT  '%1$s'"
 
-#: inc/mantisWS.class.php:164
+#: inc/mantisWS.class.php:176
 #, php-format
 msgid "Error searching MantisBT ticket '%1$s' => '%2$s'"
-msgstr "Erreur lors de la recherche du ticket MantisBT '%1$s' => '%2$s'"
+msgstr "Erreur lors du chargement du ticket MantisBT => '%1$s' => '%2$s'"
 
-#: inc/mantisWS.class.php:178
+#: inc/mantisWS.class.php:192
 #, php-format
 msgid "Error retrieving the id of the project by it's name  '%1$s' => '%2$s'"
-msgstr "Erreur lors du chargment de l'id du projet depuis son nom '%1$s' => '%2$s'"
+msgstr "Erreur lors du chargement de l'id du projet par son nom '%1$s' => '%2$s'"
 
-#: inc/mantisWS.class.php:195
+#: inc/mantisWS.class.php:211
 #, php-format
 msgid "Error when checking the  existence of the project by his name '%1$s' => '%2$s'"
-msgstr "Erreur lors du test de l'éxistence du projet par son nom '%1$s' => '%2$s'"
+msgstr "Erreur lors du test d'existence du projet par son nom  '%1$s' => '%2$s'"
 
-#: inc/mantisWS.class.php:210
+#: inc/mantisWS.class.php:228
 #, php-format
 msgid "Error when deleting note '%1$s' => '%2$s'"
 msgstr "Erreur lors de la suppression de la note '%1$s' => '%2$s'"
 
-#: inc/mantisWS.class.php:224
+#: inc/mantisWS.class.php:244
 #, php-format
 msgid "Error when deleting attachment '%1$s' => '%2$s'"
-msgstr "Erreur lors de la suppression de la pièces jointe '%1$s' => '%2$s'"
+msgstr "Erreur lors de la suppression de la pièce jointe '%1$s' => '%2$s'"
 
-#: inc/mantisWS.class.php:238
+#: inc/mantisWS.class.php:260
 msgid "Error when loading the configuration"
 msgstr "Erreur lors du chargement de la configuration"
 
-#: inc/profile.class.php:83
+#: inc/profile.class.php:75
 msgid "Use the plugin MantisBT"
 msgstr "Utiliser le plugin MantisBT"
+
+#: inc/mantisIssue.class.php:1101
+msgid "No task"
+msgstr "Pas de tâche </br>"
+
+#: inc/mantisIssue.class.php:1067
+msgid "No follow-up"
+msgstr "Pas de suivi </br>"

@@ -18,7 +18,8 @@ if($plugin->isActivated('mantis')){
     }
 }else{
     global $CFG_GLPI;
-    echo '<div class=\'center\'><br><br><img src=\''.$CFG_GLPI['root_doc'].'/pics/warning.png\' alt=\'warning\'><br><br>';
+    echo '<div class=\'center\'><br><br><img src=\''.$CFG_GLPI['root_doc'].
+       '/pics/warning.png\' alt=\'warning\'><br><br>';
     echo '<b>'.__("Thank you to activate plugin","mantis").'</b></div>';
 }
 

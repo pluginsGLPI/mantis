@@ -58,6 +58,8 @@ function plugin_init_mantis() {
 
    global $PLUGIN_HOOKS;
 
+   $PLUGIN_HOOKS['change_profile']['mantis'] = array('PluginMantisProfile','changeProfile');
+
    $PLUGIN_HOOKS['csrf_compliant']['mantis'] = true;
    $PLUGIN_HOOKS['menu_entry']['mantis'] = 'front/config.form.php';
    $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';

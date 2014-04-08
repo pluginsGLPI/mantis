@@ -5,6 +5,7 @@ require_once('../inc/mantisWS.class.php');
 require_once('../inc/mantis.class.php');
 require_once('../inc/mantisIssue.class.php');
 
+global $CFG_GLPI;
 
 if (isset($_POST['action'])) {
 
@@ -12,19 +13,26 @@ if (isset($_POST['action'])) {
 
       case 'testConnexionMantisWS':
          $ws = new PluginMantisMantisws();
-         echo $ws->testConnectionWS($_POST['host'], $_POST['url'], $_POST['login'],$_POST['pwd']);
+         $res = $ws->testConnectionWS($_POST['host'], $_POST['url'], $_POST['login'],$_POST['pwd']);
+         if($res) echo "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/check24.png' />";
+         else echo "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/cross24.png'/>";
          break;
 
       case 'findIssueById':
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
-         echo $ws->existIssueWithId($_POST['id']);
+         $res =  $ws->existIssueWithId($_POST['id']);
+         if($res) echo "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/check24.png' />";
+         else echo "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/cross24.png'/>";
+
          break;
 
       case 'findProjectByName':
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
-         echo $ws->existProjectWithName($_POST['name']);
+         $res =  $ws->existProjectWithName($_POST['name']);
+         if($res) echo "<img id='resultImg' src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/check24.png' />";
+         else echo "<img id='resultImg' src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/cross24.png'/>";
          break;
 
       case 'getCategoryFromProjectName':
@@ -61,7 +69,6 @@ if (isset($_POST['action'])) {
       case 'LinkIssueGlpiToProjectMantis':
          $issue = new PluginMantisIssue();
          echo $issue->linkisuetoProjectMantis($_POST);
-
          break;
 
       case 'deleteLinkMantis':
@@ -74,8 +81,6 @@ if (isset($_POST['action'])) {
 
          if($res)echo true;
          else echo __("Error while deleting the link between Glpi ticket and MantisBT ticket", "mantis");
-
-
          break;
 
       case 'deleteIssueMantisAndLink':
@@ -83,7 +88,6 @@ if (isset($_POST['action'])) {
          $mantis = new PluginMantisMantis();
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
-
 
          if ($ws->existIssueWithId($_POST['idMantis'])) {
 
@@ -100,11 +104,9 @@ if (isset($_POST['action'])) {
          } else {
             echo __("The MantisBT ticket does not exist", "mantis");
          }
-
          break;
 
       default:
-
          echo 0;
    }
 

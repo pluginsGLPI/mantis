@@ -22,16 +22,6 @@ function plugin_mantis_install()
     }
 
 
-
-
-
-
-
-
-
-
-
-
    // Création de la table uniquement lors de la première installation
    if (!TableExists("glpi_plugin_mantis_profiles")) {
 
@@ -50,26 +40,6 @@ function plugin_mantis_install()
       PluginMantisProfile::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
 
 }
-   /*
-    //création de la table pour la gestion des profiles du plugin
-    if (!TableExists("glpi_plugin_mantis_profiles")) {
-        $query = "CREATE TABLE glpi_plugin_mantis_profiles (
-               id int(11) NOT NULL PRIMARY KEY ,
-               droit char(1) NOT NULL default '')";
-        $DB->query($query) or die($DB->error());
-
-        //creation du premier accès nécessaire lors de l'installation du plugin
-        include_once("inc/profile.class.php");
-        PluginMantisProfile::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
-    }
-
-      */
-
-
-
-
-
-
 
 
 

@@ -28,24 +28,13 @@ class PluginMantisConfig extends CommonDBTM
 
 
     /**
-     * Function to show form for configurate the plugin Mantis
+     * Function to show form to configure the plugin MantisBT
      */
     function showConfigForm()
-    {
-        $this->showConfigWS();
-    }
-
-
-    /**
-     * Function to display form to configure
-     * connection to WS MantisBT
-     */
-    function showConfigWS()
     {
        //we recover the first and only record
        $this->getFromDB(1);
 
-       //we built the target
        $target = $this->getFormURL();
        if (isset($options['target'])) {
           $target = $options['target'];
@@ -62,25 +51,30 @@ class PluginMantisConfig extends CommonDBTM
 
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<td>" . __("MantisBT server IP", "mantis") . "</td>";
-       $content .= "<td><input id='host' type='text' onblur='testIP();' value='" . $this->fields["host"] . "'/></td>";
+       $content .= "<td><input id='host' name='host' type='text' onblur='testIP();' value='" .
+          $this->fields["host"] . "'/></td>";
        $content .= "<td>ex: 128.65.25.74</td>";
        $content .= "</tr>";
 
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<td>" . __("Wsdl file path", "mantis") . "</td>";
-       $content .= "<td><input id='url' type='text' value='" . $this->fields["url"] . "'/></td>";
+       $content .= "<td><input id='url' name='url' type='text' value='" . $this->fields["url"] .
+          "'/></td>";
        $content .= "<td>ex: mantis/api/soap/mantisconnect.php?wsdl</td>";
        $content .= "</tr>";
 
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<td>" . __("MantisBT user login", "mantis") . "</td>";
-       $content .= "<td><input  id='login' type='text' value='" . $this->fields["login"] . "'/></td>";
+       $content .= "<td><input  id='login' name='login' type='text' value='" .
+          $this->fields["login"] .
+          "'/></td>";
        $content .= "<td></td>";
        $content .= "</tr>";
 
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<td>" . __("MantisBT user password", "mantis") . "</td>";
-       $content .= "<td><input  id='pwd' type='password' value='" . $this->fields["pwd"] . "'/></td>";
+       $content .= "<td><input  id='pwd' name='pwd' type='password' value='" .
+          $this->fields["pwd"] . "'/></td>";
        $content .= "<td></td>";
        $content .= "</tr>";
 
@@ -94,7 +88,9 @@ class PluginMantisConfig extends CommonDBTM
        $content .= "</tr>";
 
        $content .= "<tr class='tab_bg_1'>";
-       $content .= "<td>" . __("MantisBT field for GLPI fields</br>(title, description, category, follow-up, tasks)", "mantis") . "</td>";
+       $content .= "<td>" .
+          __("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)",
+             "mantis") . "</td>";
        $content .= "<td>";
        $content .= DropDown::showFromArray('champsGlpi', PluginMantisIssue::$champsMantis,
           array('value' => $this->fields["champsGlpi"], 'display' => false));
@@ -104,8 +100,10 @@ class PluginMantisConfig extends CommonDBTM
 
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<td><input type='hidden' name='id' value='1' class='submit'>";
-       $content .= "<input id='update' type='submit' name='update' value='" . __("Update", "mantis") . "' class='submit'></td>";
-       $content .= "<td><input id='test' onclick='testConnexionMantisWS();' value='" . __("Test the connection", "mantis") . "' class='submit'></td>";
+       $content .= "<input id='update' type='submit' name='update' value='" . __("Update", "mantis") .
+          "' class='submit'></td>";
+       $content .= "<td><input id='test' onclick='testConnexionMantisWS();' value='"
+          . __("Test the connection", "mantis") . "' class='submit'></td>";
        $content .= "<td><div id='infoAjax'/></td>";
        $content .= "</tr>";
 
@@ -113,7 +111,9 @@ class PluginMantisConfig extends CommonDBTM
        $content .= Html::closeForm(false);
 
        echo $content;
-
     }
+
+
+
 
 }

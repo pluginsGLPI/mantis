@@ -69,8 +69,8 @@ msgid "MantisBT field for the link to the ticket GLPI"
 msgstr "Champ MantisBT pour le lien vers le ticket Glpi"
 
 #: inc/config.class.php:97
-msgid "MantisBT field for GLPI fields</br>(title, description, category, follow-up, tasks)"
-msgstr "Champ MantisBT pour les champs Glpi</vr>(titre, description, catégorie,suivi(s),tâche(s))"
+msgid "MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)"
+msgstr "Champ MantisBT pour les champs Glpi<br/> (titre, description, catégorie,suivi(s),tâche(s))"
 
 #: inc/config.class.php:107 inc/profile.class.php:83
 msgid "Update"
@@ -230,33 +230,33 @@ msgstr "Projet '%1$s' n'éxiste pas."
 
 #: inc/mantisIssue.class.php:974 inc/mantisIssue.class.php:997
 #, php-format
-msgid "Title = %1$s <br>"
-msgstr "Titre = %1$s <br>"
+msgid "Title = %1$s <br/>"
+msgstr "Titre = %1$s <br/>"
 
 #: inc/mantisIssue.class.php:975 inc/mantisIssue.class.php:998
 #, php-format
-msgid "Description = %1$s <br>"
-msgstr "Description = %1$s <br>"
+msgid "Description = %1$s <br/>"
+msgstr "Description = %1$s <br/>"
 
 #: inc/mantisIssue.class.php:982 inc/mantisIssue.class.php:1004
 #, php-format
-msgid "Category = %1$s <br>"
-msgstr "Catégories = %1$s <br>"
+msgid "Category = %1$s <br/>"
+msgstr "Catégories = %1$s <br/>"
 
 #: inc/mantisIssue.class.php:986 inc/mantisIssue.class.php:1007
 #, php-format
-msgid "Link to Glpi ticket = %1$s <br>"
-msgstr "Lien vers le ticket Glpi = %1$s <br>"
+msgid "Link to Glpi ticket = %1$s <br/>"
+msgstr "Lien vers le ticket Glpi = %1$s <br/>"
 
 #: inc/mantisIssue.class.php:1067
 #, php-format
-msgid "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s,<br>"
-msgstr "Suivi = %1$s -> date : %2$s, type de demande : %3$s, utilisateur : %4$s,<br>"
+msgid "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s,<br/>"
+msgstr "Suivi = %1$s -> date : %2$s, type de demande : %3$s, utilisateur : %4$s,<br/>"
 
 #: inc/mantisIssue.class.php:1102
 #, php-format
-msgid "tâche = %1$s -> date : %2$s, description : %3$s, time : %4$s,</br>"
-msgstr "tâche = %1$s -> date : %2$s, description : %3$s, temps : %4$s,</br>"
+msgid "tâche = %1$s -> date : %2$s, description : %3$s, time : %4$s,<br/>"
+msgstr "tâche = %1$s -> date : %2$s, description : %3$s, temps : %4$s,<br/>"
 
 #: inc/mantisWS.class.php:54
 #, php-format

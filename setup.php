@@ -61,8 +61,18 @@ function plugin_init_mantis() {
    $PLUGIN_HOOKS['change_profile']['mantis'] = array('PluginMantisProfile','changeProfile');
 
    $PLUGIN_HOOKS['csrf_compliant']['mantis'] = true;
-   $PLUGIN_HOOKS['menu_entry']['mantis'] = 'front/config.form.php';
-   $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
+
+
+   $plugin = new Plugin();
+
+   if($plugin->isActivated('mantis')){
+      $PLUGIN_HOOKS['menu_entry']['mantis'] = 'front/config.form.php';
+      $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
+   }
+
+
+
+
    $PLUGIN_HOOKS['add_javascript']['mantis'] = array('scripts/scriptMantis.js',
                                                    'scripts/jquery-1.11.0.min.js');
 

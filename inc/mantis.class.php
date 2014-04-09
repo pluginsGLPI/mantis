@@ -11,7 +11,7 @@ class PluginMantisMantis extends CommonDBTM
 
 
    /**
-    * Définition du nom de l'onglet
+    * Define tab name
     **/
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       $id = $_SESSION['glpiactiveprofile']['id'];
@@ -36,7 +36,7 @@ class PluginMantisMantis extends CommonDBTM
 
 
    /**
-    * Définition du contenu de l'onglet
+    * Define tab content
     **/
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       if ($item->getType() == 'Ticket') {
@@ -55,27 +55,28 @@ class PluginMantisMantis extends CommonDBTM
     */
    public function showForm($item) {
 
-      //on recupere la config de mantis
+      global $CFG_GLPI;
+      $ws = new PluginMantisMantisws();
       $conf = new PluginMantisConfig();
+      //recover the first and only record
       $conf->getFromDB(1);
 
-      //on test si le plugin (WebService) est bien configurer
-      $ws = new PluginMantisMantisws();
+      //check if Web Service Mantis works fine
       if ($ws->testConnectionWS($conf->getField('host'), $conf->getField('url'),
-         $conf->getField('login'), $conf->getField('pwd'))
-      ) {
+            $conf->getField('login'), $conf->getField('pwd'))) {
 
-         $id = $_SESSION['glpiactiveprofile']['id'];
-         if (PluginMantisProfile::canWriteMantis($id)) {
+
+         //if user profil can write
+         if (PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
             $this->displayBtnToLinkissueGlpi($item);
             $this->getFormForDisplayInfo($item);
-         } else if (PluginMantisProfile::canViewMantis($id)) {
+         //if user can view
+         } else if (PluginMantisProfile::canViewMantis($_SESSION['glpiactiveprofile']['id'])) {
             $this->getFormForDisplayInfo($item);
          }
 
       } else {
 
-         global $CFG_GLPI;
          $content = "";
          $content .= "<div class='center'>";
          $content .= "<img src='" . $CFG_GLPI["root_doc"] ."/pics/warning.png'  alt='warning'>";
@@ -130,47 +131,60 @@ class PluginMantisMantis extends CommonDBTM
    }
 
 
-   public function getFormToDelLinkOrissue($id, $idTicket, $idMantis){
+   /**
+    * Form for delete Link Between Glpi ticket and MantisBT ticket
+    * or MantisBT ticket
+    * @param $id_link
+    * @param $id_ticket
+    * @param $id_mantis
+    */
+   public function getFormToDelLinkOrIssue($id_link, $id_ticket, $id_mantis){
+
       global $CFG_GLPI;
       $ws = new PluginMantisMantisws();
       $ws->initializeConnection();
-      $issue = $ws->getIssueById($idMantis);
+      $issue = $ws->getIssueById($id_mantis);
 
       $content = "";
 
-      $content .= "<form action='#' id=".$id.">";
+      $content .= "<form action='#' id=".$id_link.">";
 
-      $content .= "<table id=".$id." class='tab_cadre' cellpadding='5' >";
+      $content .= "<table id=".$id_link." class='tab_cadre' cellpadding='5' >";
       $content .= "<th colspan='2'>".__("What do you do ?","mantis")."</th>";
 
 
       $content .= "<tr class='tab_bg_1' >";
-      $content .= "<td><INPUT type='checkbox'  id='deleteLink".$id."' >";
+      $content .= "<td><INPUT type='checkbox'  id='deleteLink".$id_link."' >";
       $content .= __("Delete link of the MantisBT ticket","mantis")."</td>";
       $content .= "<td>".__("(Does not delete the MantisBT ticket)","mantis")."</td>";
       $content .= "</tr>";
 
       $content .= "<tr class='tab_bg_1'>";
       if (!$issue) {
-         $content .= "<td><INPUT type='checkbox' disabled id='deleteIssue" . $id . "' >";
+         $content .= "<td><INPUT type='checkbox' disabled id='deleteIssue" . $id_link . "' >";
          $content .= __("Delete the  MantisBT ticket", "mantis") . "</td>";
       } else {
-         $content .= "<td><INPUT type='checkbox' id='deleteIssue" . $id . "' >";
+         $content .= "<td><INPUT type='checkbox' id='deleteIssue" . $id_link . "' >";
          $content .= __("Delete the  MantisBT ticket", "mantis") . "</td>";
       }
       $content .= "<td>".__("(Also removes the link in GLPI)","mantis")."</td>";
       $content .= "</tr>";
 
       $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td><input  id=" . $id . "  name='delo' value='" . __("Delete", "mantis") .
-         "' class='submit' onclick='delLinkAndOrIssue(" .$id . "," . $idMantis . "," . $idTicket . ");'></td>";
-      $content .= "<td><div id='infoDel" . $id . "' ></div>";
-      $content .= "<img id='waitDelete" . $id . "' src='".$CFG_GLPI["root_doc"]."/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
+      $content .= "<td><input  id=" . $id_link . "  name='delo' value='" . __("Delete", "mantis") .
+         "' class='submit' onclick='delLinkAndOrIssue(" .
+         $id_link . "," . $id_mantis . "," . $id_ticket . ");'></td>";
+      $content .= "<td><div id='infoDel" . $id_link . "' ></div>";
+      $content .= "<img id='waitDelete" . $id_link . "' src='".$CFG_GLPI["root_doc"].
+         "/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
       $content .= "</tr>";
 
-      $content .= "<input type='hidden' name='idMantis".$id."' id='idMantis' value=" . $id . "       >";
-      $content .= "<input type='hidden' name='id".$id."'       id='id'       value=" . $idMantis . " >";
-      $content .= "<input type='hidden' name='idTicket".$id."' id='idticket' value=" . $idTicket . " >";
+      $content .= "<input type='hidden' name='idMantis".$id_link."' id='idMantis' value=" .
+         $id_link . "       >";
+      $content .= "<input type='hidden' name='id".$id_link."'       id='id'       value=" .
+         $id_mantis . " >";
+      $content .= "<input type='hidden' name='idTicket".$id_link."' id='idticket' value=" .
+         $id_ticket . " >";
 
       $content .= "</table>";
 
@@ -185,16 +199,16 @@ class PluginMantisMantis extends CommonDBTM
 
    /**
     * Form to link glpi ticket to Mantis Ticket
-    * @param $idTicket
+    * @param $id_ticket
     */
-   public function getFormForLinkGlpiTicketToMantisTicket($idTicket) {
+   public function getFormForLinkGlpiTicketToMantisTicket($id_ticket) {
 
       global $CFG_GLPI;
 
       $content = "";
 
       $content.= "<form action='#' >";
-      $content.= "<table class='tab_cadre' cellpadding='5'>";
+      $content.= "<table class='tab_cadre'cellpadding='5'>";
       $content.= "<th colspan='6'>Lier un ticket Glpi à un ticket MantisBT</th>";
 
       $content.= "<tr class='tab_bg_1'>";
@@ -213,7 +227,7 @@ class PluginMantisMantis extends CommonDBTM
       $content.= "</tr>";
 
 
-      $content.= "<input type='hidden' name='idTicket' id='idTicket' value=" .  $idTicket . " >";
+      $content.= "<input type='hidden' name='idTicket' id='idTicket' value=" .  $id_ticket . " >";
       $content.= "<input type='hidden' name='user' id='user' value=" . Session::getLoginUserID(). " >";
       $content.= "<input type='hidden' name='dateEscalade' id='dateEscalade' value=" .date("Y-m-d") . " >";
 
@@ -228,9 +242,9 @@ class PluginMantisMantis extends CommonDBTM
 
    /**
     * Form to link glpi ticket to mantis project
-    * @param $idTicket
+    * @param $id_ticket
     */
-   public function getFormForLinkGlpiTicketToMantisProject($idTicket) {
+   public function getFormForLinkGlpiTicketToMantisProject($id_ticket) {
 
       global $CFG_GLPI;
 
@@ -242,7 +256,8 @@ class PluginMantisMantis extends CommonDBTM
 
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>Nom du projet</th>";
-      $content .= "<td id='tdSearch' height='24'><input  id='nameMantisProject' type='text' name='resume' />";
+      $content .= "<td id='tdSearch' height='24'>";
+      $content .= "<input  id='nameMantisProject' type='text'  name='resume' />";
       $content .= "<img id='searchImg' alt='rechercher' src='".$CFG_GLPI['root_doc']."/pics/aide.png'
          onclick='findProjectByName();'style='cursor: pointer;padding-left:5px; padding-right:5px;'/></td>";
       $content .= "</tr>";
@@ -260,12 +275,12 @@ class PluginMantisMantis extends CommonDBTM
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>".__("Description","mantis")."</th>";
       $content .= "<td><textarea  rows='5' cols='55' name='description'
-         id='description'></textarea></td></tr>";
+        id='description'></textarea></td></tr>";
 
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>".__("Steps to reproduce","mantis")."</th>";
       $content .= "<td><textarea  rows='5' cols='55' name='stepToReproduce'
-         id='stepToReproduce'></textarea></td></tr>";
+        id='stepToReproduce'></textarea></td></tr>";
 
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>".__("Attachments","mantis")."</th>";
@@ -274,7 +289,7 @@ class PluginMantisMantis extends CommonDBTM
 
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td><input type='hidden' class='center' name='idTicket' id='idTicket' value=" .
-         $idTicket . " class='submit'>";
+         $id_ticket . " class='submit'>";
       $content .= "<input type='hidden' class='center' name='user' id='user' value=" .
          Session::getLoginUserID() . " class='submit'>";
       $content .= "<input type='hidden' class='center' name='dateEscalade' id='dateEscalade' value=" .
@@ -308,12 +323,8 @@ class PluginMantisMantis extends CommonDBTM
       $can_write = PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id']);
       $content = "";
 
-      //on recupere l'ensemble des lien entre ticket glpi et ticket mantis
-      $res = $DB->query("SELECT `glpi_plugin_mantis_mantis`.*
-                        FROM `glpi_plugin_mantis_mantis` WHERE `glpi_plugin_mantis_mantis`
-                        .`idTicket` = '" . Toolbox::cleanInteger($item->getField('id')) . "'
-                        order by `glpi_plugin_mantis_mantis`.`dateEscalade`");
-
+      //on recupere l'ensemble des lien entre ticket glpi et ticket(s) mantis
+      $res = $this->getLinkBetweenGlpiAndMantis($item);
 
       if ($res->num_rows > 0) {
 
@@ -338,7 +349,6 @@ class PluginMantisMantis extends CommonDBTM
          while ($row = $res->fetch_assoc()) {
 
             $user->getFromDB($row["user"]);
-            /** @var Object $issue */
             $issue = $ws->getIssueById($row["idMantis"]);
             $conf->getFromDB(1);
 
@@ -350,8 +360,8 @@ class PluginMantisMantis extends CommonDBTM
                $CFG_GLPI['root_doc'].'/plugins/mantis/front/mantis.form.php?action=deleteIssue&id=' .
                $row['id'] . '&idTicket=' . $row['idTicket'] . '&idMantis=' . $row['idMantis'],
                array('title'  => __("Delete", "mantis"),
-                     'width'  => 520,
-                     'height' => 150));
+                     'width'  => 550,
+                     'height' => 160));
 
             if (!$issue) {
 
@@ -417,15 +427,31 @@ class PluginMantisMantis extends CommonDBTM
 
 
    /**
-    * Function to check if link bewteen glpi issue and mantis issue exist
-    * @param $idTicket
-    * @param $idMantisIssue
+    * Function to check if link between glpi issue and mantis issue exist
+    * @param $id_ticket
+    * @param $id_mantis
     * @return true if exist else false
     */
-   public function IfExistLink($idTicket, $idMantisIssue) {
+   public function IfExistLink($id_ticket, $id_mantis) {
       return $this->getFromDBByQuery($this->getTable() . " WHERE `" . "`.`idTicket` = '" .
-         Toolbox::cleanInteger($idTicket) . "'  AND  `" . "`.`idMantis` = '" .
-         Toolbox::cleanInteger($idMantisIssue) . "'");
+         Toolbox::cleanInteger($id_ticket) . "'  AND  `" . "`.`idMantis` = '" .
+         Toolbox::cleanInteger($id_mantis) . "'");
+   }
+
+
+   /**
+    * Function to find all links record for an item
+    * @param $item
+    * @return Query
+    */
+   public function getLinkBetweenGlpiAndMantis($item){
+      global $DB;
+
+      return $DB->query("SELECT `glpi_plugin_mantis_mantis`.*
+                        FROM `glpi_plugin_mantis_mantis` WHERE `glpi_plugin_mantis_mantis`
+                        .`idTicket` = '" . Toolbox::cleanInteger($item->getField('id')) . "'
+                        order by `glpi_plugin_mantis_mantis`.`dateEscalade`");
+
    }
 
 

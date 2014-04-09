@@ -94,7 +94,8 @@ class PluginMantisProfile extends CommonDBTM
       $myProf = new self();
       // si le profile n'existe pas déjà dans la table profile de mon plugin
       if (!$myProf->getFromDB($ID)) {
-         // ajouter un champ dans la table comprenant l'ID du profil d la personne connecté et le droit d'écriture
+         // ajouter un champ dans la table comprenant l'ID du
+         //profil d la personne connecté et le droit d'écriture
          $myProf->add(array('id' => $ID,
                             'right'       => 'w'));
       }

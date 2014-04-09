@@ -19,11 +19,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'linkToIssue') {
 }else if (isset($_GET['action']) && $_GET['action'] == 'deleteIssue'){
    Html::popHeader('Mantis', $_SERVER['PHP_SELF']);
 
-   $id = $_GET['id'];
-   $idticket = $_GET['idTicket'];
-   $idMantis = $_GET['idMantis'];
+   $id_link = $_GET['id'];
+   $id_ticket = $_GET['idTicket'];
+   $id_mantis = $_GET['idMantis'];
 
-   $mantis->getFormToDelLinkOrissue($id, $idticket, $idMantis);
+   $mantis->getFormToDelLinkOrIssue($id_link, $id_ticket, $id_mantis);
    Html::popFooter();
 }
 

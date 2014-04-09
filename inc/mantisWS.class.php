@@ -41,11 +41,10 @@ class PluginMantisMantisws{
    function testConnectionWS($host, $url, $login, $password) {
       try {
          $client = new SoapClient("http://" . $host . "/" . $url);
-         $client->mc_project_get_issues($login, $password, 1, 1, 10);
-         return true;
+         $res = $client->mc_login($login, $password);
+         return $res;
       } catch (SoapFault $e) {
-         Toolbox::logInFile('mantis',
-            sprintf(__('Error to connect to the web service MantisBT => \'%1$s\'', 'mantis'),
+         Toolbox::logInFile('mantis', sprintf(__('Error to connect to the web service MantisBT => \'%1$s\'', 'mantis'),
                $e->getMessage()) . "\n");
          return false;
       }

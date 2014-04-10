@@ -122,7 +122,7 @@ msgstr "Supprimer"
 
 #: inc/mantis.class.php:201
 msgid "Id Ticket"
-msgstr "Id du ticket MantisBT"
+msgstr "Id du ticket MantisBT *"
 
 #: inc/mantis.class.php:241
 msgid "Link a Glpi ticket to a MantisBT project"

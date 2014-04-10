@@ -63,33 +63,43 @@ function linkIssueglpiToIssueMantis() {
    div_info.empty();
    div_wait.css('display', 'block');
 
+   if(idMantisIssue.trim() == "" || idMantisIssue == null){
+      $("#idMantis").css('border-color','red');
+      div_wait.css('display', 'none');
+   }else{
 
-   $.ajax({ // fonction permettant de faire de l'ajax
-      type: "POST", // methode de transmission des données au fichier php
-      url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
-      data: "action=LinkIssueGlpiToIssueMantis&" +
-         "idTicket=" + idTicket + "&" +
-         "idMantis=" + idMantisIssue + "&" +
-         "user=" + idUser + "&" +
-         "dateEscalade=" + date, // données à transmettre
-      success: function (msg) { // si l'appel a bien fonctionné
+      $("#idMantis").css('border-color','#888888');
+      $.ajax({ // fonction permettant de faire de l'ajax
+         type: "POST", // methode de transmission des données au fichier php
+         url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
+         data: "action=LinkIssueGlpiToIssueMantis&" +
+            "idTicket=" + idTicket + "&" +
+            "idMantis=" + idMantisIssue + "&" +
+            "user=" + idUser + "&" +
+            "dateEscalade=" + date, // données à transmettre
+         success: function (msg) { // si l'appel a bien fonctionné
 
-         if (msg == true) {
+            if (msg == true) {
+               div_wait.css('display', 'none');
+               popupLinkGlpiIssuetoMantisIssue.hide();
+               window.location.reload();
+            }
+            else {
+               div_wait.css('display', 'none');
+               div_info.html(msg);
+            }
+         },
+         error: function () {
             div_wait.css('display', 'none');
-            popupLinkGlpiIssuetoMantisIssue.hide();
-            window.location.reload();
+            div_info.html("Probleme Ajax");
          }
-         else {
-            div_wait.css('display', 'none');
-            div_info.html(msg);
-         }
-      },
-      error: function () {
-         div_wait.css('display', 'none');
-         div_info.html("Probleme Ajax");
-      }
 
-   });
+      });
+   }
+
+
+
+
 
 
 }

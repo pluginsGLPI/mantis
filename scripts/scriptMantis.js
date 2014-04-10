@@ -210,40 +210,63 @@ function linkIssueglpiToProjectMantis() {
    div_info.empty();
    div_wait.css('display', 'block');
 
-   $.ajax({ // fonction permettant de faire de l'ajax
-      type: "POST", // methode de transmission des données au fichier php
-      url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
-      data: "action=LinkIssueGlpiToProjectMantis&" +
-         "idTicket=" + idTicket + "&" +
-         "nameMantisProject=" + nameMantisProject + "&" +
-         "user=" + idUser + "&" +
-         "dateEscalade=" + date + "&" +
-         "resume=" + resume + "&" +
-         "stepToReproduce=" + stepToReproduce + "&" +
-         "followAttachment=" + followAttachment + "&" +
-         "categorie=" + cate + "&" +
-         "description=" + description, // données à transmettre
-      success: function (msg) { // si l'appel a bien fonctionné
 
-         if (msg == true) {
-            div_wait.css('display', 'none');
-            popupLinkGlpiIssuetoMantisProject.hide();
-            window.location.reload();
-         }
-         else {
-            div_wait.css('display', 'none');
-            div_info.html(msg);
-         }
+   if((resume == null || resume == "")||(description.length < 1)){
 
-      },
-      error: function () {
-
-         div_wait.css('display', 'none');
-         div_info.html("Probleme Ajax");
-
+      if(resume == null || resume == ""){
+         $("#resume").css('border-color','red');
+      }else{
+         $("#resume").css('border-color','#888888');
       }
 
-   });
+      if(description.length < 1){
+         $("#description").css('border-color','red');
+      }else{
+         $("#description").css('border-color','#888888');
+      }
+
+      div_wait.css('display', 'none');
+
+   }else{
+
+      $.ajax({ // fonction permettant de faire de l'ajax
+         type: "POST", // methode de transmission des données au fichier php
+         url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
+         data: "action=LinkIssueGlpiToProjectMantis&" +
+            "idTicket=" + idTicket + "&" +
+            "nameMantisProject=" + nameMantisProject + "&" +
+            "user=" + idUser + "&" +
+            "dateEscalade=" + date + "&" +
+            "resume=" + resume + "&" +
+            "stepToReproduce=" + stepToReproduce + "&" +
+            "followAttachment=" + followAttachment + "&" +
+            "categorie=" + cate + "&" +
+            "description=" + description, // données à transmettre
+         success: function (msg) { // si l'appel a bien fonctionné
+
+            if (msg == true) {
+               div_wait.css('display', 'none');
+               popupLinkGlpiIssuetoMantisProject.hide();
+               window.location.reload();
+            }
+            else {
+               div_wait.css('display', 'none');
+               div_info.html(msg);
+            }
+
+         },
+         error: function () {
+
+            div_wait.css('display', 'none');
+            div_info.html("Probleme Ajax");
+
+         }
+
+      });
+   }
+
+
+
 
 
 }

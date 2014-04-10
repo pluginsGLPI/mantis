@@ -134,11 +134,11 @@ msgstr "Category"
 
 #: inc/mantis.class.php:257 inc/mantis.class.php:325
 msgid "Summary"
-msgstr "Summary"
+msgstr "Summary *"
 
 #: inc/mantis.class.php:261
 msgid "Description"
-msgstr "Description"
+msgstr "Description *"
 
 #: inc/mantis.class.php:266
 msgid "Steps to reproduce"

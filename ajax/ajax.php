@@ -16,7 +16,8 @@ if (isset($_POST['action'])) {
          $res = $ws->testConnectionWS($_POST['host'], $_POST['url'], $_POST['login'],$_POST['pwd']);
          if($res == 'Access denied') echo "<img src='".$CFG_GLPI['root_doc']
             ."/plugins/mantis/pics/cross24.png'/>Acces denied ";
-         else if($res == false ) echo "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/cross24.png'/> Erreur IP ou Path";
+         else if($res == false ) echo "<img src='".$CFG_GLPI['root_doc'].
+            "/plugins/mantis/pics/cross24.png'/> Erreur IP ou Path";
          else echo "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/check24.png'/> ";
          break;
 

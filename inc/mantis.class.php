@@ -58,7 +58,10 @@ class PluginMantisMantis extends CommonDBTM
             $ticket_mantis = $ws->getIssueById($id_mantis);
 
 
-            if($ticket_mantis->status->name == $etat_mantis){
+            //si le ticket n'est pas clos , et que l'etat mantis correspond a celui choisi pour
+            //l'update
+            if($ticket_mantis->status->name == $etat_mantis
+               && $ticket_glpi->fields['status'] != 6){
 
                $ticket_glpi->fields['status'] = Ticket::CLOSED;
                $ticket_glpi->fields['closedate'] = date("Y-m-d");

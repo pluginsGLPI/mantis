@@ -1,24 +1,38 @@
+<?php
+define('GLPI_ROOT', '../../..');
+include (GLPI_ROOT . "/inc/includes.php");
+
+global $CFG_GLPI;
+
+
+$root_ajax = $CFG_GLPI['root_doc']."/plugins/mantis/ajax/ajax.php";
+
+
+$JS = <<<JAVASCRIPT
+
+
+
 /**
  * function to test connection with Mantis Web Service
  * @returns {boolean}
  */
 function testConnexionMantisWS() {
 
-   var $div = $("#infoAjax");
+   var div = $("#infoAjax");
 
    $.ajax({ // fonction permettant de faire de l'ajax
       type: "POST", // methode de transmission des données au fichier php
-      url: "../ajax/ajax.php", // url du fichier php
+      url: "{$root_ajax}", // url du fichier php
       data: "action=testConnexionMantisWS&" +
          "host=" + $("#host").val() + "&" +
          "url=" + $("#url").val() + "&" +
          "login=" + $("#login").val() + "&" +
          "pwd=" + $("#pwd").val(), // données à transmettre
       success: function (msg) { // si l'appel a bien fonctionné
-         $div.html(msg);
+         div.html(msg);
       },
       error: function () {
-         $div.html('Ajax Problem !');
+         div.html('Ajax Problem !');
       }
 
    });
@@ -29,19 +43,19 @@ function testConnexionMantisWS() {
 
 function ifExistissueWithId() {
 
-   var $div = $("#infoFindIssueMantis");
+   var div = $("#infoFindIssueMantis");
    var id = $("#idMantis").val();
 
    $.ajax({ // fonction permettant de faire de l'ajax
       type: "POST", // methode de transmission des données au fichier php
-      url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
+      url: "{$root_ajax}", // url du fichier php
       data: "action=findIssueById&" +
          "id=" + id, // données à transmettre
       success: function (msg) { // si l'appel a bien fonctionné
-         $div.html(msg);
+         div.html(msg);
       },
       error: function () {
-         $div.html("Ajax problem !");
+         div.html("Ajax problem !");
       }
 
    });
@@ -71,7 +85,7 @@ function linkIssueglpiToIssueMantis() {
       $("#idMantis").css('border-color','#888888');
       $.ajax({ // fonction permettant de faire de l'ajax
          type: "POST", // methode de transmission des données au fichier php
-         url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
+         url: "{$root_ajax}", // url du fichier php
          data: "action=LinkIssueGlpiToIssueMantis&" +
             "idTicket=" + idTicket + "&" +
             "idMantis=" + idMantisIssue + "&" +
@@ -131,7 +145,7 @@ function findProjectByName() {
 
    $.ajax({ // fonction permettant de faire de l'ajax
       type: "POST", // methode de transmission des données au fichier php
-      url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
+      url: "{$root_ajax}", // url du fichier php
       data: "action=findProjectByName&" +
          "name=" + name, // données à transmettre
       success: function (msg) { // si l'appel a bien fonctionné
@@ -164,7 +178,7 @@ function addOptionToSelect(dropdown, name) {
 
    $.ajax({ // fonction permettant de faire de l'ajax
       type: "POST", // methode de transmission des données au fichier php
-      url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
+      url: "{$root_ajax}", // url du fichier php
       dataType: "json",
       data: "action=getCategoryFromProjectName&" +
          "name=" + name, // données à transmettre
@@ -241,7 +255,7 @@ function linkIssueglpiToProjectMantis() {
 
       $.ajax({ // fonction permettant de faire de l'ajax
          type: "POST", // methode de transmission des données au fichier php
-         url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
+         url: "{$root_ajax}", // url du fichier php
          data: "action=LinkIssueGlpiToProjectMantis&" +
             "idTicket=" + idTicket + "&" +
             "nameMantisProject=" + nameMantisProject + "&" +
@@ -283,17 +297,17 @@ function linkIssueglpiToProjectMantis() {
 
 function deleteLinkGlpiMantis(id, idticket, idMantis, deleteAll) {
 
-   var $question = "";
-   if (deleteAll) $question = "Vous allez supprimer l'issue MantisBT ainsi que le lien";
-   else $question = "Vous allez supprimer le lien vers l'issue mantisBT";
+   var question = "";
+   if (deleteAll) question = "Vous allez supprimer l'issue MantisBT ainsi que le lien";
+   else question = "Vous allez supprimer le lien vers l'issue mantisBT";
 
    //alert (id+" --- "+idticket+" --- "+idMantis);
 
-   if (confirm($question)) {
+   if (confirm(question)) {
 
       $.ajax({ // fonction permettant de faire de l'ajax
          type: "POST", // methode de transmission des données au fichier php
-         url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
+         url: "{$root_ajax}", // url du fichier php
          data: "action=deleteLinkMantis&" +
             "id=" + id + "&" +
             "idMantis=" + idMantis + "&" +
@@ -336,7 +350,7 @@ function delLinkAndOrIssue(id, idMantis, idTicket) {
       div_wait.css('display', 'block');
       $.ajax({ // fonction permettant de faire de l'ajax
          type: "POST", // methode de transmission des données au fichier php
-         url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
+         url: "{$root_ajax}", // url du fichier php
          data: "action=deleteIssueMantisAndLink&" +
             "id=" + id + "&" +
             "idMantis=" + idMantis + "&" +
@@ -367,7 +381,7 @@ function delLinkAndOrIssue(id, idMantis, idTicket) {
       div_wait.css('display', 'block');
       $.ajax({ // fonction permettant de faire de l'ajax
          type: "POST", // methode de transmission des données au fichier php
-         url: "../../glpi/plugins/mantis/ajax/ajax.php", // url du fichier php
+         url: "{$root_ajax}", // url du fichier php
          data: "action=deleteLinkMantis&" +
             "id=" + id + "&" +
             "idMantis=" + idMantis + "&" +
@@ -414,3 +428,7 @@ function getBaseURL() {
    }
 
 }
+
+JAVASCRIPT;
+
+echo $JS;

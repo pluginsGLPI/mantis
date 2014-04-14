@@ -333,3 +333,15 @@ msgstr "Pas de tâche </br>"
 #: inc/mantisIssue.class.php:1067
 msgid "No follow-up"
 msgstr "Pas de suivi </br>"
+
+#: inc/mantisWS.class.php:261
+msgid "Error when getting MantisBT states => '%1$s'"
+msgstr "Erreur lors du chargement des états MantisBT"
+
+#: inc/config.class.php:104
+msgid "Close Glpi ticket when status ticket MantisBT is"
+msgstr "Fermer le ticket Glpi quand le statut du ticket MantisBT est"
+
+#: inc/config.class.php:109
+msgid "Test connection to load stats of MantisBT"
+msgstr "Tester la connexion pour charger les statuts MantisBT"

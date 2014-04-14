@@ -9,6 +9,81 @@ include_once("config.class.php");
 class PluginMantisMantis extends CommonDBTM
 {
 
+   static function install() {
+      $cron = new CronTask;
+      if (!$cron->getFromDBbyName(__CLASS__, 'mantis')) {
+         CronTask::Register(__CLASS__, 'mantis', 7 * DAY_TIMESTAMP,
+            array('param' => 24, 'mode' => CronTask::MODE_EXTERNAL));
+      }
+   }
+
+   static function uninstall() {
+      CronTask::Unregister(__CLASS__);
+   }
+
+   static function cronMantis($task) {
+      self::updateTicket();
+      return true;
+   }
+
+   static function cronInfo($name) {
+      return array('description' => __("Update ticket", "mantis"));
+   }
+
+   static function updateTicket() {
+
+      Toolbox::logInFile("mantis", "Début de la mise à jour des tickets Glpi\n");
+
+      $conf = new PluginMantisConfig();
+      $conf->getFromDB(1);
+
+      if ($conf->getField('etatMantis')) {
+
+         $etat_mantis = $conf->getField('etatMantis');
+         $ws = new PluginMantisMantisws();
+         $ws->initializeConnection();
+         $res = self::getAllLinkBetweenGlpiAndMantis();
+
+
+
+
+         while ($row = $res->fetch_assoc()) {
+
+            $id_mantis = $row["idMantis"];
+            $id_glpi   = $row["idTicket"];
+
+            $ticket_glpi = new Ticket();
+            $ticket_glpi->getFromDB($id_glpi);
+
+            $ticket_mantis = $ws->getIssueById($id_mantis);
+
+
+            if($ticket_mantis->status->name == $etat_mantis){
+
+               $ticket_glpi->fields['status'] = Ticket::CLOSED;
+               $ticket_glpi->fields['closedate'] = date("Y-m-d");
+               $ticket_glpi->fields['solvedate'] = date("Y-m-d");
+               $ticket_glpi->update($ticket_glpi->fields);
+
+               Toolbox::logInFile("mantis", "Changement d'etat pour le ticket Glpi ".$id_glpi."\n");
+            }else{
+               Toolbox::logInFile("mantis", "Pas de changement pour le ticket Glpi ".$id_glpi."\n");
+            }
+
+         }
+
+
+         Toolbox::logInFile("mantis", "La mise à jour des tickets Glpi est terminé\n");
+
+
+      } else {
+         Toolbox::logInFile("mantis", "La tâche n'a pu être démarré car l'état mantis n'est pas
+         renseigné \n");
+      }
+
+
+   }
+
 
    /**
     * Define tab name
@@ -54,7 +129,6 @@ class PluginMantisMantis extends CommonDBTM
     * @param $item
     */
    public function showForm($item) {
-
       global $CFG_GLPI;
       $ws = new PluginMantisMantisws();
       $conf = new PluginMantisConfig();
@@ -451,6 +525,19 @@ class PluginMantisMantis extends CommonDBTM
                         FROM `glpi_plugin_mantis_mantis` WHERE `glpi_plugin_mantis_mantis`
                         .`idTicket` = '" . Toolbox::cleanInteger($item->getField('id')) . "'
                         order by `glpi_plugin_mantis_mantis`.`dateEscalade`");
+
+   }
+
+
+   /**
+    * Function to find all links record for an item
+    * @param $item
+    * @return Query
+    */
+   public static function getAllLinkBetweenGlpiAndMantis(){
+      global $DB;
+
+      return $DB->query("SELECT `glpi_plugin_mantis_mantis`.* FROM `glpi_plugin_mantis_mantis`");
 
    }
 

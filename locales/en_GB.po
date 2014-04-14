@@ -334,3 +334,15 @@ msgstr "No task </br>"
 #: inc/mantisIssue.class.php:1067
 msgid "No follow-up"
 msgstr "No follow-up </br>"
+
+#: inc/mantisWS.class.php:261
+msgid "Error when getting MantisBT states => '%1$s'"
+msgstr "Error when getting MantisBT states => '%1$s'"
+
+#: inc/config.class.php:104
+msgid "Close Glpi ticket when status ticket MantisBT is"
+msgstr "Close Glpi ticket when status ticket MantisBT is"
+
+#: inc/config.class.php:109
+msgid "Test connection to load stats of MantisBT"
+msgstr "Test connection to load stats of MantisBT"

@@ -6,6 +6,8 @@
  */
 function plugin_mantis_install()
 {
+   require_once('inc/mantis.class.php');
+   PluginMantisMantis::install();
 
     global $DB;
 
@@ -52,7 +54,8 @@ function plugin_mantis_install()
                   login char(32) NOT NULL default '',
                   pwd char(32) NOT NULL default '',
                   champsUrlGlpi char(100) NOT NULL default '',
-                  champsGlpi char(100) NOT NULL default '')";
+                  champsGlpi char(100) NOT NULL default '',
+                  etatMantis char(100) NOT NULL default '')";
         $DB->query($query) or die($DB->error());
 
         //insertion du occcurence dans la table (occurrence par default)
@@ -74,6 +77,8 @@ function plugin_mantis_install()
 function plugin_mantis_uninstall()
 {
 
+
+
     global $DB;
 
     $tables = array("glpi_plugin_mantis_configs",
@@ -84,7 +89,8 @@ function plugin_mantis_uninstall()
         $DB->query("DROP TABLE IF EXISTS " . $table . ";");
     }
 
-
+   require_once('inc/mantis.class.php');
+   PluginMantisMantis::uninstall();
     return true;
 }
 

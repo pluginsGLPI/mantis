@@ -51,7 +51,7 @@ class PluginMantisConfig extends CommonDBTM
 
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<td>" . __("MantisBT server IP", "mantis") . "</td>";
-       $content .= "<td><input id='host' name='host' type='text' onblur='testIP();' value='" .
+       $content .= "<td><input id='host' name='host' type='text' value='" .
           $this->fields["host"] . "'/></td>";
        $content .= "<td>ex: 128.65.25.74</td>";
        $content .= "</tr>";
@@ -97,6 +97,21 @@ class PluginMantisConfig extends CommonDBTM
        $content .= "</td>";
        $content .= "<td></td>";
        $content .= "</tr>";
+
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<td>" .
+          __("Close Glpi ticket when status ticket MantisBT is", "mantis") . "</td>";
+       $content .= "<td>";
+       $content .= DropDown::showFromArray('etatMantis', PluginMantisIssue::$state_mantis,
+          array('rand' => '' ,'value' => $this->fields["etatMantis"], 'display' => false));
+       $content .= "</td>";
+       $content .= "<td></td>";
+       $content .= "</tr>";
+
+
+
+
 
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<td><input type='hidden' name='id' value='1' class='submit'>";

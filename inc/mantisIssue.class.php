@@ -4,7 +4,10 @@
 class PluginMantisIssue
 {
 
-
+   public static $state_mantis = array('none' => '----', 'new' => 'new',
+                                       'feedback' => 'feedback','acknowledged' => 'acknowledged'
+   , 'confirmed' => 'confirmed' , 'assigned' => 'assigned' , 'resolved'=>'resolved' ,
+                                       'closed' => 'closed');
     public static $champsMantis = array('none' => '----', 'note' => 'note', 'additional_information' => 'additional_information');
 
 

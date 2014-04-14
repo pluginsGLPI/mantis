@@ -1,5 +1,4 @@
 <?php
-
 include('../../../inc/includes.php');
 require_once('../inc/mantisWS.class.php');
 require_once('../inc/mantis.class.php');
@@ -12,13 +11,19 @@ if (isset($_POST['action'])) {
    switch ($_POST['action']) {
 
       case 'testConnexionMantisWS':
+         error_reporting(0);
          $ws = new PluginMantisMantisws();
-         $res = $ws->testConnectionWS($_POST['host'], $_POST['url'], $_POST['login'],$_POST['pwd']);
-         if($res == 'Access denied') echo "<img src='".$CFG_GLPI['root_doc']
-            ."/plugins/mantis/pics/cross24.png'/>Acces denied ";
-         else if($res == false ) echo "<img src='".$CFG_GLPI['root_doc'].
-            "/plugins/mantis/pics/cross24.png'/> Erreur IP ou Path";
-         else echo "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/check24.png'/> ";
+         try {
+            $res = $ws->testConnectionWS($_POST['host'], $_POST['url'], $_POST['login'], $_POST['pwd']);
+            if ($res) {
+               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/check24.png'/>";
+            } else {
+               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross24.png'/>Access denied";
+            }
+         } catch (Exception $e) {
+            echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross24.png'/>Error IP or Path";
+         }
+
          break;
 
       case 'findIssueById':

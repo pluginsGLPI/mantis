@@ -37,16 +37,24 @@ class PluginMantisMantisws{
     * @param $login
     * @param $password
     * @return bool
+    * @throws Exception
     */
-   function testConnectionWS($host, $url, $login, $password) {
+  function testConnectionWS($host, $url, $login, $password) {
       try {
          $client = new SoapClient("http://" . $host . "/" . $url);
-         $res = $client->mc_login($login, $password);
-         return $res;
-      } catch (SoapFault $e) {
-         Toolbox::logInFile('mantis', sprintf(__('Error to connect to the web service MantisBT => \'%1$s\'', 'mantis'),
-               $e->getMessage()) . "\n");
-         return false;
+         $client->mc_login($login, $password);
+         return true;
+      } catch (SoapFault $sp) {
+         Toolbox::logInFile('mantis', sprintf(
+               __('Error to connect to the web service MantisBT => \'%1$s\'', 'mantis'),
+               $sp->getMessage()) . "\n");
+
+         if($sp->getMessage() ==  'Access denied'){
+            return false;
+         }else{
+           throw new Exception($sp->getMessage());
+         }
+
       }
    }
 
@@ -245,7 +253,19 @@ class PluginMantisMantisws{
       }
    }
 
-
+   /**
+    * Get the enumeration for status.
+    * @return array
+    */
+   public function mc_enum_etas() {
+      try {
+         return $this->_client->mc_enum_status($this->_login, $this->_password);
+      } catch (SoapFault $e) {
+         Toolbox::logInFile('mantis', sprintf(
+               __('Error when getting MantisBT states => \'%1$s\'', 'mantis'),
+               $e->getMessage()) . "\n");
+      }
+   }
 
 
 

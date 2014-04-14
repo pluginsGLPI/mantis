@@ -837,9 +837,9 @@ class PluginMantisIssue
          //on remplit l'issue Mantis
          $this->setProject($project);
          $this->setCategory($categorie);
-         $this->setDescription($description);
-         $this->setSteps_to_reproduce($stepToReproduce);
-         $this->setSummary($resume);
+         $this->setDescription(str_replace('\n','</br>',$description));
+         $this->setSteps_to_reproduce(str_replace('\n','</br>',$stepToReproduce));
+         $this->setSummary(stripslashes($resume));
          $this->setAdditional_information($this->getAdditionalInfo($champsGlpi,
             $champsUrl, $ticket, $itilCategorie));
 

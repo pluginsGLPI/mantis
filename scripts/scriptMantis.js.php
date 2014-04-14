@@ -1,7 +1,5 @@
 <?php
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT . "/inc/includes.php");
-
+include ('../../../inc/includes.php');
 global $CFG_GLPI;
 
 

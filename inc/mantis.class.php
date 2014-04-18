@@ -34,6 +34,8 @@ class PluginMantisMantis extends CommonDBTM
 
       Toolbox::logInFile("mantis", "Début de la mise à jour des tickets Glpi\n");
 
+      $list_ticket_mantis = array();
+
       $conf = new PluginMantisConfig();
       $conf->getFromDB(1);
 
@@ -42,48 +44,103 @@ class PluginMantisMantis extends CommonDBTM
          $etat_mantis = $conf->getField('etatMantis');
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
-         $res = self::getAllLinkBetweenGlpiAndMantis();
 
-
-
+         //on recuper l'id des ticket Glpi linké
+         $res = self::getTicketWhichIsLinked();
 
          while ($row = $res->fetch_assoc()) {
 
-            $id_mantis = $row["idMantis"];
-            $id_glpi   = $row["idTicket"];
-
             $ticket_glpi = new Ticket();
-            $ticket_glpi->getFromDB($id_glpi);
+            $ticket_glpi->getFromDB($row['idTicket']);
 
-            $ticket_mantis = $ws->getIssueById($id_mantis);
+            $list_link = self::getLinkBetweenTicketGlpiAndTicketMantis($row['idTicket']);
+            $list_ticket_mantis = array();
 
+            while ($line = $list_link->fetch_assoc()){
 
-            //si le ticket n'est pas clos , et que l'etat mantis correspond a celui choisi pour
-            //l'update
-            if($ticket_mantis->status->name == $etat_mantis
-               && $ticket_glpi->fields['status'] != 6){
+               $mantis = $ws->getIssueById($line['idMantis']);
+               $list_ticket_mantis[] = $mantis;
 
-               $ticket_glpi->fields['status'] = Ticket::CLOSED;
+            }
+
+            Toolbox::logInFile("mantis", "Pour le ticket Glpi ".$row['idTicket']." \n");
+            if(self::getAllSameStatusChoiceByUser ($list_ticket_mantis,
+                  $etat_mantis) && $ticket_glpi->fields['status'] != 5){
+
+               $info_solved = self::getInfoSolved($list_ticket_mantis);
+               $ticket_glpi->fields['status'] = Ticket::SOLVED;
                $ticket_glpi->fields['closedate'] = date("Y-m-d");
                $ticket_glpi->fields['solvedate'] = date("Y-m-d");
+               $ticket_glpi->fields['solution'] = $info_solved;
                $ticket_glpi->update($ticket_glpi->fields);
 
-               Toolbox::logInFile("mantis", "Changement d'etat pour le ticket Glpi ".$id_glpi."\n");
-            }else{
-               Toolbox::logInFile("mantis", "Pas de changement pour le ticket Glpi ".$id_glpi."\n");
+               Toolbox::logInFile("mantis", "Mise à jour du ticket ".$line['idTicket']."\n");
             }
 
          }
 
-
          Toolbox::logInFile("mantis", "La mise à jour des tickets Glpi est terminé\n");
-
 
       } else {
          Toolbox::logInFile("mantis", "La tâche n'a pu être démarré car l'état mantis n'est pas
          renseigné \n");
       }
 
+
+   }
+
+
+   private static function getAllSameStatusChoiceByUser($list_ticket_mantis,$status){
+      $diferrent  =false;
+      if(count($list_ticket_mantis) == 0 )return false;
+      for($i = 0; $i <= count($list_ticket_mantis) ; $i++){
+         if($list_ticket_mantis[$i]->status->name != $status)$diferrent = true;
+         break;
+      }
+      if($diferrent) return false;
+      else return true;
+   }
+
+
+   /**
+    * function to get id ticket Glpi which is linked
+    * @return Query
+    */
+   private static function getTicketWhichIsLinked() {
+         global $DB;
+         return $DB->query("SELECT DISTINCT (`glpi_plugin_mantis_mantis`.`idTicket`) FROM `glpi_plugin_mantis_mantis`, `glpi_tickets`
+         WHERE `glpi_plugin_mantis_mantis`.`idTicket` = `glpi_tickets`.`id`");
+   }
+
+
+   /**
+    * Function to get link between glpi ticket and mantisBT ticket for an glpi ticket
+    * @param $idTicket
+    * @return Query
+    */
+   private static function getLinkBetweenTicketGlpiAndTicketMantis($idTicket) {
+      global $DB;
+      return $DB->query("SELECT `glpi_plugin_mantis_mantis`.*
+                        FROM `glpi_plugin_mantis_mantis` WHERE `glpi_plugin_mantis_mantis`
+                        .`idTicket` = '" . Toolbox::cleanInteger($idTicket)."'");
+   }
+
+
+   /**
+    * Function to get information in Note for each ticket MAntisBT
+    * @param $list_ticket_mantis
+    * @return string
+    */
+   private static function getInfoSolved($list_ticket_mantis) {
+
+      $info = "";
+      foreach ($list_ticket_mantis as &$ticket) {
+         $notes = $ticket->notes;
+         foreach ($notes as &$note) {
+            $info .= $ticket->id." - ".$note->reporter->name." : ".$note->text."<br/>";
+         }
+      }
+      return $info;
 
    }
 

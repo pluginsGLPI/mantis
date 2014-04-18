@@ -154,7 +154,7 @@ msgstr "Faire suivre les pièces jointes"
 
 #: inc/mantis.class.php:283 inc/mantis.class.php:323
 msgid "Link"
-msgstr "Lien"
+msgstr "Lier"
 
 #: inc/mantis.class.php:324
 msgid "Id"

@@ -269,6 +269,10 @@ class PluginMantisMantisws{
 
 
 
+
+
+
+
    public function setClient($client) {
       $this->_client = $client;
    }

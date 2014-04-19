@@ -191,7 +191,7 @@ class PluginMantisMantis extends CommonDBTM {
    }
 
    static function getTypeName($nb = 0) {
-      return __('Ticket');
+      return __("MantisBT","mantis");
    }
 
    static function canCreate() {

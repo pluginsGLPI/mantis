@@ -60,12 +60,16 @@ class PluginMantisMantisws{
       $conf = new PluginMantisConfig();
       $conf->getFromDB(1);
 
-      $this->_host     = $conf->fields["host"];
-      $this->_url      = $conf->fields["url"];
-      $this->_login    = $conf->fields["login"];
-      $this->_password = $conf->fields["pwd"];
+      if(!empty($conf->fields["host"]) && !empty($conf->fields["url"])) {
+        $this->_host     = $conf->fields["host"];
+        $this->_url      = $conf->fields["url"];
+        $this->_login    = $conf->fields["login"];
+        $this->_password = $conf->fields["pwd"];
 
-      $this->_client = new SoapClient("http://" . $this->_host . "/" . $this->_url);
+        $this->_client = new SoapClient("http://" . $this->_host . "/" . $this->_url);
+      } else {
+        return false;
+      }
    }
 
    /**
@@ -78,6 +82,11 @@ class PluginMantisMantisws{
     * @throws Exception
     */
   function testConnectionWS($host, $url, $login, $password) {
+
+      if(empty($host) OR empty($url)) {
+         return false;
+      }
+
       try {
          $client = new SoapClient("http://" . $host . "/" . $url);
          $client->mc_login($login, $password);

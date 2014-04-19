@@ -41,11 +41,6 @@
  */
    
 include('../../../inc/includes.php');
-require_once('../inc/mantisWS.class.php');
-require_once('../inc/mantis.class.php');
-require_once('../inc/mantisIssue.class.php');
-
-global $CFG_GLPI;
 
 if (isset($_POST['action'])) {
 
@@ -117,7 +112,7 @@ if (isset($_POST['action'])) {
 
       case 'LinkIssueGlpiToProjectMantis':
          $issue = new PluginMantisIssue();
-         echo $issue->linkisuetoProjectMantis($_POST);
+         echo $issue->linkisuetoProjectMantis();
          break;
 
       case 'deleteLinkMantis':

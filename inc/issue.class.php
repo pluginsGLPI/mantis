@@ -63,10 +63,9 @@ class PluginMantisIssue {
 
    /**
     * Function to create an issue mantisBT
-    * @param $_POST
     * @return bool|string
     */
-   public function linkisuetoProjectMantis($_POST) {
+   public function linkisuetoProjectMantis() {
       global $CFG_GLPI, $DB;
 
       $categorie         = $_POST['categorie'];
@@ -279,14 +278,11 @@ class PluginMantisIssue {
          $note .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
       }
 
-      require_once("mantisStructIssueNoteData.class.php");
       $issueNote = new PluginMantisStructissuenotedata();
       $issueNote->setDate_submitted(date("Y-m-d"));
       $issueNote->setText($note);
 
-
       return $ws->addNoteToIssue($idIssueCreate, $issueNote);
-
    }
 
 

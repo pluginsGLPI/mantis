@@ -41,7 +41,6 @@
  */
    
 include ('../../../inc/includes.php');
-require_once('../inc/config.class.php');
 
 Html::header(__("Setup - MantisBT","mantis"), $_SERVER['PHP_SELF'],
     'plugins', 'Mantis', 'configuration');

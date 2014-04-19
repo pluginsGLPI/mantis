@@ -41,7 +41,6 @@
  */
    
 include('../../../inc/includes.php');
-require_once('../inc/mantis.class.php');
 
 $mantis = new PluginMantisMantis();
 
@@ -67,9 +66,3 @@ if (isset($_GET['action']) && $_GET['action'] == 'linkToIssue') {
    $mantis->getFormToDelLinkOrIssue($id_link, $id_ticket, $id_mantis);
    Html::popFooter();
 }
-
-
-
-
-
-

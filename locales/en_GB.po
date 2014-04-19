@@ -16,6 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: setup.php:82
+msgid "MantisBT synchronisation"
+msgstr "MantisBT synchronisation"
+
+#: mantis.class.php:188
+msgid "MantisBT"
+msgstr "MantisBT"
+
 #: ajax/ajax.php:55
 msgid "MantisBT issue does not exist"
 msgstr "MantisBT issue does not exist"
@@ -199,6 +207,18 @@ msgstr "Info ticket MantisBT"
 #: inc/mantis.class.php:409
 msgid "GLPI ticket is not attached to any MantisBT ticket(s)"
 msgstr "GLPI ticket is not attached to any MantisBT ticket(s)"
+
+#: inc/mantis.class.php:70
+msgid "Starting update tickets cron"
+msgstr "Starting update tickets cron"
+
+#: inc/mantis.class.php:70
+msgid "Ending update tickets cron"
+msgstr "Ending update tickets cron"
+
+#: inc/mantis.class.php:70
+msgid "Error on launching updateTicket cron because MantisBT status is not providing."
+msgstr "Error on launching updateTicket cron because MantisBT status is not providing."
 
 #: inc/mantisIssue.class.php:848 inc/mantisIssue.class.php:865
 msgid "Error: The process was interrupted"

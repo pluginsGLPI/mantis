@@ -16,6 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: setup.php:82
+msgid "MantisBT synchronisation"
+msgstr "Synchronisation avec MantisBT"
+
+#: mantis.class.php:188
+msgid "MantisBT"
+msgstr "MantisBT"
+
 #: ajax/ajax.php:55
 msgid "MantisBT issue does not exist"
 msgstr "Le ticket MantisBT n'éxiste pas"
@@ -199,6 +207,18 @@ msgstr "Info(s) du/des ticket(s) MantisBT"
 #: inc/mantis.class.php:409
 msgid "GLPI ticket is not attached to any MantisBT ticket(s)"
 msgstr "Ce ticket GLPI n'est lié à aucun ticket MantisBT"
+
+#: inc/mantis.class.php:70
+msgid "Starting update tickets cron"
+msgstr "Début de la mise à jour automatique des tickets GLPI"
+
+#: inc/mantis.class.php:70
+msgid "Ending update tickets cron"
+msgstr "Fin de la mise à jour automatique des tickets GLPI"
+
+#: inc/mantis.class.php:70
+msgid "Error on launching updateTicket cron because MantisBT status is not providing."
+msgstr "Impossible de lancer la mise à jour automatique car l'état MantisBT n'est pas configuré"
 
 #: inc/mantisIssue.class.php:848 inc/mantisIssue.class.php:865
 msgid "Error: The process was interrupted"

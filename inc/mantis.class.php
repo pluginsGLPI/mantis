@@ -68,7 +68,7 @@ class PluginMantisMantis extends CommonDBTM {
 
    static function updateTicket() {
 
-      Toolbox::logInFile("mantis", "Début de la mise à jour des tickets Glpi\n");
+      Toolbox::logInFile("mantis", __("Starting update tickets cron", "mantis"));
 
       $list_ticket_mantis = array();
 
@@ -99,7 +99,6 @@ class PluginMantisMantis extends CommonDBTM {
 
             }
 
-            Toolbox::logInFile("mantis", "Pour le ticket Glpi ".$row['idTicket']." \n");
             if(self::getAllSameStatusChoiceByUser ($list_ticket_mantis,
                   $etat_mantis) && $ticket_glpi->fields['status'] != 5){
 
@@ -109,20 +108,16 @@ class PluginMantisMantis extends CommonDBTM {
                $ticket_glpi->fields['solvedate'] = date("Y-m-d");
                $ticket_glpi->fields['solution'] = $info_solved;
                $ticket_glpi->update($ticket_glpi->fields);
-
-               Toolbox::logInFile("mantis", "Mise à jour du ticket ".$line['idTicket']."\n");
             }
 
          }
 
-         Toolbox::logInFile("mantis", "La mise à jour des tickets Glpi est terminé\n");
+         Toolbox::logInFile("mantis", __("Ending update tickets cron", "mantis"));
 
       } else {
-         Toolbox::logInFile("mantis", "La tâche n'a pu être démarré car l'état mantis n'est pas
-         renseigné \n");
+         Toolbox::logInFile("mantis", 
+          __("Error on launching updateTicket cron because MantisBT status is not providing.", "mantis"));
       }
-
-
    }
 
    private static function getAllSameStatusChoiceByUser($list_ticket_mantis,$status){
@@ -190,7 +185,7 @@ class PluginMantisMantis extends CommonDBTM {
       $id = $_SESSION['glpiactiveprofile']['id'];
       if (PluginMantisProfile::canViewMantis($id) || PluginMantisProfile::canWriteMantis($id))
          if ($item->getType() == 'Ticket') {
-            return 'MantisBT';
+            return __("MantisBT","mantis");
          }
       return '';
    }
@@ -252,8 +247,7 @@ class PluginMantisMantis extends CommonDBTM {
 
       } else {
 
-         $content = "";
-         $content .= "<div class='center'>";
+         $content = "<div class='center'>";
          $content .= "<img src='" . $CFG_GLPI["root_doc"] ."/pics/warning.png'  alt='warning'>";
          $content .= "<b>". __("Thank you configure the mantis plugin", "mantis") . "</b>";
          $content .= "</div>";
@@ -269,8 +263,7 @@ class PluginMantisMantis extends CommonDBTM {
    public function displayBtnToLinkissueGlpi($item) {
       global $CFG_GLPI;
 
-      $content = "";
-      $content .= "<div id='popupLinkGlpiIssuetoMantisIssue' ></div>";
+      $content = "<div id='popupLinkGlpiIssuetoMantisIssue' ></div>";
       $content .= "<div id='popupLinkGlpiIssuetoMantisProject' ></div>";
 
       Ajax::createModalWindow('popupLinkGlpiIssuetoMantisIssue',
@@ -322,13 +315,11 @@ class PluginMantisMantis extends CommonDBTM {
       $ws->initializeConnection();
       $issue = $ws->getIssueById($id_mantis);
 
-      $content = "";
-
-      $content .= "<form action='#' id=".$id_link.">";
+      $content = "<form action='#' id=".$id_link.">";
 
       $content .= "<table id=".$id_link." class='tab_cadre' cellpadding='5' >";
-      $content .= "<th colspan='2'>".__("What do you do ?","mantis")."</th>";
 
+      $content .= "<th colspan='2'>".__("What do you do ?","mantis")."</th>";
 
       $content .= "<tr class='tab_bg_1' >";
       $content .= "<td><INPUT type='checkbox'  id='deleteLink".$id_link."' >";
@@ -380,9 +371,7 @@ class PluginMantisMantis extends CommonDBTM {
    public function getFormForLinkGlpiTicketToMantisTicket($id_ticket) {
       global $CFG_GLPI;
 
-      $content = "";
-
-      $content.= "<form action='#' >";
+      $content = "<form action='#' >";
       $content.= "<table class='tab_cadre'cellpadding='5'>";
       $content.= "<th colspan='6'>".__('Link to an existing MantisBT ticket','mantis')."</th>";
 
@@ -400,7 +389,6 @@ class PluginMantisMantis extends CommonDBTM {
       $content.= "<img id='waitForLinkIssueGlpiToIssueMantis'  src='".$CFG_GLPI['root_doc'].
          "/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
       $content.= "</tr>";
-
 
       $content.= "<input type='hidden' name='idTicket' id='idTicket' value=" .  $id_ticket . " >";
       $content.= "<input type='hidden' name='user' id='user' value=" . Session::getLoginUserID(). " >";
@@ -421,8 +409,7 @@ class PluginMantisMantis extends CommonDBTM {
    public function getFormForLinkGlpiTicketToMantisProject($id_ticket) {
       global $CFG_GLPI;
 
-      $content = "";
-      $content .= "<form action='#' >";
+      $content  = "<form action='#' >";
       $content .= "<table id='table2' class='tab_cadre' cellpadding='5'>";
       $content .= "<tr class='headerRow'><th colspan='6'>".
          __("Create a new MantisBT ticket","mantis")."</th></tr>";

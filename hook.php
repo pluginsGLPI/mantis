@@ -44,8 +44,8 @@
  * function to install the plugin
  * @return boolean
  */
-function plugin_mantis_install()
-{
+function plugin_mantis_install() {
+
    require_once('inc/mantis.class.php');
    PluginMantisMantis::install();
 
@@ -76,14 +76,10 @@ function plugin_mantis_install()
 
       $DB->queryOrDie($query, $DB->error());
 
-
       //creation du premier accès nécessaire lors de l'installation du plugin
       include_once("inc/profile.class.php");
       PluginMantisProfile::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
-
-}
-
-
+   }
 
     //création de la table pour la configuration du plugin
     if (!TableExists("glpi_plugin_mantis_configs")) {
@@ -102,11 +98,10 @@ function plugin_mantis_install()
         $query = "INSERT INTO glpi_plugin_mantis_configs
                        (id, host,url,login,pwd)
                 VALUES (NULL, '','','','')";
-        $DB->query($query) or die("erreur lors de l'insertion des valeurs par défaut dans la table de configuration " . $DB->error());
-
-        return true;
+        $DB->query($query) or die("error in glpi_plugin_mantis_configs table" . $DB->error());
     }
 
+    return true;
 }
 
 
@@ -114,11 +109,7 @@ function plugin_mantis_install()
  * function to uninstall the plugin
  * @return boolean
  */
-function plugin_mantis_uninstall()
-{
-
-
-
+function plugin_mantis_uninstall() {
     global $DB;
 
     $tables = array("glpi_plugin_mantis_configs",
@@ -131,6 +122,6 @@ function plugin_mantis_uninstall()
 
    require_once('inc/mantis.class.php');
    PluginMantisMantis::uninstall();
-    return true;
+   return true;
 }
 

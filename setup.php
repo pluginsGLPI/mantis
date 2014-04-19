@@ -79,8 +79,8 @@ function plugin_init_mantis() {
  * @return array
  */
 function plugin_version_mantis() {
-   return array(  'name'            => 'MantisBT',
-                  'version'         => '1.0.0',
+   return array(  'name'            => __("MantisBT synchronisation", "mantis"),
+                  'version'         => '0.84+1.0',
                   'author'          => 'Stanislas KITA (teclib\')',
                   'license'         => 'GPLv3',
                   'homepage'        => 'https://forge.indepnet.net/projects/mantis',

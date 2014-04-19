@@ -85,16 +85,20 @@ msgid "Thank you configure the mantis plugin"
 msgstr "Thank you configure the mantis plugin"
 
 #: inc/mantis.class.php:114
-msgid "Link a Glpi ticket to MantisBT"
-msgstr "Link a Glpi ticket to MantisBT"
+msgid "MantisBT actions"
+msgstr "MantisBT actions"
 
-#: inc/mantis.class.php:120
-msgid "Link to a ticket MantisBT"
-msgstr "Link to a ticket MantisBT"
+#: inc/mantis.class.php:504
+msgid "Already MantisBT tickets linked"
+msgstr "Already MantisBT tickets linked"
+
+#: inc/mantis.class.php:120 inc/mantis.class.php:382
+msgid "Link to an existing MantisBT ticket"
+msgstr "Link to an existing MantisBT ticket"
 
 #: inc/mantis.class.php:124
-msgid "Create MantisBT ticket"
-msgstr "Create MantisBT ticket"
+msgid "Create a new MantisBT ticket"
+msgstr "Create a new MantisBT ticket"
 
 #: inc/mantis.class.php:144
 msgid "What do you do ?"
@@ -124,13 +128,21 @@ msgstr "Delete"
 msgid "Id Ticket"
 msgstr "Id Ticket *"
 
-#: inc/mantis.class.php:241
-msgid "Link a Glpi ticket to a MantisBT project"
-msgstr "Link a Glpi ticket to a MantisBT project"
-
 #: inc/mantis.class.php:251 inc/mantis.class.php:326
 msgid "Category"
 msgstr "Category"
+
+#: inc/mantis.class.php:510
+msgid "Project"
+msgstr "Project"
+
+#: inc/mantis.class.php:511
+msgid "Status"
+msgstr "Status"
+
+#: inc/mantis.class.php:512
+msgid "OpenDate"
+msgstr "OpenDate"
 
 #: inc/mantis.class.php:257 inc/mantis.class.php:325
 msgid "Summary"
@@ -157,8 +169,8 @@ msgid "Link"
 msgstr "Link"
 
 #: inc/mantis.class.php:324
-msgid "Id"
-msgstr "Id"
+msgid "ID"
+msgstr "ID"
 
 #: inc/mantis.class.php:327
 msgid "MantisBT status"

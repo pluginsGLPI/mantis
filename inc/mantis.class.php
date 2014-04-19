@@ -237,13 +237,17 @@ class PluginMantisMantis extends CommonDBTM {
       if ($ws->testConnectionWS($conf->getField('host'), $conf->getField('url'),
             $conf->getField('login'), $conf->getField('pwd'))) {
 
-         //if user profil can write
-         if (PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
-            $this->displayBtnToLinkissueGlpi($item);
+
+         // if canView or canWrite
+         if (PluginMantisProfile::canViewMantis($_SESSION['glpiactiveprofile']['id'])
+             || PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
+
             $this->getFormForDisplayInfo($item);
-         //if user can view
-         } else if (PluginMantisProfile::canViewMantis($_SESSION['glpiactiveprofile']['id'])) {
-            $this->getFormForDisplayInfo($item);
+
+            // if canWrite
+            if (PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
+               $this->displayBtnToLinkissueGlpi($item);
+            }
          }
 
       } else {
@@ -271,30 +275,33 @@ class PluginMantisMantis extends CommonDBTM {
 
       Ajax::createModalWindow('popupLinkGlpiIssuetoMantisIssue',
          $CFG_GLPI["root_doc"] . '/plugins/mantis/front/mantis.form.php?action=linkToIssue&idTicket=' .
-         $item->fields['id'], array('title'  => 'Lier ticket Glpi',
+         $item->fields['id'], array('title'  => __("MantisBT actions", "mantis"),
                                     'width'  => 520,
                                     'height' => 115));
 
       Ajax::createModalWindow('popupLinkGlpiIssuetoMantisProject',
          $CFG_GLPI["root_doc"] . '/plugins/mantis/front/mantis.form.php?action=linkToProject&idTicket=' .
-         $item->fields['id'], array('title'  => 'Lier ticket Glpi',
+         $item->fields['id'], array('title'  => __("MantisBT actions", "mantis"),
                                     'width'  => 620,
                                     'height' => 390));
 
       $content .= "<table id='table1'  class='tab_cadre_fixe' >";
-      $content .= "<th colspan='6'>".__("Link a Glpi ticket to MantisBT", "mantis")."</th>";
+      $content .= "<th colspan='6'>".__("MantisBT actions", "mantis")."</th>";
 
       $content .= "<tr class='tab_bg_1'>";
 
       $content .= "<td style='text-align: center;'>";
       $content .= "<input  onclick='popupLinkGlpiIssuetoMantisIssue.show();'  value='" .
-         __('Link to a ticket MantisBT', 'mantis') ."' class='submit'></td>";
+         __('Link to an existing MantisBT ticket', 'mantis') ."' class='submit' 
+         style='width : 200px;'></td>";
 
       $content .= "<td style='text-align: center;'>";
       $content .= "<input  onclick='popupLinkGlpiIssuetoMantisProject.show();'  value='" .
-         __('Create MantisBT ticket', 'mantis') ."' class='submit'></td>";
+         __('Create a new MantisBT ticket', 'mantis') ."' class='submit'
+         style='width : 250px;'></td>";
 
       $content .= "</tr>";
+      $content .= "</table>";
 
       echo $content;
 
@@ -377,7 +384,7 @@ class PluginMantisMantis extends CommonDBTM {
 
       $content.= "<form action='#' >";
       $content.= "<table class='tab_cadre'cellpadding='5'>";
-      $content.= "<th colspan='6'>Lier un ticket Glpi à un ticket MantisBT</th>";
+      $content.= "<th colspan='6'>".__('Link to an existing MantisBT ticket','mantis')."</th>";
 
       $content.= "<tr class='tab_bg_1'>";
       $content.= "<th width='100'>".__('Id Ticket','mantis')."</th>";
@@ -418,7 +425,7 @@ class PluginMantisMantis extends CommonDBTM {
       $content .= "<form action='#' >";
       $content .= "<table id='table2' class='tab_cadre' cellpadding='5'>";
       $content .= "<tr class='headerRow'><th colspan='6'>".
-         __("Link a Glpi ticket to a MantisBT project","mantis")."</th></tr>";
+         __("Create a new MantisBT ticket","mantis")."</th></tr>";
 
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>Nom du projet</th>";
@@ -493,15 +500,16 @@ class PluginMantisMantis extends CommonDBTM {
 
       if ($res->num_rows > 0) {
 
-         $content .= "<table class='tab_cadre_fixe'>";
+         $content .= "<table id='table1'  class='tab_cadre_fixe' >";
+         $content .= "<th colspan='8'>".__("Already MantisBT tickets linked", "mantis")."</th>";
 
          $content .= "<tr class='headerRow'>";
          $content .= "<th>" . __("Link", "mantis") . "</th>";
-         $content .= "<th>" . __("Id", "mantis") . "</th>";
+         $content .= "<th>" . __("ID", "mantis") . "</th>";
          $content .= "<th>" . __("Summary", "mantis") . "</th>";
-         $content .= "<th>" . __("Category", "mantis") . "</th>";
-         $content .= "<th>" . __("MantisBT status", "mantis") . "</th>";
-         $content .= "<th>" . __("Date", "mantis") . "</th>";
+         $content .= "<th>" . __("Project", "mantis") . "</th>";
+         $content .= "<th>" . __("Status", "mantis") . "</th>";
+         $content .= "<th>" . __("OpenDate", "mantis") . "</th>";
          $content .= "<th>" . __("User", "mantis") . "</th>";
          $content .= "<th></th>";
          $content .= "</tr>";
@@ -529,12 +537,12 @@ class PluginMantisMantis extends CommonDBTM {
             if (!$issue) {
 
                $content .= "<tr>";
-               $content .= "<td class = 'center'><img src='".$CFG_GLPI['root_doc'].
+               $content .= "<td class='center'><img src='".$CFG_GLPI['root_doc'].
                   "/plugins/mantis/pics/cross16.png'/></td>";
                $content .= "<td>" . $row["idMantis"] . "</td>";
 
                if ($can_write) {
-                  $content .= "<td colspan='5'>" .
+                  $content .= "<td class='center' colspan='5'>" .
                      __('This ticket does not in the  MantisBT database', 'mantis') . "</td>";
                   $content .= "<td class = 'center'> <img src='".$CFG_GLPI['root_doc'].
                      "/plugins/mantis/pics/bin16.png'  onclick='popupToDelete" . $row['id'] .
@@ -542,23 +550,24 @@ class PluginMantisMantis extends CommonDBTM {
                      "/></td>";
                   $content .= "</tr>";
                } else {
-                  $content .= "<td colspan='6'>" . __('This ticket does not in the  MantisBT database','mantis') . "</td>";
+                  $content .= "<td colspan='6' class='center'>" 
+                     . __('This ticket does not in the  MantisBT database','mantis') . "</td>";
                   $content .= "</tr>";
                }
 
             } else {
 
                $content .= "<tr>";
-               $content .= "<td class = 'center'>";
+               $content .= "<td class='center'>";
                $content .= "<a href='http://".$conf->fields['host']."/mantis/view.php?id=" . $issue->id . "' target='_blank' >";
                $content .= "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/arrowRight16.png'/>";
                $content .= "</a></td>";
-               $content .= "<td>" . $issue->id . "</td>";
-               $content .= "<td>" . stripslashes($issue->summary) . "</td>";
-               $content .= "<td>" . $issue->project->name . "</td>";
-               $content .= "<td>" . $issue->status->name . "</td>";
-               $content .= "<td>" . $row["dateEscalade"] . "</td>";
-               $content .= "<td>" . $user->getField('realname') . " " . $user->getfield('firstname') . "</td>";
+               $content .= "<td class='center'>" . $issue->id . "</td>";
+               $content .= "<td class='center'>" . stripslashes($issue->summary) . "</td>";
+               $content .= "<td class='center'>" . $issue->project->name . "</td>";
+               $content .= "<td class='center'>" . $issue->status->name . "</td>";
+               $content .= "<td class='center'>" . $row["dateEscalade"] . "</td>";
+               $content .= "<td class='center'>" . $user->getName() . "</td>";
 
                if ($can_write) {
                   $content .= "<td class = 'center'>";

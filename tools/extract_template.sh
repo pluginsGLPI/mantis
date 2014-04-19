@@ -1,8 +1,8 @@
 #!/bin/bash
 
 soft='GLPI - MantisBT'
-version='1.0.0'
-email='skita@teclib.com'
+version='1.0'
+email='teclib.com'
 copyright='teclib'
 
 #xgettext *.php */*.php -copyright-holder='$copyright' --package-name=$soft --package-version=$version --msgid-bugs-address=$email -o locales/en_GB.po -L PHP --from-code=UTF-8 --force-po  -i --keyword=_n:1,2 --keyword=__ --keyword=_e

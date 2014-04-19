@@ -1,13 +1,49 @@
 <?php
-require_once("mantisWS.class.php");
-require_once("mantis.class.php");
-include_once("config.class.php");
+
+/*
+   ------------------------------------------------------------------------
+   GLPI Plugin MantisBT
+   Copyright (C) 2014 by the GLPI Plugin MantisBT Development Team.
+
+   https://forge.indepnet.net/projects/mantis
+   ------------------------------------------------------------------------
+
+   LICENSE
+
+   This file is part of GLPI Plugin MantisBT project.
+
+   GLPI Plugin MantisBT is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+
+   GLPI Plugin MantisBT is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with GLPI Plugin MantisBT. If not, see <http://www.gnu.org/licenses/>.
+
+   ------------------------------------------------------------------------
+
+   @package   GLPI Plugin MantisBT
+   @author    Stanislas Kita (teclib')
+   @co-author François Legastelois (teclib')
+   @co-author Le Conseil d'Etat
+   @copyright Copyright (c) 2014 GLPI Plugin MantisBT Development team
+   @license   GPLv3 or (at your option) any later version
+              http://www.gnu.org/licenses/gpl.html
+   @link      https://forge.indepnet.net/projects/mantis
+   @since     2014
+
+   ------------------------------------------------------------------------
+ */
 
 /**
  * Class PluginMantis -> class générale du plugin Mantis
  */
-class PluginMantisMantis extends CommonDBTM
-{
+class PluginMantisMantis extends CommonDBTM {
 
    static function install() {
       $cron = new CronTask;
@@ -89,7 +125,6 @@ class PluginMantisMantis extends CommonDBTM
 
    }
 
-
    private static function getAllSameStatusChoiceByUser($list_ticket_mantis,$status){
       $diferrent  =false;
       if(count($list_ticket_mantis) == 0 )return false;
@@ -108,8 +143,10 @@ class PluginMantisMantis extends CommonDBTM
     */
    private static function getTicketWhichIsLinked() {
          global $DB;
-         return $DB->query("SELECT DISTINCT (`glpi_plugin_mantis_mantis`.`idTicket`) FROM `glpi_plugin_mantis_mantis`, `glpi_tickets`
-         WHERE `glpi_plugin_mantis_mantis`.`idTicket` = `glpi_tickets`.`id`");
+
+         return $DB->query("SELECT DISTINCT (`glpi_plugin_mantis_mantis`.`idTicket`) 
+                            FROM `glpi_plugin_mantis_mantis`, `glpi_tickets`
+                            WHERE `glpi_plugin_mantis_mantis`.`idTicket` = `glpi_tickets`.`id`");
    }
 
 
@@ -120,6 +157,7 @@ class PluginMantisMantis extends CommonDBTM
     */
    private static function getLinkBetweenTicketGlpiAndTicketMantis($idTicket) {
       global $DB;
+
       return $DB->query("SELECT `glpi_plugin_mantis_mantis`.*
                         FROM `glpi_plugin_mantis_mantis` WHERE `glpi_plugin_mantis_mantis`
                         .`idTicket` = '" . Toolbox::cleanInteger($idTicket)."'");
@@ -199,7 +237,6 @@ class PluginMantisMantis extends CommonDBTM
       if ($ws->testConnectionWS($conf->getField('host'), $conf->getField('url'),
             $conf->getField('login'), $conf->getField('pwd'))) {
 
-
          //if user profil can write
          if (PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
             $this->displayBtnToLinkissueGlpi($item);
@@ -220,7 +257,6 @@ class PluginMantisMantis extends CommonDBTM
       }
 
    }
-
 
     /**
      * function to show action give by plugin
@@ -273,8 +309,8 @@ class PluginMantisMantis extends CommonDBTM
     * @param $id_mantis
     */
    public function getFormToDelLinkOrIssue($id_link, $id_ticket, $id_mantis){
-
       global $CFG_GLPI;
+
       $ws = new PluginMantisMantisws();
       $ws->initializeConnection();
       $issue = $ws->getIssueById($id_mantis);
@@ -325,7 +361,6 @@ class PluginMantisMantis extends CommonDBTM
       $content .= Html::closeForm(false);
 
       echo $content;
-
    }
 
 
@@ -336,7 +371,6 @@ class PluginMantisMantis extends CommonDBTM
     * @param $id_ticket
     */
    public function getFormForLinkGlpiTicketToMantisTicket($id_ticket) {
-
       global $CFG_GLPI;
 
       $content = "";
@@ -370,7 +404,6 @@ class PluginMantisMantis extends CommonDBTM
       $content.= Html::closeForm(false);
 
       echo $content;
-
    }
 
 
@@ -379,7 +412,6 @@ class PluginMantisMantis extends CommonDBTM
     * @param $id_ticket
     */
    public function getFormForLinkGlpiTicketToMantisProject($id_ticket) {
-
       global $CFG_GLPI;
 
       $content = "";
@@ -399,7 +431,7 @@ class PluginMantisMantis extends CommonDBTM
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>".__("Category","mantis")."</th><td>";
       $content .= Dropdown::showFromArray('categorie', array(),
-         array('rand' => '' ,'display' => false));
+                                          array('rand' => '' ,'display' => false));
       $content .= "</td></tr>";
 
       $content .= "<tr class='tab_bg_1'>";
@@ -442,7 +474,6 @@ class PluginMantisMantis extends CommonDBTM
       $content .= Html::closeForm(false);
 
       echo $content;
-
    }
 
 
@@ -451,10 +482,10 @@ class PluginMantisMantis extends CommonDBTM
     * @param $item
     */
    private function getFormForDisplayInfo($item) {
+      global $CFG_GLPI, $DB;
 
-      GLOBAL $DB;
-      global $CFG_GLPI;
       $can_write = PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id']);
+
       $content = "";
 
       //on recupere l'ensemble des lien entre ticket glpi et ticket(s) mantis
@@ -485,8 +516,6 @@ class PluginMantisMantis extends CommonDBTM
             $user->getFromDB($row["user"]);
             $issue = $ws->getIssueById($row["idMantis"]);
             $conf->getFromDB(1);
-
-
 
             $content .= '<div id=\'popupToDelete' . $row['id'] . '\'></div>';
 
@@ -556,7 +585,6 @@ class PluginMantisMantis extends CommonDBTM
       }
 
       echo $content;
-
    }
 
 
@@ -600,6 +628,5 @@ class PluginMantisMantis extends CommonDBTM
       return $DB->query("SELECT `glpi_plugin_mantis_mantis`.* FROM `glpi_plugin_mantis_mantis`");
 
    }
-
 
 }

@@ -1,24 +1,47 @@
 <?php
-/**
- * File for class MantisStructProjectData
- * @package Mantis
- * @subpackage Structs
- * @author WsdlToPhp Team <contact@wsdltophp.fr>
- * @version 20140325-01
- * @date 2014-03-26
+
+/*
+   ------------------------------------------------------------------------
+   GLPI Plugin MantisBT
+   Copyright (C) 2014 by the GLPI Plugin MantisBT Development Team.
+
+   https://forge.indepnet.net/projects/mantis
+   ------------------------------------------------------------------------
+
+   LICENSE
+
+   This file is part of GLPI Plugin MantisBT project.
+
+   GLPI Plugin MantisBT is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+
+   GLPI Plugin MantisBT is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with GLPI Plugin MantisBT. If not, see <http://www.gnu.org/licenses/>.
+
+   ------------------------------------------------------------------------
+
+   @package   GLPI Plugin MantisBT
+   @author    Stanislas Kita (teclib')
+   @co-author François Legastelois (teclib')
+   @co-author Le Conseil d'Etat
+   @copyright Copyright (c) 2014 GLPI Plugin MantisBT Development team
+   @license   GPLv3 or (at your option) any later version
+              http://www.gnu.org/licenses/gpl.html
+   @link      https://forge.indepnet.net/projects/mantis
+   @since     2014
+
+   ------------------------------------------------------------------------
  */
-/**
- * This class stands for MantisStructProjectData originally named ProjectData
- * Meta informations extracted from the WSDL
- * - from schema : var/wsdltophp.com/storage/wsdls/a80caff3c8dd52f94a68432974b9ab45/wsdl.xml
- * @package Mantis
- * @subpackage Structs
- * @author WsdlToPhp Team <contact@wsdltophp.fr>
- * @version 20140325-01
- * @date 2014-03-26
- */
-class PluginMantisProject
-{
+
+class PluginMantisProject {
+    
     /**
      * The id
      * Meta informations extracted from the WSDL

@@ -54,6 +54,7 @@ $JS = <<<JAVASCRIPT
  */
 function testConnexionMantisWS() {
 
+ var dropdown = $("#dropdown_etatMantis");
    var div = $("#infoAjax");
 
    $.ajax({ // fonction permettant de faire de l'ajax
@@ -65,7 +66,17 @@ function testConnexionMantisWS() {
          "login=" + $("#login").val() + "&" +
          "pwd=" + $("#pwd").val(), // données à transmettre
       success: function (msg) { // si l'appel a bien fonctionné
+
+
          div.html(msg);
+
+          if (msg.indexOf('check') != -1) {
+            addStateToSelect();
+          }else{
+          removeOptionOfSelect(dropdown);
+          }
+
+
       },
       error: function () {
          div.html('Ajax Problem !');
@@ -195,6 +206,50 @@ function findProjectByName() {
    return false; // permet de rester sur la même page à la soumission du formulaire
 
 }
+
+
+function addStateToSelect(){
+
+  var dropdown = $("#dropdown_etatMantis");
+
+       $.ajax({ // fonction permettant de faire de l'ajax
+      type: "POST", // methode de transmission des données au fichier php
+      url: "{$root_ajax}", // url du fichier php
+      data: "action=getStateMantis&" +
+         "host=" + $("#host").val() + "&" +
+         "url=" + $("#url").val() + "&" +
+         "login=" + $("#login").val() + "&" +
+         "pwd=" + $("#pwd").val(), // données à transmettre
+      success: function (msg) { // si l'appel a bien fonctionné
+
+         if (msg == false) {
+
+         } else {
+            var myOptions = msg.toString().split(',');
+
+            var mySelect = dropdown;
+
+            removeOptionOfSelect(dropdown);
+
+            $.each(myOptions, function (val, text) {
+               mySelect.append(
+                  $('<option></option>').val(val).html(text)
+               );
+            });
+         }
+
+      },
+      error: function () {
+         alert('pb ajax');
+      }
+
+
+   });
+
+
+}
+
+
 
 function addOptionToSelect(dropdown, name) {
 

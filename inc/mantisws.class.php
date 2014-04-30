@@ -51,6 +51,15 @@ class PluginMantisMantisws{
    function __construct() {}
 
 
+
+    function getConnexion($host , $url ){
+        $this->_host     = $host;
+        $this->_url      = $url;
+
+        $this->_client = new SoapClient("http://" . $this->_host . "/" . $this->_url);
+    }
+
+
    /**
     * function to initialize the connection to the Web service
     * with the configuration settings stored in BDD
@@ -67,6 +76,7 @@ class PluginMantisMantisws{
         $this->_password = $conf->fields["pwd"];
 
         $this->_client = new SoapClient("http://" . $this->_host . "/" . $this->_url);
+        return true;
       } else {
         return false;
       }
@@ -304,13 +314,14 @@ class PluginMantisMantisws{
     * Get the enumeration for status.
     * @return array
     */
-   public function mc_enum_etas() {
+   public function getStateMantis() {
       try {
          return $this->_client->mc_enum_status($this->_login, $this->_password);
       } catch (SoapFault $e) {
          Toolbox::logInFile('mantis', sprintf(
                __('Error when getting MantisBT states => \'%1$s\'', 'mantis'),
                $e->getMessage()) . "\n");
+          return false;
       }
    }
 
@@ -353,5 +364,6 @@ class PluginMantisMantisws{
    public function getUrl() {
       return $this->_url;
    }
+
 
 }

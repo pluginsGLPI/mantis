@@ -137,20 +137,31 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<td>" 
          . __("Close Glpi ticket when status ticket MantisBT is", "mantis") . "</td>";
       $content .= "<td>";
+       /*
       $content .= DropDown::showFromArray('etatMantis', 
                            PluginMantisIssue::$state_mantis, array(
                               'rand'      => '',
                               'value'     => $this->fields["etatMantis"],
-                              'display'   => false));
+                              'display'   => false));*/
+
+       $content .= Dropdown::showFromArray('etatMantis', array(),
+           array('rand' => '', 'display' => false));
+
+      if (empty($this->fields["etatMantis"])) {
+          $content .= " (".$this->fields["etatMantis"].") ";
+      }
+
+
+
       $content .= "</td>";
-      $content .= "<td></td>";
+      $content .= "<td>Tester la connexion pour faire apparaître les états Mantis</td>";
       $content .= "</tr>";
 
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td><input type='hidden' name='id' value='1' class='submit'>";
       $content .= "<input id='update' type='submit' name='update' value='" 
                                              . __("Update", "mantis") . "' class='submit'></td>";
-      $content .= "<td><input id='test' onclick='testConnexionMantisWS();' value='" 
+      $content .= "<td><input id='test' onclick='testConnexionMantisWS();'  value='"
                                  . __("Test the connection", "mantis") . "' class='submit'></td>";
       $content .= "<td><div id='infoAjax'/></td>";
       $content .= "</tr>";

@@ -79,6 +79,35 @@ if (isset($_POST['action'])) {
          else echo "<img id='resultImg' src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/cross24.png'/>";
          break;
 
+
+       case 'getStateMantis':
+
+           $ws = new PluginMantisMantisws();
+           $ws->getConnexion($_POST['host'], $_POST['url'], $_POST['login'], $_POST['pwd']);
+           $result = $ws->getStateMantis();
+
+
+
+
+           if (!$result) echo false;
+           else {
+                $states = "";
+               $i = 0;
+               foreach ($result as &$state) {
+                   if($i == 0) $states .= $state->name;
+                   else $states .= ",".$state->name;
+                   $i++;
+               }
+
+               echo $states;
+           }
+
+
+
+         break;
+
+
+
       case 'getCategoryFromProjectName':
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();

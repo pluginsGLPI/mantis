@@ -85,13 +85,13 @@ function plugin_mantis_install() {
     if (!TableExists("glpi_plugin_mantis_configs")) {
         $query = "CREATE TABLE glpi_plugin_mantis_configs (
                   id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                  host char(16) NOT NULL default '',
-                  url char(255) NOT NULL default '',
-                  login char(32) NOT NULL default '',
-                  pwd char(32) NOT NULL default '',
-                  champsUrlGlpi char(100) NOT NULL default '',
-                  champsGlpi char(100) NOT NULL default '',
-                  etatMantis char(100) NOT NULL default '')";
+                  host varchar(255) NOT NULL default '',
+                  url varchar(255) NOT NULL default '',
+                  login varchar(255) NOT NULL default '',
+                  pwd varchar(255) NOT NULL default '',
+                  champsUrlGlpi varchar(100) NOT NULL default '',
+                  champsGlpi varchar(100) NOT NULL default '',
+                  etatMantis varchar(100) NOT NULL default '')";
         $DB->query($query) or die($DB->error());
 
         //insertion du occcurence dans la table (occurrence par default)

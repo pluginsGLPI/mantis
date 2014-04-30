@@ -377,7 +377,7 @@ class PluginMantisMantis extends CommonDBTM {
 
       $content.= "<tr class='tab_bg_1'>";
       $content.= "<th width='100'>".__('Id Ticket','mantis')."</th>";
-      $content.= "<td ><input size=35 id='idMantis' type='text' name='idMantis'/></td>";
+      $content.= "<td ><input size=35 id='idMantis' type='text' name='idMantis' onkeypress=\"if(event.keyCode==13)linkIssueglpiToIssueMantis();\" /></td>";
       $content.= "</tr>";
 
       $content.= "<tr class='tab_bg_1'>";
@@ -417,7 +417,8 @@ class PluginMantisMantis extends CommonDBTM {
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>Nom du projet</th>";
       $content .= "<td id='tdSearch' height='24'>";
-      $content .= "<input  id='nameMantisProject' type='text'  name='resume' />";
+
+       $content .= "<input  id='nameMantisProject' type='text'  name='resume'  onkeypress=\"if(event.keyCode==13)findProjectByName();\" />";
       $content .= "<img id='searchImg' alt='rechercher' src='".$CFG_GLPI['root_doc']."/pics/aide.png'
          onclick='findProjectByName();'style='cursor: pointer;padding-left:5px; padding-right:5px;'/></td>";
       $content .= "</tr>";
@@ -546,7 +547,7 @@ class PluginMantisMantis extends CommonDBTM {
 
                $content .= "<tr>";
                $content .= "<td class='center'>";
-               $content .= "<a href='http://".$conf->fields['host']."/mantis/view.php?id=" . $issue->id . "' target='_blank' >";
+               $content .= "<a href='http://".$conf->fields['host']."/view.php?id=" . $issue->id . "' target='_blank' >";
                $content .= "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/arrowRight16.png'/>";
                $content .= "</a></td>";
                $content .= "<td class='center'>" . $issue->id . "</td>";

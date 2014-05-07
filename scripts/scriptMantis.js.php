@@ -233,7 +233,7 @@ function addStateToSelect(){
 
             $.each(myOptions, function (val, text) {
                mySelect.append(
-                  $('<option></option>').val(val).html(text)
+                  $('<option></option>').val(text).html(text)
                );
             });
          }

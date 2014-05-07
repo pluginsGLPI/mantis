@@ -52,9 +52,11 @@ class PluginMantisMantisws{
 
 
 
-    function getConnexion($host , $url ){
+    function getConnexion($host , $url , $login, $pwd){
         $this->_host     = $host;
         $this->_url      = $url;
+        $this->_password = $pwd;
+        $this->_login = $login;
 
         $this->_client = new SoapClient("http://" . $this->_host . "/" . $this->_url);
     }

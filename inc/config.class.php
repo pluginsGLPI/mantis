@@ -147,7 +147,7 @@ class PluginMantisConfig extends CommonDBTM {
        $content .= Dropdown::showFromArray('etatMantis', array(),
            array('rand' => '', 'display' => false));
 
-      if (empty($this->fields["etatMantis"])) {
+      if (!empty($this->fields["etatMantis"])) {
           $content .= " (".$this->fields["etatMantis"].") ";
       }
 

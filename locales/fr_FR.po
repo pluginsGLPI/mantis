@@ -368,7 +368,7 @@ msgstr "Pas de suivi </br>"
 
 #: inc/mantisWS.class.php:261
 msgid "Error when getting MantisBT states => '%1$s'"
-msgstr "Erreur lors du chargement des états MantisBT"
+msgstr "Erreur lors du chargement des états MantisBT => '%1$s'"
 
 #: inc/config.class.php:104
 msgid "Close GLPI ticket when status ticket MantisBT is"

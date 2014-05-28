@@ -44,7 +44,10 @@ include('../../../inc/includes.php');
 
 if (isset($_POST['action'])) {
 
+    global $CFG_GLPI;
+
    switch ($_POST['action']) {
+
 
       case 'testConnexionMantisWS':
          error_reporting(0);

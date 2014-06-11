@@ -135,8 +135,18 @@ if (isset($_POST['action'])) {
             if ($mantis->IfExistLink($id_ticket, $id_mantis_issue)) {
                echo __("This Glpi ticket is already linked to this MantisBT ticket","mantis");
             } else {
-               $mantis->add($_POST);
-               echo true;
+
+               $issue = new PluginMantisIssue();
+               $res = $issue->addInfoToIssueMantis($id_ticket,$id_mantis_issue);
+
+                if($res){
+                    $mantis->add($_POST);
+                    echo true;
+                }else{
+                    echo $res;
+                }
+
+
             }
          }
          break;

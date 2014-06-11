@@ -61,6 +61,49 @@ class PluginMantisIssue {
 
     public function __construct() { }
 
+
+
+
+
+    public function addInfoToIssueMantis($idTicket , $idMantis){
+
+        $ws = new PluginMantisMantisws();
+        $ws->initializeConnection();
+
+        $ticket = new Ticket();
+        $ticket->getFromDB($idTicket);
+
+        $issue  = new PluginMantisIssue();
+        $issue = $ws->getIssueById($idMantis);
+
+        $conf = new PluginMantisConfig();
+        $conf->getFromDB(1);
+        $champsGlpi = $conf->fields["champsGlpi"];
+        $champsUrl  = $conf->fields["champsUrlGlpi"];
+
+        $error = "";
+
+        $itilCategorie = new ITILCategory();
+
+        $issue->setAdditional_information($this->getAdditionalInfo($champsGlpi,
+            $champsUrl, $ticket, $itilCategorie));
+
+        if ($this->needNote($champsGlpi, $champsUrl)) {
+            $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie,
+                $champsUrl, $ws, $idMantis);
+            //Erreur lors de la création de la note
+            if (!$id_note) $error .= __("Error creating the note, the process was interrupted",
+                "mantis");
+        }
+
+
+        if ($error != "") return $error;
+        else return true;
+
+    }
+
+
+
    /**
     * Function to create an issue mantisBT
     * @return bool|string

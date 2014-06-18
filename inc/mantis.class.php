@@ -548,7 +548,7 @@ class PluginMantisMantis extends CommonDBTM {
 
                $content .= "<tr>";
                $content .= "<td class='center'>";
-               $content .= "<a href='http://".$conf->fields['host']."/".$implode[0]."/view.php?id=" . $issue->id . "' target='_blank' >";
+               $content .= "<a href='".$conf->fields['host']."/".$implode[0]."/view.php?id=" . $issue->id . "' target='_blank' >";
                $content .= "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/arrowRight16.png'/>";
                $content .= "</a></td>";
                $content .= "<td class='center'>" . $issue->id . "</td>";

@@ -85,7 +85,7 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<td>" . __("MantisBT server IP", "mantis") . "</td>";
       $content .= "<td><input id='host' name='host' type='text' value='" 
                                                        . $this->fields["host"] . "'/></td>";
-      $content .= "<td>ex: 128.65.25.74 or hostname</td>";
+      $content .= "<td>ex: http(s)://128.65.25.74 or http(s)://serveurName</td>";
       $content .= "</tr>";
 
       $content .= "<tr class='tab_bg_1'>";

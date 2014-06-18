@@ -58,7 +58,7 @@ class PluginMantisMantisws{
         $this->_password = $pwd;
         $this->_login = $login;
 
-        $this->_client = new SoapClient("http://" . $this->_host . "/" . $this->_url);
+        $this->_client = new SoapClient($this->_host . "/" . $this->_url);
     }
 
 
@@ -77,7 +77,7 @@ class PluginMantisMantisws{
         $this->_login    = $conf->fields["login"];
         $this->_password = $conf->fields["pwd"];
 
-        $this->_client = new SoapClient("http://" . $this->_host . "/" . $this->_url);
+        $this->_client = new SoapClient($this->_host . "/" . $this->_url);
         return true;
       } else {
         return false;
@@ -100,7 +100,7 @@ class PluginMantisMantisws{
       }
 
       try {
-         $client = new SoapClient("http://" . $host . "/" . $url);
+         $client = new SoapClient($host . "/" . $url);
          $client->mc_login($login, $password);
          return true;
       } catch (SoapFault $sp) {

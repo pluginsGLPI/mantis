@@ -85,7 +85,7 @@ class PluginMantisIssue {
 
         $itilCategorie = new ITILCategory();
 
-        $issue->setAdditional_information($this->getAdditionalInfo($champsGlpi,
+        $this->setAdditional_information($this->getAdditionalInfo($champsGlpi,
             $champsUrl, $ticket, $itilCategorie));
 
         if ($this->needNote($champsGlpi, $champsUrl)) {

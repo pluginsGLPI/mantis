@@ -120,6 +120,7 @@ class PluginMantisIssue {
       $nameMantisProject = $_POST['nameMantisProject'];
       $idUser            = $_POST['user'];
       $date              = $_POST['dateEscalade'];
+      $assignId          = $_POST['assign'];
 
       $ws = new PluginMantisMantisws();
       $ws->initializeConnection();
@@ -146,6 +147,14 @@ class PluginMantisIssue {
          //on creer un projet avec l'id juste pour creer l'issue mantis
          $project = new PluginMantisProject();
          $project->setId($ws->getProjectIdWithName($nameMantisProject));
+
+         //onassigne si demandé
+         if($assignId != '----'){
+            require_once('structaccountdata.php');
+            $assigner = new PluginMantisStructaccountdata();
+            $assigner->setId($assignId);
+            $this->setHandler($assigner);
+         }
 
          //on remplit l'issue Mantis
          $this->setProject($project);

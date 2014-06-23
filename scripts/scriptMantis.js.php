@@ -175,6 +175,7 @@ function findProjectByName() {
    var img = $("#resultImg");
    var dropdown = $("#dropdown_categorie");
    var div_wait = $("#waitForLinkIssueGlpiToProjectMantis");
+   var dropdownAssignation = $("#dropdown_assignation");
 
    div_wait.css('display', 'block');
    img.remove();
@@ -190,9 +191,11 @@ function findProjectByName() {
 
          if (msg.indexOf('check') != -1) {
             addOptionToSelect(dropdown, name);
+            addActortoSelect(dropdownAssignation , name);
             div_wait.css('display', 'none');
          } else {
             removeOptionOfSelect(dropdown);
+            removeOptionOfSelect(dropdownAssignation);
             div_wait.css('display', 'none');
          }
 
@@ -249,6 +252,45 @@ function addStateToSelect(){
 
 }
 
+function addActortoSelect(dropdown,name) {
+
+   var nameProject = name;
+
+   $.ajax({ // fonction permettant de faire de l'ajax
+      type: "POST", // methode de transmission des données au fichier php
+      url: "{$root_ajax}", // url du fichier php
+      dataType: "json",
+      data: "action=getActorByProjectname&" +
+         "name=" + name, // données à transmettre
+      success: function (msg) { // si l'appel a bien fonctionné
+
+         if (msg == false) {
+
+         } else {
+
+            var myOptions = msg.toString().split(',');
+            var mySelect = dropdown;
+
+            removeOptionOfSelect(dropdown);
+
+            for(var i=0;i<msg.length; i++){
+               obj = msg[i];
+               mySelect.append( $('<option></option>').val(obj.id).html(obj.name) );
+            }
+
+         }
+
+      },
+      error: function () {
+         alert('pb ajax');
+      }
+
+   });
+   return false; // permet de rester sur la même page à la soumission du formulaire
+
+}
+
+
 
 
 function addOptionToSelect(dropdown, name) {
@@ -273,8 +315,7 @@ function addOptionToSelect(dropdown, name) {
 
             $.each(myOptions, function (val, text) {
                mySelect.append(
-                  $('<option></option>').val(val).html(text)
-               );
+                  $('<option></option>').val(val).html(text)             );
             });
          }
 
@@ -297,6 +338,7 @@ function linkIssueglpiToProjectMantis() {
 
    var nameMantisProject = $("#nameMantisProject").val();
    var cate = $("#dropdown_categorie").find(":selected").text();
+   var assign = $("#dropdown_assignation").find(":selected").val();
    var resume = $("#resume").val();
    var description = $("#description").val();
    var stepToReproduce = $("#stepToReproduce").val();
@@ -339,6 +381,7 @@ function linkIssueglpiToProjectMantis() {
             "user=" + idUser + "&" +
             "dateEscalade=" + date + "&" +
             "resume=" + resume + "&" +
+             "assign=" + assign + "&" +
             "stepToReproduce=" + stepToReproduce + "&" +
             "followAttachment=" + followAttachment + "&" +
             "categorie=" + cate + "&" +

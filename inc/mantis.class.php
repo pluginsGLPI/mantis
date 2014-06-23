@@ -426,7 +426,13 @@ class PluginMantisMantis extends CommonDBTM {
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>".__("Category","mantis")."</th><td>";
       $content .= Dropdown::showFromArray('categorie', array(),
-                                          array('rand' => '' ,'display' => false));
+         array('rand' => '' ,'display' => false));
+      $content .= "</td></tr>";
+
+      $content .= "<tr class='tab_bg_1'>";
+      $content .= "<th>".__("Assignation","mantis")."</th><td>";
+      $content .= Dropdown::showFromArray('assignation', array(),
+         array('rand' => '' ,'display' => false));
       $content .= "</td></tr>";
 
       $content .= "<tr class='tab_bg_1'>";

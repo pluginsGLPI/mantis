@@ -118,6 +118,31 @@ class PluginMantisMantisws{
    }
 
    /**
+    * @param $name
+    * @return array|bool
+    */
+   public function getActorFromProjectName($name){
+      $id = $this->getProjectIdWithName($name);
+      try {
+         $response = $this->_client->mc_project_get_users($this->_login,$this->_password,
+            $id,90);
+
+         $list = array();
+         $list[] =  array('id' => 0 ,  'name' => '----');
+         foreach($response as &$actor){
+            $list[] =  array('id' => $actor->id ,  'name' => $actor->name);
+         }
+
+         return ($list);
+      } catch (SoapFault $e) {
+         Toolbox::logInFile('mantis', sprintf(
+               __('Error retrieving user of project id \'%1$s\' => \'%2$s\'', 'mantis'),
+               $id, $e->getMessage()) . "\n");
+         return false;
+      }
+   }
+
+   /**
     * Function to find category by name of project
     * @param $name name of project
     * @return array  return categorie if find else false

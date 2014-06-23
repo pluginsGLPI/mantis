@@ -119,6 +119,15 @@ if (isset($_POST['action'])) {
          else echo json_encode($result);
          break;
 
+      case 'getActorByProjectname':
+         $ws = new PluginMantisMantisws();
+         $ws->initializeConnection();
+         $result = $ws->getActorFromProjectName($_POST['name']);
+         if (!$result) echo false;
+         else echo json_encode($result);
+         break;
+         break;
+
       case 'LinkIssueGlpiToIssueMantis':
 
          $id_ticket       = $_POST['idTicket'];

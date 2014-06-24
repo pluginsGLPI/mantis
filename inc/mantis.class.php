@@ -59,11 +59,36 @@ class PluginMantisMantis extends CommonDBTM {
 
    static function cronMantis($task) {
       self::updateTicket();
+      self::updateAttachment();
       return true;
    }
 
    static function cronInfo($name) {
       return array('description' => __("Update ticket", "mantis"));
+   }
+
+
+   static function updateAttachment(){
+      Toolbox::logInFile("mantis", __("Starting update attachments cron", "mantis"));
+
+
+      $conf = new PluginMantisConfig();
+      $conf->getFromDB(1);
+
+      if ($conf->getField('etatMantis')) {
+
+
+
+
+
+      }else{
+         Toolbox::logInFile("mantis",
+            __("Error on launching update attachments cron because MantisBT status is not providing
+            .", "mantis"));
+      }
+
+
+      Toolbox::logInFile("mantis", __("Ending update attachments cron", "mantis"));
    }
 
    static function updateTicket() {
@@ -409,6 +434,12 @@ class PluginMantisMantis extends CommonDBTM {
    public function getFormForLinkGlpiTicketToMantisProject($id_ticket) {
       global $CFG_GLPI;
 
+
+      $config = new PluginMantisConfig();
+      $config->getFromDB(1);
+
+
+
       $content  = "<form action='#' >";
       $content .= "<table id='table2' class='tab_cadre' cellpadding='5'>";
       $content .= "<tr class='headerRow'><th colspan='6'>".
@@ -429,11 +460,17 @@ class PluginMantisMantis extends CommonDBTM {
          array('rand' => '' ,'display' => false));
       $content .= "</td></tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<th>".__("Assignation","mantis")."</th><td>";
-      $content .= Dropdown::showFromArray('assignation', array(),
-         array('rand' => '' ,'display' => false));
-      $content .= "</td></tr>";
+
+      if($config->fields['enable_assign']){
+         $content .= "<tr class='tab_bg_1'>";
+         $content .= "<th>".__("Assignation","mantis")."</th><td>";
+         $content .= Dropdown::showFromArray('assignation', array(),
+            array('rand' => '' ,'display' => false));
+         $content .= "</td></tr>";
+      }
+
+
+
 
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>".__("Summary","mantis")."</th>";
@@ -550,11 +587,10 @@ class PluginMantisMantis extends CommonDBTM {
                }
 
             } else {
-                $implode = explode("/",$conf->fields['url']);
 
                $content .= "<tr>";
                $content .= "<td class='center'>";
-               $content .= "<a href='".$conf->fields['host']."/".$implode[0]."/view.php?id=" . $issue->id . "' target='_blank' >";
+               $content .= "<a href='".$conf->fields['host']."/view.php?id=" . $issue->id . "' target='_blank' >";
                $content .= "<img src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/arrowRight16.png'/>";
                $content .= "</a></td>";
                $content .= "<td class='center'>" . $issue->id . "</td>";

@@ -129,6 +129,7 @@ class PluginMantisIssue {
       $conf->getFromDB(1);
       $champsGlpi = $conf->fields["champsGlpi"];
       $champsUrl  = $conf->fields["champsUrlGlpi"];
+      $enable_assign = $conf->fields["enable_assign"];
 
       $ticket = new Ticket();
       $ticket->getFromDB($idTicket);
@@ -149,12 +150,17 @@ class PluginMantisIssue {
          $project->setId($ws->getProjectIdWithName($nameMantisProject));
 
          //onassigne si demandé
-         if($assignId != '----'){
-            require_once('structaccountdata.php');
-            $assigner = new PluginMantisStructaccountdata();
-            $assigner->setId($assignId);
-            $this->setHandler($assigner);
+         if($enable_assign){
+            if($assignId != '----'){
+               require_once('structaccountdata.php');
+               $assigner = new PluginMantisStructaccountdata();
+               $assigner->setId($assignId);
+               $this->setHandler($assigner);
+            }
          }
+
+
+
 
          //on remplit l'issue Mantis
          $this->setProject($project);

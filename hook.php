@@ -91,6 +91,7 @@ function plugin_mantis_install() {
                   pwd varchar(255) NOT NULL default '',
                   champsUrlGlpi varchar(100) NOT NULL default '',
                   champsGlpi varchar(100) NOT NULL default '',
+                  enable_assign int(1) NOT NULL default 0,
                   etatMantis varchar(100) NOT NULL default '')";
         $DB->query($query) or die($DB->error());
 
@@ -112,8 +113,7 @@ function plugin_mantis_install() {
 function plugin_mantis_uninstall() {
     global $DB;
 
-    $tables = array("glpi_plugin_mantis_configs",
-        "glpi_plugin_mantis_profiles","glpi_plugin_mantis_mantis",
+    $tables = array("glpi_plugin_mantis_configs","glpi_plugin_mantis_mantis",
         "glpi_plugin_mantis_profiles");
 
     Foreach ($tables as $table) {

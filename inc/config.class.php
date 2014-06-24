@@ -106,7 +106,20 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<td>" . __("MantisBT user password", "mantis") . "</td>";
       $content .= "<td><input  id='pwd' name='pwd' type='password' value='" 
                                                             . $this->fields["pwd"] . "'/></td>";
+
       $content .= "<td></td>";
+      $content .= "</tr>";
+
+      $content .= "<tr class='tab_bg_1'>";
+      $content .= "<td>" . __("Allow assignation", "mantis") . "</td>";
+      $content .= "<td>";
+
+      $content .= Dropdown::showYesNo("enable_assign",$this->fields["enable_assign"],-1,
+         array(
+            'display'   => false));
+
+      $content .= "</td>";
+            $content .= "<td></td>";
       $content .= "</tr>";
 
       $content .= "<tr class='tab_bg_1'>";
@@ -137,12 +150,6 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<td>" 
          . __("Close Glpi ticket when status ticket MantisBT is", "mantis") . "</td>";
       $content .= "<td>";
-       /*
-      $content .= DropDown::showFromArray('etatMantis', 
-                           PluginMantisIssue::$state_mantis, array(
-                              'rand'      => '',
-                              'value'     => $this->fields["etatMantis"],
-                              'display'   => false));*/
 
        $content .= Dropdown::showFromArray('etatMantis', array(),
            array('rand' => '', 'display' => false));

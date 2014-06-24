@@ -125,7 +125,7 @@ class PluginMantisMantisws{
       $id = $this->getProjectIdWithName($name);
       try {
          $response = $this->_client->mc_project_get_users($this->_login,$this->_password,
-            $id,90);
+            $id,array(90,10,25,40,55,70));
 
          $list = array();
          $list[] =  array('id' => 0 ,  'name' => '----');

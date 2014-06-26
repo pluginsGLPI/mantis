@@ -352,6 +352,20 @@ class PluginMantisMantisws{
       }
    }
 
+
+   public function updateIssueMantis($id, $issue){
+
+      try {
+         return $this->_client->mc_issue_update($this->_login, $this->_password,$id,$issue);
+      } catch (SoapFault $e) {
+         Toolbox::logInFile('mantis', sprintf(
+               __('Error when updating MantisBT => \'%1$s\'', 'mantis'),
+               $e->getMessage()) . "\n");
+         return false;
+      }
+
+   }
+
    public function setClient($client) {
       $this->_client = $client;
    }

@@ -61,47 +61,51 @@ class PluginMantisIssue {
 
     public function __construct() { }
 
+   /**
+    * Function to add information to an existant issue
+    * @param $idTicket
+    * @param $idMantis
+    * @return bool|string|translated
+    */
+   public function addInfoToIssueMantis($idTicket, $idMantis) {
+
+      $ws = new PluginMantisMantisws();
+      $ws->initializeConnection();
+
+      $ticket = new Ticket();
+      $ticket->getFromDB($idTicket);
+
+      $conf = new PluginMantisConfig();
+      $conf->getFromDB(1);
+      $champsGlpi = $conf->fields["champsGlpi"];
+      $champsUrl  = $conf->fields["champsUrlGlpi"];
+
+      $itilCategorie = new ITILCategory();
+
+      $issue = $ws->getIssueById($idMantis);
 
 
+      if ($this->needNote($champsGlpi, $champsUrl)) {
+
+         $error   = "";
+         $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, $ws, $idMantis);
+         if (!$id_note) $error .= __("Error creating the note, the process was interrupted", "mantis");
+
+         if ($error != "") return $error;
+         else return true;
+
+      } else {
+
+         $issue->additional_information .= "<br>".$this->getAdditionalInfo($champsGlpi, $champsUrl,
+            $ticket, $itilCategorie);
+         $res  = $ws->updateIssueMantis($issue->id, $issue);
+
+         if ($res) return true;
+         else return __("Error when updating MantisBT issue", "mantis");
+      }
 
 
-    public function addInfoToIssueMantis($idTicket , $idMantis){
-
-        $ws = new PluginMantisMantisws();
-        $ws->initializeConnection();
-
-        $ticket = new Ticket();
-        $ticket->getFromDB($idTicket);
-
-        $issue  = new PluginMantisIssue();
-        $issue = $ws->getIssueById($idMantis);
-
-        $conf = new PluginMantisConfig();
-        $conf->getFromDB(1);
-        $champsGlpi = $conf->fields["champsGlpi"];
-        $champsUrl  = $conf->fields["champsUrlGlpi"];
-
-        $error = "";
-
-        $itilCategorie = new ITILCategory();
-
-        $this->setAdditional_information($this->getAdditionalInfo($champsGlpi,
-            $champsUrl, $ticket, $itilCategorie));
-
-        if ($this->needNote($champsGlpi, $champsUrl)) {
-            $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie,
-                $champsUrl, $ws, $idMantis);
-            //Erreur lors de la création de la note
-            if (!$id_note) $error .= __("Error creating the note, the process was interrupted",
-                "mantis");
-        }
-
-
-        if ($error != "") return $error;
-        else return true;
-
-    }
-
+   }
 
 
    /**

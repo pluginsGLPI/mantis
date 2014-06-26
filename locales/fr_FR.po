@@ -68,6 +68,10 @@ msgstr "Chemin du fichier WSDL"
 msgid "MantisBT user login"
 msgstr "Login utilisateur MantisBT"
 
+#: inc/config.class.php:114
+msgid "Allow assignation"
+msgstr "Permettre l'assignation"
+
 #: inc/config.class.php:82
 msgid "MantisBT user password"
 msgstr "Password utilisateur MantisBT"
@@ -200,6 +204,10 @@ msgstr "Ce ticket n'éxiste plus/pas dans la base de donnée MantisBT"
 msgid "Delete link"
 msgstr "Supprimer le lien"
 
+#: inc/mantis.class.php:466
+msgid "Assignation"
+msgstr "Assignation"
+
 #: inc/mantis.class.php:407
 msgid "Info ticket MantisBT"
 msgstr "Info(s) du/des ticket(s) MantisBT"
@@ -215,6 +223,11 @@ msgstr "Début de la mise à jour automatique des tickets GLPI"
 #: inc/mantis.class.php:70
 msgid "Ending update tickets cron"
 msgstr "Fin de la mise à jour automatique des tickets GLPI"
+
+
+#: inc/issue.class.php:104
+msgid "Error when updating MantisBT issue"
+msgstr "Erreur lors de la mise à jour de l'issue mantis"
 
 #: inc/mantis.class.php:70
 msgid "Error on launching updateTicket cron because MantisBT status is not providing."

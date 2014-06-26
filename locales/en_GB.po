@@ -84,6 +84,10 @@ msgstr "MantisBT field for GLPI fields<br/> (title, description, category, follo
 msgid "Update"
 msgstr "Update"
 
+#: inc/config.class.php:114
+msgid "Allow assignation"
+msgstr "Allow to assign"
+
 #: inc/config.class.php:108
 msgid "Test the connection"
 msgstr "Test the connection"
@@ -241,6 +245,12 @@ msgstr "Error creating the note, the process was interrupted"
 msgid "Can't load the attachment '%1$s', the process was interrupted "
 msgstr "Can't load the attachment '%1$s', the process was interrupted "
 
+
+
+#: inc/issue.class.php:104
+msgid "Error when updating MantisBT issue"
+msgstr "Error when updating MantisBT issue"
+
 #: inc/mantisIssue.class.php:909 inc/mantisIssue.class.php:910
 #, php-format
 msgid "Can't send the attachment '%1$s' to MantisBT, the process was interrupted "
@@ -279,6 +289,11 @@ msgstr "Category = %1$s <br/>"
 #, php-format
 msgid "Link to Glpi ticket = %1$s <br/>"
 msgstr "Link to Glpi ticket = %1$s <br/>"
+
+#: inc/mantis.class.php:466
+msgid "Assignation"
+msgstr "Assign"
+
 
 #: inc/mantisIssue.class.php:1067
 #, php-format

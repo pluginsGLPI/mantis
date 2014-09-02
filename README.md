@@ -1,5 +1,8 @@
 GLPI Plugin mantis
-======
+=============
+
+Introduction
+-------------
 
 Ce plugin permet une synchronisation simple entre les tickets GLPI et les issues MantisBT.
 
@@ -20,3 +23,18 @@ Voici une liste de ses fonctionnalités actuelles :
 * gestion des droits sur le plugin
 
 * gestion de la configuration de l'interconnexion
+
+
+Documentation
+-------------
+
+Actuellement disponible dans le dossier *docs* du plugin téléchargé.
+
+
+*Serveur MantisBT de test*
+
+* [http://demo.teclib.net/mantis/](http://demo.teclib.net/mantis/)
+
+* WS : [http://demo.teclib.net/mantis/api/soap/mantisconnect.php?wsdl](http://demo.teclib.net/mantis/api/soap/mantisconnect.php?wsdl)
+
+* Utilisateur Reporter : *test-glpi* / *test-glpi*

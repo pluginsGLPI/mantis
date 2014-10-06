@@ -393,3 +393,7 @@ msgstr "Close Glpi ticket when status ticket MantisBT is"
 #: inc/config.class.php:109
 msgid "Test connection to load stats of MantisBT"
 msgstr "Test connection to load stats of MantisBT"
+
+#: inc/config.class.php:128
+msgid "Neutralize the escalation to MantisBT when the status of the GLPI tickets is"
+msgstr "Neutralize the escalation to MantisBT when the status of the GLPI tickets is"

@@ -64,6 +64,8 @@ function plugin_mantis_install() {
     }
 
 
+
+
    // Création de la table uniquement lors de la première installation
    if (!TableExists("glpi_plugin_mantis_profiles")) {
 
@@ -100,6 +102,12 @@ function plugin_mantis_install() {
                        (id, host,url,login,pwd)
                 VALUES (NULL, '','','','')";
         $DB->query($query) or die("error in glpi_plugin_mantis_configs table" . $DB->error());
+    }else{
+
+        $mig = new Migration();
+        $table = 'glpi_plugin_mantis_configs';
+        $mig->addField($table, 'neutralize_escalation', 'integer',array('value' => null));
+        $mig->executeMigration();
     }
 
     return true;

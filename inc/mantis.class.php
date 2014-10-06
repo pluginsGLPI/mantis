@@ -258,17 +258,28 @@ class PluginMantisMantis extends CommonDBTM {
             $conf->getField('login'), $conf->getField('pwd'))) {
 
 
-         // if canView or canWrite
-         if (PluginMantisProfile::canViewMantis($_SESSION['glpiactiveprofile']['id'])
-             || PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
+          if($item->fields['status'] == $conf->fields['neutralize_escalation'] ||
+              $item->fields['status'] > $conf->fields['neutralize_escalation']){
 
-            $this->getFormForDisplayInfo($item);
+              $this->getFormForDisplayInfo($item);
 
-            // if canWrite
-            if (PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
-               $this->displayBtnToLinkissueGlpi($item);
-            }
-         }
+          }else{
+
+              // if canView or canWrite
+              if (PluginMantisProfile::canViewMantis($_SESSION['glpiactiveprofile']['id'])
+                  || PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
+
+                  $this->getFormForDisplayInfo($item);
+
+                  // if canWrite
+                  if (PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
+                      $this->displayBtnToLinkissueGlpi($item);
+                  }
+              }
+
+          }
+
+
 
       } else {
 
@@ -522,7 +533,16 @@ class PluginMantisMantis extends CommonDBTM {
    private function getFormForDisplayInfo($item) {
       global $CFG_GLPI, $DB;
 
-      $can_write = PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id']);
+       $conf = new PluginMantisConfig();
+       $conf->getFromDB(1);
+
+       if($item->fields['status'] == $conf->fields['neutralize_escalation'] ||
+           $item->fields['status'] > $conf->fields['neutralize_escalation']){
+           $can_write = false;
+       }else{
+           $can_write = PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id']);
+       }
+
 
       $content = "";
 

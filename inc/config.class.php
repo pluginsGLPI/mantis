@@ -110,17 +110,36 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<td></td>";
       $content .= "</tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("Allow assignation", "mantis") . "</td>";
-      $content .= "<td>";
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<td>" . __("Allow assignation", "mantis") . "</td>";
+       $content .= "<td>";
 
-      $content .= Dropdown::showYesNo("enable_assign",$this->fields["enable_assign"],-1,
-         array(
-            'display'   => false));
+       $content .= Dropdown::showYesNo("enable_assign",$this->fields["enable_assign"],-1,
+           array(
+               'display'   => false));
 
-      $content .= "</td>";
-            $content .= "<td></td>";
-      $content .= "</tr>";
+       $content .= "</td>";
+       $content .= "<td></td>";
+       $content .= "</tr>";
+
+
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<td>" . __("Neutralize the escalating to MantisBT when the status of the GLPI tickets is", "mantis") . "</td>";
+       $content .= "<td>";
+
+       $ticket = new Ticket();
+       $content .= $ticket->dropdownStatus(array('showtype' => 'normal','name'=>'neutralize_escalation' ,
+           'value' => $this->fields["neutralize_escalation"],'display' => false));
+
+       $content .= "</td>";
+       $content .= "<td></td>";
+       $content .= "</tr>";
+
+
+
+
+
 
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("MantisBT field for the link to the ticket GLPI", "mantis") . "</td>";
@@ -179,5 +198,6 @@ class PluginMantisConfig extends CommonDBTM {
 
       echo $content;
     }
+
 
 }

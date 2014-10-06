@@ -96,10 +96,18 @@ function plugin_mantis_check_prerequisites() {
 
    if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
       echo "This plugin requires GLPI >= 0.84 and GLPI < 0.85";
-   } else {
-      return true;
+      return false;
    }
-   return false;
+
+    if (!extension_loaded('gd')) {
+        echo "This plugin requires SOAP extension for PHP";
+        return false;
+    }
+
+
+      return true;
+
+
 }
 
 

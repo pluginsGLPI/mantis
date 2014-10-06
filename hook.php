@@ -113,7 +113,7 @@ function plugin_mantis_install() {
 function plugin_mantis_uninstall() {
     global $DB;
 
-    $tables = array("glpi_plugin_mantis_configs","glpi_plugin_mantis_mantis",
+    $tables = array("glpi_plugin_mantis_mantis",
         "glpi_plugin_mantis_profiles");
 
     Foreach ($tables as $table) {

@@ -99,7 +99,7 @@ function plugin_mantis_check_prerequisites() {
       return false;
    }
 
-    if (!extension_loaded('gd')) {
+    if (!extension_loaded('soap')) {
         echo "This plugin requires SOAP extension for PHP";
         return false;
     }

@@ -106,7 +106,8 @@ function plugin_mantis_install() {
 
         $mig = new Migration();
         $table = 'glpi_plugin_mantis_configs';
-        $mig->addField($table, 'neutralize_escalation', 'integer',array('value' => null));
+        $mig->addField($table, 'neutralize_escalation', 'integer',array('value' => 5));
+        $mig->addField($table, 'status_after_escalation', 'integer');
         $mig->executeMigration();
     }
 

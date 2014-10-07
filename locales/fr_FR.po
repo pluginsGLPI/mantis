@@ -295,8 +295,8 @@ msgstr "Lien vers le ticket GLPI = %1$s <br/>"
 
 #: inc/mantisIssue.class.php:1067
 #, php-format
-msgid "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s,<br/>"
-msgstr "Suivi = %1$s -> date : %2$s, type de demande : %3$s, utilisateur : %4$s,<br/>"
+msgid "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : %5$s<br/>"
+msgstr "Suivi = %1$s -> date : %2$s, type de demande : %3$s, utilisateur : %4$s,contenu : %5$s<br/>"
 
 #: inc/mantisIssue.class.php:1102
 #, php-format

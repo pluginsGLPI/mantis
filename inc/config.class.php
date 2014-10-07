@@ -149,6 +149,18 @@ class PluginMantisConfig extends CommonDBTM {
        $content .= "</tr>";
 
 
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<td>" . __("Show option 'Delete the  MantisBT ticket' ", "mantis") . "</td>";
+       $content .= "<td>";
+
+
+       $content .= Dropdown::showYesNo('show_option_delete',$this->fields["show_option_delete"],-1,array('rand' => false,'display' => false));
+
+       $content .= "</td>";
+       $content .= "<td></td>";
+       $content .= "</tr>";
+
+
 
 
       $content .= "<tr class='tab_bg_1'>";

@@ -116,6 +116,14 @@ function linkIssueglpiToIssueMantis() {
    var idUser = $("#user").val();
    var date = $("#dateEscalade").val();
 
+   var followAttachment = $("#followAttachment").is(':checked');
+
+   var followFollow = $("#followFollow").is(':checked');
+   var followTask = $("#followTask").is(':checked');
+   var followTitle = $("#followTitle").is(':checked');
+   var followDescription = $("#followDescription").is(':checked');
+   var followCategorie = $("#followCategorie").is(':checked');
+
    var div_info = $("#infoLinIssueGlpiToIssueMantis");
    var div_wait = $("#waitForLinkIssueGlpiToIssueMantis");
 
@@ -134,6 +142,12 @@ function linkIssueglpiToIssueMantis() {
          data: "action=LinkIssueGlpiToIssueMantis&" +
             "idTicket=" + idTicket + "&" +
             "idMantis=" + idMantisIssue + "&" +
+            "followAttachment=" + followAttachment + "&" +
+             "followFollow=" + followFollow + "&" +
+              "followTask=" + followTask + "&" +
+               "followTitle=" + followTitle + "&" +
+                "followDescription=" + followDescription + "&" +
+                 "followCategorie=" + followCategorie + "&" +
             "user=" + idUser + "&" +
             "dateEscalade=" + date, // données à transmettre
          success: function (msg) { // si l'appel a bien fonctionné
@@ -343,6 +357,13 @@ function linkIssueglpiToProjectMantis() {
    var description = $("#description").val();
    var stepToReproduce = $("#stepToReproduce").val();
    var followAttachment = $("#followAttachment").is(':checked');
+
+    var followFollow = $("#followFollow").is(':checked');
+     var followTask = $("#followTask").is(':checked');
+      var followTitle = $("#followTitle").is(':checked');
+       var followDescription = $("#followDescription").is(':checked');
+        var followCategorie = $("#followCategorie").is(':checked');
+
    var idTicket = $("#idTicket").val();
    var idUser = $("#user").val();
    var date = $("#dateEscalade").val();
@@ -372,6 +393,7 @@ function linkIssueglpiToProjectMantis() {
 
    }else{
 
+
       $.ajax({ // fonction permettant de faire de l'ajax
          type: "POST", // methode de transmission des données au fichier php
          url: "{$root_ajax}", // url du fichier php
@@ -384,6 +406,11 @@ function linkIssueglpiToProjectMantis() {
              "assign=" + assign + "&" +
             "stepToReproduce=" + stepToReproduce + "&" +
             "followAttachment=" + followAttachment + "&" +
+             "followFollow=" + followFollow + "&" +
+              "followTask=" + followTask + "&" +
+               "followTitle=" + followTitle + "&" +
+                "followDescription=" + followDescription + "&" +
+                 "followCategorie=" + followCategorie + "&" +
             "categorie=" + cate + "&" +
             "description=" + description, // données à transmettre
          success: function (msg) { // si l'appel a bien fonctionné

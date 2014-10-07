@@ -128,7 +128,7 @@ class PluginMantisMantis extends CommonDBTM {
                             } else {
 
                                 //on l'insere
-                                $data    = base64_encode($data);
+                                //$data    = base64_encode($data);
                                 $id_data = $ws->addAttachmentToIssue($line['idMantis'],
                                 $doc->getField('filename'), $doc->getField('mime'), $data);
 

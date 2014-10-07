@@ -128,15 +128,25 @@ class PluginMantisConfig extends CommonDBTM {
        $content .= "<td>" . __("Neutralize the escalating to MantisBT when the status of the GLPI tickets is", "mantis") . "</td>";
        $content .= "<td>";
 
-       $ticket = new Ticket();
-       $content .= $ticket->dropdownStatus(array('showtype' => 'normal','name'=>'neutralize_escalation' ,
-           'value' => $this->fields["neutralize_escalation"],'display' => false));
+
+       $content .= self::dropdownStatus(array('showtype' => 'normal','name'=>'neutralize_escalation' ,
+           'value' => $this->fields["neutralize_escalation"],'display' => false,'none' => false));
 
        $content .= "</td>";
        $content .= "<td></td>";
        $content .= "</tr>";
 
 
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<td>" . __("Status of glpi ticket after escalation to MantisBT", "mantis") . "</td>";
+       $content .= "<td>";
+
+       $content .= self::dropdownStatus(array('showtype' => 'normal','name'=>'status_after_escalation' ,
+           'value' => $this->fields["status_after_escalation"],'display' => false,'none' => true));
+
+       $content .= "</td>";
+       $content .= "<td></td>";
+       $content .= "</tr>";
 
 
 
@@ -199,5 +209,67 @@ class PluginMantisConfig extends CommonDBTM {
       echo $content;
     }
 
+
+    /**
+     * Dropdown of object status
+     *
+     * @since version 0.84 new proto
+     *
+     * @param $options   array of options
+     *  - name     : select name (default is status)
+     *  - value    : default value (default self::INCOMING)
+     *  - showtype : list proposed : normal, search or allowed (default normal)
+     *  - display  : boolean if false get string
+     * - none  : display none option : default false
+     *
+     * @return nothing (display)
+     **/
+    static function dropdownStatus(array $options=array()) {
+
+        $p['name']      = 'status';
+        $p['value']     = 0;
+        $p['showtype']  = 'normal';
+        $p['display']   = true;
+        $p['none']   = false;
+
+        if (is_array($options) && count($options)) {
+            foreach ($options as $key => $val) {
+                $p[$key] = $val;
+            }
+        }
+
+
+        switch ($p['showtype']) {
+            case 'allowed' :
+                $tab = Ticket::getAllowedStatusArray($p['value']);
+                break;
+
+            case 'search' :
+                $tab = Ticket::getAllStatusArray(true);
+                break;
+
+            default :
+                $tab = Ticket::getAllStatusArray(false);
+                break;
+        }
+
+        if($p['none'] == true){
+            array_unshift($tab," ---- ");
+        }
+
+
+
+        $output = "<select name='".$p['name']."'>";
+        foreach ($tab as $key => $val) {
+            $output .=  "<option value='$key' ".(($p['value'] == $key)?" selected ":"").">$val</option>";
+        }
+        $output .=  "</select>";
+
+        if ($p['display']) {
+            echo $output;
+        } else {
+            return $output;
+        }
+    }
 
 }

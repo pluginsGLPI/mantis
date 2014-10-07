@@ -68,30 +68,103 @@ class PluginMantisMantis extends CommonDBTM {
    }
 
 
-   static function updateAttachment(){
-      Toolbox::logInFile("mantis", __("Starting update attachments cron", "mantis"));
+    /**
+     * Function to check if for each glpi tickets linked , all of his Docuement exist in MantisBT
+     * If not, the cron upload the documents to mantisBT
+     */
+    static function updateAttachment(){
 
+        Toolbox::logInFile("mantis", "**************************************************");
+        Toolbox::logInFile("mantis", "* CRON MANTIS : Starting update attachments cron *");
+        Toolbox::logInFile("mantis", "**************************************************");
 
-      $conf = new PluginMantisConfig();
-      $conf->getFromDB(1);
+        global $DB;
 
-      if ($conf->getField('etatMantis')) {
+        //on recuper l'id des ticket Glpi linké
+        $res = self::getTicketWhichIsLinked();
 
+        //on initialise la connection au webservice
+        $ws = new PluginMantisMantisws();
+        $ws->initializeConnection();
 
+        //on parcours les ticket linké
+        while ($row = $res->fetch_assoc()) {
 
+            //on créer l'objet Ticket
+            $ticket_glpi = new Ticket();
+            $ticket_glpi->getFromDB($row['idTicket']);
 
+            Toolbox::logInFile("mantis", "CRON MANTIS : Checking Glpi ticket ".$row['idTicket'].". ");
 
-      }else{
-         Toolbox::logInFile("mantis",
-            __("Error on launching update attachments cron because MantisBT status is not providing
-            .", "mantis"));
-      }
+            //on recupere les lien entre le ticket glpi et les ticket mantis
+            $list_link = self::getLinkBetweenTicketGlpiAndTicketMantis($row['idTicket']);
 
+            //pour chaque lien glpi -> mantis
+            while ($line = $list_link->fetch_assoc()){
+                Toolbox::logInFile("mantis", "CRON MANTIS :    Checking Mantis ticket ".$line['idMantis'].". ");
 
-      Toolbox::logInFile("mantis", __("Ending update attachments cron", "mantis"));
+                //on recupere l'issue mantisBT
+                $issue = $ws->getIssueById($line['idMantis']);
+                //ainsi que les document attaché
+                $attachmentsMantisBT = $issue->attachments;
+
+                //on recupere les document du tickets
+                $documents = self::getdocumentFromTicket($row['idTicket']);
+
+                //pour chaque document du ticket
+                foreach($documents as $doc){
+
+                    //on verifie s'il existe sur MantisBt
+                    if(!self::existAttachmentInMantisBT($doc , $attachmentsMantisBT)){
+                        //si le fichier n'existe pas on l'injecte
+                        Toolbox::logInFile("mantis", "CRON MANTIS :      File ".$doc->getField('filename')." does not exist in MantisBT issue. ");
+                        $path = GLPI_DOC_DIR . "/" . $doc->getField('filepath');
+
+                        if (file_exists($path)) {
+
+                            $data = file_get_contents($path);
+                            if (!$data) {
+                                Toolbox::logInFile("mantis","CRON MANTIS :      Can't load ".$doc->getField('filename').". ");
+                            } else {
+
+                                //on l'insere
+                                $data    = base64_encode($data);
+                                $id_data = $ws->addAttachmentToIssue($line['idMantis'],
+                                $doc->getField('filename'), $doc->getField('mime'), $data);
+
+                                if (!$id_data) {
+                                    $id_attachment[] = $id_data;
+                                    Toolbox::logInFile("mantis", "CRON MANTIS :      Can't send ".$doc->getField('filename')." to MantisBT. ");
+                                }else{
+                                    Toolbox::logInFile("mantis", "CRON MANTIS :      Send ".$doc->getField('filename')." to MantisBT with success. ");
+                                }
+
+                            }
+                        } else {
+
+                          Toolbox::logInFile("mantis", "CRON MANTIS :      File ".$doc->getField('filename')." does not exist on Glpi server. ");
+
+                        }
+
+                    }else{
+
+                    Toolbox::logInFile("mantis", "CRON MANTIS :      File ".$doc->getField('filename')." already exist in MantisBT issue. ");
+
+                    }
+                }
+            }
+        }
+        Toolbox::logInFile("mantis", "************************************************");
+        Toolbox::logInFile("mantis", "* CRON MANTIS : Ending update attachments cron *");
+        Toolbox::logInFile("mantis", "************************************************");
    }
 
-   static function updateTicket() {
+
+    /**
+     * this function check the status of mantis issuelinked to a ticket
+     * If status == status to close glpi ticket the the cron clos the ticket
+     */
+    static function updateTicket() {
 
       Toolbox::logInFile("mantis", __("Starting update tickets cron", "mantis"));
 
@@ -145,7 +218,61 @@ class PluginMantisMantis extends CommonDBTM {
       }
    }
 
-   private static function getAllSameStatusChoiceByUser($list_ticket_mantis,$status){
+
+    /**
+     * Function to check if $doc exist in MantisBT attachment
+     * @param $doc
+     * @param $attachmentsMantisBT
+     * @return bool
+     */
+    static function existAttachmentInMantisBT($doc , $attachmentsMantisBT){
+
+        foreach($attachmentsMantisBT as $attachment){
+            if($attachment->filename == $doc->fields['filename']){
+                return true;
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Function to retrieve all document from ticket
+     * @param $idticket
+     * @return array
+     */
+    static function getdocumentFromTicket($idticket){
+
+        global $DB;
+
+        $document = array();
+        $res = $DB->query("SELECT `glpi_documents_items`.*
+                        FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = 'Ticket'
+                        AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idticket) . "'");
+
+        if ($res->num_rows > 0) {
+
+            while ($row = $res->fetch_assoc()) {
+                $doc = new Document();
+                $doc->getFromDB($row["documents_id"]);
+                $document[] = $doc;
+            }
+
+        }
+
+        return $document;
+
+    }
+
+
+    /**
+     * Function to extract issue from $list_tickket_mantis when they are the same status choice by user
+     * @param $list_ticket_mantis
+     * @param $status
+     * @return bool
+     */
+    private static function getAllSameStatusChoiceByUser($list_ticket_mantis,$status){
       $diferrent  =false;
       if(count($list_ticket_mantis) == 0 )return false;
       for($i = 0; $i <= count($list_ticket_mantis) ; $i++){

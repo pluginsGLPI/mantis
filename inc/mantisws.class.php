@@ -212,25 +212,44 @@ class PluginMantisMantisws{
       }
    }
 
-   /**
-    * Function to add an attachment to an issue
-    * @param integer $_issue_id
-    * @param string $_name
-    * @param string $_file_type
-    * @param base64Binary $_content
-    * @return integer
-    */
-   public function addAttachmentToIssue($_issue_id, $_name, $_file_type, $_content) {
-      global $CFG_GLPI;
-      try {
-         return $this->_client->mc_issue_attachment_add($this->_login, $this->_password,
-            $_issue_id, $_name, $_file_type, $_content);
-      } catch (SoapFault $e) {
-         Toolbox::logInFile('mantis', sprintf(
-               __('error while creating attachment => \'%1$s\'', 'mantis'), $e->getMessage()) . "\n");
-         return false;
-      }
-   }
+    /**
+     * Function to add an attachment to an issue
+     * @param integer $_issue_id
+     * @param string $_name
+     * @param string $_file_type
+     * @param base64Binary $_content
+     * @return integer
+     */
+    public function addAttachmentToIssue($_issue_id, $_name, $_file_type, $_content) {
+        global $CFG_GLPI;
+        try {
+            return $this->_client->mc_issue_attachment_add($this->_login, $this->_password,
+                $_issue_id, $_name, $_file_type, $_content);
+        } catch (SoapFault $e) {
+            Toolbox::logInFile('mantis', sprintf(
+                    __('error while creating attachment => \'%1$s\'', 'mantis'), $e->getMessage()) . "\n");
+            return false;
+        }
+    }
+
+    /**
+     * Function to get an attachment to an issue
+     * @param integer $_issue_id
+     * @param string $_name
+     * @param string $_file_type
+     * @param base64Binary $_content
+     * @return integer
+     */
+    public function getAttachmentFromIssue($_issue_id) {
+        global $CFG_GLPI;
+        try {
+            return $this->_client->mc_issue_attachment_get($this->_login, $this->_password,$_issue_id);
+        } catch (SoapFault $e) {
+            Toolbox::logInFile('mantis', sprintf(
+                    __('error while getting attachment => \'%1$s\'', 'mantis'), $e->getMessage()) . "\n");
+            return false;
+        }
+    }
 
    /**
     * Function to add issue

@@ -141,7 +141,7 @@ function linkIssueglpiToIssueMantis() {
             if (msg == true) {
                div_wait.css('display', 'none');
                popupLinkGlpiIssuetoMantisIssue.hide();
-               window.location.reload();
+               window.location.reload(true);
             }
             else {
                div_wait.css('display', 'none');
@@ -391,7 +391,7 @@ function linkIssueglpiToProjectMantis() {
             if (msg == true) {
                div_wait.css('display', 'none');
                popupLinkGlpiIssuetoMantisProject.hide();
-               window.location.reload();
+               window.location.reload(true);
             }
             else {
                div_wait.css('display', 'none');
@@ -430,7 +430,7 @@ function deleteLinkGlpiMantis(id, idticket, idMantis, deleteAll) {
          success: function (msg) { // si l'appel a bien fonctionné
 
             if (msg == true) {
-               window.location.reload();
+               window.location.reload(true);
             }
             else {
                alert(msg);
@@ -474,7 +474,7 @@ function delLinkAndOrIssue(id, idMantis, idTicket) {
             if (msg == true) {
                div_wait.css('display', 'none');
                eval(popupName).hide();
-               window.location.reload();
+               window.location.reload(true);
             }
             else {
                div_wait.css('display', 'none');
@@ -505,7 +505,7 @@ function delLinkAndOrIssue(id, idMantis, idTicket) {
             if (msg == true) {
                div_wait.css('display', 'none');
                eval(popupName).hide();
-               window.location.reload();
+               window.location.reload(true);
             }
             else {
                div_wait.css('display', 'none');

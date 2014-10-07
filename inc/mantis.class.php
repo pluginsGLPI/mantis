@@ -166,56 +166,81 @@ class PluginMantisMantis extends CommonDBTM {
      */
     static function updateTicket() {
 
-      Toolbox::logInFile("mantis", __("Starting update tickets cron", "mantis"));
+        Toolbox::logInFile("mantis", "**************************************************");
+        Toolbox::logInFile("mantis", "*   CRON MANTIS : Starting update tickets cron   *");
+        Toolbox::logInFile("mantis", "**************************************************");
 
-      $list_ticket_mantis = array();
+        $list_ticket_mantis = array();
 
-      $conf = new PluginMantisConfig();
-      $conf->getFromDB(1);
+        $conf = new PluginMantisConfig();
+        $conf->getFromDB(1);
 
-      if ($conf->getField('etatMantis')) {
+        if ($conf->getField('etatMantis')) {
 
-         $etat_mantis = $conf->getField('etatMantis');
-         $ws = new PluginMantisMantisws();
-         $ws->initializeConnection();
+            Toolbox::logInFile("mantis", "CRON MANTIS :Plugin configuration is correct. ");
+            $etat_mantis = $conf->getField('etatMantis');
+            $ws = new PluginMantisMantisws();
+            $ws->initializeConnection();
 
-         //on recuper l'id des ticket Glpi linké
-         $res = self::getTicketWhichIsLinked();
+            //on recuper l'id des ticket Glpi linké
+            $res = self::getTicketWhichIsLinked();
 
-         while ($row = $res->fetch_assoc()) {
+            while ($row = $res->fetch_assoc()) {
 
-            $ticket_glpi = new Ticket();
-            $ticket_glpi->getFromDB($row['idTicket']);
+                Toolbox::logInFile("mantis", "CRON MANTIS : Checking Glpi ticket ".$row['idTicket'].". ");
 
-            $list_link = self::getLinkBetweenTicketGlpiAndTicketMantis($row['idTicket']);
-            $list_ticket_mantis = array();
+                $ticket_glpi = new Ticket();
+                $ticket_glpi->getFromDB($row['idTicket']);
 
-            while ($line = $list_link->fetch_assoc()){
+                //si le ticket est deja resolus ou clos
+                if($ticket_glpi->fields['status'] == 5 || $ticket_glpi->fields['status'] == 6){
 
-               $mantis = $ws->getIssueById($line['idMantis']);
-               $list_ticket_mantis[] = $mantis;
+                    Toolbox::logInFile("mantis", "CRON MANTIS : Glpi ticket ".$row['idTicket']." is already solve or closed. ");
 
+                }else{
+
+                    //on recupere tout les tickets mantis lié
+                    $list_link = self::getLinkBetweenTicketGlpiAndTicketMantis($row['idTicket']);
+
+                    $list_ticket_mantis = array();
+                    while ($line = $list_link->fetch_assoc()){
+                        $mantis = $ws->getIssueById($line['idMantis']);
+                        $list_ticket_mantis[] = $mantis;
+                    }
+
+                    Toolbox::logInFile("mantis", "CRON MANTIS : Checking all status from issue Mantis linked with glpi ticket");
+                    if(self::getAllSameStatusChoiceByUser ($list_ticket_mantis, $etat_mantis) ){
+
+                        Toolbox::logInFile("mantis", "CRON MANTIS : All status MantisBT are the same as status choice by user -> ".$etat_mantis.". ");
+
+                        $info_solved = self::getInfoSolved($list_ticket_mantis);
+                        $ticket_glpi->fields['status'] = Ticket::SOLVED;
+                        $ticket_glpi->fields['closedate'] = date("Y-m-d");
+                        $ticket_glpi->fields['solvedate'] = date("Y-m-d");
+                        $ticket_glpi->fields['solution'] = $info_solved;
+                        $ticket_glpi->update($ticket_glpi->fields);
+                        Toolbox::logInFile("mantis", "CRON MANTIS : Update glpi ".$row['idTicket']." status in BDD");
+
+                    }else{
+
+                        Toolbox::logInFile("mantis", "CRON MANTIS : All status MantisBT have not the same as status choice by user -> ".$etat_mantis.". ");
+
+                    }
+                }
             }
 
-            if(self::getAllSameStatusChoiceByUser ($list_ticket_mantis,
-                  $etat_mantis) && $ticket_glpi->fields['status'] != 5){
+            Toolbox::logInFile("mantis", "************************************************");
+            Toolbox::logInFile("mantis", "*   CRON MANTIS : Ending update tickets cron   *");
+            Toolbox::logInFile("mantis", "************************************************");
 
-               $info_solved = self::getInfoSolved($list_ticket_mantis);
-               $ticket_glpi->fields['status'] = Ticket::SOLVED;
-               $ticket_glpi->fields['closedate'] = date("Y-m-d");
-               $ticket_glpi->fields['solvedate'] = date("Y-m-d");
-               $ticket_glpi->fields['solution'] = $info_solved;
-               $ticket_glpi->update($ticket_glpi->fields);
-            }
+        } else {
 
-         }
+            Toolbox::logInFile("mantis", "CRON MANTIS :Plugin configuration is not correct (status Mantis to resolve glpi ticket is missing). ");
+            Toolbox::logInFile("mantis", "************************************************");
+            Toolbox::logInFile("mantis", "*   CRON MANTIS : Ending update tickets cron   *");
+            Toolbox::logInFile("mantis", "************************************************");
 
-         Toolbox::logInFile("mantis", __("Ending update tickets cron", "mantis"));
-
-      } else {
-         Toolbox::logInFile("mantis", 
-          __("Error on launching updateTicket cron because MantisBT status is not providing.", "mantis"));
-      }
+        }
    }
 
 

@@ -150,6 +150,18 @@ if (isset($_POST['action'])) {
 
                 if($res){
                     $mantis->add($_POST);
+
+                    $id_ticket       = $_POST['idTicket'];
+                    $ticket = new Ticket();
+                    $ticket->getFromDB($id_ticket);
+
+                    $conf = new PluginMantisConfig();
+                    $conf->getFromDB(1);
+
+                    if($conf->fields['status_after_escalation'] != 0){
+                        $res = $ticket->update(array('id' => $ticket->fields['id'], 'status' =>$conf->fields['status_after_escalation']));
+                    }
+
                     echo true;
                 }else{
                     echo $res;

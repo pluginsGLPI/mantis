@@ -387,10 +387,9 @@ class PluginMantisIssue {
                $user = new User();
                $user->getFromDB($row["users_id"]);
 
-               $content .= sprintf(__('Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s,
-               <br/>','mantis'),$ticket_followUp->fields['id'] ,$ticket_followUp->fields['date'],
-                  $request_type->fields['name'],$user->getField('realname') . " " .
-                  $user->getfield('firstname')   );
+               $content .= sprintf(__('Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : %5$s<br/>','mantis')
+                   ,$ticket_followUp->fields['id'] ,$ticket_followUp->fields['date'],
+                  $request_type->fields['name'],$user->getName(),$ticket_followUp->getField('content')  );
             }
         }else{
             $content .= __("No follow-up","mantis");

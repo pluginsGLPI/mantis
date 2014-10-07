@@ -503,6 +503,9 @@ class PluginMantisMantis extends CommonDBTM {
       $ws->initializeConnection();
       $issue = $ws->getIssueById($id_mantis);
 
+       $conf = new PluginMantisConfig();
+       $conf->getFromDB(1);
+
       $content = "<form action='#' id=".$id_link.">";
 
       $content .= "<table id=".$id_link." class='tab_cadre' cellpadding='5' >";
@@ -515,16 +518,34 @@ class PluginMantisMantis extends CommonDBTM {
       $content .= "<td>".__("(Does not delete the MantisBT ticket)","mantis")."</td>";
       $content .= "</tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      if (!$issue) {
-         $content .= "<td><INPUT type='checkbox' disabled id='deleteIssue" . $id_link . "' >";
-         $content .= __("Delete the  MantisBT ticket", "mantis") . "</td>";
-      } else {
-         $content .= "<td><INPUT type='checkbox' id='deleteIssue" . $id_link . "' >";
-         $content .= __("Delete the  MantisBT ticket", "mantis") . "</td>";
-      }
-      $content .= "<td>".__("(Also removes the link in GLPI)","mantis")."</td>";
-      $content .= "</tr>";
+
+       //show option to delete mantis issue or not (display:none)
+       if($conf->fields['show_option_delete'] != 0){
+           $content .= "<tr class='tab_bg_1'>";
+           if (!$issue) {
+               $content .= "<td><INPUT type='checkbox' disabled id='deleteIssue" . $id_link . "' >";
+               $content .= __("Delete the  MantisBT ticket", "mantis") . "</td>";
+           } else {
+               $content .= "<td><INPUT type='checkbox' id='deleteIssue" . $id_link . "' >";
+               $content .= __("Delete the  MantisBT ticket", "mantis") . "</td>";
+           }
+           $content .= "<td>".__("(Also removes the link in GLPI)","mantis")."</td>";
+           $content .= "</tr>";
+       }else{
+
+           $content .= "<tr class='tab_bg_1' style='display:none;'>";
+           if (!$issue) {
+               $content .= "<td><INPUT type='checkbox' disabled id='deleteIssue" . $id_link . "' >";
+               $content .= __("Delete the  MantisBT ticket", "mantis") . "</td>";
+           } else {
+               $content .= "<td><INPUT type='checkbox' id='deleteIssue" . $id_link . "' >";
+               $content .= __("Delete the  MantisBT ticket", "mantis") . "</td>";
+           }
+           $content .= "<td>".__("(Also removes the link in GLPI)","mantis")."</td>";
+           $content .= "</tr>";
+
+       }
+
 
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td><input  id=" . $id_link . "  name='delo' value='" . __("Delete", "mantis") .
@@ -730,12 +751,23 @@ class PluginMantisMantis extends CommonDBTM {
 
             $content .= '<div id=\'popupToDelete' . $row['id'] . '\'></div>';
 
-            Ajax::createModalWindow('popupToDelete' . $row['id'],
-               $CFG_GLPI['root_doc'].'/plugins/mantis/front/mantis.form.php?action=deleteIssue&id=' .
-               $row['id'] . '&idTicket=' . $row['idTicket'] . '&idMantis=' . $row['idMantis'],
-               array('title'  => __("Delete", "mantis"),
-                     'width'  => 550,
-                     'height' => 160));
+             //just change height of popup
+             if($conf->fields['show_option_delete'] != 0){
+                 Ajax::createModalWindow('popupToDelete' . $row['id'],
+                     $CFG_GLPI['root_doc'].'/plugins/mantis/front/mantis.form.php?action=deleteIssue&id=' .
+                     $row['id'] . '&idTicket=' . $row['idTicket'] . '&idMantis=' . $row['idMantis'],
+                     array('title'  => __("Delete", "mantis"),
+                         'width'  => 550,
+                         'height' => 160));
+             }else{
+                 Ajax::createModalWindow('popupToDelete' . $row['id'],
+                     $CFG_GLPI['root_doc'].'/plugins/mantis/front/mantis.form.php?action=deleteIssue&id=' .
+                     $row['id'] . '&idTicket=' . $row['idTicket'] . '&idMantis=' . $row['idMantis'],
+                     array('title'  => __("Delete", "mantis"),
+                         'width'  => 550,
+                         'height' => 110));
+             }
+
 
             if (!$issue) {
 

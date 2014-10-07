@@ -399,3 +399,41 @@ msgstr "Neutraliser l'escalade vers MantisBT lorsque le statut du ticket Glpi es
 #: inc/config.class.php:141
 msgid "Status of glpi ticket after escalation to MantisBT"
 msgstr "Status du ticket glpi aprés escalade vers MantisBT"
+
+#: inc/config.class.php:153
+msgid "Show option 'Delete the  MantisBT ticket' "
+msgstr "Afficher l'option 'Supprimer le ticket MantisBT' "
+
+msgid "Glpi follow"
+msgstr "Suivi(s) glpi"
+
+msgid "Glpi task"
+msgstr "Tâche(s) glpi"
+
+msgid "Glpi title"
+msgstr "Titre glpi"
+
+msgid "Glpi description"
+msgstr "Description glpi"
+
+msgid "Glpi categorie"
+msgstr "Catégorie glpi"
+
+
+msgid "To forward follow"
+msgstr "Faire suivre les suivis"
+
+msgid "To forward task"
+msgstr "Faire suivre les tâches"
+
+msgid "To forward title"
+msgstr "Faire suivre le titre"
+
+msgid "To forward description"
+msgstr "Faire suivre la description"
+
+msgid "To forward categorie"
+msgstr "Faire suivre la catégorie"
+
+
+

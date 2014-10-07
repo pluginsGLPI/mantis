@@ -235,7 +235,7 @@ class PluginMantisIssue {
                                the process was interrupted ', 'mantis'), $doc->getField('filename'));
                            } else {
 
-                              $data    = base64_encode($data);
+                              //$data    = base64_encode($data);
                               $id_data = $ws->addAttachmentToIssue($idIssueCreate,
                                  $doc->getField('filename'), $doc->getField('mime'), $data);
                               if (!$id_data) {
@@ -282,7 +282,15 @@ class PluginMantisIssue {
 
 
                   return $error;
-               } else return true;
+               } else {
+
+                   //mise à jour du status du ticket si demandé
+                   if($conf->fields['status_after_escalation'] != 0){
+                       $res = $ticket->update(array('id' => $ticket->fields['id'], 'status' =>$conf->fields['status_after_escalation']));
+                   }
+
+                   return true;
+               }
 
             }
 
@@ -292,8 +300,6 @@ class PluginMantisIssue {
          Toolbox::logInFile('mantis',sprintf(__('Project \'%1$s\' does not exist.',
                'mantis'), $nameMantisProject) . "\n");
          echo sprintf(__('Project \'%1$s\' does not exist.', 'mantis'), $nameMantisProject);
-
-         die;
       }
 
    }

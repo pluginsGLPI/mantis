@@ -458,13 +458,13 @@ class PluginMantisMantis extends CommonDBTM {
          $CFG_GLPI["root_doc"] . '/plugins/mantis/front/mantis.form.php?action=linkToIssue&idTicket=' .
          $item->fields['id'], array('title'  => __("MantisBT actions", "mantis"),
                                     'width'  => 520,
-                                    'height' => 115));
+                                    'height' => 265));
 
       Ajax::createModalWindow('popupLinkGlpiIssuetoMantisProject',
          $CFG_GLPI["root_doc"] . '/plugins/mantis/front/mantis.form.php?action=linkToProject&idTicket=' .
          $item->fields['id'], array('title'  => __("MantisBT actions", "mantis"),
                                     'width'  => 620,
-                                    'height' => 390));
+                                    'height' => 535));
 
       $content .= "<table id='table1'  class='tab_cadre_fixe' >";
       $content .= "<th colspan='6'>".__("MantisBT actions", "mantis")."</th>";
@@ -589,6 +589,36 @@ class PluginMantisMantis extends CommonDBTM {
       $content.= "<td ><input size=35 id='idMantis' type='text' name='idMantis' onkeypress=\"if(event.keyCode==13)linkIssueglpiToIssueMantis();\" /></td>";
       $content.= "</tr>";
 
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Attachments","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followAttachment' id='followAttachment' >".
+           __("To forward attachments","mantis")."</td></tr>";
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Glpi follow","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followFollow' id='followFollow' >".
+           __("To forward follow","mantis")."</td></tr>";
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Glpi task","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followTask' id='followTask' >".
+           __("To forward task","mantis")."</td></tr>";
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Glpi title","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followTitle' id='followTitle' >".
+           __("To forward title","mantis")."</td></tr>";
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Glpi description","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followDescription' id='followDescription' >".
+           __("To forward description","mantis")."</td></tr>";
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Glpi categorie","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followCategorie' id='followCategorie' >".
+           __("To forward categorie","mantis")."</td></tr>";
+
       $content.= "<tr class='tab_bg_1'>";
       $content.= "<td><input  id='linktoIssue'  name='linktoIssue' value='Lier'
         class='submit' onclick='linkIssueglpiToIssueMantis();'></td>";
@@ -670,10 +700,39 @@ class PluginMantisMantis extends CommonDBTM {
       $content .= "<td><textarea  rows='5' cols='55' name='stepToReproduce'
         id='stepToReproduce'></textarea></td></tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<th>".__("Attachments","mantis")."</th>";
-      $content .= "<td><INPUT type='checkbox' name='followAttachment' id='followAttachment' >".
-         __("To forward attachments","mantis")."</td></tr>";
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Attachments","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followAttachment' id='followAttachment' >".
+           __("To forward attachments","mantis")."</td></tr>";
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Glpi follow","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followFollow' id='followFollow' >".
+           __("To forward follow","mantis")."</td></tr>";
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Glpi task","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followTask' id='followTask' >".
+           __("To forward task","mantis")."</td></tr>";
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Glpi title","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followTitle' id='followTitle' >".
+           __("To forward title","mantis")."</td></tr>";
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Glpi description","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followDescription' id='followDescription' >".
+           __("To forward description","mantis")."</td></tr>";
+
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("Glpi categorie","mantis")."</th>";
+       $content .= "<td><INPUT type='checkbox' name='followCategorie' id='followCategorie' >".
+           __("To forward categorie","mantis")."</td></tr>";
+
+
+
+
 
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td><input type='hidden' class='center' name='idTicket' id='idTicket' value=" .

@@ -384,7 +384,7 @@ msgid "Error when getting MantisBT states => '%1$s'"
 msgstr "Erreur lors du chargement des états MantisBT => '%1$s'"
 
 #: inc/config.class.php:104
-msgid "Close GLPI ticket when status ticket MantisBT is"
+msgid "Close Glpi ticket when status ticket MantisBT is"
 msgstr "Fermer le ticket GLPI quand le statut du ticket MantisBT est"
 
 #: inc/config.class.php:109
@@ -394,3 +394,8 @@ msgstr "Tester la connexion pour charger les statuts MantisBT"
 #: inc/config.class.php:128
 msgid "Neutralize the escalating to MantisBT when the status of the GLPI tickets is"
 msgstr "Neutraliser l'escalade vers MantisBT lorsque le statut du ticket Glpi est "
+
+
+#: inc/config.class.php:141
+msgid "Status of glpi ticket after escalation to MantisBT"
+msgstr "Status du ticket glpi aprés escalade vers MantisBT"

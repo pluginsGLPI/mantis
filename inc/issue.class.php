@@ -69,6 +69,7 @@ class PluginMantisIssue {
     */
    public function addInfoToIssueMantis($idTicket, $idMantis) {
 
+       global $DB;
       $ws = new PluginMantisMantisws();
       $ws->initializeConnection();
 
@@ -77,32 +78,96 @@ class PluginMantisIssue {
 
       $conf = new PluginMantisConfig();
       $conf->getFromDB(1);
+
       $champsGlpi = $conf->fields["champsGlpi"];
       $champsUrl  = $conf->fields["champsUrlGlpi"];
+
+       $followAttachment  = $_POST['followAttachment'];
+       $followFollow = $_POST['followFollow'];
+       $followTask = $_POST['followTask'];
+       $followTitle = $_POST['followTitle'];
+       $followDescription = $_POST['followDescription'];
+       $followCategorie = $_POST['followCategorie'];
 
       $itilCategorie = new ITILCategory();
 
       $issue = $ws->getIssueById($idMantis);
 
 
-      if ($this->needNote($champsGlpi, $champsUrl)) {
+       // check si on follow les pieces jointe
+       if ($followAttachment == 'true') {
+           $error = "";
 
-         $error   = "";
-         $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, $ws, $idMantis);
-         if (!$id_note) $error .= __("Error creating the note, the process was interrupted", "mantis");
+           $res = $DB->query("SELECT `glpi_documents_items`.*
+                        FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = 'Ticket'
+                        AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idTicket) . "'");
 
-         if ($error != "") return $error;
-         else return true;
+           if ($res->num_rows > 0) {
 
-      } else {
+               while ($row = $res->fetch_assoc()) {
+                   $doc = new Document();
+                   $doc->getFromDB($row["documents_id"]);
+                   $path = GLPI_DOC_DIR . "/" . $doc->getField('filepath');
 
-         $issue->additional_information .= "<br>".$this->getAdditionalInfo($champsGlpi, $champsUrl,
-            $ticket, $itilCategorie);
-         $res  = $ws->updateIssueMantis($issue->id, $issue);
+                   if (file_exists($path)) {
 
-         if ($res) return true;
-         else return __("Error when updating MantisBT issue", "mantis");
-      }
+                       $data = file_get_contents($path);
+                       if (!$data) {
+                           Toolbox::logInFile('mantis',sprintf(__('Can\'t load the attachment \'%1$s\'
+                               to MantisBT, the process was interrupted ', 'mantis'), $doc->getField('filename')) . "\n");
+                           $error .= sprintf(__('Can\'t load the attachment \'%1$s\',
+                               the process was interrupted ', 'mantis'), $doc->getField('filename'));
+                       } else {
+
+                           //$data    = base64_encode($data);
+                           $id_data = $ws->addAttachmentToIssue($idMantis,
+                               $doc->getField('filename'), $doc->getField('mime'), $data);
+                           if (!$id_data) {
+                               $id_attachment[] = $id_data;
+                               Toolbox::logInFile('mantis',sprintf(__('Can\'t send the attachment
+                                 \'%1$s\' to MantisBT, the process was interrupted ', 'mantis'),
+                                       $doc->getField('filename')) . "\n");
+                               $error .= sprintf(__('Can\'t send the attachment \'%1$s\'
+                                 to MantisBT, the process was interrupted ', 'mantis'), $doc->getField('filename'));
+                           }
+                       }
+                   } else {
+                       Toolbox::logInFile('mantis',sprintf(__('Attachment \'%1$s\'
+                           does not exist,the process was interrupted ', 'mantis'),
+                               $doc->getField('filename')) . "\n");
+                       $error .= sprintf(__('Attachment \'%1$s\' does not exist,the
+                           process was interrupted ', 'mantis'), $doc->getField('filename'));
+                   }
+               }
+           }
+
+           if($error != ""){
+               return $error;
+           }
+
+       }
+
+
+       if ($this->needNote($champsGlpi, $champsUrl)) {
+
+           $error   = "";
+           $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, $ws, $idMantis,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie);
+           if (!$id_note) $error .= __("Error creating the note, the process was interrupted", "mantis");
+
+           if ($error != "") return $error;
+           else return true;
+
+       } else {
+
+           $issue->additional_information .= "<br>".$this->getAdditionalInfo($champsGlpi, $champsUrl,
+                   $ticket, $itilCategorie,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie);
+           $res  = $ws->updateIssueMantis($issue->id, $issue);
+
+           if ($res) {
+               return true;
+           }
+           else return __("Error when updating MantisBT issue", "mantis");
+       }
 
 
    }
@@ -125,6 +190,14 @@ class PluginMantisIssue {
       $idUser            = $_POST['user'];
       $date              = $_POST['dateEscalade'];
       $assignId          = $_POST['assign'];
+
+       $followFollow = $_POST['followFollow'];
+       $followTask = $_POST['followTask'];
+       $followTitle = $_POST['followTitle'];
+       $followDescription = $_POST['followDescription'];
+       $followCategorie = $_POST['followCategorie'];
+
+
 
       $ws = new PluginMantisMantisws();
       $ws->initializeConnection();
@@ -173,7 +246,7 @@ class PluginMantisIssue {
          $this->setSteps_to_reproduce(stripslashes(str_replace('\n','</br>',$stepToReproduce)));
          $this->setSummary(stripslashes($resume));
          $this->setAdditional_information($this->getAdditionalInfo($champsGlpi,
-            $champsUrl, $ticket, $itilCategorie));
+            $champsUrl, $ticket, $itilCategorie,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie));
 
          //on insert lissue
          $idIssueCreate = $ws->addIssue($this);
@@ -205,7 +278,7 @@ class PluginMantisIssue {
                //on s'occupe des note
                if ($this->needNote($champsGlpi, $champsUrl)) {
                   $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie,
-                     $champsUrl, $ws, $idIssueCreate);
+                     $champsUrl, $ws, $idIssueCreate,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie);
                   //Erreur lors de la création de la note
                   if (!$id_note) $error .= __("Error creating the note, the process was interrupted",
                      "mantis");
@@ -305,20 +378,33 @@ class PluginMantisIssue {
    }
 
 
-   private function getAdditionalInfo($champsGlpi, $champsUrl, $ticket, $itilCategorie) {
+   private function getAdditionalInfo($champsGlpi, $champsUrl, $ticket, $itilCategorie,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie) {
       $infoTicket = "";
 
       //sprintf(__('Project \'%1$s\' does not exist.','mantis'), $nameMantisProject);
       if ($champsGlpi == 'additional_information') {
-         $infoTicket .= sprintf(__('Title = %1$s <br/>', 'mantis'), $ticket->fields["name"]);
-         $infoTicket .= sprintf(__('Description = %1$s <br/>', 'mantis'), $ticket->fields["content"]);
 
-         $infoTicket .= $this->getFollowUpFromticket($ticket);
-         $infoTicket .= $this->getTaskFromticket($ticket);
+         if($followTitle== 'true'){
+             $infoTicket .= sprintf(__('Title = %1$s <br/>', 'mantis'), $ticket->fields["name"]);
+         }
 
+         if($followDescription== 'true'){
+             $infoTicket .= sprintf(__('Description = %1$s <br/>', 'mantis'), $ticket->fields["content"]);
+         }
 
-         if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
-            $infoTicket .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields["name"]);
+         if($followFollow== 'true'){
+             $infoTicket .= $this->getFollowUpFromticket($ticket);
+         }
+
+         if($followTask== 'true'){
+            $infoTicket .= $this->getTaskFromticket($ticket);
+         }
+
+         if($followCategorie== 'true'){
+             if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
+                 $infoTicket .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields["name"]);
+         }
+
       }
 
       if ($champsUrl == 'additional_information') {
@@ -328,20 +414,38 @@ class PluginMantisIssue {
    }
 
 
-   private function createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, $ws, $idIssueCreate) {
+   private function createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, $ws, $idIssueCreate,
+   $followFollow,$followTask,$followTitle,$followDescription,$followCategorie) {
 
       $note = "";
 
       if ($champsGlpi == 'note') {
-         $note .= sprintf(__('Title = %1$s <br/>', 'mantis'), $ticket->fields["name"]);
-         $note .= sprintf(__('Description = %1$s <br/>', 'mantis'), $ticket->fields["content"]);
 
-         $note .= $this->getFollowUpFromticket($ticket);
-         $note .= $this->getTaskFromticket($ticket);
+          if($followTitle== 'true'){
+              $note .= sprintf(__('Title = %1$s <br/>', 'mantis'), $ticket->fields["name"]);
+          }
 
-         if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
-            $note .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields["name"]);
+          if($followDescription== 'true') {
+              $note .= sprintf(__('Description = %1$s <br/>', 'mantis'), $ticket->fields["content"]);
+          }
+
+
+          if($followFollow== 'true'){
+              $note .= $this->getFollowUpFromticket($ticket);
+          }
+
+          if($followTask== 'true'){
+              $note .= $this->getTaskFromticket($ticket);
+          }
+
+
+          if($followCategorie== 'true'){
+              if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
+                  $note .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields["name"]);
+          }
+
       }
+
       if ($champsUrl == 'note') {
          $note .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
       }

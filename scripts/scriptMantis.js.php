@@ -114,10 +114,11 @@ function findProjectById(){
 
     var idMantisIssue = $("#idMantis").val();
     var idTicket = $("#idTicket").val();
-    var dropdownCustomField = $("#dropdown_fieldsGlpi");
-    var dropdownUrl = $("#dropdown_fieldUrl");
+    var dropdownCustomField = $("#dropdown_fieldsGlpi1");
+    var dropdownUrl = $("#dropdown_fieldUrl1");
 
-var div_info = $("#infoLinIssueGlpiToIssueMantis");
+
+    var div_info = $("#infoLinIssueGlpiToIssueMantis");
    var div_wait = $("#waitForLinkIssueGlpiToIssueMantis");
 
     if(idMantisIssue.trim() == "" || idMantisIssue == null){
@@ -173,8 +174,8 @@ function linkIssueglpiToIssueMantis() {
    var idUser = $("#user").val();
    var date = $("#dateEscalade").val();
 
-   var glpiField = $("#dropdown_fieldsGlpi").find(":selected").text();
-   var glpiUrl = $("#dropdown_fieldUrl").find(":selected").text();
+   var glpiField = $("#dropdown_fieldsGlpi1").find(":selected").text();
+   var glpiUrl = $("#dropdown_fieldUrl1").find(":selected").text();
 
    var followAttachment = $("#followAttachment").is(':checked');
 
@@ -183,6 +184,7 @@ function linkIssueglpiToIssueMantis() {
    var followTitle = $("#followTitle").is(':checked');
    var followDescription = $("#followDescription").is(':checked');
    var followCategorie = $("#followCategorie").is(':checked');
+   var linkedTicket = $("#linkedTicket1").is(':checked');
 
    var div_info = $("#infoLinIssueGlpiToIssueMantis");
    var div_wait = $("#waitForLinkIssueGlpiToIssueMantis");
@@ -226,6 +228,11 @@ function linkIssueglpiToIssueMantis() {
               "followTask=" + followTask + "&" +
               "glpiField=" + glpiField + "&" +
                "glpiUrl=" + glpiUrl + "&" +
+                              "linkedTicket=" + linkedTicket + "&" +
+
+
+
+
                "followTitle=" + followTitle + "&" +
                 "followDescription=" + followDescription + "&" +
                  "followCategorie=" + followCategorie + "&" +
@@ -490,6 +497,7 @@ function linkIssueglpiToProjectMantis() {
     var followTitle = $("#followTitle").is(':checked');
     var followDescription = $("#followDescription").is(':checked');
     var followCategorie = $("#followCategorie").is(':checked');
+    var linkedTicket = $("#linkedTicket").is(':checked');
 
 
    var idTicket = $("#idTicket").val();
@@ -533,8 +541,8 @@ function linkIssueglpiToProjectMantis() {
              "assign=" + assign + "&" +
               "glpiField=" + glpiField + "&" +
 
-
-            "stepToReproduce=" + stepToReproduce + "&" +
+            "linkedTicket=" + linkedTicket + "&" +
+             "stepToReproduce=" + stepToReproduce + "&" +
             "followAttachment=" + followAttachment + "&" +
 
             "glpiUrl=" + glpiUrl + "&" +

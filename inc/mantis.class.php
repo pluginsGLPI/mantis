@@ -393,6 +393,8 @@ class PluginMantisMantis extends CommonDBTM {
     }
 
 
+
+
    /**
     * Function to show the form of plugin
     * @param $item
@@ -579,13 +581,13 @@ class PluginMantisMantis extends CommonDBTM {
        //MANTIS FIELD FOR GLPI FIELDS
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<th>".__("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)", "mantis")."</th><td>";
-       $content .= Dropdown::showFromArray('fieldsGlpi', array(), array('rand' => '' ,'display' => false));
+       $content .= Dropdown::showFromArray('fieldsGlpi1', array(), array('rand' => '' ,'display' => false));
        $content .= "</td></tr>";
 
        //MANTIS FIELD FOR GLPI FIELDS
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<th>". __("MantisBT field for the link to the ticket GLPI", "mantis")."</th><td>";
-       $content .= Dropdown::showFromArray('fieldUrl', array(), array('rand' => '' ,'display' => false));
+       $content .= Dropdown::showFromArray('fieldUrl1', array(), array('rand' => '' ,'display' => false));
        $content .= "</td></tr>";
 
        //FORWORD ATTACHMENT
@@ -623,6 +625,12 @@ class PluginMantisMantis extends CommonDBTM {
        $content .= "<th>".__("Glpi categorie","mantis")."</th>";
        $content .= "<td><INPUT type='checkbox' name='followCategorie' id='followCategorie' >".
            __("To forward categorie","mantis")."</td></tr>";
+
+       //FOLLOW GLPI LINKED
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>"._n('Linked ticket', 'Linked tickets', 2)."</th>";
+       $content .= "<td><INPUT type='checkbox' name='linkedTicket1' id='linkedTicket1' >".
+           __("To forward linked Ticket","mantis")."</td></tr>";
 
        //INPUT
        $content.= "<tr class='tab_bg_1'>";
@@ -747,7 +755,13 @@ class PluginMantisMantis extends CommonDBTM {
         $content .= "<tr class='tab_bg_1'>";
         $content .= "<th>".__("Glpi categorie","mantis")."</th>";
         $content .= "<td><INPUT type='checkbox' name='followCategorie' id='followCategorie' >".
-        __("To forward categorie","mantis")."</td></tr>";
+            __("To forward categorie","mantis")."</td></tr>";
+
+        //FOLLOW GLPI LINKED
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>"._n('Linked ticket', 'Linked tickets', 2)."</th>";
+        $content .= "<td><INPUT type='checkbox' name='linkedTicket' id='linkedTicket' >".
+            __("To forward linked Ticket","mantis")."</td></tr>";
 
         //INPUT HIDDEN
         $content .= "<tr class='tab_bg_1'>";

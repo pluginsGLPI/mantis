@@ -45,180 +45,153 @@
  */
 class PluginMantisConfig extends CommonDBTM {
 
-   /**
-   * Function to define if the user have right to create
-   * @return bool|booleen
-   */
-   static function canCreate() {
-     return Session::haveRight('config', 'w');
-   }
+    /**
+    * Function to define if the user have right to create
+    * @return bool|booleen
+    */
+    static function canCreate() {
+        return Session::haveRight('config', 'w');
+    }
 
 
-   /**
-   * Function to define if the user have right to view
-   * @return bool|booleen
-   */
-   static function canView() {
-     return Session::haveRight('config', 'r');
-   }
+    /**
+    * Function to define if the user have right to view
+    * @return bool|booleen
+    */
+    static function canView() {
+        return Session::haveRight('config', 'r');
+    }
 
 
-   /**
-   * Function to show form to configure the plugin MantisBT
-   */
-   function showConfigForm() {
-      //we recover the first and only record
-      $this->getFromDB(1);
+    /**
+    * Function to show form to configure the plugin MantisBT
+    */
+    function showConfigForm() {
+        //we recover the first and only record
+        $this->getFromDB(1);
 
-      $target = $this->getFormURL();
-      if (isset($options['target'])) {
-       $target = $options['target'];
-      }
+        $target = $this->getFormURL();
+        if (isset($options['target'])) {
+            $target = $options['target'];
+        }
 
-      $content  = "<form method='post' action='" . $target . "' method='post'>";
-      $content .= "<table class='tab_cadre' >";
-      $content .= "<tr>";
-      $content .= "<th colspan='6'>" . __("MantisBT plugin setup", "mantis") . "</th>";
-      $content .= "</tr>";
+        $content  = "<form method='post' action='" . $target . "' method='post'>";
+        $content .= "<table class='tab_cadre' >";
+        $content .= "<tr>";
+        $content .= "<th colspan='6'>" . __("MantisBT plugin setup", "mantis") . "</th>";
+        $content .= "</tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("MantisBT server IP", "mantis") . "</td>";
-      $content .= "<td><input id='host' name='host' type='text' value='" 
-                                                       . $this->fields["host"] . "'/></td>";
-      $content .= "<td>ex: http(s)://128.65.25.74 or http(s)://serveurName</td>";
-      $content .= "</tr>";
+        //HOST OF MANTIS SERVER
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>" . __("MantisBT server IP", "mantis") . "</td>";
+        $content .= "<td><input id='host' name='host' type='text' value='".$this->fields["host"]."'/></td>";
+        $content .= "<td>ex: http(s)://128.65.25.74 or http(s)://serveurName</td>";
+        $content .= "</tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("Wsdl file path", "mantis") . "</td>";
-      $content .= "<td><input id='url' name='url' type='text' value='" 
-                                                         . $this->fields["url"] . "'/></td>";
-      $content .= "<td>ex: mantis/api/soap/mantisconnect.php?wsdl</td>";
-      $content .= "</tr>";
+        //PATH FOR WSDL FILE
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>" . __("Wsdl file path", "mantis") . "</td>";
+        $content .= "<td><input id='url' name='url' type='text' value='" . $this->fields["url"] . "'/></td>";
+        $content .= "<td>ex: mantis/api/soap/mantisconnect.php?wsdl</td>";
+        $content .= "</tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("MantisBT user login", "mantis") . "</td>";
-      $content .= "<td><input  id='login' name='login' type='text' value='" 
-                                                         . $this->fields["login"] . "'/></td>";
-      $content .= "<td>ex : administrator</td>";
-      $content .= "</tr>";
+        //MANTIS USER LOGIN
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>" . __("MantisBT user login", "mantis") . "</td>";
+        $content .= "<td><input  id='login' name='login' type='text' value='" . $this->fields["login"] . "'/></td>";
+        $content .= "<td>ex : administrator</td>";
+        $content .= "</tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("MantisBT user password", "mantis") . "</td>";
-      $content .= "<td><input  id='pwd' name='pwd' type='password' value='" 
-                                                            . $this->fields["pwd"] . "'/></td>";
+        //MANTIS USER PASSWORD
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>" . __("MantisBT user password", "mantis") . "</td>";
+        $content .= "<td><input  id='pwd' name='pwd' type='password' value='"  . $this->fields["pwd"] . "'/></td>";
+        $content .= "<td></td>";
+        $content .= "</tr>";
 
-      $content .= "<td></td>";
-      $content .= "</tr>";
+        //ASSIGNATION OPTION
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>" . __("Allow assignation", "mantis") . "</td>";
+        $content .= "<td>";
+        $content .= Dropdown::showYesNo("enable_assign",$this->fields["enable_assign"],-1,array('display'=>false));
+        $content .= "</td>";
+        $content .= "<td></td>";
+        $content .= "</tr>";
 
-       $content .= "<tr class='tab_bg_1'>";
-       $content .= "<td>" . __("Allow assignation", "mantis") . "</td>";
-       $content .= "<td>";
+        //OPTION TO NEUTRALIZE ESCLATION SWITH GLPI STATUS
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>" . __("Neutralize the escalating to MantisBT when the status of the GLPI tickets is", "mantis") . "</td>";
+        $content .= "<td>";
+        $content .= self::dropdownStatus(array('showtype' => 'normal','name'=>'neutralize_escalation',
+        'value' => $this->fields["neutralize_escalation"],'display' => false,'none' => false));
+        $content .= "</td>";
+        $content .= "<td></td>";
+        $content .= "</tr>";
 
-       $content .= Dropdown::showYesNo("enable_assign",$this->fields["enable_assign"],-1,
-           array(
-               'display'   => false));
+        //OPTION TO SET STATUS   GLPI AFTER ESCALATION
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>" . __("Status of glpi ticket after escalation to MantisBT", "mantis") . "</td>";
+        $content .= "<td>";
+        $content .= self::dropdownStatus(array('showtype' => 'normal','name'=>'status_after_escalation' ,
+        'value' => $this->fields["status_after_escalation"],'display' => false,'none' => true));
+        $content .= "</td>";
+        $content .= "<td></td>";
+        $content .= "</tr>";
 
-       $content .= "</td>";
-       $content .= "<td></td>";
-       $content .= "</tr>";
-
-
-
-       $content .= "<tr class='tab_bg_1'>";
-       $content .= "<td>" . __("Neutralize the escalating to MantisBT when the status of the GLPI tickets is", "mantis") . "</td>";
-       $content .= "<td>";
-
-
-       $content .= self::dropdownStatus(array('showtype' => 'normal','name'=>'neutralize_escalation' ,
-           'value' => $this->fields["neutralize_escalation"],'display' => false,'none' => false));
-
-       $content .= "</td>";
-       $content .= "<td></td>";
-       $content .= "</tr>";
-
-
-       $content .= "<tr class='tab_bg_1'>";
-       $content .= "<td>" . __("Status of glpi ticket after escalation to MantisBT", "mantis") . "</td>";
-       $content .= "<td>";
-
-       $content .= self::dropdownStatus(array('showtype' => 'normal','name'=>'status_after_escalation' ,
-           'value' => $this->fields["status_after_escalation"],'display' => false,'none' => true));
-
-       $content .= "</td>";
-       $content .= "<td></td>";
-       $content .= "</tr>";
-
-
-       $content .= "<tr class='tab_bg_1'>";
-       $content .= "<td>" . __("Show option 'Delete the  MantisBT ticket' ", "mantis") . "</td>";
-       $content .= "<td>";
+        //OPTION TO SHOW DELETE OPTION
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>" . __("Show option 'Delete the  MantisBT ticket' ", "mantis") . "</td>";
+        $content .= "<td>";
+        $content .= Dropdown::showYesNo('show_option_delete',$this->fields["show_option_delete"],-1,array('rand' => false,'display' => false));
+        $content .= "</td>";
+        $content .= "<td></td>";
+        $content .= "</tr>";
 
 
-       $content .= Dropdown::showYesNo('show_option_delete',$this->fields["show_option_delete"],-1,array('rand' => false,'display' => false));
+        //MANTIS FIELD FOR GLPI FIELD
+        /*$content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>"
+        . __("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)", "mantis") . "</td>";
+        $content .= "<td>";
+        $content .= DropDown::showFromArray('champsGlpi',PluginMantisIssue::$champsMantis, array(
+            'value' => $this->fields["champsGlpi"],'display' => false));
+        $content .= "</td>";
+        $content .= "<td></td>";
+        $content .= "</tr>";*/
 
-       $content .= "</td>";
-       $content .= "<td></td>";
-       $content .= "</tr>";
+        //MANTIS FIELD FOR GLPI URL
+        /*$content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>" . __("MantisBT field for the link to the ticket GLPI", "mantis") . "</td>";
+        $content .= "<td>";
+        $content .= DropDown::showFromArray('champsUrlGlpi',PluginMantisIssue::$champsMantis, array('value' => $this->fields["champsUrlGlpi"],'display'=> false));
+        $content .= "</td>";
+        $content .= "<td></td>";
+        $content .= "</tr>";*/
 
+        //MANTIS STATUS TO CLOSE GLPI TICKET
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>". __("Close Glpi ticket when status ticket MantisBT is", "mantis") . "</td>";
+        $content .= "<td>";
+        $content .= Dropdown::showFromArray('etatMantis', array(), array('rand' => '', 'display' => false));
+        if (!empty($this->fields["etatMantis"])) {
+        $content .= " (".$this->fields["etatMantis"].") ";
+        }
+        $content .= "</td>";
+        $content .= "<td>Tester la connexion pour faire apparaître les états Mantis</td>";
+        $content .= "</tr>";
 
+        //INPUT BUTTON
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td><input type='hidden' name='id' value='1' class='submit'>";
+        $content .= "<input id='update' type='submit' name='update' value='". __("Update", "mantis") . "' class='submit'></td>";
+        $content .= "<td><input id='test' onclick='testConnexionMantisWS();'  value='". __("Test the connection", "mantis") . "' class='submit'></td>";
+        $content .= "<td><div id='infoAjax'/></td>";
+        $content .= "</tr>";
 
+        $content .= "</table>";
+        $content .= Html::closeForm(false);
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("MantisBT field for the link to the ticket GLPI", "mantis") . "</td>";
-      $content .= "<td>";
-      $content .= DropDown::showFromArray('champsUrlGlpi', 
-                           PluginMantisIssue::$champsMantis, array(
-                              'value'     => $this->fields["champsUrlGlpi"],
-                              'display'   => false));
-      $content .= "</td>";
-      $content .= "<td></td>";
-      $content .= "</tr>";
-
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" 
-         . __("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)"
-            , "mantis") . "</td>";
-      $content .= "<td>";
-      $content .= DropDown::showFromArray('champsGlpi', 
-                           PluginMantisIssue::$champsMantis, array(
-                              'value'     => $this->fields["champsGlpi"],
-                              'display'   => false));
-      $content .= "</td>";
-      $content .= "<td></td>";
-      $content .= "</tr>";
-
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" 
-         . __("Close Glpi ticket when status ticket MantisBT is", "mantis") . "</td>";
-      $content .= "<td>";
-
-       $content .= Dropdown::showFromArray('etatMantis', array(),
-           array('rand' => '', 'display' => false));
-
-      if (!empty($this->fields["etatMantis"])) {
-          $content .= " (".$this->fields["etatMantis"].") ";
-      }
-
-
-
-      $content .= "</td>";
-      $content .= "<td>Tester la connexion pour faire apparaître les états Mantis</td>";
-      $content .= "</tr>";
-
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td><input type='hidden' name='id' value='1' class='submit'>";
-      $content .= "<input id='update' type='submit' name='update' value='" 
-                                             . __("Update", "mantis") . "' class='submit'></td>";
-      $content .= "<td><input id='test' onclick='testConnexionMantisWS();'  value='"
-                                 . __("Test the connection", "mantis") . "' class='submit'></td>";
-      $content .= "<td><div id='infoAjax'/></td>";
-      $content .= "</tr>";
-
-      $content .= "</table>";
-      
-      $content .= Html::closeForm(false);
-
-      echo $content;
+        echo $content;
     }
 
 

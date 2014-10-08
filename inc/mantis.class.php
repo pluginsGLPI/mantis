@@ -380,18 +380,17 @@ class PluginMantisMantis extends CommonDBTM {
    }
 
 
-   /**
+    /**
     * Define tab content
     **/
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      if ($item->getType() == 'Ticket') {
-         $mon_plugin = new self();
-         //$ID = $item->getField('id');
-         // j'affiche le formulaire
-         $mon_plugin->showForm($item);
-      }
-      return true;
-   }
+    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+
+        if ($item->getType() == 'Ticket') {
+            $mon_plugin = new self();
+            $mon_plugin->showForm($item);
+        }
+        return true;
+    }
 
 
    /**
@@ -431,8 +430,6 @@ class PluginMantisMantis extends CommonDBTM {
 
           }
 
-
-
       } else {
 
          $content = "<div class='center'>";
@@ -440,6 +437,7 @@ class PluginMantisMantis extends CommonDBTM {
          $content .= "<b>". __("Thank you configure the mantis plugin", "mantis") . "</b>";
          $content .= "</div>";
          echo $content;
+
       }
 
    }
@@ -449,6 +447,7 @@ class PluginMantisMantis extends CommonDBTM {
      * @param $item
      */
    public function displayBtnToLinkissueGlpi($item) {
+
       global $CFG_GLPI;
 
       $content = "<div id='popupLinkGlpiIssuetoMantisIssue' ></div>";
@@ -456,30 +455,23 @@ class PluginMantisMantis extends CommonDBTM {
 
       Ajax::createModalWindow('popupLinkGlpiIssuetoMantisIssue',
          $CFG_GLPI["root_doc"] . '/plugins/mantis/front/mantis.form.php?action=linkToIssue&idTicket=' .
-         $item->fields['id'], array('title'  => __("MantisBT actions", "mantis"),
-                                    'width'  => 520,
-                                    'height' => 265));
+         $item->fields['id'], array('title'  => __("MantisBT actions", "mantis"),'width'  => 530,'height' => 400));
 
       Ajax::createModalWindow('popupLinkGlpiIssuetoMantisProject',
          $CFG_GLPI["root_doc"] . '/plugins/mantis/front/mantis.form.php?action=linkToProject&idTicket=' .
-         $item->fields['id'], array('title'  => __("MantisBT actions", "mantis"),
-                                    'width'  => 620,
-                                    'height' => 535));
+         $item->fields['id'], array('title'  => __("MantisBT actions", "mantis"),'width'  => 620,'height' => 650));
 
       $content .= "<table id='table1'  class='tab_cadre_fixe' >";
       $content .= "<th colspan='6'>".__("MantisBT actions", "mantis")."</th>";
-
       $content .= "<tr class='tab_bg_1'>";
 
       $content .= "<td style='text-align: center;'>";
       $content .= "<input  onclick='popupLinkGlpiIssuetoMantisIssue.show();'  value='" .
-         __('Link to an existing MantisBT ticket', 'mantis') ."' class='submit' 
-         style='width : 200px;'></td>";
+         __('Link to an existing MantisBT ticket', 'mantis') ."' class='submit' style='width : 200px;'></td>";
 
       $content .= "<td style='text-align: center;'>";
       $content .= "<input  onclick='popupLinkGlpiIssuetoMantisProject.show();'  value='" .
-         __('Create a new MantisBT ticket', 'mantis') ."' class='submit'
-         style='width : 250px;'></td>";
+         __('Create a new MantisBT ticket', 'mantis') ."' class='submit' style='width : 250px;'></td>";
 
       $content .= "</tr>";
       $content .= "</table>";
@@ -497,26 +489,25 @@ class PluginMantisMantis extends CommonDBTM {
     * @param $id_mantis
     */
    public function getFormToDelLinkOrIssue($id_link, $id_ticket, $id_mantis){
-      global $CFG_GLPI;
+       global $CFG_GLPI;
 
-      $ws = new PluginMantisMantisws();
-      $ws->initializeConnection();
-      $issue = $ws->getIssueById($id_mantis);
+       $ws = new PluginMantisMantisws();
+       $ws->initializeConnection();
+       $issue = $ws->getIssueById($id_mantis);
 
        $conf = new PluginMantisConfig();
        $conf->getFromDB(1);
 
-      $content = "<form action='#' id=".$id_link.">";
+       $content = "<form action='#' id=".$id_link.">";
+       $content .= "<table id=".$id_link." class='tab_cadre' cellpadding='5' >";
+       $content .= "<th colspan='2'>".__("What do you do ?","mantis")."</th>";
 
-      $content .= "<table id=".$id_link." class='tab_cadre' cellpadding='5' >";
-
-      $content .= "<th colspan='2'>".__("What do you do ?","mantis")."</th>";
-
-      $content .= "<tr class='tab_bg_1' >";
-      $content .= "<td><INPUT type='checkbox'  id='deleteLink".$id_link."' >";
-      $content .= __("Delete link of the MantisBT ticket","mantis")."</td>";
-      $content .= "<td>".__("(Does not delete the MantisBT ticket)","mantis")."</td>";
-      $content .= "</tr>";
+       //CHECKBOX -> DEL LINK BETWEEN GLPI AND MANTIS
+       $content .= "<tr class='tab_bg_1' >";
+       $content .= "<td><INPUT type='checkbox'  id='deleteLink".$id_link."' >";
+       $content .= __("Delete link of the MantisBT ticket","mantis")."</td>";
+       $content .= "<td>".__("(Does not delete the MantisBT ticket)","mantis")."</td>";
+       $content .= "</tr>";
 
 
        //show option to delete mantis issue or not (display:none)
@@ -532,7 +523,6 @@ class PluginMantisMantis extends CommonDBTM {
            $content .= "<td>".__("(Also removes the link in GLPI)","mantis")."</td>";
            $content .= "</tr>";
        }else{
-
            $content .= "<tr class='tab_bg_1' style='display:none;'>";
            if (!$issue) {
                $content .= "<td><INPUT type='checkbox' disabled id='deleteIssue" . $id_link . "' >";
@@ -543,31 +533,25 @@ class PluginMantisMantis extends CommonDBTM {
            }
            $content .= "<td>".__("(Also removes the link in GLPI)","mantis")."</td>";
            $content .= "</tr>";
-
        }
 
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td><input  id=" . $id_link . "  name='delo' value='" . __("Delete", "mantis") .
-         "' class='submit' onclick='delLinkAndOrIssue(" .
-         $id_link . "," . $id_mantis . "," . $id_ticket . ");'></td>";
-      $content .= "<td><div id='infoDel" . $id_link . "' ></div>";
-      $content .= "<img id='waitDelete" . $id_link . "' src='".$CFG_GLPI["root_doc"].
-         "/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
-      $content .= "</tr>";
+       //sUBMIT BUTTON
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<td><input  id=" . $id_link . "  name='delo' value='" . __("Delete", "mantis") .
+         "' class='submit' onclick='delLinkAndOrIssue(" .$id_link . "," . $id_mantis . "," . $id_ticket . ");'></td>";
+       $content .= "<td><div id='infoDel" . $id_link . "' ></div>";
+       $content .= "<img id='waitDelete" . $id_link . "' src='".$CFG_GLPI["root_doc"]."/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
+       $content .= "</tr>";
 
-      $content .= "<input type='hidden' name='idMantis".$id_link."' id='idMantis' value=" .
-         $id_link . "       >";
-      $content .= "<input type='hidden' name='id".$id_link."'       id='id'       value=" .
-         $id_mantis . " >";
-      $content .= "<input type='hidden' name='idTicket".$id_link."' id='idticket' value=" .
-         $id_ticket . " >";
+       $content .= "<input type='hidden' name='idMantis".$id_link."' id='idMantis' value=" . $id_link . "       >";
+       $content .= "<input type='hidden' name='id".$id_link."'       id='id'       value=" . $id_mantis . " >";
+       $content .= "<input type='hidden' name='idTicket".$id_link."' id='idticket' value=" . $id_ticket . " >";
 
-      $content .= "</table>";
+       $content .= "</table>";
+       $content .= Html::closeForm(false);
 
-      $content .= Html::closeForm(false);
-
-      echo $content;
+       echo $content;
    }
 
 
@@ -578,184 +562,213 @@ class PluginMantisMantis extends CommonDBTM {
     * @param $id_ticket
     */
    public function getFormForLinkGlpiTicketToMantisTicket($id_ticket) {
-      global $CFG_GLPI;
+       global $CFG_GLPI;
 
-      $content = "<form action='#' >";
-      $content.= "<table class='tab_cadre'cellpadding='5'>";
-      $content.= "<th colspan='6'>".__('Link to an existing MantisBT ticket','mantis')."</th>";
+       $content = "<form action='#' >";
+       $content.= "<table class='tab_cadre'cellpadding='5'>";
+       $content.= "<th colspan='6'>".__('Link to an existing MantisBT ticket','mantis')."</th>";
 
-      $content.= "<tr class='tab_bg_1'>";
-      $content.= "<th width='100'>".__('Id Ticket','mantis')."</th>";
-      $content.= "<td ><input size=35 id='idMantis' type='text' name='idMantis' onkeypress=\"if(event.keyCode==13)linkIssueglpiToIssueMantis();\" /></td>";
-      $content.= "</tr>";
+       //ID ISSUE MANTIS
+       $content.= "<tr class='tab_bg_1'>";
+       $content.= "<th width='100'>".__('Id Ticket','mantis')."</th>";
+       $content.= "<td ><input size=35 id='idMantis' type='text' name='idMantis' onkeypress=\"if(event.keyCode==13)findProjectById();\" />".
+       "<img id='searchImg' alt='rechercher' src='".$CFG_GLPI['root_doc']."/pics/aide.png'
+        onclick='findProjectById();'style='cursor: pointer;padding-left:5px; padding-right:5px;'/></td>";
+       $content.= "</tr>";
 
+       //MANTIS FIELD FOR GLPI FIELDS
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>".__("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)", "mantis")."</th><td>";
+       $content .= Dropdown::showFromArray('fieldsGlpi', array(), array('rand' => '' ,'display' => false));
+       $content .= "</td></tr>";
+
+       //MANTIS FIELD FOR GLPI FIELDS
+       $content .= "<tr class='tab_bg_1'>";
+       $content .= "<th>". __("MantisBT field for the link to the ticket GLPI", "mantis")."</th><td>";
+       $content .= Dropdown::showFromArray('fieldUrl', array(), array('rand' => '' ,'display' => false));
+       $content .= "</td></tr>";
+
+       //FORWORD ATTACHMENT
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<th>".__("Attachments","mantis")."</th>";
        $content .= "<td><INPUT type='checkbox' name='followAttachment' id='followAttachment' >".
            __("To forward attachments","mantis")."</td></tr>";
 
+       //FORWORD FOLLOW
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<th>".__("Glpi follow","mantis")."</th>";
        $content .= "<td><INPUT type='checkbox' name='followFollow' id='followFollow' >".
            __("To forward follow","mantis")."</td></tr>";
 
+       //FORWORD TASK
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<th>".__("Glpi task","mantis")."</th>";
        $content .= "<td><INPUT type='checkbox' name='followTask' id='followTask' >".
            __("To forward task","mantis")."</td></tr>";
 
+       //FORWORD TITLE
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<th>".__("Glpi title","mantis")."</th>";
        $content .= "<td><INPUT type='checkbox' name='followTitle' id='followTitle' >".
            __("To forward title","mantis")."</td></tr>";
 
+       //FORWORD DESCRIPTION
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<th>".__("Glpi description","mantis")."</th>";
        $content .= "<td><INPUT type='checkbox' name='followDescription' id='followDescription' >".
            __("To forward description","mantis")."</td></tr>";
 
+       //FORWORD CATEGORIE
        $content .= "<tr class='tab_bg_1'>";
        $content .= "<th>".__("Glpi categorie","mantis")."</th>";
        $content .= "<td><INPUT type='checkbox' name='followCategorie' id='followCategorie' >".
            __("To forward categorie","mantis")."</td></tr>";
 
-      $content.= "<tr class='tab_bg_1'>";
-      $content.= "<td><input  id='linktoIssue'  name='linktoIssue' value='Lier'
-        class='submit' onclick='linkIssueglpiToIssueMantis();'></td>";
+       //INPUT
+       $content.= "<tr class='tab_bg_1'>";
+       $content.= "<td><input  id='linktoIssue'  name='linktoIssue' value='Lier' class='submit' onclick='linkIssueglpiToIssueMantis();'></td>";
 
-      $content.= "<td width='150' height='20'>";
-      $content.= "<div id='infoLinIssueGlpiToIssueMantis' ></div>";
-      $content.= "<img id='waitForLinkIssueGlpiToIssueMantis'  src='".$CFG_GLPI['root_doc'].
+       //INFO
+       $content.= "<td width='150' height='20'>";
+       $content.= "<div id='infoLinIssueGlpiToIssueMantis' ></div>";
+       $content.= "<img id='waitForLinkIssueGlpiToIssueMantis'  src='".$CFG_GLPI['root_doc'].
          "/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
-      $content.= "</tr>";
+       $content.= "</tr>";
 
-      $content.= "<input type='hidden' name='idTicket' id='idTicket' value=" .  $id_ticket . " >";
-      $content.= "<input type='hidden' name='user' id='user' value=" . Session::getLoginUserID(). " >";
-      $content.= "<input type='hidden' name='dateEscalade' id='dateEscalade' value=" .date("Y-m-d") . " >";
+       //INPUT HIDDEN
+       $content.= "<input type='hidden' name='idTicket' id='idTicket' value=" .  $id_ticket . " >";
+       $content.= "<input type='hidden' name='user' id='user' value=" . Session::getLoginUserID(). " >";
+       $content.= "<input type='hidden' name='dateEscalade' id='dateEscalade' value=" .date("Y-m-d") . " >";
 
-      $content.= "</table>";
+       $content.= "</table>";
+       $content.= Html::closeForm(false);
 
-      $content.= Html::closeForm(false);
-
-      echo $content;
+       echo $content;
    }
 
 
-   /**
+    /**
     * Form to link glpi ticket to mantis project
     * @param $id_ticket
     */
-   public function getFormForLinkGlpiTicketToMantisProject($id_ticket) {
-      global $CFG_GLPI;
+    public function getFormForLinkGlpiTicketToMantisProject($id_ticket) {
 
+        global $CFG_GLPI;
 
-      $config = new PluginMantisConfig();
-      $config->getFromDB(1);
+        $config = new PluginMantisConfig();
+        $config->getFromDB(1);
 
+        $content  = "<form action='#' >";
+        $content .= "<table id='table2' class='tab_cadre' cellpadding='5'>";
+        $content .= "<tr class='headerRow'><th colspan='6'>".__("Create a new MantisBT ticket","mantis")."</th></tr>";
 
+        //PROJECT NAME
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>Nom du projet</th>";
+        $content .= "<td id='tdSearch' height='24'>";
 
-      $content  = "<form action='#' >";
-      $content .= "<table id='table2' class='tab_cadre' cellpadding='5'>";
-      $content .= "<tr class='headerRow'><th colspan='6'>".
-         __("Create a new MantisBT ticket","mantis")."</th></tr>";
+        $content .= "<input  id='nameMantisProject' type='text'  name='resume'  onkeypress=\"if(event.keyCode==13)findProjectByName();\" />";
+        $content .= "<img id='searchImg' alt='rechercher' src='".$CFG_GLPI['root_doc']."/pics/aide.png'
+        onclick='findProjectByName();'style='cursor: pointer;padding-left:5px; padding-right:5px;'/></td>";
+        $content .= "</tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<th>Nom du projet</th>";
-      $content .= "<td id='tdSearch' height='24'>";
+        //MANTIS CATEGORIE
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("Category","mantis")."</th><td>";
+        $content .= Dropdown::showFromArray('categorie', array(),array('rand' => '' ,'display' => false));
+        $content .= "</td></tr>";
 
-       $content .= "<input  id='nameMantisProject' type='text'  name='resume'  onkeypress=\"if(event.keyCode==13)findProjectByName();\" />";
-      $content .= "<img id='searchImg' alt='rechercher' src='".$CFG_GLPI['root_doc']."/pics/aide.png'
-         onclick='findProjectByName();'style='cursor: pointer;padding-left:5px; padding-right:5px;'/></td>";
-      $content .= "</tr>";
+        //MANTIS FIELD FOR GLPI FIELDS
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)", "mantis")."</th><td>";
+        $content .= Dropdown::showFromArray('fieldsGlpi', array(), array('rand' => '' ,'display' => false));
+        $content .= "</td></tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<th>".__("Category","mantis")."</th><td>";
-      $content .= Dropdown::showFromArray('categorie', array(),
-         array('rand' => '' ,'display' => false));
-      $content .= "</td></tr>";
+        //MANTIS FIELD FOR GLPI FIELDS
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>". __("MantisBT field for the link to the ticket GLPI", "mantis")."</th><td>";
+        $content .= Dropdown::showFromArray('fieldUrl', array(), array('rand' => '' ,'display' => false));
+        $content .= "</td></tr>";
 
+        //MANTIS ASSIGNATION
+        if($config->fields['enable_assign']){
+            $content .= "<tr class='tab_bg_1'>";
+            $content .= "<th>".__("Assignation","mantis")."</th><td>";
+            $content .= Dropdown::showFromArray('assignation', array(),array('rand' => '' ,'display' => false));
+            $content .= "</td></tr>";
+        }
 
-      if($config->fields['enable_assign']){
-         $content .= "<tr class='tab_bg_1'>";
-         $content .= "<th>".__("Assignation","mantis")."</th><td>";
-         $content .= Dropdown::showFromArray('assignation', array(),
-            array('rand' => '' ,'display' => false));
-         $content .= "</td></tr>";
-      }
+        //MANTIS SUMMARY
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("Summary","mantis")."</th>";
+        $content .= "<td><input  id='resume' type='text' name='resume' size=35/></td></tr>";
 
+        //MANTIS DESCRIPTION
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("Description","mantis")."</th>";
+        $content .= "<td><textarea  rows='5' cols='55' name='description' id='description'></textarea></td></tr>";
 
+        //MANTIS STEP TO REPRODUCE
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("Steps to reproduce","mantis")."</th>";
+        $content .= "<td><textarea  rows='5' cols='55' name='stepToReproduce' id='stepToReproduce'></textarea></td></tr>";
 
+        //FOLLOW ATTACHMENT
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("Attachments","mantis")."</th>";
+        $content .= "<td><INPUT type='checkbox' name='followAttachment' id='followAttachment' >".
+        __("To forward attachments","mantis")."</td></tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<th>".__("Summary","mantis")."</th>";
-      $content .= "<td><input  id='resume' type='text' name='resume' size=35/></td></tr>";
+        //FOLLOW GLPI FOLLOW
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("Glpi follow","mantis")."</th>";
+        $content .= "<td><INPUT type='checkbox' name='followFollow' id='followFollow' >".
+        __("To forward follow","mantis")."</td></tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<th>".__("Description","mantis")."</th>";
-      $content .= "<td><textarea  rows='5' cols='55' name='description'
-        id='description'></textarea></td></tr>";
+        //FOLLOW GLPI TASK
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("Glpi task","mantis")."</th>";
+        $content .= "<td><INPUT type='checkbox' name='followTask' id='followTask' >".
+        __("To forward task","mantis")."</td></tr>";
 
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<th>".__("Steps to reproduce","mantis")."</th>";
-      $content .= "<td><textarea  rows='5' cols='55' name='stepToReproduce'
-        id='stepToReproduce'></textarea></td></tr>";
+        //FOLLOW GLPI TITLE
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("Glpi title","mantis")."</th>";
+        $content .= "<td><INPUT type='checkbox' name='followTitle' id='followTitle' >".
+        __("To forward title","mantis")."</td></tr>";
 
-       $content .= "<tr class='tab_bg_1'>";
-       $content .= "<th>".__("Attachments","mantis")."</th>";
-       $content .= "<td><INPUT type='checkbox' name='followAttachment' id='followAttachment' >".
-           __("To forward attachments","mantis")."</td></tr>";
+        //FOLLOW GLPI DEXCRIPTION
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("Glpi description","mantis")."</th>";
+        $content .= "<td><INPUT type='checkbox' name='followDescription' id='followDescription' >".
+        __("To forward description","mantis")."</td></tr>";
 
-       $content .= "<tr class='tab_bg_1'>";
-       $content .= "<th>".__("Glpi follow","mantis")."</th>";
-       $content .= "<td><INPUT type='checkbox' name='followFollow' id='followFollow' >".
-           __("To forward follow","mantis")."</td></tr>";
+        //FOLLOW GLPI CATEGORIE
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<th>".__("Glpi categorie","mantis")."</th>";
+        $content .= "<td><INPUT type='checkbox' name='followCategorie' id='followCategorie' >".
+        __("To forward categorie","mantis")."</td></tr>";
 
-       $content .= "<tr class='tab_bg_1'>";
-       $content .= "<th>".__("Glpi task","mantis")."</th>";
-       $content .= "<td><INPUT type='checkbox' name='followTask' id='followTask' >".
-           __("To forward task","mantis")."</td></tr>";
+        //INPUT HIDDEN
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td><input type='hidden' class='center' name='idTicket' id='idTicket' value=". $id_ticket . " class='submit'>";
+        $content .= "<input type='hidden' class='center' name='user' id='user' value=" .Session::getLoginUserID() . " class='submit'>";
+        $content .= "<input type='hidden' class='center' name='dateEscalade' id='dateEscalade' value=" .date("Y-m-d") . " class='submit'>";
 
-       $content .= "<tr class='tab_bg_1'>";
-       $content .= "<th>".__("Glpi title","mantis")."</th>";
-       $content .= "<td><INPUT type='checkbox' name='followTitle' id='followTitle' >".
-           __("To forward title","mantis")."</td></tr>";
+        //INPUT BUTTON
+        $content .= "<input  id='linktoProject' onclick='linkIssueglpiToProjectMantis();'name='linktoProject' value='".__("Link","mantis")."' class='submit'></td>";
 
-       $content .= "<tr class='tab_bg_1'>";
-       $content .= "<th>".__("Glpi description","mantis")."</th>";
-       $content .= "<td><INPUT type='checkbox' name='followDescription' id='followDescription' >".
-           __("To forward description","mantis")."</td></tr>";
+        //DIV INVO FOR CALL AJAX ERROR
+        $content .= "<td width='150' >";
+        $content .= "<div id='infoLinkIssueGlpiToProjectMantis' ></div>";
+        $content .= "<img id='waitForLinkIssueGlpiToProjectMantis' src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/please_wait.gif' style='display:none;'/>";
+        $content .= "</td>";
 
-       $content .= "<tr class='tab_bg_1'>";
-       $content .= "<th>".__("Glpi categorie","mantis")."</th>";
-       $content .= "<td><INPUT type='checkbox' name='followCategorie' id='followCategorie' >".
-           __("To forward categorie","mantis")."</td></tr>";
+        $content .= "</table>";
+        $content .= Html::closeForm(false);
 
-
-
-
-
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td><input type='hidden' class='center' name='idTicket' id='idTicket' value=" .
-         $id_ticket . " class='submit'>";
-      $content .= "<input type='hidden' class='center' name='user' id='user' value=" .
-         Session::getLoginUserID() . " class='submit'>";
-      $content .= "<input type='hidden' class='center' name='dateEscalade' id='dateEscalade' value=" .
-         date("Y-m-d") . " class='submit'>";
-      $content .= "<input  id='linktoProject' onclick='linkIssueglpiToProjectMantis();
-         'name='linktoProject' value='".__("Link","mantis")."' class='submit'></td>";
-
-      $content .= "<td width='150' >";
-      $content .= "<div id='infoLinkIssueGlpiToProjectMantis' ></div>";
-      $content .= "<img id='waitForLinkIssueGlpiToProjectMantis'
-         src='".$CFG_GLPI['root_doc']."/plugins/mantis/pics/please_wait.gif' style='display:none;'/>";
-      $content .= "</td>";
-
-      $content .= "</table>";
-
-      $content .= Html::closeForm(false);
-
-      echo $content;
-   }
+        echo $content;
+    }
 
 
    /**

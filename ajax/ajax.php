@@ -126,7 +126,47 @@ if (isset($_POST['action'])) {
          if (!$result) echo false;
          else echo json_encode($result);
          break;
-         break;
+
+
+       case 'getProjectName':
+
+           $id_ticket       = $_POST['idTicket'];
+           $id_mantis_issue = $_POST['idMantis'];
+
+           $ws = new PluginMantisMantisws();
+           $ws->initializeConnection();
+
+           if (!$ws->existIssueWithId($id_mantis_issue)) {
+               echo  "ERROR :". __("MantisBT issue does not exist","mantis");
+           } else {
+
+
+
+               $mantis = new PluginMantisMantis();
+               //on verifie si un lien est deja creé
+               if ($mantis->IfExistLink($id_ticket, $id_mantis_issue)) {
+                   echo  "ERROR :". __("This Glpi ticket is already linked to this MantisBT ticket","mantis");
+               } else {
+
+                   $result = $ws->getIssueById($id_mantis_issue);
+                   echo $result->project->name;
+               }
+
+           }
+
+           break;
+
+
+
+
+       case 'getCustomFieldByProjectname':
+
+           $ws = new PluginMantisMantisws();
+           $ws->initializeConnection();
+           $result = $ws->getCustomFieldFromProjectName($_POST['name']);
+           if (!$result) echo false;
+           else echo json_encode($result);
+           break;
 
       case 'LinkIssueGlpiToIssueMantis':
 

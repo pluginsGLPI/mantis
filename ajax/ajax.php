@@ -198,6 +198,26 @@ if (isset($_POST['action'])) {
                     $conf = new PluginMantisConfig();
                     $conf->getFromDB(1);
 
+                    if($_POST['linkedTicket'] == 'true'){
+
+                        $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
+
+                        foreach ($tickets as $link_ticket){
+                            $t = new ticket();
+                            $t->getFromDB($link_ticket['tickets_id']);
+
+                            $mantis1               = new PluginMantisMantis();
+                            $post['idTicket']     = $t->fields['id'];
+                            $post['idMantis']     = $id_mantis_issue;
+                            $post['dateEscalade'] = $_POST['dateEscalade'];
+                            $post['user']         = $_POST['user'];
+
+                            $id_mantis[] = $mantis1->add($post);
+                            unset($post);
+                        }
+                    }
+
+
                     if($conf->fields['status_after_escalation'] != 0){
                         $res = $ticket->update(array('id' => $ticket->fields['id'], 'status' =>$conf->fields['status_after_escalation']));
                     }
@@ -214,9 +234,12 @@ if (isset($_POST['action'])) {
 
 
       case 'LinkIssueGlpiToProjectMantis':
-         $issue = new PluginMantisIssue();
-         echo $issue->linkisuetoProjectMantis();
-         break;
+
+          $issue = new PluginMantisIssue();
+          echo $issue->linkisuetoProjectMantis();
+          break;
+
+
 
       case 'deleteLinkMantis':
 

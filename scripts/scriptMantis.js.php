@@ -109,12 +109,72 @@ function ifExistissueWithId() {
 
 }
 
+
+function findProjectById(){
+
+    var idMantisIssue = $("#idMantis").val();
+    var idTicket = $("#idTicket").val();
+    var dropdownCustomField = $("#dropdown_fieldsGlpi");
+    var dropdownUrl = $("#dropdown_fieldUrl");
+
+var div_info = $("#infoLinIssueGlpiToIssueMantis");
+   var div_wait = $("#waitForLinkIssueGlpiToIssueMantis");
+
+    if(idMantisIssue.trim() == "" || idMantisIssue == null){
+
+      $("#idMantis").css('border-color','red');
+      div_wait.css('display', 'none');
+
+   }else{
+        $("#idMantis").css('border-color','#888888');
+
+         $.ajax({ // fonction permettant de faire de l'ajax
+         type: "POST", // methode de transmission des données au fichier php
+         url: "{$root_ajax}", // url du fichier php
+         data: "action=getProjectName&" +
+          "idTicket=" + idTicket + "&" +
+            "idMantis=" + idMantisIssue, // données à transmettre
+         success: function (msg) { // si l'appel a bien fonctionné
+
+            if (msg.indexOf('ERROR :') != -1) {
+
+                removeOptionOfSelect(dropdownCustomField);
+                removeOptionOfSelect(dropdownUrl);
+                div_wait.css('display', 'none');
+                div_info.html(msg.replace('ERROR :',''));
+
+            } else {
+
+                div_info.empty();
+                div_wait.css('display', 'none');
+                addCustomFieldtoSelect(dropdownCustomField , msg);
+                addCustomFieldtoSelect(dropdownUrl, msg);
+                div_wait.css('display', 'none');
+
+
+            }
+         },
+         error: function () {
+            div_wait.css('display', 'none');
+            div_info.html("Probleme Ajax");
+         }
+
+      });
+   }
+
+}
+
+
+
 function linkIssueglpiToIssueMantis() {
 
    var idMantisIssue = $("#idMantis").val();
    var idTicket = $("#idTicket").val();
    var idUser = $("#user").val();
    var date = $("#dateEscalade").val();
+
+   var glpiField = $("#dropdown_fieldsGlpi").find(":selected").text();
+   var glpiUrl = $("#dropdown_fieldUrl").find(":selected").text();
 
    var followAttachment = $("#followAttachment").is(':checked');
 
@@ -130,12 +190,31 @@ function linkIssueglpiToIssueMantis() {
    div_info.empty();
    div_wait.css('display', 'block');
 
-   if(idMantisIssue.trim() == "" || idMantisIssue == null){
-      $("#idMantis").css('border-color','red');
-      div_wait.css('display', 'none');
+
+   if((idMantisIssue.trim() == "" || idMantisIssue == null) || (glpiField.trim() == "" || glpiField == null) || (glpiUrl.trim() == "" || glpiUrl == null)){
+
+        if(idMantisIssue.trim() == "" || idMantisIssue == null){
+             $("#idMantis").css('border-color','red');
+             div_wait.css('display', 'none');
+        }
+
+        if(glpiField.trim() == "" || glpiField == null){
+             $("#dropdown_fieldsGlpi").css('border-color','red');
+             div_wait.css('display', 'none');
+        }
+
+        if(glpiUrl.trim() == "" || glpiUrl == null){
+             $("#dropdown_fieldUrl").css('border-color','red');
+             div_wait.css('display', 'none');
+        }
+
+
    }else{
 
       $("#idMantis").css('border-color','#888888');
+       $("#dropdown_fieldUrl").css('border-color','#888888');
+        $("#dropdown_fieldsGlpi").css('border-color','#888888');
+
       $.ajax({ // fonction permettant de faire de l'ajax
          type: "POST", // methode de transmission des données au fichier php
          url: "{$root_ajax}", // url du fichier php
@@ -145,6 +224,8 @@ function linkIssueglpiToIssueMantis() {
             "followAttachment=" + followAttachment + "&" +
              "followFollow=" + followFollow + "&" +
               "followTask=" + followTask + "&" +
+              "glpiField=" + glpiField + "&" +
+               "glpiUrl=" + glpiUrl + "&" +
                "followTitle=" + followTitle + "&" +
                 "followDescription=" + followDescription + "&" +
                  "followCategorie=" + followCategorie + "&" +
@@ -182,12 +263,52 @@ function closePopup() {
 
 }
 
+function addCustomFieldtoSelect(dropdownCustomField,name) {
+
+   var nameProject = name;
+
+   $.ajax({ // fonction permettant de faire de l'ajax
+      type: "POST", // methode de transmission des données au fichier php
+      url: "{$root_ajax}", // url du fichier php
+      dataType: "json",
+      data: "action=getCustomFieldByProjectname&" +
+         "name=" + name, // données à transmettre
+      success: function (msg) { // si l'appel a bien fonctionné
+
+         if (msg == false) {
+
+         } else {
+
+            var myOptions = msg.toString().split(',');
+            var mySelect = dropdownCustomField;
+
+            removeOptionOfSelect(dropdownCustomField);
+
+            for(var i=0;i<msg.length; i++){
+               obj = msg[i];
+               mySelect.append( $('<option></option>').val(obj.id).html(obj.name) );
+            }
+
+         }
+
+      },
+      error: function () {
+         alert('pb ajax');
+      }
+
+   });
+   return false; // permet de rester sur la même page à la soumission du formulaire
+
+}
+
 function findProjectByName() {
 
    var td = $("#tdSearch");
    var name = $("#nameMantisProject").val();
    var img = $("#resultImg");
    var dropdown = $("#dropdown_categorie");
+   var dropdownCustomField = $("#dropdown_fieldsGlpi");
+    var dropdownUrl = $("#dropdown_fieldUrl");
    var div_wait = $("#waitForLinkIssueGlpiToProjectMantis");
    var dropdownAssignation = $("#dropdown_assignation");
 
@@ -206,10 +327,14 @@ function findProjectByName() {
          if (msg.indexOf('check') != -1) {
             addOptionToSelect(dropdown, name);
             addActortoSelect(dropdownAssignation , name);
+            addCustomFieldtoSelect(dropdownCustomField , name);
+            addCustomFieldtoSelect(dropdownUrl, name);
             div_wait.css('display', 'none');
          } else {
             removeOptionOfSelect(dropdown);
             removeOptionOfSelect(dropdownAssignation);
+            removeOptionOfSelect(dropdownCustomField);
+            removeOptionOfSelect(dropdownUrl);
             div_wait.css('display', 'none');
          }
 
@@ -352,6 +477,8 @@ function linkIssueglpiToProjectMantis() {
 
    var nameMantisProject = $("#nameMantisProject").val();
    var cate = $("#dropdown_categorie").find(":selected").text();
+   var glpiField = $("#dropdown_fieldsGlpi").find(":selected").text();
+   var glpiUrl = $("#dropdown_fieldUrl").find(":selected").text();
    var assign = $("#dropdown_assignation").find(":selected").val();
    var resume = $("#resume").val();
    var description = $("#description").val();
@@ -359,10 +486,11 @@ function linkIssueglpiToProjectMantis() {
    var followAttachment = $("#followAttachment").is(':checked');
 
     var followFollow = $("#followFollow").is(':checked');
-     var followTask = $("#followTask").is(':checked');
-      var followTitle = $("#followTitle").is(':checked');
-       var followDescription = $("#followDescription").is(':checked');
-        var followCategorie = $("#followCategorie").is(':checked');
+    var followTask = $("#followTask").is(':checked');
+    var followTitle = $("#followTitle").is(':checked');
+    var followDescription = $("#followDescription").is(':checked');
+    var followCategorie = $("#followCategorie").is(':checked');
+
 
    var idTicket = $("#idTicket").val();
    var idUser = $("#user").val();
@@ -373,7 +501,6 @@ function linkIssueglpiToProjectMantis() {
 
    div_info.empty();
    div_wait.css('display', 'block');
-
 
    if((resume == null || resume == "")||(description.length < 1)){
 
@@ -404,8 +531,13 @@ function linkIssueglpiToProjectMantis() {
             "dateEscalade=" + date + "&" +
             "resume=" + resume + "&" +
              "assign=" + assign + "&" +
+              "glpiField=" + glpiField + "&" +
+
+
             "stepToReproduce=" + stepToReproduce + "&" +
             "followAttachment=" + followAttachment + "&" +
+
+            "glpiUrl=" + glpiUrl + "&" +
              "followFollow=" + followFollow + "&" +
               "followTask=" + followTask + "&" +
                "followTitle=" + followTitle + "&" +

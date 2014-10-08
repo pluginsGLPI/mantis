@@ -142,6 +142,50 @@ class PluginMantisMantisws{
       }
    }
 
+    public function getCustomFieldFromProjectName($name){
+        $id = $this->getProjectIdWithName($name);
+        try {
+            $response = $this->_client->mc_project_get_custom_fields($this->_login,$this->_password,$id);
+
+            $list = array();
+            $list[] =  array('id' => 'additional_information' ,  'name' => 'additional_information');
+            $list[] =  array('id' => 'note' ,  'name' => 'note');
+            foreach($response as $field){
+                $list[] =  array('id' => $field->field->name ,  'name' => $field->field->name);
+            }
+
+            return ($list);
+        } catch (SoapFault $e) {
+            Toolbox::logInFile('mantis', sprintf(
+                    __('Error retrieving user of project id \'%1$s\' => \'%2$s\'', 'mantis'),
+                    $id, $e->getMessage()) . "\n");
+            return false;
+        }
+    }
+
+    public function getCustomFieldByNameAndProject($nameCustomField , $nameProject){
+        $id = $this->getProjectIdWithName($nameProject);
+        try {
+            $response = $this->_client->mc_project_get_custom_fields($this->_login,$this->_password,$id);
+
+            $list = array();
+            $list[] =  array('id' => 0 ,  'name' => '----');
+            foreach($response as $field){
+                if($field->field->name == $nameCustomField){
+                    return $field->field;
+                }
+            }
+
+            return null;
+        } catch (SoapFault $e) {
+            Toolbox::logInFile('mantis', sprintf(
+                    __('Error retrieving user of project id \'%1$s\' => \'%2$s\'', 'mantis'),
+                    $id, $e->getMessage()) . "\n");
+            return false;
+        }
+    }
+
+
    /**
     * Function to find category by name of project
     * @param $name name of project

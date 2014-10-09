@@ -109,6 +109,7 @@ function plugin_mantis_install() {
         $mig->addField($table, 'neutralize_escalation', 'integer',array('value' => 5));
         $mig->addField($table, 'status_after_escalation', 'integer');
         $mig->addField($table, 'show_option_delete', 'integer',array('value' => 0));
+        $mig->addField($table, 'doc_categorie', 'integer',array('value' => 0));
         $mig->executeMigration();
     }
 

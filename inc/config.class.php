@@ -147,6 +147,15 @@ class PluginMantisConfig extends CommonDBTM {
         $content .= "<td></td>";
         $content .= "</tr>";
 
+        //TYPE ATTCHMANT
+        $content .= "<tr class='tab_bg_1'>";
+        $content .= "<td>" . __("Attachment type transfered to MantisBT", "mantis") . "</td>";
+        $content .= "<td>";
+        $content .= DocumentCategory::dropdown(array('value' => $this->fields["doc_categorie"],'name' => 'doc_categorie','rand' => false,'display' => false));
+        $content .= "</td>";
+        $content .= "<td></td>";
+        $content .= "</tr>";
+
 
         //MANTIS FIELD FOR GLPI FIELD
         /*$content .= "<tr class='tab_bg_1'>";

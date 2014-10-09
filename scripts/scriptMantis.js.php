@@ -48,6 +48,41 @@ $root_ajax = $CFG_GLPI['root_doc']."/plugins/mantis/ajax/ajax.php";
 
 $JS = <<<JAVASCRIPT
 
+
+
+function getAttachment(){
+
+    var div_info = $("#attachmentforLinkToProject");
+    var checkBox = $("#followAttachment").is(':checked');
+    var idTicket = $("#idTicket").val();
+
+
+    if(checkBox == true){
+
+        $.ajax({ // fonction permettant de faire de l'ajax
+            type: "POST", // methode de transmission des données au fichier php
+            url: "{$root_ajax}", // url du fichier php
+            data: "action=getTicketAttachment&" +
+            "idTicket=" + idTicket , // données à transmettre
+            success: function (msg) { // si l'appel a bien fonctionné
+
+                div_info.html(msg);
+
+            },
+            error: function () {
+                div_info.html('Ajax Problem !');
+            }
+
+             });
+        return false; // permet de rester sur la même page à la soumission du formulaire
+
+
+    }else{
+        div_info.empty();
+    }
+
+}
+
 /**
  * function to test connection with Mantis Web Service
  * @returns {boolean}

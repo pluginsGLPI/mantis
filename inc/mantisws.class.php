@@ -270,9 +270,18 @@ class PluginMantisMantisws{
             return $this->_client->mc_issue_attachment_add($this->_login, $this->_password,
                 $_issue_id, $_name, $_file_type, $_content);
         } catch (SoapFault $e) {
-            Toolbox::logInFile('mantis', sprintf(
-                    __('error while creating attachment => \'%1$s\'', 'mantis'), $e->getMessage()) . "\n");
-            return false;
+
+            if($e->getMessage() ==  "Duplicate filename."){
+                Toolbox::logInFile('mantis', __('WARNIG '.$_name.' already exist', 'mantis'). "\n");
+                return true;
+            }else{
+                Toolbox::logInFile('mantis', sprintf(
+                        __('error while creating attachment => \'%1$s\'', 'mantis'), $e->getMessage()) . "\n");
+                return false;
+            }
+
+
+
         }
     }
 

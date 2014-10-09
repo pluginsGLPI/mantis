@@ -435,3 +435,21 @@ msgstr "To forward description"
 
 msgid "To forward categorie"
 msgstr "To forward categorie"
+
+msgid "If you fowllow linked tickets"
+msgstr "If you fowllow linked tickets"
+
+msgid "No tickets linked"
+msgstr "No tickets linked"
+
+msgid "No documents attached"
+msgstr "No documents attached"
+
+msgid "0 document for ticket "
+msgstr "0 document for ticket "
+
+msgid "Attachment type transfered to MantisBT"
+msgstr "Attachment type transfered to MantisBT"
+
+msgid "To forward linked Ticket"
+msgstr "To forward linked Ticket"

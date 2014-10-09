@@ -435,5 +435,21 @@ msgstr "Faire suivre la description"
 msgid "To forward categorie"
 msgstr "Faire suivre la catégorie"
 
+msgid "If you fowllow linked tickets"
+msgstr "Si vous faite suivre les tickets liés"
 
+msgid "No tickets linked"
+msgstr "aucun ticket liés"
+
+msgid "No documents attached"
+msgstr "Aucun document attaché"
+
+msgid "0 document for ticket "
+msgstr "0 document pour le ticket "
+
+msgid "Attachment type transfered to MantisBT"
+msgstr "Type de pièce jointe transféré vers MantisBT"
+
+msgid "To forward linked Ticket"
+msgstr "Faire suivre les tickets liés"
 

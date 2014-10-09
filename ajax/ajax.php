@@ -89,9 +89,6 @@ if (isset($_POST['action'])) {
            $ws->getConnexion($_POST['host'], $_POST['url'], $_POST['login'], $_POST['pwd']);
            $result = $ws->getStateMantis();
 
-
-
-
            if (!$result) echo false;
            else {
                 $states = "";
@@ -101,7 +98,6 @@ if (isset($_POST['action'])) {
                    else $states .= ",".$state->name;
                    $i++;
                }
-
                echo $states;
            }
 
@@ -109,6 +105,54 @@ if (isset($_POST['action'])) {
 
          break;
 
+       case 'getTicketAttachment':
+
+           $id_ticket = $_POST['idTicket'];
+
+           $conf = new PluginMantisConfig();
+           $conf->getFromDB(1);
+
+           $ticket = new Ticket();
+           $ticket->getFromDB($id_ticket);
+
+           if($conf->fields['doc_categorie'] == 0){
+               $where = " tickets_id =".$id_ticket;
+           }else{
+               $where = " tickets_id =".$id_ticket." and documentcategories_id = ".$conf->fields['doc_categorie'];
+           }
+
+           $output .= getOutPutForticket($ticket,$where);
+
+
+           $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
+
+           if(count($tickets)){
+               $output .= "<br/><DL><DT><STRONG>".__('If you fowllow linked tickets','mantis')."</STRONG><br>";
+               foreach ($tickets as $link_ticket){
+
+                   $ticketLink = new Ticket();
+                   $ticketLink->getFromDB($link_ticket['tickets_id']);
+
+                   if($conf->fields['doc_categorie'] == 0){
+                       $where = " tickets_id =".$link_ticket['tickets_id'];
+                   }else{
+                       $where = " tickets_id =".$link_ticket['tickets_id']." and documentcategories_id = ".$conf->fields['doc_categorie'];
+                   }
+
+                   $output .= getOutPutForticket($ticketLink,$where);
+
+               }
+           }else{
+               $output .= "<DL><DT><STRONG>".__('No tickets linked','mantis');
+           }
+
+           if($output == ""){
+               echo __('No documents attached','mantis');
+           }else{
+               echo $output;
+           }
+
+           break;
 
 
       case 'getCategoryFromProjectName':
@@ -282,5 +326,27 @@ if (isset($_POST['action'])) {
 
 } else {
    echo 0;
+}
+
+
+function getOutPutForticket($ticket , $where){
+
+
+    $doc = new Document();
+    $docs = $doc->find($where);
+    $output = "";
+    if(count($docs)){
+
+        $output .= "<DL><DT><STRONG>Ticket -> ".$ticket->fields['id']."</STRONG><br>";
+        foreach($docs as $d){
+            $output .= "<DD>Document -> ".$d['filename']."<br>";
+        }
+        $output .= "</DL>";
+    }else{
+        $output .= "0 document for ticket ".$ticket->fields['id'];
+    }
+
+
+    return $output;
 }
 

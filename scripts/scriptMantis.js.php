@@ -55,7 +55,7 @@ function getAttachment(){
     var div_info = $("#attachmentforLinkToProject");
     var checkBox = $("#followAttachment").is(':checked');
     var idTicket = $("#idTicket").val();
-
+    var itemType = $("#itemType").val();
 
     if(checkBox == true){
 
@@ -63,19 +63,18 @@ function getAttachment(){
             type: "POST", // methode de transmission des données au fichier php
             url: "{$root_ajax}", // url du fichier php
             data: "action=getTicketAttachment&" +
+            "itemType=" + itemType + "&" +
             "idTicket=" + idTicket , // données à transmettre
+
             success: function (msg) { // si l'appel a bien fonctionné
-
                 div_info.html(msg);
-
             },
             error: function () {
                 div_info.html('Ajax Problem !');
             }
+        });
 
-             });
         return false; // permet de rester sur la même page à la soumission du formulaire
-
 
     }else{
         div_info.empty();
@@ -89,35 +88,34 @@ function getAttachment(){
  */
 function testConnexionMantisWS() {
 
- var dropdown = $("#dropdown_etatMantis");
-   var div = $("#infoAjax");
+    var dropdown = $("#dropdown_etatMantis");
+    var div = $("#infoAjax");
 
-   $.ajax({ // fonction permettant de faire de l'ajax
-      type: "POST", // methode de transmission des données au fichier php
-      url: "{$root_ajax}", // url du fichier php
-      data: "action=testConnexionMantisWS&" +
-         "host=" + $("#host").val() + "&" +
-         "url=" + $("#url").val() + "&" +
-         "login=" + $("#login").val() + "&" +
-         "pwd=" + $("#pwd").val(), // données à transmettre
-      success: function (msg) { // si l'appel a bien fonctionné
+    $.ajax({ // fonction permettant de faire de l'ajax
+        type: "POST", // methode de transmission des données au fichier php
+        url: "{$root_ajax}", // url du fichier php
+        data: "action=testConnexionMantisWS&" +
+            "host=" + $("#host").val() + "&" +
+            "url=" + $("#url").val() + "&" +
+            "login=" + $("#login").val() + "&" +
+            "pwd=" + $("#pwd").val(), // données à transmettre
 
+            success: function (msg) { // si l'appel a bien fonctionné
 
-         div.html(msg);
+                div.html(msg);
 
-          if (msg.indexOf('check') != -1) {
-            addStateToSelect();
-          }else{
-          removeOptionOfSelect(dropdown);
-          }
+                if (msg.indexOf('check') != -1) {
+                    addStateToSelect();
+                }else{
+                    removeOptionOfSelect(dropdown);
+                }
 
+            },
+            error: function () {
+                div.html('Ajax Problem !');
+            }
 
-      },
-      error: function () {
-         div.html('Ajax Problem !');
-      }
-
-   });
+    });
    return false; // permet de rester sur la même page à la soumission du formulaire
 
 }
@@ -132,6 +130,7 @@ function ifExistissueWithId() {
       url: "{$root_ajax}", // url du fichier php
       data: "action=findIssueById&" +
          "id=" + id, // données à transmettre
+
       success: function (msg) { // si l'appel a bien fonctionné
          div.html(msg);
       },
@@ -151,158 +150,153 @@ function findProjectById(){
     var idTicket = $("#idTicket").val();
     var dropdownCustomField = $("#dropdown_fieldsGlpi1");
     var dropdownUrl = $("#dropdown_fieldUrl1");
-
+    var itemType = $("#itemType").val();
 
     var div_info = $("#infoLinIssueGlpiToIssueMantis");
-   var div_wait = $("#waitForLinkIssueGlpiToIssueMantis");
+    var div_wait = $("#waitForLinkIssueGlpiToIssueMantis");
 
     if(idMantisIssue.trim() == "" || idMantisIssue == null){
 
-      $("#idMantis").css('border-color','red');
-      div_wait.css('display', 'none');
+        $("#idMantis").css('border-color','red');
+        div_wait.css('display', 'none');
 
-   }else{
+    }else{
         $("#idMantis").css('border-color','#888888');
 
-         $.ajax({ // fonction permettant de faire de l'ajax
-         type: "POST", // methode de transmission des données au fichier php
-         url: "{$root_ajax}", // url du fichier php
-         data: "action=getProjectName&" +
-          "idTicket=" + idTicket + "&" +
+        $.ajax({ // fonction permettant de faire de l'ajax
+        type: "POST", // methode de transmission des données au fichier php
+        url: "{$root_ajax}", // url du fichier php
+        data: "action=getProjectName&" +
+            "idTicket=" + idTicket + "&" +
+            "itemType=" + itemType + "&" +
             "idMantis=" + idMantisIssue, // données à transmettre
-         success: function (msg) { // si l'appel a bien fonctionné
 
-            if (msg.indexOf('ERROR :') != -1) {
+            success: function (msg) { // si l'appel a bien fonctionné
 
-                removeOptionOfSelect(dropdownCustomField);
-                removeOptionOfSelect(dropdownUrl);
+                if (msg.indexOf('ERROR :') != -1) {
+                    removeOptionOfSelect(dropdownCustomField);
+                    removeOptionOfSelect(dropdownUrl);
+                    div_wait.css('display', 'none');
+                    div_info.html(msg.replace('ERROR :',''));
+                } else {
+                    div_info.empty();
+                    div_wait.css('display', 'none');
+                    addCustomFieldtoSelect(dropdownCustomField , msg);
+                    addCustomFieldtoSelect(dropdownUrl, msg);
+                    div_wait.css('display', 'none');
+                }
+
+            },
+            error: function () {
+
                 div_wait.css('display', 'none');
-                div_info.html(msg.replace('ERROR :',''));
-
-            } else {
-
-                div_info.empty();
-                div_wait.css('display', 'none');
-                addCustomFieldtoSelect(dropdownCustomField , msg);
-                addCustomFieldtoSelect(dropdownUrl, msg);
-                div_wait.css('display', 'none');
-
+                div_info.html("Probleme Ajax");
 
             }
-         },
-         error: function () {
-            div_wait.css('display', 'none');
-            div_info.html("Probleme Ajax");
-         }
-
-      });
+        });
    }
-
 }
 
 
 
 function linkIssueglpiToIssueMantis() {
 
-   var idMantisIssue = $("#idMantis").val();
-   var idTicket = $("#idTicket").val();
-   var idUser = $("#user").val();
-   var date = $("#dateEscalade").val();
+    var idMantisIssue = $("#idMantis1").val();
+    var idTicket = $("#idTicket1").val();
+    var idUser = $("#user1").val();
+    var date = $("#dateEscalade1").val();
 
-   var glpiField = $("#dropdown_fieldsGlpi1").find(":selected").text();
-   var glpiUrl = $("#dropdown_fieldUrl1").find(":selected").text();
+    var glpiField = $("#dropdown_fieldsGlpi1").find(":selected").text();
+    var glpiUrl = $("#dropdown_fieldUrl1").find(":selected").text();
+    var itemType = $("#itemType1").val();
+    var linkedTicket = $("#linkedTicket1").is(':checked');
 
-   var followAttachment = $("#followAttachment").is(':checked');
+    var followAttachment = $("#followAttachment1").is(':checked');
+    var followFollow = $("#followFollow1").is(':checked');
+    var followTask = $("#followTask1").is(':checked');
+    var followTitle = $("#followTitle1").is(':checked');
+    var followDescription = $("#followDescription1").is(':checked');
+    var followCategorie = $("#followCategorie1").is(':checked');
 
-   var followFollow = $("#followFollow").is(':checked');
-   var followTask = $("#followTask").is(':checked');
-   var followTitle = $("#followTitle").is(':checked');
-   var followDescription = $("#followDescription").is(':checked');
-   var followCategorie = $("#followCategorie").is(':checked');
-   var linkedTicket = $("#linkedTicket1").is(':checked');
+    var div_info = $("#infoLinIssueGlpiToIssueMantis");
+    var div_wait = $("#waitForLinkIssueGlpiToIssueMantis");
 
-   var div_info = $("#infoLinIssueGlpiToIssueMantis");
-   var div_wait = $("#waitForLinkIssueGlpiToIssueMantis");
-
-   div_info.empty();
-   div_wait.css('display', 'block');
+    div_info.empty();
+    div_wait.css('display', 'block');
 
 
-   if((idMantisIssue.trim() == "" || idMantisIssue == null) || (glpiField.trim() == "" || glpiField == null) || (glpiUrl.trim() == "" || glpiUrl == null)){
+    if((idMantisIssue.trim() == "" || idMantisIssue == null) || (glpiField.trim() == "" || glpiField == null) || (glpiUrl.trim() == "" || glpiUrl == null)){
 
         if(idMantisIssue.trim() == "" || idMantisIssue == null){
-             $("#idMantis").css('border-color','red');
-             div_wait.css('display', 'none');
+            $("#idMantis").css('border-color','red');
+            div_wait.css('display', 'none');
         }
 
         if(glpiField.trim() == "" || glpiField == null){
-             $("#dropdown_fieldsGlpi").css('border-color','red');
-             div_wait.css('display', 'none');
+            $("#dropdown_fieldsGlpi").css('border-color','red');
+            div_wait.css('display', 'none');
         }
 
         if(glpiUrl.trim() == "" || glpiUrl == null){
-             $("#dropdown_fieldUrl").css('border-color','red');
-             div_wait.css('display', 'none');
+            $("#dropdown_fieldUrl").css('border-color','red');
+            div_wait.css('display', 'none');
         }
 
 
-   }else{
+    }else{
 
-      $("#idMantis").css('border-color','#888888');
-       $("#dropdown_fieldUrl").css('border-color','#888888');
+        $("#idMantis").css('border-color','#888888');
+        $("#dropdown_fieldUrl").css('border-color','#888888');
         $("#dropdown_fieldsGlpi").css('border-color','#888888');
 
-      $.ajax({ // fonction permettant de faire de l'ajax
-         type: "POST", // methode de transmission des données au fichier php
-         url: "{$root_ajax}", // url du fichier php
-         data: "action=LinkIssueGlpiToIssueMantis&" +
-            "idTicket=" + idTicket + "&" +
-            "idMantis=" + idMantisIssue + "&" +
-            "followAttachment=" + followAttachment + "&" +
-             "followFollow=" + followFollow + "&" +
-              "followTask=" + followTask + "&" +
-              "glpiField=" + glpiField + "&" +
-               "glpiUrl=" + glpiUrl + "&" +
-                              "linkedTicket=" + linkedTicket + "&" +
-
-
-
-
-               "followTitle=" + followTitle + "&" +
+        $.ajax({ // fonction permettant de faire de l'ajax
+            type: "POST", // methode de transmission des données au fichier php
+            url: "{$root_ajax}", // url du fichier php
+            data: "action=LinkIssueGlpiToIssueMantis&" +
+                "idTicket=" + idTicket + "&" +
+                "idMantis=" + idMantisIssue + "&" +
+                "followAttachment=" + followAttachment + "&" +
+                "followFollow=" + followFollow + "&" +
+                "followTask=" + followTask + "&" +
+                "glpiField=" + glpiField + "&" +
+                "glpiUrl=" + glpiUrl + "&" +
+                "linkedTicket=" + linkedTicket + "&" +
+                "itemType=" + itemType + "&" +
+                "followTitle=" + followTitle + "&" +
                 "followDescription=" + followDescription + "&" +
-                 "followCategorie=" + followCategorie + "&" +
-            "user=" + idUser + "&" +
-            "dateEscalade=" + date, // données à transmettre
-         success: function (msg) { // si l'appel a bien fonctionné
+                "followCategorie=" + followCategorie + "&" +
+                "user=" + idUser + "&" +
+                "dateEscalade=" + date, // données à transmettre
 
-            if (msg == true) {
-               div_wait.css('display', 'none');
-               popupLinkGlpiIssuetoMantisIssue.hide();
-               window.location.reload(true);
-            }
-            else {
-               div_wait.css('display', 'none');
-               div_info.html(msg);
-            }
-         },
-         error: function () {
-            div_wait.css('display', 'none');
-            div_info.html("Probleme Ajax");
-         }
+                    success: function (msg) { // si l'appel a bien fonctionné
 
-      });
+                    if (msg == true) {
+
+                       div_wait.css('display', 'none');
+                       popupLinkGlpiIssuetoMantisIssue.hide();
+                       window.location.reload(true);
+
+                    }else {
+
+                       div_wait.css('display', 'none');
+                       div_info.html(msg);
+
+                    }},
+
+                    error: function () {
+                        div_wait.css('display', 'none');
+                        div_info.html("Probleme Ajax");
+                    }
+
+        });
    }
 }
 
-function showalert() {
-   alert("coco");
-   return false;
-}
+
 
 function closePopup() {
    window.opener.location.reload(true);
    window.close();
-
 }
 
 function addCustomFieldtoSelect(dropdownCustomField,name) {
@@ -350,7 +344,7 @@ function findProjectByName() {
    var img = $("#resultImg");
    var dropdown = $("#dropdown_categorie");
    var dropdownCustomField = $("#dropdown_fieldsGlpi");
-    var dropdownUrl = $("#dropdown_fieldUrl");
+   var dropdownUrl = $("#dropdown_fieldUrl");
    var div_wait = $("#waitForLinkIssueGlpiToProjectMantis");
    var dropdownAssignation = $("#dropdown_assignation");
 
@@ -396,7 +390,7 @@ function addStateToSelect(){
 
   var dropdown = $("#dropdown_etatMantis");
 
-       $.ajax({ // fonction permettant de faire de l'ajax
+      $.ajax({ // fonction permettant de faire de l'ajax
       type: "POST", // methode de transmission des données au fichier php
       url: "{$root_ajax}", // url du fichier php
       data: "action=getStateMantis&" +
@@ -517,17 +511,18 @@ function removeOptionOfSelect(dropdown) {
 
 function linkIssueglpiToProjectMantis() {
 
-   var nameMantisProject = $("#nameMantisProject").val();
-   var cate = $("#dropdown_categorie").find(":selected").text();
-   var glpiField = $("#dropdown_fieldsGlpi").find(":selected").text();
-   var glpiUrl = $("#dropdown_fieldUrl").find(":selected").text();
-   var assign = $("#dropdown_assignation").find(":selected").val();
-   var resume = $("#resume").val();
-   var description = $("#description").val();
-   var stepToReproduce = $("#stepToReproduce").val();
-   var followAttachment = $("#followAttachment").is(':checked');
+    var nameMantisProject = $("#nameMantisProject").val();
+    var cate = $("#dropdown_categorie").find(":selected").text();
+    var glpiField = $("#dropdown_fieldsGlpi").find(":selected").text();
+    var glpiUrl = $("#dropdown_fieldUrl").find(":selected").text();
+    var assign = $("#dropdown_assignation").find(":selected").val();
+    var resume = $("#resume").val();
+    var description = $("#description").val();
+    var stepToReproduce = $("#stepToReproduce").val();
+    var followAttachment = $("#followAttachment").is(':checked');
 
     var followFollow = $("#followFollow").is(':checked');
+    var itemType = $("#itemType").val();
     var followTask = $("#followTask").is(':checked');
     var followTitle = $("#followTitle").is(':checked');
     var followDescription = $("#followDescription").is(':checked');
@@ -535,15 +530,15 @@ function linkIssueglpiToProjectMantis() {
     var linkedTicket = $("#linkedTicket").is(':checked');
 
 
-   var idTicket = $("#idTicket").val();
-   var idUser = $("#user").val();
-   var date = $("#dateEscalade").val();
+    var idTicket = $("#idTicket").val();
+    var idUser = $("#user").val();
+    var date = $("#dateEscalade").val();
 
-   var div_info = $("#infoLinkIssueGlpiToProjectMantis");
-   var div_wait = $("#waitForLinkIssueGlpiToProjectMantis");
+    var div_info = $("#infoLinkIssueGlpiToProjectMantis");
+    var div_wait = $("#waitForLinkIssueGlpiToProjectMantis");
 
-   div_info.empty();
-   div_wait.css('display', 'block');
+    div_info.empty();
+    div_wait.css('display', 'block');
 
    if((resume == null || resume == "")||(description.length < 1)){
 
@@ -573,19 +568,18 @@ function linkIssueglpiToProjectMantis() {
             "user=" + idUser + "&" +
             "dateEscalade=" + date + "&" +
             "resume=" + resume + "&" +
-             "assign=" + assign + "&" +
-              "glpiField=" + glpiField + "&" +
-
+            "assign=" + assign + "&" +
+            "glpiField=" + glpiField + "&" +
+            "itemType=" + itemType + "&" +
             "linkedTicket=" + linkedTicket + "&" +
-             "stepToReproduce=" + stepToReproduce + "&" +
+            "stepToReproduce=" + stepToReproduce + "&" +
             "followAttachment=" + followAttachment + "&" +
-
             "glpiUrl=" + glpiUrl + "&" +
-             "followFollow=" + followFollow + "&" +
-              "followTask=" + followTask + "&" +
-               "followTitle=" + followTitle + "&" +
-                "followDescription=" + followDescription + "&" +
-                 "followCategorie=" + followCategorie + "&" +
+            "followFollow=" + followFollow + "&" +
+            "followTask=" + followTask + "&" +
+            "followTitle=" + followTitle + "&" +
+            "followDescription=" + followDescription + "&" +
+            "followCategorie=" + followCategorie + "&" +
             "categorie=" + cate + "&" +
             "description=" + description, // données à transmettre
          success: function (msg) { // si l'appel a bien fonctionné
@@ -657,8 +651,12 @@ function delLinkAndOrIssue(id, idMantis, idTicket) {
    var div_wait = $('#waitDelete' + id);
    var div_info = $('#infoDel' + id);
 
+    var itemType = $('#itemType' + id).val();
+
    var popupName = "popupToDelete" + id;
    var popup = $('input[name="' + popupName + '"]');
+
+   alert(itemType);
 
    if (checkIssue.is(':checked') && !checkLink.is(':checked') ||
       checkIssue.is(':checked') && checkLink.is(':checked')) {

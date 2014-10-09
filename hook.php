@@ -61,6 +61,11 @@ function plugin_mantis_install() {
                dateEscalade date NOT NULL,
                user int(11) NOT NULL)";
         $DB->query($query) or die($DB->error());
+    }else{
+        $mig = new Migration();
+        $table = 'glpi_plugin_mantis_mantis';
+        $mig->addField($table, 'itemType', 'string');
+        $mig->executeMigration();
     }
 
 
@@ -110,6 +115,8 @@ function plugin_mantis_install() {
         $mig->addField($table, 'status_after_escalation', 'integer');
         $mig->addField($table, 'show_option_delete', 'integer',array('value' => 0));
         $mig->addField($table, 'doc_categorie', 'integer',array('value' => 0));
+
+        $mig->addField($table, 'itemType', 'string');
         $mig->executeMigration();
     }
 

@@ -108,46 +108,30 @@ if (isset($_POST['action'])) {
        case 'getTicketAttachment':
 
            $id_ticket = $_POST['idTicket'];
+           $itemType = $_POST['itemType'];
 
-           $conf = new PluginMantisConfig();
-           $conf->getFromDB(1);
-
-           $ticket = new Ticket();
+           $ticket = new $itemType();
            $ticket->getFromDB($id_ticket);
 
-           if($conf->fields['doc_categorie'] == 0){
-               $where = " tickets_id =".$id_ticket;
-           }else{
-               $where = " tickets_id =".$id_ticket." and documentcategories_id = ".$conf->fields['doc_categorie'];
-           }
+           $output .= getOutPutForticket($ticket,$itemType);
 
-           $output .= getOutPutForticket($ticket,$where);
+            if($itemType != 'Problem'){
+                $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
 
-
-           $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
-
-           if(count($tickets)){
-               $output .= "<br/><DL><DT><STRONG>".__('If you fowllow linked tickets','mantis')."</STRONG><br>";
-               foreach ($tickets as $link_ticket){
-
-                   $ticketLink = new Ticket();
-                   $ticketLink->getFromDB($link_ticket['tickets_id']);
-
-                   if($conf->fields['doc_categorie'] == 0){
-                       $where = " tickets_id =".$link_ticket['tickets_id'];
-                   }else{
-                       $where = " tickets_id =".$link_ticket['tickets_id']." and documentcategories_id = ".$conf->fields['doc_categorie'];
-                   }
-
-                   $output .= getOutPutForticket($ticketLink,$where);
-
-               }
-           }else{
-               $output .= "<DL><DT><STRONG>".__('No tickets linked','mantis');
-           }
+                if(count($tickets)){
+                    $output .= "<br/><DL><DT><STRONG>".__('If you fowllow linked tickets','mantis')."</STRONG><br>";
+                    foreach ($tickets as $link_ticket){
+                        $ticketLink = new Ticket();
+                        $ticketLink->getFromDB($link_ticket['tickets_id']);
+                        $output .= getOutPutForticket($ticketLink,$itemType);
+                    }
+                }else{
+                    $output .= "<DL><DT><STRONG>".__('No tickets linked','mantis');
+                }
+            }
 
            if($output == ""){
-               echo __('No documents attached','mantis');
+               echo "<STRONG>".__('No documents attached','mantis')."<STRONG/>";
            }else{
                echo $output;
            }
@@ -174,8 +158,9 @@ if (isset($_POST['action'])) {
 
        case 'getProjectName':
 
-           $id_ticket       = $_POST['idTicket'];
+           $idItem      = $_POST['idTicket'];
            $id_mantis_issue = $_POST['idMantis'];
+           $itemType = $_POST['itemType'];
 
            $ws = new PluginMantisMantisws();
            $ws->initializeConnection();
@@ -184,12 +169,10 @@ if (isset($_POST['action'])) {
                echo  "ERROR :". __("MantisBT issue does not exist","mantis");
            } else {
 
-
-
                $mantis = new PluginMantisMantis();
                //on verifie si un lien est deja creé
-               if ($mantis->IfExistLink($id_ticket, $id_mantis_issue)) {
-                   echo  "ERROR :". __("This Glpi ticket is already linked to this MantisBT ticket","mantis");
+               if ($mantis->IfExistLink($idItem, $id_mantis_issue,$itemType)) {
+                   echo  "ERROR :". __("This Glpi ".$itemType." is already linked to this MantisBT ticket","mantis");
                } else {
 
                    $result = $ws->getIssueById($id_mantis_issue);
@@ -199,9 +182,6 @@ if (isset($_POST['action'])) {
            }
 
            break;
-
-
-
 
        case 'getCustomFieldByProjectname':
 
@@ -215,7 +195,8 @@ if (isset($_POST['action'])) {
       case 'LinkIssueGlpiToIssueMantis':
 
          $id_ticket       = $_POST['idTicket'];
-         $id_mantis_issue = $_POST['idMantis'];
+          $id_mantis_issue = $_POST['idMantis'];
+         $itemType = $_POST['itemType'];
          $ws              = new PluginMantisMantisws();
          $ws->initializeConnection();
 
@@ -225,8 +206,8 @@ if (isset($_POST['action'])) {
          } else {
             $mantis = new PluginMantisMantis();
             //on verifie si un lien est deja creé
-            if ($mantis->IfExistLink($id_ticket, $id_mantis_issue)) {
-               echo __("This Glpi ticket is already linked to this MantisBT ticket","mantis");
+            if ($mantis->IfExistLink($id_ticket, $id_mantis_issue,$itemType)) {
+               echo __("This Glpi ".$itemType." is already linked to this MantisBT ticket","mantis");
             } else {
 
                $issue = new PluginMantisIssue();
@@ -254,6 +235,7 @@ if (isset($_POST['action'])) {
                             $post['idTicket']     = $t->fields['id'];
                             $post['idMantis']     = $id_mantis_issue;
                             $post['dateEscalade'] = $_POST['dateEscalade'];
+                            $post['itemType'] = $_POST['itemType'];
                             $post['user']         = $_POST['user'];
 
                             $id_mantis[] = $mantis1->add($post);
@@ -329,17 +311,31 @@ if (isset($_POST['action'])) {
 }
 
 
-function getOutPutForticket($ticket , $where){
+function getOutPutForticket($ticket , $itemType){
+
+    global $DB;
+    $conf = new PluginMantisConfig();
+    $conf->getFromDB(1);
+
+    if($conf->fields['doc_categorie'] == 0){
+        $res = $DB->query("SELECT `glpi_documents_items`.*
+            FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = '".$itemType."'
+            AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($ticket->fields['id']) . "'");
+    }else{
+        $res = $DB->query("SELECT `glpi_documents_items`.*
+            FROM `glpi_documents_items` ,`glpi_documents` WHERE `glpi_documents`.`id` =`glpi_documents_items`.`documents_id` and `glpi_documents`.`documentcategories_id` = '".Toolbox::cleanInteger($conf->fields['doc_categorie'])."' and`glpi_documents_items`.`itemtype`  = '".$itemType."'
+            AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($ticket->fields['id']) . "'");
+    }
 
 
-    $doc = new Document();
-    $docs = $doc->find($where);
+
     $output = "";
-    if(count($docs)){
-
-        $output .= "<DL><DT><STRONG>Ticket -> ".$ticket->fields['id']."</STRONG><br>";
-        foreach($docs as $d){
-            $output .= "<DD>Document -> ".$d['filename']."<br>";
+    if ($res->num_rows > 0) {
+        $output .= "<DL><DT><STRONG>".$itemType." -> ".$ticket->fields['id']."</STRONG><br>";
+        while ($row = $res->fetch_assoc()) {
+            $doc = new Document();
+            $doc->getFromDB($row["documents_id"]);
+            $output .= "<DD>".$doc->getDownloadLink('',strlen($doc->fields['filename']))."<br>";
         }
         $output .= "</DL>";
     }else{

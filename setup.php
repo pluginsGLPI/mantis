@@ -70,7 +70,7 @@ function plugin_init_mantis() {
    Plugin::registerClass('PluginMantisMantisws');
 
    Plugin::registerClass('PluginMantisMantis', 
-                     array('addtabon' => array('Ticket')));
+                     array('addtabon' => array('Ticket','Problem')));
 
 }
 

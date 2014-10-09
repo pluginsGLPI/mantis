@@ -90,69 +90,76 @@ class PluginMantisMantis extends CommonDBTM {
         //on parcours les ticket linké
         while ($row = $res->fetch_assoc()) {
 
+
+
             //on créer l'objet Ticket
             $ticket_glpi = new Ticket();
             $ticket_glpi->getFromDB($row['idTicket']);
 
-            Toolbox::logInFile("mantis", "CRON MANTIS : Checking Glpi ticket ".$row['idTicket'].". ");
+            if($ticket_glpi->fields['status'] == 5 || $ticket_glpi->fields['status'] == 6){
+                Toolbox::logInFile("mantis", "CRON MANTIS : Glpi ticket ".$row['idTicket']." is already solve or closed. ");
+            }else{
+                Toolbox::logInFile("mantis", "CRON MANTIS : Checking Glpi ticket ".$row['idTicket'].". ");
 
-            //on recupere les lien entre le ticket glpi et les ticket mantis
-            $list_link = self::getLinkBetweenTicketGlpiAndTicketMantis($row['idTicket']);
+                //on recupere les lien entre le ticket glpi et les ticket mantis
+                $list_link = self::getLinkBetweenTicketGlpiAndTicketMantis($row['idTicket']);
 
-            //pour chaque lien glpi -> mantis
-            while ($line = $list_link->fetch_assoc()){
-                Toolbox::logInFile("mantis", "CRON MANTIS :    Checking Mantis ticket ".$line['idMantis'].". ");
+                //pour chaque lien glpi -> mantis
+                while ($line = $list_link->fetch_assoc()){
+                    Toolbox::logInFile("mantis", "CRON MANTIS :    Checking Mantis ticket ".$line['idMantis'].". ");
 
-                //on recupere l'issue mantisBT
-                $issue = $ws->getIssueById($line['idMantis']);
-                //ainsi que les document attaché
-                $attachmentsMantisBT = $issue->attachments;
+                    //on recupere l'issue mantisBT
+                    $issue = $ws->getIssueById($line['idMantis']);
+                    //ainsi que les document attaché
+                    $attachmentsMantisBT = $issue->attachments;
 
-                //on recupere les document du tickets
-                $documents = self::getdocumentFromTicket($row['idTicket']);
+                    //on recupere les document du tickets
+                    $documents = self::getdocumentFromTicket($row['idTicket']);
 
-                //pour chaque document du ticket
-                foreach($documents as $doc){
+                    //pour chaque document du ticket
+                    foreach($documents as $doc){
 
-                    //on verifie s'il existe sur MantisBt
-                    if(!self::existAttachmentInMantisBT($doc , $attachmentsMantisBT)){
-                        //si le fichier n'existe pas on l'injecte
-                        Toolbox::logInFile("mantis", "CRON MANTIS :      File ".$doc->getField('filename')." does not exist in MantisBT issue. ");
-                        $path = GLPI_DOC_DIR . "/" . $doc->getField('filepath');
+                        //on verifie s'il existe sur MantisBt
+                        if(!self::existAttachmentInMantisBT($doc , $attachmentsMantisBT)){
+                            //si le fichier n'existe pas on l'injecte
+                            Toolbox::logInFile("mantis", "CRON MANTIS :      File ".$doc->getField('filename')." does not exist in MantisBT issue. ");
+                            $path = GLPI_DOC_DIR . "/" . $doc->getField('filepath');
 
-                        if (file_exists($path)) {
+                            if (file_exists($path)) {
 
-                            $data = file_get_contents($path);
-                            if (!$data) {
-                                Toolbox::logInFile("mantis","CRON MANTIS :      Can't load ".$doc->getField('filename').". ");
+                                $data = file_get_contents($path);
+                                if (!$data) {
+                                    Toolbox::logInFile("mantis","CRON MANTIS :      Can't load ".$doc->getField('filename').". ");
+                                } else {
+
+                                    //on l'insere
+                                    //$data    = base64_encode($data);
+                                    $id_data = $ws->addAttachmentToIssue($line['idMantis'],
+                                        $doc->getField('filename'), $doc->getField('mime'), $data);
+
+                                    if (!$id_data) {
+                                        $id_attachment[] = $id_data;
+                                        Toolbox::logInFile("mantis", "CRON MANTIS :      Can't send ".$doc->getField('filename')." to MantisBT. ");
+                                    }else{
+                                        Toolbox::logInFile("mantis", "CRON MANTIS :      Send ".$doc->getField('filename')." to MantisBT with success. ");
+                                    }
+
+                                }
                             } else {
 
-                                //on l'insere
-                                //$data    = base64_encode($data);
-                                $id_data = $ws->addAttachmentToIssue($line['idMantis'],
-                                $doc->getField('filename'), $doc->getField('mime'), $data);
-
-                                if (!$id_data) {
-                                    $id_attachment[] = $id_data;
-                                    Toolbox::logInFile("mantis", "CRON MANTIS :      Can't send ".$doc->getField('filename')." to MantisBT. ");
-                                }else{
-                                    Toolbox::logInFile("mantis", "CRON MANTIS :      Send ".$doc->getField('filename')." to MantisBT with success. ");
-                                }
+                                Toolbox::logInFile("mantis", "CRON MANTIS :      File ".$doc->getField('filename')." does not exist on Glpi server. ");
 
                             }
-                        } else {
 
-                          Toolbox::logInFile("mantis", "CRON MANTIS :      File ".$doc->getField('filename')." does not exist on Glpi server. ");
+                        }else{
+
+                            Toolbox::logInFile("mantis", "CRON MANTIS :      File ".$doc->getField('filename')." already exist in MantisBT issue. ");
 
                         }
-
-                    }else{
-
-                    Toolbox::logInFile("mantis", "CRON MANTIS :      File ".$doc->getField('filename')." already exist in MantisBT issue. ");
-
                     }
                 }
             }
+
         }
         Toolbox::logInFile("mantis", "************************************************");
         Toolbox::logInFile("mantis", "* CRON MANTIS : Ending update attachments cron *");
@@ -272,18 +279,23 @@ class PluginMantisMantis extends CommonDBTM {
         global $DB;
 
         $document = array();
-        $res = $DB->query("SELECT `glpi_documents_items`.*
-                        FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = 'Ticket'
-                        AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idticket) . "'");
 
-        if ($res->num_rows > 0) {
+        $conf = new PluginMantisConfig();
+        $conf->getFromDB(1);
 
-            while ($row = $res->fetch_assoc()) {
-                $doc = new Document();
-                $doc->getFromDB($row["documents_id"]);
-                $document[] = $doc;
-            }
+        if($conf->fields['doc_categorie'] == 0){
+            $where = " tickets_id =".$idticket;
+        }else{
+            $where = " tickets_id =".$idticket." and documentcategories_id = ".$conf->fields['doc_categorie'];
+        }
 
+        $doc = new Document();
+        $docs = $doc->find($where);
+
+        foreach($docs as $d){
+            $doc = new Document();
+            $doc->getFromDB($d["id"]);
+            $document[] = $doc;
         }
 
         return $document;
@@ -724,8 +736,8 @@ class PluginMantisMantis extends CommonDBTM {
         //FOLLOW ATTACHMENT
         $content .= "<tr class='tab_bg_1'>";
         $content .= "<th>".__("Attachments","mantis")."</th>";
-        $content .= "<td><INPUT type='checkbox' name='followAttachment' id='followAttachment' >".
-        __("To forward attachments","mantis")."</td></tr>";
+        $content .= "<td><INPUT type='checkbox' name='followAttachment' id='followAttachment' onclick='getAttachment();'style='cursor: pointer;'>".
+        __("To forward attachments","mantis")."<div id='attachmentforLinkToProject'><div/></td></tr>";
 
         //FOLLOW GLPI FOLLOW
         $content .= "<tr class='tab_bg_1'>";

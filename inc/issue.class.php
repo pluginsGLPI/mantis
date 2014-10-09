@@ -117,13 +117,59 @@ class PluginMantisIssue {
             }
 
 
+        //si les deux ont besoin d'un custom field
+        if(($champsUrl != 'additional_information' && $champsUrl != 'note') && ($champsGlpi != 'additional_information' && $champsGlpi != 'note')){
 
-           //on parcours chaque custom field , quand on trouve le bon on le met à jour
-           foreach($issue->custom_fields as $field){
-               if($field->name = $champsGlpi){
-                   $field->value .= "<br/>".$this->getInfoFromTicket($champsGlpi ,$champsUrl, $ticket, $itilCategorie,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie,$followLinkedticket);
-               }
-           }
+            include_once('structcustomfield.php');
+
+            //si cela concerna le mm custom field
+            if($champsGlpi == $champsUrl){
+
+                //on parcours chaque custom field , quand on trouve le bon on le met à jour
+                foreach($issue->custom_fields as $field){
+                    if($field->name = $champsGlpi){
+                        $field->value .= "<br/>".$this->getInfoFromTicket($champsGlpi ,$champsUrl, $ticket, $itilCategorie,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie,$followLinkedticket);
+                    }
+                }
+
+            }else{
+
+                //on parcours chaque custom field , quand on trouve le bon on le met à jour
+                foreach($issue->custom_fields as $field){
+                    if($field->name = $champsGlpi){
+                        $field->value .= "<br/>".$this->getInfoFromTicket($champsGlpi ,$champsUrl, $ticket, $itilCategorie,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie,$followLinkedticket);
+                    }
+                }
+
+                //on parcours chaque custom field , quand on trouve le bon on le met à jour
+                foreach($issue->custom_fields as $field){
+                    if($field->name = $champsUrl){
+                        $field->value .= "<br/>".$this->getInfoFromTicket($champsGlpi ,$champsUrl, $ticket, $itilCategorie,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie,$followLinkedticket);
+                    }
+                }
+            }
+
+            //si l'un deux deux en  à besoin
+        }else if (($champsUrl != 'additional_information' && $champsUrl != 'note') || ($champsGlpi != 'additional_information' && $champsGlpi != 'note')){
+
+            include_once('structcustomfield.php');
+
+            if(($champsUrl != 'additional_information' && $champsUrl != 'note')){
+                //on parcours chaque custom field , quand on trouve le bon on le met à jour
+                foreach($issue->custom_fields as $field){
+                    if($field->name = $champsGlpi){
+                        $field->value .= "<br/>".$this->getInfoFromTicket($champsGlpi ,$champsUrl, $ticket, $itilCategorie,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie,$followLinkedticket);
+                    }
+                }
+            }else{
+                //on parcours chaque custom field , quand on trouve le bon on le met à jour
+                foreach($issue->custom_fields as $field){
+                    if($field->name = $champsUrl){
+                        $field->value .= "<br/>".$this->getInfoFromTicket($champsGlpi ,$champsUrl, $ticket, $itilCategorie,$followFollow,$followTask,$followTitle,$followDescription,$followCategorie,$followLinkedticket);
+                    }
+                }
+            }
+        }
 
            //on met a jour l'additionnal info
            $issue->additional_information .= "<br>".$this->getAdditionalInfo($champsGlpi, $champsUrl,
@@ -404,16 +450,23 @@ class PluginMantisIssue {
     private function addAttachment($idTicket, $error , $ws,$idIssueCreate){
 
         global $DB;
+        $conf = new PluginMantisConfig();
+        $conf->getFromDB(1);
 
-        $res = $DB->query("SELECT `glpi_documents_items`.*
-                    FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = 'Ticket'
-                    AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idTicket) . "'");
+        if($conf->fields['doc_categorie'] == 0){
+            $where = " tickets_id =".$idTicket;
+        }else{
+            $where = " tickets_id =".$idTicket." and documentcategories_id = ".$conf->fields['doc_categorie'];
+        }
 
-        if ($res->num_rows > 0) {
+        $doc = new Document();
+        $docs = $doc->find($where);
 
-            while ($row = $res->fetch_assoc()) {
+        if (count($docs) > 0) {
+
+            foreach($docs as $d){
                 $doc = new Document();
-                $doc->getFromDB($row["documents_id"]);
+                $doc->getFromDB($d["id"]);
                 $path = GLPI_DOC_DIR . "/" . $doc->getField('filepath');
 
                 if (file_exists($path)) {

@@ -456,3 +456,9 @@ msgstr "Attachment type transfered to MantisBT"
 
 msgid "To forward linked Ticket"
 msgstr "To forward linked Ticket"
+
+msgid "Checkbox checked by default"
+msgstr "Checkbox checked by default"
+
+msgid "This issue is closed"
+msgstr "This issue is closed"

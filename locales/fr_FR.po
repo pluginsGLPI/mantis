@@ -456,3 +456,8 @@ msgstr "Type de pièce jointe transféré vers MantisBT"
 msgid "To forward linked Ticket"
 msgstr "Faire suivre les tickets liés"
 
+msgid "Checkbox checked by default"
+msgstr "Case à cocher coché par défaut"
+
+msgid "This issue is closed"
+msgstr "Cette issue est close"

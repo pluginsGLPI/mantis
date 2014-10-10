@@ -174,7 +174,7 @@ if (isset($_POST['action'])) {
                 } else {
                     $result = $ws->getIssueById($id_mantis_issue);
                     if($result->status->id == 90){
-                        echo "ERROR :This issue is closed";
+                        echo "ERROR :".__('"This issue is closed"','mantis');
                     }else{
                         echo $result->project->name;
                     }
@@ -214,7 +214,7 @@ if (isset($_POST['action'])) {
 
                 $result = $ws->getIssueById($id_mantis_issue);
                 if($result->status->id == 90){
-                    echo "ERROR :This issue is closed";
+                    echo "ERROR :".__('"This issue is closed"','mantis');
                 }else{
 
                     $issue = new PluginMantisIssue();

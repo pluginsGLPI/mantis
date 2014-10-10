@@ -72,6 +72,9 @@ function plugin_init_mantis() {
    Plugin::registerClass('PluginMantisMantis', 
                      array('addtabon' => array('Ticket','Problem')));
 
+    Plugin::registerClass('PluginMantisUserPref',
+        array('addtabon' => array('User', 'Preference')));
+
 }
 
 /**
@@ -80,7 +83,7 @@ function plugin_init_mantis() {
  */
 function plugin_version_mantis() {
    return array(  'name'            => __("MantisBT synchronisation", "mantis"),
-                  'version'         => '0.84+1.0',
+                  'version'         => '0.84+2.0',
                   'author'          => 'Stanislas KITA (teclib\')',
                   'license'         => 'GPLv3',
                   'homepage'        => 'https://forge.indepnet.net/projects/mantis',

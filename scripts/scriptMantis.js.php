@@ -48,14 +48,44 @@ $root_ajax = $CFG_GLPI['root_doc']."/plugins/mantis/ajax/ajax.php";
 
 $JS = <<<JAVASCRIPT
 
-
-
 function getAttachment(){
 
     var div_info = $("#attachmentforLinkToProject");
     var checkBox = $("#followAttachment").is(':checked');
     var idTicket = $("#idTicket").val();
     var itemType = $("#itemType").val();
+
+    if(checkBox == true){
+
+        $.ajax({ // fonction permettant de faire de l'ajax
+            type: "POST", // methode de transmission des données au fichier php
+            url: "{$root_ajax}", // url du fichier php
+            data: "action=getTicketAttachment&" +
+            "itemType=" + itemType + "&" +
+            "idTicket=" + idTicket , // données à transmettre
+
+            success: function (msg) { // si l'appel a bien fonctionné
+                div_info.html(msg);
+            },
+            error: function () {
+                div_info.html('Ajax Problem !');
+            }
+        });
+
+        return false; // permet de rester sur la même page à la soumission du formulaire
+
+    }else{
+        div_info.empty();
+    }
+
+}
+
+function getAttachment1(){
+
+    var div_info = $("#attachmentforLinkToProject1");
+    var checkBox = $("#followAttachment1").is(':checked');
+    var idTicket = $("#idTicket1").val();
+    var itemType = $("#itemType1").val();
 
     if(checkBox == true){
 
@@ -146,11 +176,11 @@ function ifExistissueWithId() {
 
 function findProjectById(){
 
-    var idMantisIssue = $("#idMantis").val();
-    var idTicket = $("#idTicket").val();
+    var idMantisIssue = $("#idMantis1").val();
+    var idTicket = $("#idTicket1").val();
     var dropdownCustomField = $("#dropdown_fieldsGlpi1");
     var dropdownUrl = $("#dropdown_fieldUrl1");
-    var itemType = $("#itemType").val();
+    var itemType = $("#itemType1").val();
 
     var div_info = $("#infoLinIssueGlpiToIssueMantis");
     var div_wait = $("#waitForLinkIssueGlpiToIssueMantis");

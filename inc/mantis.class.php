@@ -849,7 +849,7 @@ class PluginMantisMantis extends CommonDBTM {
       //on recupere l'ensemble des lien entre ticket glpi et ticket(s) mantis
       $res = $this->getLinkBetweenGlpiAndMantis($item,$itemType);
 
-       var_dump($res);
+       //var_dump($res);
 
       if ($res->num_rows > 0) {
 

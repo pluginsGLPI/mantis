@@ -686,7 +686,7 @@ function delLinkAndOrIssue(id, idMantis, idTicket) {
    var popupName = "popupToDelete" + id;
    var popup = $('input[name="' + popupName + '"]');
 
-   alert(itemType);
+   //alert(itemType);
 
    if (checkIssue.is(':checked') && !checkLink.is(':checked') ||
       checkIssue.is(':checked') && checkLink.is(':checked')) {

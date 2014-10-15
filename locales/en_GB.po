@@ -29,11 +29,9 @@ msgid "MantisBT issue does not exist"
 msgstr "MantisBT issue does not exist"
 
 #: ajax/ajax.php:60
-msgid "This Glpi Ticket is already linked to this MantisBT ticket"
-msgstr "This Glpi Ticket is already linked to this MantisBT ticket"
-
-msgid "This Glpi Problem is already linked to this MantisBT ticket"
-msgstr "This Glpi Problem is already linked to this MantisBT ticket"
+#: ajax/ajax.php:83 ajax/ajax.php:98
+msgid "This GLPI item is already linked to this MantisBT ticket"
+msgstr "This GLPI item is already linked to this MantisBT ticket"
 
 #: ajax/ajax.php:83 ajax/ajax.php:98
 msgid "Error while deleting the link between Glpi ticket and MantisBT ticket"

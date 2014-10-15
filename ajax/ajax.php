@@ -171,7 +171,7 @@ if (isset($_POST['action'])) {
                 //on verifie si un lien est deja creé
                 if ($mantis->IfExistLink($idItem, $id_mantis_issue,$itemType)) {
                     echo  "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/> ERROR :".
-                        __("This Glpi ".$itemType." is already linked to this MantisBT ticket","mantis");
+                        __("This Glpi item is already linked to this MantisBT ticket","mantis");
                 } else {
                     $result = $ws->getIssueById($id_mantis_issue);
                     if($result->status->id == 90){
@@ -211,7 +211,7 @@ if (isset($_POST['action'])) {
             //on verifie si un lien est deja creé
             if ($mantis->IfExistLink($id_ticket, $id_mantis_issue,$itemType)) {
                echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>".
-                   __("This Glpi ".$itemType." is already linked to this MantisBT ticket","mantis");
+                   __("This Glpi item is already linked to this MantisBT ticket","mantis");
             } else {
 
                 $result = $ws->getIssueById($id_mantis_issue);

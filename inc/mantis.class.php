@@ -113,12 +113,12 @@ class PluginMantisMantis extends CommonDBTM {
             $item->getFromDB($row['idTicket']);
 
             if($item->fields['status'] == 5 || $item->fields['status'] == 6){
-                Toolbox::logInFile("mantis", "CRON MANTIS : ".$itemType." ".$itemType." ".$item->fields['id']." is already solve or closed. ");
+                Toolbox::logInFile("mantis", "CRON MANTIS : ".$itemType." ".$itemType." ".$row['idTicket']." is already solve or closed. ");
             }else{
-                Toolbox::logInFile("mantis", "CRON MANTIS : Checking ".$itemType." ticket ".$item->fields['id'].". ");
+                Toolbox::logInFile("mantis", "CRON MANTIS : Checking ".$itemType." ticket ".$row['idTicket'].". ");
 
                 //on recupere les lien entre le ticket glpi et les ticket mantis
-                $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($item->fields['id'],$itemType);
+                $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row['idTicket'],$itemType);
 
                 //pour chaque lien glpi -> mantis
                 while ($line = $list_link->fetch_assoc()){
@@ -129,7 +129,7 @@ class PluginMantisMantis extends CommonDBTM {
                     $attachmentsMantisBT = $issue->attachments;
 
                     //on recupere les document de l'item
-                    $documents = self::getDocumentFromItem($item->fields['id'],$itemType);
+                    $documents = self::getDocumentFromItem($row['idTicket'],$itemType);
 
                     //pour chaque document
                     foreach($documents as $doc){
@@ -194,23 +194,24 @@ class PluginMantisMantis extends CommonDBTM {
             //on recuper l'id des items Glpi linké
             $res = self::getItemWhichIsLinked();
 
+
             while ($row = $res->fetch_assoc()) {
 
                 $itemType = $row['itemType'];
                 $item = new $itemType();
                 $item->getFromDB($row['idTicket']);
 
-                Toolbox::logInFile("mantis", "CRON MANTIS : Checking Glpi ".$itemType." ".$item->fields['id'].". ");
+                Toolbox::logInFile("mantis", "CRON MANTIS : Checking Glpi ".$itemType." ".$row['idTicket'].". ");
 
                 //si le ticket est deja resolus ou clos
                 if($item->fields['status'] == 5 || $item->fields['status'] == 6){
 
-                    Toolbox::logInFile("mantis", "CRON MANTIS : Glpi ".$itemType." ".$item->fields['id']." is already solve or closed. ");
+                    Toolbox::logInFile("mantis", "CRON MANTIS : Glpi ".$itemType." ".$row['idTicket']." is already solve or closed. ");
 
                 }else{
 
                     //on recupere tout les tickets mantis lié
-                    $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($item->fields['id'],$itemType);
+                    $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row['idTicket'],$itemType);
 
                     $list_ticket_mantis = array();
                     while ($line = $list_link->fetch_assoc()){
@@ -229,7 +230,7 @@ class PluginMantisMantis extends CommonDBTM {
                         $item->fields['solvedate'] = date("Y-m-d");
                         $item->fields['solution'] = $info_solved;
                         $item->update($item->fields);
-                        Toolbox::logInFile("mantis", "CRON MANTIS : Update glpi ".$item->fields['id']." status in BDD");
+                        Toolbox::logInFile("mantis", "CRON MANTIS : Update glpi ".$row['idTicket']." status in BDD");
 
                     }else{
                         Toolbox::logInFile("mantis", "CRON MANTIS : All status MantisBT have not the same as status choice by user -> ".$etat_mantis.". ");

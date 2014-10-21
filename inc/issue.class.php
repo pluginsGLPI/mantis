@@ -430,6 +430,22 @@ class PluginMantisIssue {
                 //mise à jour du status du ticket si demandé
                     if($conf->fields['status_after_escalation'] != 0){
                         $ticket->update(array('id' => $ticket->fields['id'], 'status' =>$conf->fields['status_after_escalation']));
+
+
+                        if($followLinkedticket == 'true' && $itemType == "Ticket"){
+                        $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
+
+
+
+                            foreach ($tickets as $link_ticket){
+                                $t = new ticket();
+                                $t->getFromDB($link_ticket['tickets_id']);
+                                $t->update(array('id' => $t->fields['id'], 'status' =>$conf->fields['status_after_escalation']));
+
+                            }
+                        }
+
+
                     }
 
                     return true;

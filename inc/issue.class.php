@@ -69,7 +69,7 @@ class PluginMantisIssue {
     public function addInfoToIssueMantis($idTicket, $idMantis) {
 
         global $DB;
-        $itemType           = $_POST['itemType'];
+        $itemType           = $_POST['itemtype'];
 
         $ws = new PluginMantisMantisws();
         $ws->initializeConnection();
@@ -333,11 +333,11 @@ class PluginMantisIssue {
             } else {
 
                 //creation d'un lien glpi -> mantis
-                $post['idTicket']     = $idTicket;
+                $post['items_id']     = $idTicket;
                 $post['idMantis']     = $idIssueCreate;
                 $post['dateEscalade'] = $date;
                 $post['user']         = $idUser;
-                $post['itemType']     = $itemType;
+                $post['itemtype']     = $itemType;
 
                 $res= $mantis->add($post);
                 $id_mantis[] = $res;
@@ -361,11 +361,11 @@ class PluginMantisIssue {
                             $t->getFromDB($link_ticket['tickets_id']);
 
                             $mantis1               = new PluginMantisMantis();
-                            $post['idTicket']     = $t->fields['id'];
+                            $post['items_id']     = $t->fields['id'];
                             $post['idMantis']     = $idIssueCreate;
                             $post['dateEscalade'] = $date;
                             $post['user']         = $idUser;
-                            $post['itemType']         = $itemType;
+                            $post['itemtype']         = $itemType;
 
                             $id_mantis[] = $mantis1->add($post);
                             unset($post);

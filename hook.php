@@ -56,16 +56,23 @@ function plugin_mantis_install() {
     if (!TableExists("glpi_plugin_mantis_mantis")) {
         $query = "CREATE TABLE glpi_plugin_mantis_mantis (
                id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-               idTicket int(11) NOT NULL,
+               items_id int(11) NOT NULL,
                idMantis int(11) NOT NULL,
                dateEscalade date NOT NULL,
-               itemType varchar NOT NULL,
+               itemtype varchar NOT NULL,
                user int(11) NOT NULL)";
         $DB->query($query) or die($DB->error());
     }else{
         $mig = new Migration(200);
         $table = 'glpi_plugin_mantis_mantis';
         $mig->addField($table, 'itemType', 'string');
+        $mig->executeMigration();
+
+        $mig = new Migration(201);
+        $table = 'glpi_plugin_mantis_mantis';
+        $mig->addField($table, 'itemType', 'string');
+        $mig->changeField('glpi_plugin_mantis_mantis','itemType','itemtype','string' ,array());
+        $mig->changeField('glpi_plugin_mantis_mantis','idTicket','items_id','integer' ,array());
         $mig->executeMigration();
     }
 
@@ -151,4 +158,60 @@ function plugin_mantis_uninstall() {
    PluginMantisMantis::uninstall();
    return true;
 }
+
+// Define Additionnal search options for types (other than the plugin ones)
+function plugin_mantis_getAddSearchOptions($itemtype) {
+
+    $sopt = array();
+    if ($itemtype == 'Ticket' ) {
+
+        $sopt['common'] = "MantisBT";
+
+        $sopt[78963]['table']              = 'glpi_plugin_mantis_mantis';
+        $sopt[78963]['field']              = 'idMantis';
+        $sopt[78963]['searchtype']         = 'equals';
+        $sopt[78963]['nosearch']           = true;
+        $sopt[78963]['datatype']      = 'bool';
+        $sopt[78963]['name']               = __('ticket linked to mantis','mantis');
+        $sopt[78963]['joinparams'] = array('jointype' => "itemtype_item");
+
+    }else if ( $itemtype == 'Problem'){
+        $sopt['common'] = "MantisBT";
+
+        $sopt[78964]['table']              = 'glpi_plugin_mantis_mantis';
+        $sopt[78964]['field']              = 'id';
+        $sopt[78964]['searchtype']         = 'equals';
+        $sopt[78964]['nosearch']           = true;
+        $sopt[78964]['datatype']      = 'bool';
+        $sopt[78964]['name']               = __('problem linked to mantis','mantis');
+        $sopt[78964]['joinparams'] = array('jointype' => "itemtype_item");
+    }
+    return $sopt;
+}
+
+
+
+
+
+function plugin_mantis_giveItem($type,$ID,$data,$num) {
+
+     $searchopt = &Search::getOptions($type);
+     $table = $searchopt[$ID]["table"];
+     $field = $searchopt[$ID]["field"];
+
+
+     switch ($table.'.'.$field) {
+     case "glpi_plugin_mantis_mantis.idMantis" :
+             return Dropdown::getYesNo($data["ITEM_$num"]);
+         break;
+
+    }
+
+ return "";
+}
+
+
+
+
+
 

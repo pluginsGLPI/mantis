@@ -196,9 +196,9 @@ if (isset($_POST['action'])) {
 
       case 'LinkIssueGlpiToIssueMantis':
 
-         $id_ticket       = $_POST['idTicket'];
+         $id_ticket       = $_POST['items_id'];
          $id_mantis_issue = $_POST['idMantis'];
-         $itemType        = $_POST['itemType'];
+         $itemType        = $_POST['itemtype'];
 
          $ws              = new PluginMantisMantisws();
          $ws->initializeConnection();
@@ -225,7 +225,7 @@ if (isset($_POST['action'])) {
                     if($res){
                         $mantis->add($_POST);
 
-                        $id_ticket       = $_POST['idTicket'];
+                        $id_ticket       = $_POST['items_id'];
                         $ticket = new Ticket();
                         $ticket->getFromDB($id_ticket);
 
@@ -241,10 +241,10 @@ if (isset($_POST['action'])) {
                                 $t->getFromDB($link_ticket['tickets_id']);
 
                                 $mantis1               = new PluginMantisMantis();
-                                $post['idTicket']     = $t->fields['id'];
+                                $post['items_id']     = $t->fields['id'];
                                 $post['idMantis']     = $id_mantis_issue;
                                 $post['dateEscalade'] = $_POST['dateEscalade'];
-                                $post['itemType'] = $_POST['itemType'];
+                                $post['itemtype'] = $_POST['itemType'];
                                 $post['user']         = $_POST['user'];
 
                                 $id_mantis[] = $mantis1->add($post);
@@ -255,7 +255,7 @@ if (isset($_POST['action'])) {
                         if($conf->fields['status_after_escalation'] != 0){
                             $res = $ticket->update(array('id' => $ticket->fields['id'], 'status' =>$conf->fields['status_after_escalation']));
 
-                            if($_POST['linkedTicket'] == 'true'){
+                            if($_POST['linkedTicket'] == 'true' && $_POST['itemType'] == 'Ticket'){
                                 $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
 
                                 foreach ($tickets as $link_ticket){

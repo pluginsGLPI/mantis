@@ -106,19 +106,19 @@ class PluginMantisMantis extends CommonDBTM {
         //on parcours les items linké
         while ($row = $res->fetch_assoc()) {
 
-            $itemType = $row['itemType'];
+            $itemType = $row['itemtype'];
 
             //on créer l'objet Ticket
             $item = new $itemType();
-            $item->getFromDB($row['idTicket']);
+            $item->getFromDB($row['items_id']);
 
             if($item->fields['status'] == 5 || $item->fields['status'] == 6){
-                Toolbox::logInFile("mantis", "CRON MANTIS : ".$itemType." ".$itemType." ".$row['idTicket']." is already solve or closed. ");
+                Toolbox::logInFile("mantis", "CRON MANTIS : ".$itemType." ".$itemType." ".$row['items_id']." is already solve or closed. ");
             }else{
-                Toolbox::logInFile("mantis", "CRON MANTIS : Checking ".$itemType." ticket ".$row['idTicket'].". ");
+                Toolbox::logInFile("mantis", "CRON MANTIS : Checking ".$itemType." ticket ".$row['items_id'].". ");
 
                 //on recupere les lien entre le ticket glpi et les ticket mantis
-                $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row['idTicket'],$itemType);
+                $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row['items_id'],$itemType);
 
                 //pour chaque lien glpi -> mantis
                 while ($line = $list_link->fetch_assoc()){
@@ -129,7 +129,7 @@ class PluginMantisMantis extends CommonDBTM {
                     $attachmentsMantisBT = $issue->attachments;
 
                     //on recupere les document de l'item
-                    $documents = self::getDocumentFromItem($row['idTicket'],$itemType);
+                    $documents = self::getDocumentFromItem($row['items_id'],$itemType);
 
                     //pour chaque document
                     foreach($documents as $doc){
@@ -197,21 +197,21 @@ class PluginMantisMantis extends CommonDBTM {
 
             while ($row = $res->fetch_assoc()) {
 
-                $itemType = $row['itemType'];
+                $itemType = $row['itemtype'];
                 $item = new $itemType();
-                $item->getFromDB($row['idTicket']);
+                $item->getFromDB($row['items_id']);
 
-                Toolbox::logInFile("mantis", "CRON MANTIS : Checking Glpi ".$itemType." ".$row['idTicket'].". ");
+                Toolbox::logInFile("mantis", "CRON MANTIS : Checking Glpi ".$itemType." ".$row['items_id'].". ");
 
                 //si le ticket est deja resolus ou clos
                 if($item->fields['status'] == 5 || $item->fields['status'] == 6){
 
-                    Toolbox::logInFile("mantis", "CRON MANTIS : Glpi ".$itemType." ".$row['idTicket']." is already solve or closed. ");
+                    Toolbox::logInFile("mantis", "CRON MANTIS : Glpi ".$itemType." ".$row['items_id']." is already solve or closed. ");
 
                 }else{
 
                     //on recupere tout les tickets mantis lié
-                    $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row['idTicket'],$itemType);
+                    $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row['items_id'],$itemType);
 
                     $list_ticket_mantis = array();
                     while ($line = $list_link->fetch_assoc()){
@@ -230,7 +230,7 @@ class PluginMantisMantis extends CommonDBTM {
                         $item->fields['solvedate'] = date("Y-m-d");
                         $item->fields['solution'] = $info_solved;
                         $item->update($item->fields);
-                        Toolbox::logInFile("mantis", "CRON MANTIS : Update glpi ".$row['idTicket']." status in BDD");
+                        Toolbox::logInFile("mantis", "CRON MANTIS : Update glpi ".$row['items_id']." status in BDD");
 
                     }else{
                         Toolbox::logInFile("mantis", "CRON MANTIS : All status MantisBT have not the same as status choice by user -> ".$etat_mantis.". ");
@@ -336,9 +336,9 @@ class PluginMantisMantis extends CommonDBTM {
     */
    private static function getItemWhichIsLinked() {
          global $DB;
-         return $DB->query("SELECT `glpi_plugin_mantis_mantis`.`idTicket`,`glpi_plugin_mantis_mantis`.`itemType`
+         return $DB->query("SELECT `glpi_plugin_mantis_mantis`.`items_id`,`glpi_plugin_mantis_mantis`.`itemtype`
                             FROM `glpi_plugin_mantis_mantis`
-                            GROUP BY `glpi_plugin_mantis_mantis`.`idTicket`,`glpi_plugin_mantis_mantis`.`itemType`");
+                            GROUP BY `glpi_plugin_mantis_mantis`.`items_id`,`glpi_plugin_mantis_mantis`.`itemtype`");
    }
 
 
@@ -352,7 +352,7 @@ class PluginMantisMantis extends CommonDBTM {
       global $DB;
       return $DB->query("SELECT `glpi_plugin_mantis_mantis`.*
                         FROM `glpi_plugin_mantis_mantis` WHERE `glpi_plugin_mantis_mantis`
-                        .`idTicket` = '" . Toolbox::cleanInteger($idItem)."' and `glpi_plugin_mantis_mantis`.`itemType` = '".$itemType."'");
+                        .`items_id` = '" . Toolbox::cleanInteger($idItem)."' and `glpi_plugin_mantis_mantis`.`itemtype` = '".$itemType."'");
    }
 
 
@@ -889,7 +889,7 @@ class PluginMantisMantis extends CommonDBTM {
 
              Ajax::createModalWindow('popupToDelete' . $row['id'],
                  $CFG_GLPI['root_doc'].'/plugins/mantis/front/mantis.form.php?action=deleteIssue&id=' .
-                 $row['id'] . '&idTicket=' . $row['idTicket'] . '&idMantis=' . $row['idMantis'].'&itemType='.$itemType,
+                 $row['id'] . '&idTicket=' . $row['items_id'] . '&idMantis=' . $row['idMantis'].'&itemType='.$itemType,
                  array('title'  => __("Delete", "mantis"),'width'  => 550,'height' => $height));
 
             if (!$issue) {
@@ -956,9 +956,9 @@ class PluginMantisMantis extends CommonDBTM {
     * @return true if succeed else false
     */
    public function IfExistLink($idItem, $id_mantis,$itemType) {
-      return $this->getFromDBByQuery($this->getTable() . " WHERE `" . "`.`idTicket` = '" .
+      return $this->getFromDBByQuery($this->getTable() . " WHERE `" . "`.`items_id` = '" .
          Toolbox::cleanInteger($idItem) . "'  AND  `" . "`.`idMantis` = '" .
-         Toolbox::cleanInteger($id_mantis) . "'  AND  `" . "`.`itemType` = '" .$itemType . "'");
+         Toolbox::cleanInteger($id_mantis) . "'  AND  `" . "`.`itemtype` = '" .$itemType . "'");
    }
 
    /**
@@ -971,8 +971,8 @@ class PluginMantisMantis extends CommonDBTM {
       global $DB;
       return $DB->query("SELECT `glpi_plugin_mantis_mantis`.*
                         FROM `glpi_plugin_mantis_mantis` WHERE `glpi_plugin_mantis_mantis`
-                        .`idTicket` = '" . Toolbox::cleanInteger($item->getField('id')) . "'
-                        and `glpi_plugin_mantis_mantis`.`itemType` = '".$itemType."' order by `glpi_plugin_mantis_mantis`.`dateEscalade`");
+                        .`items_id` = '" . Toolbox::cleanInteger($item->getField('id')) . "'
+                        and `glpi_plugin_mantis_mantis`.`itemtype` = '".$itemType."' order by `glpi_plugin_mantis_mantis`.`dateEscalade`");
    }
 
    /**

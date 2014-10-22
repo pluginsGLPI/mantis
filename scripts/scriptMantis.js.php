@@ -283,7 +283,7 @@ function linkIssueglpiToIssueMantis() {
             type: "POST", // methode de transmission des données au fichier php
             url: "{$root_ajax}", // url du fichier php
             data: "action=LinkIssueGlpiToIssueMantis&" +
-                "idTicket=" + idTicket + "&" +
+                "items_id=" + idTicket + "&" +
                 "idMantis=" + idMantisIssue + "&" +
                 "followAttachment=" + followAttachment + "&" +
                 "followFollow=" + followFollow + "&" +
@@ -291,7 +291,7 @@ function linkIssueglpiToIssueMantis() {
                 "glpiField=" + glpiField + "&" +
                 "glpiUrl=" + glpiUrl + "&" +
                 "linkedTicket=" + linkedTicket + "&" +
-                "itemType=" + itemType + "&" +
+                "itemtype=" + itemType + "&" +
                 "followTitle=" + followTitle + "&" +
                 "followDescription=" + followDescription + "&" +
                 "followCategorie=" + followCategorie + "&" +
@@ -652,7 +652,7 @@ function deleteLinkGlpiMantis(id, idticket, idMantis, deleteAll) {
          data: "action=deleteLinkMantis&" +
             "id=" + id + "&" +
             "idMantis=" + idMantis + "&" +
-            "idTicket=" + idticket,// données à transmettre
+            "items_id=" + idticket,// données à transmettre
          success: function (msg) { // si l'appel a bien fonctionné
 
             if (msg == true) {
@@ -698,7 +698,7 @@ function delLinkAndOrIssue(id, idMantis, idTicket) {
          data: "action=deleteIssueMantisAndLink&" +
             "id=" + id + "&" +
             "idMantis=" + idMantis + "&" +
-            "idTicket=" + idTicket,// données à transmettre
+            "items_id=" + idTicket,// données à transmettre
          success: function (msg) { // si l'appel a bien fonctionné
 
             if (msg == true) {
@@ -729,7 +729,7 @@ function delLinkAndOrIssue(id, idMantis, idTicket) {
          data: "action=deleteLinkMantis&" +
             "id=" + id + "&" +
             "idMantis=" + idMantis + "&" +
-            "idTicket=" + idTicket,// données à transmettre
+            "items_id=" + idTicket,// données à transmettre
          success: function (msg) { // si l'appel a bien fonctionné
 
             if (msg == true) {

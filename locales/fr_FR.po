@@ -458,3 +458,9 @@ msgstr "Case à cocher coché par défaut"
 
 msgid "This issue is closed"
 msgstr "Cette issue est close"
+
+msgid "ticket linked to mantis"
+msgstr "Ticket escaladé vers MantiBT"
+
+msgid "problem linked to mantis"
+msgstr "Problème escaladé vers MantiBT"

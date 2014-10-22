@@ -460,3 +460,9 @@ msgstr "Checkbox checked by default"
 
 msgid "This issue is closed"
 msgstr "This issue is closed"
+
+msgid "ticket linked to mantis"
+msgstr "ticket linked to mantis"
+
+msgid "problem linked to mantis"
+msgstr "Problem linked to mantis"

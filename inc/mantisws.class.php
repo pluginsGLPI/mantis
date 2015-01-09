@@ -142,6 +142,50 @@ class PluginMantisMantisws{
       }
    }
 
+    public function getCustomFieldFromProjectName($name){
+        $id = $this->getProjectIdWithName($name);
+        try {
+            $response = $this->_client->mc_project_get_custom_fields($this->_login,$this->_password,$id);
+
+            $list = array();
+            $list[] =  array('id' => 'additional_information' ,  'name' => 'additional_information');
+            $list[] =  array('id' => 'note' ,  'name' => 'note');
+            foreach($response as $field){
+                $list[] =  array('id' => $field->field->name ,  'name' => $field->field->name);
+            }
+
+            return ($list);
+        } catch (SoapFault $e) {
+            Toolbox::logInFile('mantis', sprintf(
+                    __('Error retrieving user of project id \'%1$s\' => \'%2$s\'', 'mantis'),
+                    $id, $e->getMessage()) . "\n");
+            return false;
+        }
+    }
+
+    public function getCustomFieldByNameAndProject($nameCustomField , $nameProject){
+        $id = $this->getProjectIdWithName($nameProject);
+        try {
+            $response = $this->_client->mc_project_get_custom_fields($this->_login,$this->_password,$id);
+
+            $list = array();
+            $list[] =  array('id' => 0 ,  'name' => '----');
+            foreach($response as $field){
+                if($field->field->name == $nameCustomField){
+                    return $field->field;
+                }
+            }
+
+            return null;
+        } catch (SoapFault $e) {
+            Toolbox::logInFile('mantis', sprintf(
+                    __('Error retrieving user of project id \'%1$s\' => \'%2$s\'', 'mantis'),
+                    $id, $e->getMessage()) . "\n");
+            return false;
+        }
+    }
+
+
    /**
     * Function to find category by name of project
     * @param $name name of project
@@ -212,25 +256,53 @@ class PluginMantisMantisws{
       }
    }
 
-   /**
-    * Function to add an attachment to an issue
-    * @param integer $_issue_id
-    * @param string $_name
-    * @param string $_file_type
-    * @param base64Binary $_content
-    * @return integer
-    */
-   public function addAttachmentToIssue($_issue_id, $_name, $_file_type, $_content) {
-      global $CFG_GLPI;
-      try {
-         return $this->_client->mc_issue_attachment_add($this->_login, $this->_password,
-            $_issue_id, $_name, $_file_type, $_content);
-      } catch (SoapFault $e) {
-         Toolbox::logInFile('mantis', sprintf(
-               __('error while creating attachment => \'%1$s\'', 'mantis'), $e->getMessage()) . "\n");
-         return false;
-      }
-   }
+    /**
+     * Function to add an attachment to an issue
+     * @param integer $_issue_id
+     * @param string $_name
+     * @param string $_file_type
+     * @param base64Binary $_content
+     * @return integer
+     */
+    public function addAttachmentToIssue($_issue_id, $_name, $_file_type, $_content) {
+        global $CFG_GLPI;
+        try {
+            return $this->_client->mc_issue_attachment_add($this->_login, $this->_password,
+                $_issue_id, $_name, $_file_type, $_content);
+        } catch (SoapFault $e) {
+
+            if($e->getMessage() ==  "Duplicate filename."){
+                Toolbox::logInFile('mantis', __('WARNIG '.$_name.' already exist', 'mantis'). "\n");
+                return true;
+            }else{
+                Toolbox::logInFile('mantis', sprintf(
+                        __('error while creating attachment => \'%1$s\'', 'mantis'), $e->getMessage()) . "\n");
+                return false;
+            }
+
+
+
+        }
+    }
+
+    /**
+     * Function to get an attachment to an issue
+     * @param integer $_issue_id
+     * @param string $_name
+     * @param string $_file_type
+     * @param base64Binary $_content
+     * @return integer
+     */
+    public function getAttachmentFromIssue($_issue_id) {
+        global $CFG_GLPI;
+        try {
+            return $this->_client->mc_issue_attachment_get($this->_login, $this->_password,$_issue_id);
+        } catch (SoapFault $e) {
+            Toolbox::logInFile('mantis', sprintf(
+                    __('error while getting attachment => \'%1$s\'', 'mantis'), $e->getMessage()) . "\n");
+            return false;
+        }
+    }
 
    /**
     * Function to add issue

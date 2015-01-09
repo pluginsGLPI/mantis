@@ -29,8 +29,8 @@ msgid "MantisBT issue does not exist"
 msgstr "Le ticket MantisBT n'éxiste pas"
 
 #: ajax/ajax.php:60
-msgid "This GLPI ticket is already linked to this MantisBT ticket"
-msgstr "Ce ticket GLPI est déjà lié à ce ticket MantisBT"
+msgid "This Glpi item is already linked to this MantisBT ticket"
+msgstr "Cet objet GLPI est déjà lié à ce ticket MantisBT"
 
 #: ajax/ajax.php:83 ajax/ajax.php:98
 msgid "Error while deleting the link between GLPI ticket and MantisBT ticket"
@@ -295,8 +295,8 @@ msgstr "Lien vers le ticket GLPI = %1$s <br/>"
 
 #: inc/mantisIssue.class.php:1067
 #, php-format
-msgid "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s,<br/>"
-msgstr "Suivi = %1$s -> date : %2$s, type de demande : %3$s, utilisateur : %4$s,<br/>"
+msgid "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : %5$s<br/>"
+msgstr "Suivi = %1$s -> date : %2$s, type de demande : %3$s, utilisateur : %4$s,contenu : %5$s<br/>"
 
 #: inc/mantisIssue.class.php:1102
 #, php-format
@@ -384,7 +384,7 @@ msgid "Error when getting MantisBT states => '%1$s'"
 msgstr "Erreur lors du chargement des états MantisBT => '%1$s'"
 
 #: inc/config.class.php:104
-msgid "Close GLPI ticket when status ticket MantisBT is"
+msgid "Close Glpi ticket when status ticket MantisBT is"
 msgstr "Fermer le ticket GLPI quand le statut du ticket MantisBT est"
 
 #: inc/config.class.php:109
@@ -394,3 +394,73 @@ msgstr "Tester la connexion pour charger les statuts MantisBT"
 #: inc/config.class.php:128
 msgid "Neutralize the escalating to MantisBT when the status of the GLPI tickets is"
 msgstr "Neutraliser l'escalade vers MantisBT lorsque le statut du ticket Glpi est "
+
+
+#: inc/config.class.php:141
+msgid "Status of glpi ticket after escalation to MantisBT"
+msgstr "Status du ticket glpi aprés escalade vers MantisBT"
+
+#: inc/config.class.php:153
+msgid "Show option 'Delete the  MantisBT ticket' "
+msgstr "Afficher l'option 'Supprimer le ticket MantisBT' "
+
+msgid "Glpi follow"
+msgstr "Suivi(s) glpi"
+
+msgid "Glpi task"
+msgstr "Tâche(s) glpi"
+
+msgid "Glpi title"
+msgstr "Titre glpi"
+
+msgid "Glpi description"
+msgstr "Description glpi"
+
+msgid "Glpi categorie"
+msgstr "Catégorie glpi"
+
+
+msgid "To forward follow"
+msgstr "Faire suivre les suivis"
+
+msgid "To forward task"
+msgstr "Faire suivre les tâches"
+
+msgid "To forward title"
+msgstr "Faire suivre le titre"
+
+msgid "To forward description"
+msgstr "Faire suivre la description"
+
+msgid "To forward categorie"
+msgstr "Faire suivre la catégorie"
+
+msgid "If you fowllow linked tickets"
+msgstr "Si vous faite suivre les tickets liés"
+
+msgid "No tickets linked"
+msgstr "aucun ticket liés"
+
+msgid "No documents attached"
+msgstr "Aucun document attaché"
+
+msgid "0 document for ticket "
+msgstr "0 document pour le ticket "
+
+msgid "Attachment type transfered to MantisBT"
+msgstr "Type de pièce jointe transféré vers MantisBT"
+
+msgid "To forward linked Ticket"
+msgstr "Faire suivre les tickets liés"
+
+msgid "Checkbox checked by default"
+msgstr "Case à cocher coché par défaut"
+
+msgid "This issue is closed"
+msgstr "Cette issue est close"
+
+msgid "ticket linked to mantis"
+msgstr "Ticket escaladé vers MantiBT"
+
+msgid "problem linked to mantis"
+msgstr "Problème escaladé vers MantiBT"

@@ -29,8 +29,9 @@ msgid "MantisBT issue does not exist"
 msgstr "MantisBT issue does not exist"
 
 #: ajax/ajax.php:60
-msgid "This Glpi ticket is already linked to this MantisBT ticket"
-msgstr "This Glpi ticket is already linked to this MantisBT ticket"
+#: ajax/ajax.php:83 ajax/ajax.php:98
+msgid "This GLPI item is already linked to this MantisBT ticket"
+msgstr "This GLPI item is already linked to this MantisBT ticket"
 
 #: ajax/ajax.php:83 ajax/ajax.php:98
 msgid "Error while deleting the link between Glpi ticket and MantisBT ticket"
@@ -297,8 +298,8 @@ msgstr "Assign"
 
 #: inc/mantisIssue.class.php:1067
 #, php-format
-msgid "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s,<br/>"
-msgstr "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s,<br/>"
+msgid "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : %5$s<br/>"
+msgstr "Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : %5$s<br/>"
 
 #: inc/mantisIssue.class.php:1102
 #, php-format
@@ -397,3 +398,71 @@ msgstr "Test connection to load stats of MantisBT"
 #: inc/config.class.php:128
 msgid "Neutralize the escalation to MantisBT when the status of the GLPI tickets is"
 msgstr "Neutralize the escalation to MantisBT when the status of the GLPI tickets is"
+
+#: inc/config.class.php:141
+msgid "Status of glpi ticket after escalation to MantisBT"
+msgstr "Status of glpi ticket after escalation to MantisBT"
+
+#: inc/config.class.php:153
+msgid "Show option 'Delete the  MantisBT ticket' "
+msgstr "Show option 'Delete the  MantisBT ticket' "
+
+msgid "Glpi follow"
+msgstr "Glpi follow"
+
+msgid "Glpi task"
+msgstr "Glpi task"
+
+msgid "Glpi title"
+msgstr "Glpi title"
+
+msgid "Glpi description"
+msgstr "Glpi description"
+
+msgid "Glpi categorie"
+msgstr "Glpi categorie"
+
+msgid "To forward follow"
+msgstr "To forward follow"
+
+msgid "To forward task"
+msgstr "To forward task"
+
+msgid "To forward title"
+msgstr "To forward title"
+
+msgid "To forward description"
+msgstr "To forward description"
+
+msgid "To forward categorie"
+msgstr "To forward categorie"
+
+msgid "If you fowllow linked tickets"
+msgstr "If you fowllow linked tickets"
+
+msgid "No tickets linked"
+msgstr "No tickets linked"
+
+msgid "No documents attached"
+msgstr "No documents attached"
+
+msgid "0 document for ticket "
+msgstr "0 document for ticket "
+
+msgid "Attachment type transfered to MantisBT"
+msgstr "Attachment type transfered to MantisBT"
+
+msgid "To forward linked Ticket"
+msgstr "To forward linked Ticket"
+
+msgid "Checkbox checked by default"
+msgstr "Checkbox checked by default"
+
+msgid "This issue is closed"
+msgstr "This issue is closed"
+
+msgid "ticket linked to mantis"
+msgstr "ticket linked to mantis"
+
+msgid "problem linked to mantis"
+msgstr "Problem linked to mantis"

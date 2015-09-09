@@ -27,6 +27,7 @@ class PluginMantisStructaccountdata
      * @var integer
      */
     public $id;
+    
     /**
      * The name
      * Meta informations extracted from the WSDL
@@ -34,6 +35,7 @@ class PluginMantisStructaccountdata
      * @var string
      */
     public $name;
+    
     /**
      * The real_name
      * Meta informations extracted from the WSDL
@@ -41,6 +43,7 @@ class PluginMantisStructaccountdata
      * @var string
      */
     public $real_name;
+    
     /**
      * The email
      * Meta informations extracted from the WSDL
@@ -48,6 +51,7 @@ class PluginMantisStructaccountdata
      * @var string
      */
     public $email;
+    
     /**
      * Constructor method for AccountData
      * @see parent::__construct()
@@ -61,6 +65,7 @@ class PluginMantisStructaccountdata
     {
 
     }
+    
     /**
      * Get id value
      * @return integer|null
@@ -69,6 +74,7 @@ class PluginMantisStructaccountdata
     {
         return $this->id;
     }
+    
     /**
      * Set id value
      * @param integer $_id the id
@@ -78,6 +84,7 @@ class PluginMantisStructaccountdata
     {
         return ($this->id = $_id);
     }
+    
     /**
      * Get name value
      * @return string|null
@@ -86,6 +93,7 @@ class PluginMantisStructaccountdata
     {
         return $this->name;
     }
+    
     /**
      * Set name value
      * @param string $_name the name
@@ -95,6 +103,7 @@ class PluginMantisStructaccountdata
     {
         return ($this->name = $_name);
     }
+    
     /**
      * Get real_name value
      * @return string|null
@@ -103,6 +112,7 @@ class PluginMantisStructaccountdata
     {
         return $this->real_name;
     }
+    
     /**
      * Set real_name value
      * @param string $_real_name the real_name
@@ -112,6 +122,7 @@ class PluginMantisStructaccountdata
     {
         return ($this->real_name = $_real_name);
     }
+    
     /**
      * Get email value
      * @return string|null
@@ -120,6 +131,7 @@ class PluginMantisStructaccountdata
     {
         return $this->email;
     }
+    
     /**
      * Set email value
      * @param string $_email the email
@@ -129,6 +141,7 @@ class PluginMantisStructaccountdata
     {
         return ($this->email = $_email);
     }
+    
     /**
      * Method called when an object has been exported with var_export() functions
      * It allows to return an object instantiated with the values
@@ -141,6 +154,7 @@ class PluginMantisStructaccountdata
     {
         return parent::__set_state($_array,$_className);
     }
+    
     /**
      * Method returning the class name
      * @return string __CLASS__

@@ -26,6 +26,7 @@ class PluginMantisStructcustomField
      * @var MantisStructObjectRef
      */
     public $field;
+    
     /**
      * The value
      * Meta informations extracted from the WSDL
@@ -43,6 +44,7 @@ class PluginMantisStructcustomField
     {
         return $this->field;
     }
+    
     /**
      * Set field value
      * @param MantisStructObjectRef $_field the field
@@ -52,6 +54,7 @@ class PluginMantisStructcustomField
     {
         return ($this->field = $_field);
     }
+    
     /**
      * Get value value
      * @return string|null
@@ -60,6 +63,7 @@ class PluginMantisStructcustomField
     {
         return $this->value;
     }
+    
     /**
      * Set value value
      * @param string $_value the value

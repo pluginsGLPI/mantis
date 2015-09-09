@@ -40,6 +40,13 @@
    ------------------------------------------------------------------------
  */
 
+define ("PLUGIN_MANTIS_VERSION", "0.84+2.2");
+
+// Minimal GLPI version, inclusive
+define ("PLUGIN_MANTIS_GLPI_MIN_VERSION", "0.85");
+// Maximum GLPI version, exclusive
+define ("PLUGIN_MANTIS_GLPI_MAX_VERSION", "0.92");
+
 /**
  * function to initialize the plugin
  * @global array $PLUGIN_HOOKS
@@ -83,11 +90,11 @@ function plugin_init_mantis() {
  */
 function plugin_version_mantis() {
    return array(  'name'            => __("MantisBT synchronisation", "mantis"),
-                  'version'         => '0.84+2.2',
+                  'version'         => PLUGIN_MANTIS_VERSION,
                   'author'          => 'Stanislas KITA (teclib\')',
                   'license'         => 'GPLv3',
-                  'homepage'        => 'https://forge.indepnet.net/projects/mantis',
-                  'minGlpiVersion'  => '0.84');
+                  'homepage'        => 'https://github.com/teclib/mantis',
+                  'minGlpiVersion'  => PLUGIN_MANTIS_GLPI_MIN_VERSION);
 
 }
 
@@ -97,19 +104,19 @@ function plugin_version_mantis() {
  */
 function plugin_mantis_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
-      echo "This plugin requires GLPI >= 0.84 and GLPI < 0.85";
+   if (version_compare(GLPI_VERSION, PLUGIN_MANTIS_GLPI_MIN_VERSION, 'lt') 
+      || version_compare(GLPI_VERSION, PLUGIN_MANTIS_GLPI_MAX_VERSION, 'ge')) {
+      echo "This plugin requires GLPI >= " . PLUGIN_MANTIS_GLPI_MIN_VERSION . 
+         " and GLPI < " . PLUGIN_MANTIS_GLPI_MAX_VERSION;
       return false;
    }
 
-    if (!extension_loaded('soap')) {
-        echo "This plugin requires SOAP extension for PHP";
-        return false;
-    }
+   if (!extension_loaded('soap')) {
+      echo "This plugin requires SOAP extension for PHP";
+      return false;
+   }
 
-
-      return true;
-
+   return true;
 
 }
 

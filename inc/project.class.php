@@ -45,7 +45,7 @@ class PluginMantisProject {
     * The id
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var integer
     */
    public $id;
@@ -54,7 +54,7 @@ class PluginMantisProject {
     * The name
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var string
     */
    public $name;
@@ -63,7 +63,7 @@ class PluginMantisProject {
     * The status
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var MantisStructObjectRef
     */
    public $status;
@@ -72,7 +72,7 @@ class PluginMantisProject {
     * The enabled
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var boolean
     */
    public $enabled;
@@ -81,7 +81,7 @@ class PluginMantisProject {
     * The view_state
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var MantisStructObjectRef
     */
    public $view_state;
@@ -90,7 +90,7 @@ class PluginMantisProject {
     * The access_min
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var MantisStructObjectRef
     */
    public $access_min;
@@ -99,7 +99,7 @@ class PluginMantisProject {
     * The file_path
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var string
     */
    public $file_path;
@@ -108,7 +108,7 @@ class PluginMantisProject {
     * The description
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var string
     */
    public $description;
@@ -118,7 +118,7 @@ class PluginMantisProject {
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
     * - from schema : var/wsdltophp.com/storage/wsdls/a80caff3c8dd52f94a68432974b9ab45/wsdl.xml
-    * 
+    *
     * @var Array
     */
    public $subprojects;
@@ -127,25 +127,25 @@ class PluginMantisProject {
     * The inherit_global
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var boolean
     */
    public $inherit_global;
 
    /**
     * Constructor method for ProjectData
-    * 
+    *
     * @see parent::__construct()
-    * @param integer $_id           
-    * @param string $_name           
-    * @param MantisStructObjectRef $_status           
-    * @param boolean $_enabled           
-    * @param MantisStructObjectRef $_view_state           
-    * @param MantisStructObjectRef $_access_min           
-    * @param string $_file_path           
-    * @param string $_description           
-    * @param Array $_subprojects           
-    * @param boolean $_inherit_global           
+    * @param integer $_id
+    * @param string $_name
+    * @param MantisStructObjectRef $_status
+    * @param boolean $_enabled
+    * @param MantisStructObjectRef $_view_state
+    * @param MantisStructObjectRef $_access_min
+    * @param string $_file_path
+    * @param string $_description
+    * @param Array $_subprojects
+    * @param boolean $_inherit_global
     * @return MantisStructProjectData
     */
    public function __construct() {
@@ -153,7 +153,7 @@ class PluginMantisProject {
 
    /**
     * Get id value
-    * 
+    *
     * @return integer|null
     */
    public function getId() {
@@ -162,9 +162,8 @@ class PluginMantisProject {
 
    /**
     * Set id value
-    * 
-    * @param integer $_id
-    *           the id
+    *
+    * @param integer $_id the id
     * @return integer
     */
    public function setId($_id) {
@@ -173,7 +172,7 @@ class PluginMantisProject {
 
    /**
     * Get name value
-    * 
+    *
     * @return string|null
     */
    public function getName() {
@@ -182,9 +181,8 @@ class PluginMantisProject {
 
    /**
     * Set name value
-    * 
-    * @param string $_name
-    *           the name
+    *
+    * @param string $_name the name
     * @return string
     */
    public function setName($_name) {
@@ -193,7 +191,7 @@ class PluginMantisProject {
 
    /**
     * Get status value
-    * 
+    *
     * @return MantisStructObjectRef|null
     */
    public function getStatus() {
@@ -202,9 +200,8 @@ class PluginMantisProject {
 
    /**
     * Set status value
-    * 
-    * @param MantisStructObjectRef $_status
-    *           the status
+    *
+    * @param MantisStructObjectRef $_status the status
     * @return MantisStructObjectRef
     */
    public function setStatus($_status) {
@@ -213,7 +210,7 @@ class PluginMantisProject {
 
    /**
     * Get enabled value
-    * 
+    *
     * @return boolean|null
     */
    public function getEnabled() {
@@ -222,9 +219,8 @@ class PluginMantisProject {
 
    /**
     * Set enabled value
-    * 
-    * @param boolean $_enabled
-    *           the enabled
+    *
+    * @param boolean $_enabled the enabled
     * @return boolean
     */
    public function setEnabled($_enabled) {
@@ -233,7 +229,7 @@ class PluginMantisProject {
 
    /**
     * Get view_state value
-    * 
+    *
     * @return MantisStructObjectRef|null
     */
    public function getView_state() {
@@ -242,9 +238,8 @@ class PluginMantisProject {
 
    /**
     * Set view_state value
-    * 
-    * @param MantisStructObjectRef $_view_state
-    *           the view_state
+    *
+    * @param MantisStructObjectRef $_view_state the view_state
     * @return MantisStructObjectRef
     */
    public function setView_state($_view_state) {
@@ -253,7 +248,7 @@ class PluginMantisProject {
 
    /**
     * Get access_min value
-    * 
+    *
     * @return MantisStructObjectRef|null
     */
    public function getAccess_min() {
@@ -262,9 +257,8 @@ class PluginMantisProject {
 
    /**
     * Set access_min value
-    * 
-    * @param MantisStructObjectRef $_access_min
-    *           the access_min
+    *
+    * @param MantisStructObjectRef $_access_min the access_min
     * @return MantisStructObjectRef
     */
    public function setAccess_min($_access_min) {
@@ -273,7 +267,7 @@ class PluginMantisProject {
 
    /**
     * Get file_path value
-    * 
+    *
     * @return string|null
     */
    public function getFile_path() {
@@ -282,9 +276,8 @@ class PluginMantisProject {
 
    /**
     * Set file_path value
-    * 
-    * @param string $_file_path
-    *           the file_path
+    *
+    * @param string $_file_path the file_path
     * @return string
     */
    public function setFile_path($_file_path) {
@@ -293,7 +286,7 @@ class PluginMantisProject {
 
    /**
     * Get description value
-    * 
+    *
     * @return string|null
     */
    public function getDescription() {
@@ -302,9 +295,8 @@ class PluginMantisProject {
 
    /**
     * Set description value
-    * 
-    * @param string $_description
-    *           the description
+    *
+    * @param string $_description the description
     * @return string
     */
    public function setDescription($_description) {
@@ -313,7 +305,7 @@ class PluginMantisProject {
 
    /**
     * Get subprojects value
-    * 
+    *
     * @return Array|null
     */
    public function getSubprojects() {
@@ -322,9 +314,8 @@ class PluginMantisProject {
 
    /**
     * Set subprojects value
-    * 
-    * @param Array $_subprojects
-    *           the subprojects
+    *
+    * @param Array $_subprojects the subprojects
     * @return Array
     */
    public function setSubprojects($_subprojects) {
@@ -333,7 +324,7 @@ class PluginMantisProject {
 
    /**
     * Get inherit_global value
-    * 
+    *
     * @return boolean|null
     */
    public function getInherit_global() {
@@ -342,9 +333,8 @@ class PluginMantisProject {
 
    /**
     * Set inherit_global value
-    * 
-    * @param boolean $_inherit_global
-    *           the inherit_global
+    *
+    * @param boolean $_inherit_global the inherit_global
     * @return boolean
     */
    public function setInherit_global($_inherit_global) {
@@ -354,20 +344,19 @@ class PluginMantisProject {
    /**
     * Method called when an object has been exported with var_export() functions
     * It allows to return an object instantiated with the values
-    * 
+    *
     * @see MantisWsdlClass::__set_state()
     * @uses MantisWsdlClass::__set_state()
-    * @param array $_array
-    *           the exported values
+    * @param array $_array the exported values
     * @return MantisStructProjectData
     */
    public static function __set_state(array $_array, $_className = __CLASS__) {
-      return parent::__set_state ( $_array, $_className );
+      return parent::__set_state($_array, $_className);
    }
 
    /**
     * Method returning the class name
-    * 
+    *
     * @return string __CLASS__
     */
    public function __toString() {

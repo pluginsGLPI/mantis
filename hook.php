@@ -42,17 +42,17 @@
 
 /**
  * function to install the plugin
- * 
+ *
  * @return boolean
  */
 function plugin_mantis_install() {
    require_once ('inc/mantis.class.php');
-   PluginMantisMantis::install ();
+   PluginMantisMantis::install();
    
    global $DB;
    
    // création de la table du plugin
-   if (! TableExists ( "glpi_plugin_mantis_mantis" )) {
+   if (! TableExists("glpi_plugin_mantis_mantis")) {
       $query = "CREATE TABLE `glpi_plugin_mantis_mantis` (
                `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                `items_id` int(11) NOT NULL,
@@ -60,23 +60,23 @@ function plugin_mantis_install() {
                `dateEscalade` date NOT NULL,
                `itemtype` varchar(255) NOT NULL,
                `user` int(11) NOT NULL)";
-      $DB->query ( $query ) or die ( $DB->error () );
+      $DB->query($query) or die($DB->error());
    } else {
-      $mig = new Migration ( 200 );
+      $mig = new Migration(200);
       $table = 'glpi_plugin_mantis_mantis';
-      $mig->addField ( $table, 'itemType', 'string' );
-      $mig->executeMigration ();
+      $mig->addField($table, 'itemType', 'string');
+      $mig->executeMigration();
       
-      $mig = new Migration ( 201 );
+      $mig = new Migration(201);
       $table = 'glpi_plugin_mantis_mantis';
-      $mig->addField ( $table, 'itemType', 'string' );
-      $mig->changeField ( 'glpi_plugin_mantis_mantis', 'itemType', 'itemtype', 'string', array () );
-      $mig->changeField ( 'glpi_plugin_mantis_mantis', 'idTicket', 'items_id', 'integer', array () );
-      $mig->executeMigration ();
+      $mig->addField($table, 'itemType', 'string');
+      $mig->changeField('glpi_plugin_mantis_mantis', 'itemType', 'itemtype', 'string', array ());
+      $mig->changeField('glpi_plugin_mantis_mantis', 'idTicket', 'items_id', 'integer', array ());
+      $mig->executeMigration();
    }
    
    // création de la table du plugin
-   if (! TableExists ( "glpi_plugin_mantis_userprefs" )) {
+   if (! TableExists("glpi_plugin_mantis_userprefs")) {
       $query = "CREATE TABLE `glpi_plugin_mantis_userprefs` (
                `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                `users_id` int(11) NOT NULL ,
@@ -88,26 +88,26 @@ function plugin_mantis_install() {
                `followCategorie` int(11) NOT NULL default '0',
                `followLinkedItem` int(11) NOT NULL default '0',
                UNIQUE KEY (`users_id`))";
-      $DB->query ( $query ) or die ( $DB->error () );
+      $DB->query($query) or die($DB->error());
    }
    
    // Création de la table uniquement lors de la première installation
-   if (! TableExists ( "glpi_plugin_mantis_profiles" )) {
+   if (! TableExists("glpi_plugin_mantis_profiles")) {
       // requete de création de la table
       $query = "CREATE TABLE `glpi_plugin_mantis_profiles` (
                `id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
                `right` char(1) collate utf8_unicode_ci default NULL,
                PRIMARY KEY  (`id`)
              ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryOrDie ( $query, $DB->error () );
+      $DB->queryOrDie($query, $DB->error());
       
       // creation du premier accès nécessaire lors de l'installation du plugin
       include_once ("inc/profile.class.php");
-      PluginMantisProfile::createAdminAccess ( $_SESSION ['glpiactiveprofile'] ['id'] );
+      PluginMantisProfile::createAdminAccess($_SESSION ['glpiactiveprofile'] ['id']);
    }
    
    // création de la table pour la configuration du plugin
-   if (! TableExists ( "glpi_plugin_mantis_configs" )) {
+   if (! TableExists("glpi_plugin_mantis_configs")) {
       $query = "CREATE TABLE `glpi_plugin_mantis_configs` (
                   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                   `host` varchar(255) NOT NULL default '',
@@ -123,27 +123,27 @@ function plugin_mantis_install() {
                   `doc_categorie` int(3) NOT NULL default 0,
                   `itemType` varchar(255) NOT NULL,
                   `etatMantis` varchar(100) NOT NULL default '')";
-      $DB->query ( $query ) or die ( $DB->error () );
+      $DB->query($query) or die($DB->error());
       // insertion du occcurence dans la table (occurrence par default)
       $query = "INSERT INTO `glpi_plugin_mantis_configs`
                        (`id`, `host`, `url`, `login`, `pwd`)
                 VALUES (NULL, '','','','')";
-      $DB->query ( $query ) or die ( "error in glpi_plugin_mantis_configs table" . $DB->error () );
+      $DB->query($query) or die("error in glpi_plugin_mantis_configs table" . $DB->error());
    } else {
-      $mig = new Migration ( 200 );
+      $mig = new Migration(200);
       $table = 'glpi_plugin_mantis_configs';
-      $mig->addField ( $table, 'neutralize_escalation', 'integer', array (
+      $mig->addField($table, 'neutralize_escalation', 'integer', array (
             'value' => 5 
-      ) );
-      $mig->addField ( $table, 'status_after_escalation', 'integer' );
-      $mig->addField ( $table, 'show_option_delete', 'integer', array (
+      ));
+      $mig->addField($table, 'status_after_escalation', 'integer');
+      $mig->addField($table, 'show_option_delete', 'integer', array (
             'value' => 0 
-      ) );
-      $mig->addField ( $table, 'doc_categorie', 'integer', array (
+      ));
+      $mig->addField($table, 'doc_categorie', 'integer', array (
             'value' => 0 
-      ) );
-      $mig->addField ( $table, 'itemType', 'string' );
-      $mig->executeMigration ();
+      ));
+      $mig->addField($table, 'itemType', 'string');
+      $mig->executeMigration();
    }
    
    return true;
@@ -151,12 +151,12 @@ function plugin_mantis_install() {
 
 /**
  * function to uninstall the plugin
- * 
+ *
  * @return boolean
  */
 function plugin_mantis_uninstall() {
    require_once ('inc/mantis.class.php');
-   PluginMantisMantis::uninstall ();
+   PluginMantisMantis::uninstall();
    return true;
 }
 
@@ -172,7 +172,7 @@ function plugin_mantis_getAddSearchOptions($itemtype) {
       $sopt [78963] ['searchtype'] = 'equals';
       $sopt [78963] ['nosearch'] = true;
       $sopt [78963] ['datatype'] = 'bool';
-      $sopt [78963] ['name'] = __ ( 'ticket linked to mantis', 'mantis' );
+      $sopt [78963] ['name'] = __('ticket linked to mantis', 'mantis');
       $sopt [78963] ['joinparams'] = array (
             'jointype' => "itemtype_item" 
       );
@@ -184,21 +184,22 @@ function plugin_mantis_getAddSearchOptions($itemtype) {
       $sopt [78964] ['searchtype'] = 'equals';
       $sopt [78964] ['nosearch'] = true;
       $sopt [78964] ['datatype'] = 'bool';
-      $sopt [78964] ['name'] = __ ( 'problem linked to mantis', 'mantis' );
+      $sopt [78964] ['name'] = __('problem linked to mantis', 'mantis');
       $sopt [78964] ['joinparams'] = array (
             'jointype' => "itemtype_item" 
       );
    }
    return $sopt;
 }
+
 function plugin_mantis_giveItem($type, $ID, $data, $num) {
-   $searchopt = &Search::getOptions ( $type );
+   $searchopt = &Search::getOptions($type);
    $table = $searchopt [$ID] ["table"];
    $field = $searchopt [$ID] ["field"];
    
    switch ($table . '.' . $field) {
       case "glpi_plugin_mantis_mantis.idMantis" :
-         return Dropdown::getYesNo ( $data ["ITEM_$num"] );
+         return Dropdown::getYesNo($data ["ITEM_$num"]);
          break;
    }
    

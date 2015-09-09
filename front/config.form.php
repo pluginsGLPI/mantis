@@ -41,13 +41,13 @@
  */
 include ('../../../inc/includes.php');
 
-Html::header(__("Setup - MantisBT", "mantis"), $_SERVER ['PHP_SELF'], 'plugins', 'Mantis', 'configuration');
+Html::header(__("Setup - MantisBT", "mantis"), $_SERVER['PHP_SELF'], 'plugins', 'Mantis', 'configuration');
 
 $plugin = new Plugin();
 
 if ($plugin->isActivated('mantis')) {
    $config = new PluginMantisConfig();
-   if (isset($_POST ['update'])) {
+   if (isset($_POST['update'])) {
       session::checkRight('config', 'w');
       $config->update($_POST);
       Html::back();
@@ -56,7 +56,7 @@ if ($plugin->isActivated('mantis')) {
    }
 } else {
    global $CFG_GLPI;
-   echo '<div class=\'center\'><br><br><img src=\'' . $CFG_GLPI ['root_doc'] . '/pics/warning.png\' alt=\'warning\'><br><br>';
+   echo '<div class=\'center\'><br><br><img src=\'' . $CFG_GLPI['root_doc'] . '/pics/warning.png\' alt=\'warning\'><br><br>';
    echo '<b>' . __("Thank you to activate plugin", "mantis") . '</b></div>';
 }
 

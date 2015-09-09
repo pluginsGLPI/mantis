@@ -51,9 +51,9 @@ class PluginMantisMantis extends CommonDBTM {
    static function install() {
       $cron = new CronTask();
       if (! $cron->getFromDBbyName(__CLASS__, 'mantis')) {
-         CronTask::Register(__CLASS__, 'mantis', 7 * DAY_TIMESTAMP, array (
+         CronTask::Register(__CLASS__, 'mantis', 7 * DAY_TIMESTAMP, array(
                'param' => 24,
-               'mode' => CronTask::MODE_EXTERNAL 
+               'mode' => CronTask::MODE_EXTERNAL
          ));
       }
    }
@@ -84,8 +84,8 @@ class PluginMantisMantis extends CommonDBTM {
     * @return array
     */
    static function cronInfo($name) {
-      return array (
-            'description' => __("Update ticket", "mantis") 
+      return array(
+            'description' => __("Update ticket", "mantis")
       );
    }
 
@@ -110,30 +110,30 @@ class PluginMantisMantis extends CommonDBTM {
       // on parcours les items linké
       while ( $row = $res->fetch_assoc() ) {
          
-         $itemType = $row ['itemtype'];
+         $itemType = $row['itemtype'];
          
          // on créer l'objet Ticket
          $item = new $itemType();
-         $item->getFromDB($row ['items_id']);
+         $item->getFromDB($row['items_id']);
          
-         if ($item->fields ['status'] == 5 || $item->fields ['status'] == 6) {
-            Toolbox::logInFile("mantis", "CRON MANTIS : " . $itemType . " " . $itemType . " " . $row ['items_id'] . " is already solve or closed. ");
+         if ($item->fields['status'] == 5 || $item->fields['status'] == 6) {
+            Toolbox::logInFile("mantis", "CRON MANTIS : " . $itemType . " " . $itemType . " " . $row['items_id'] . " is already solve or closed. ");
          } else {
-            Toolbox::logInFile("mantis", "CRON MANTIS : Checking " . $itemType . " ticket " . $row ['items_id'] . ". ");
+            Toolbox::logInFile("mantis", "CRON MANTIS : Checking " . $itemType . " ticket " . $row['items_id'] . ". ");
             
             // on recupere les lien entre le ticket glpi et les ticket mantis
-            $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row ['items_id'], $itemType);
+            $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row['items_id'], $itemType);
             
             // pour chaque lien glpi -> mantis
             while ( $line = $list_link->fetch_assoc() ) {
-               Toolbox::logInFile("mantis", "CRON MANTIS :    Checking Mantis ticket " . $line ['idMantis'] . ". ");
+               Toolbox::logInFile("mantis", "CRON MANTIS :    Checking Mantis ticket " . $line['idMantis'] . ". ");
                
                // on recupere l'issue mantisBT et les pièce jointes
-               $issue = $ws->getIssueById($line ['idMantis']);
+               $issue = $ws->getIssueById($line['idMantis']);
                $attachmentsMantisBT = $issue->attachments;
                
                // on recupere les document de l'item
-               $documents = self::getDocumentFromItem($row ['items_id'], $itemType);
+               $documents = self::getDocumentFromItem($row['items_id'], $itemType);
                
                // pour chaque document
                foreach ($documents as $doc) {
@@ -148,10 +148,10 @@ class PluginMantisMantis extends CommonDBTM {
                            Toolbox::logInFile("mantis", "CRON MANTIS :      Can't load " . $doc->getField('filename') . ". ");
                         } else {
                            // on l'insere
-                           $id_data = $ws->addAttachmentToIssue($line ['idMantis'], $doc->getField('filename'), $doc->getField('mime'), $data);
+                           $id_data = $ws->addAttachmentToIssue($line['idMantis'], $doc->getField('filename'), $doc->getField('mime'), $data);
                            
                            if (! $id_data) {
-                              $id_attachment [] = $id_data;
+                              $id_attachment[] = $id_data;
                               Toolbox::logInFile("mantis", "CRON MANTIS :      Can't send " . $doc->getField('filename') . " to MantisBT. ");
                            } else {
                               Toolbox::logInFile("mantis", "CRON MANTIS :      Send " . $doc->getField('filename') . " to MantisBT with success. ");
@@ -196,25 +196,25 @@ class PluginMantisMantis extends CommonDBTM {
          
          while ( $row = $res->fetch_assoc() ) {
             
-            $itemType = $row ['itemtype'];
+            $itemType = $row['itemtype'];
             $item = new $itemType();
-            $item->getFromDB($row ['items_id']);
+            $item->getFromDB($row['items_id']);
             
-            Toolbox::logInFile("mantis", "CRON MANTIS : Checking Glpi " . $itemType . " " . $row ['items_id'] . ". ");
+            Toolbox::logInFile("mantis", "CRON MANTIS : Checking Glpi " . $itemType . " " . $row['items_id'] . ". ");
             
             // si le ticket est deja resolus ou clos
-            if ($item->fields ['status'] == 5 || $item->fields ['status'] == 6) {
+            if ($item->fields['status'] == 5 || $item->fields['status'] == 6) {
                
-               Toolbox::logInFile("mantis", "CRON MANTIS : Glpi " . $itemType . " " . $row ['items_id'] . " is already solve or closed. ");
+               Toolbox::logInFile("mantis", "CRON MANTIS : Glpi " . $itemType . " " . $row['items_id'] . " is already solve or closed. ");
             } else {
                
                // on recupere tout les tickets mantis lié
-               $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row ['items_id'], $itemType);
+               $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row['items_id'], $itemType);
                
-               $list_ticket_mantis = array ();
+               $list_ticket_mantis = array();
                while ( $line = $list_link->fetch_assoc() ) {
-                  $mantis = $ws->getIssueById($line ['idMantis']);
-                  $list_ticket_mantis [] = $mantis;
+                  $mantis = $ws->getIssueById($line['idMantis']);
+                  $list_ticket_mantis[] = $mantis;
                }
                
                Toolbox::logInFile("mantis", "CRON MANTIS : Checking all status from issue Mantis linked with glpi " . $itemType);
@@ -223,12 +223,12 @@ class PluginMantisMantis extends CommonDBTM {
                   
                   Toolbox::logInFile("mantis", "CRON MANTIS : All status MantisBT are the same as status choice by user -> " . $etat_mantis . ". ");
                   $info_solved = self::getInfoSolved($list_ticket_mantis);
-                  $item->fields ['status'] = $itemType::SOLVED;
-                  $item->fields ['closedate'] = date("Y-m-d");
-                  $item->fields ['solvedate'] = date("Y-m-d");
-                  $item->fields ['solution'] = $info_solved;
+                  $item->fields['status'] = $itemType::SOLVED;
+                  $item->fields['closedate'] = date("Y-m-d");
+                  $item->fields['solvedate'] = date("Y-m-d");
+                  $item->fields['solution'] = $info_solved;
                   $item->update($item->fields);
-                  Toolbox::logInFile("mantis", "CRON MANTIS : Update glpi " . $row ['items_id'] . " status in BDD");
+                  Toolbox::logInFile("mantis", "CRON MANTIS : Update glpi " . $row['items_id'] . " status in BDD");
                } else {
                   Toolbox::logInFile("mantis", "CRON MANTIS : All status MantisBT have not the same as status choice by user -> " . $etat_mantis . ". ");
                }
@@ -256,7 +256,7 @@ class PluginMantisMantis extends CommonDBTM {
     */
    static function existAttachmentInMantisBT($doc, $attachmentsMantisBT) {
       foreach ($attachmentsMantisBT as $attachment) {
-         if ($attachment->filename == $doc->fields ['filename']) {
+         if ($attachment->filename == $doc->fields['filename']) {
             return true;
             break;
          }
@@ -277,9 +277,9 @@ class PluginMantisMantis extends CommonDBTM {
       $conf = new PluginMantisConfig();
       $conf->getFromDB(1);
       
-      $document = array ();
+      $document = array();
       
-      if ($conf->fields ['doc_categorie'] == 0) {
+      if ($conf->fields['doc_categorie'] == 0) {
          $res = $DB->query("SELECT `glpi_documents_items`.*
             FROM `glpi_documents_items`
             WHERE `glpi_documents_items`.`itemtype` = '" . $itemType . "'
@@ -288,15 +288,15 @@ class PluginMantisMantis extends CommonDBTM {
          $res = $DB->query("SELECT `glpi_documents_items`.*
             FROM `glpi_documents_items` ,`glpi_documents`
             WHERE `glpi_documents`.`id` =`glpi_documents_items`.`documents_id`
-            AND `glpi_documents`.`documentcategories_id` = '" . Toolbox::cleanInteger($conf->fields ['doc_categorie']) . "'
+            AND `glpi_documents`.`documentcategories_id` = '" . Toolbox::cleanInteger($conf->fields['doc_categorie']) . "'
             AND `glpi_documents_items`.`itemtype`  = '" . $itemType . "'
             AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idItem) . "'");
       }
       
       while ( $row = $res->fetch_assoc() ) {
          $doc = new Document();
-         $doc->getFromDB($row ["documents_id"]);
-         $document [] = $doc;
+         $doc->getFromDB($row["documents_id"]);
+         $document[] = $doc;
       }
       
       return $document;
@@ -314,8 +314,8 @@ class PluginMantisMantis extends CommonDBTM {
       if (count($list_ticket_mantis) == 0)
          return false;
       for($i = 0; $i <= count($list_ticket_mantis); $i ++) {
-         Toolbox::logInFile("mantis", "CRON MANTIS :      Check status for Item " . $list_ticket_mantis [$i]->id . " ->" . $list_ticket_mantis [$i]->status->name);
-         if ($list_ticket_mantis [$i]->status->name != $status)
+         Toolbox::logInFile("mantis", "CRON MANTIS :      Check status for Item " . $list_ticket_mantis[$i]->id . " ->" . $list_ticket_mantis[$i]->status->name);
+         if ($list_ticket_mantis[$i]->status->name != $status)
             $diferrent = true;
          break;
       }
@@ -372,7 +372,7 @@ class PluginMantisMantis extends CommonDBTM {
     * Define tab name
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      $id = $_SESSION ['glpiactiveprofile'] ['id'];
+      $id = $_SESSION['glpiactiveprofile']['id'];
       if (PluginMantisProfile::canViewMantis($id) || PluginMantisProfile::canWriteMantis($id))
          if ($item->getType() == 'Ticket' || $item->getType() == 'Problem') {
             return __("MantisBT", "mantis");
@@ -418,18 +418,18 @@ class PluginMantisMantis extends CommonDBTM {
       // check if Web Service Mantis works fine
       if ($ws->testConnectionWS($conf->getField('host'), $conf->getField('url'), $conf->getField('login'), $conf->getField('pwd'))) {
          
-         if ($item->fields ['status'] == $conf->fields ['neutralize_escalation'] || $item->fields ['status'] > $conf->fields ['neutralize_escalation']) {
+         if ($item->fields['status'] == $conf->fields['neutralize_escalation'] || $item->fields['status'] > $conf->fields['neutralize_escalation']) {
             
             $this->getFormForDisplayInfo($item, $item->getType());
          } else {
             
             // if canView or canWrite
-            if (PluginMantisProfile::canViewMantis($_SESSION ['glpiactiveprofile'] ['id']) || PluginMantisProfile::canWriteMantis($_SESSION ['glpiactiveprofile'] ['id'])) {
+            if (PluginMantisProfile::canViewMantis($_SESSION['glpiactiveprofile']['id']) || PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
                
                $this->getFormForDisplayInfo($item, $item->getType());
                
                // if canWrite
-               if (PluginMantisProfile::canWriteMantis($_SESSION ['glpiactiveprofile'] ['id'])) {
+               if (PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
                   $this->displayBtnToLinkissueGlpi($item);
                }
             }
@@ -437,7 +437,7 @@ class PluginMantisMantis extends CommonDBTM {
       } else {
          
          $content = "<div class='center'>";
-         $content .= "<img src='" . $CFG_GLPI ["root_doc"] . "/pics/warning.png'  alt='warning'>";
+         $content .= "<img src='" . $CFG_GLPI["root_doc"] . "/pics/warning.png'  alt='warning'>";
          $content .= "<b>" . __("Thank you configure the mantis plugin", "mantis") . "</b>";
          $content .= "</div>";
          echo $content;
@@ -455,16 +455,16 @@ class PluginMantisMantis extends CommonDBTM {
       $content = "<div id='popupLinkGlpiIssuetoMantisIssue' ></div>";
       $content .= "<div id='popupLinkGlpiIssuetoMantisProject' ></div>";
       
-      Ajax::createModalWindow('popupLinkGlpiIssuetoMantisIssue', $CFG_GLPI ["root_doc"] . '/plugins/mantis/front/mantis.form.php?action=linkToIssue&idTicket=' . $item->fields ['id'] . '&itemType=' . $item->getType(), array (
+      Ajax::createModalWindow('popupLinkGlpiIssuetoMantisIssue', $CFG_GLPI["root_doc"] . '/plugins/mantis/front/mantis.form.php?action=linkToIssue&idTicket=' . $item->fields['id'] . '&itemType=' . $item->getType(), array(
             'title' => __("MantisBT actions", "mantis"),
             'width' => 530,
-            'height' => 400 
+            'height' => 400
       ));
       
-      Ajax::createModalWindow('popupLinkGlpiIssuetoMantisProject', $CFG_GLPI ["root_doc"] . '/plugins/mantis/front/mantis.form.php?action=linkToProject&idTicket=' . $item->fields ['id'] . '&itemType=' . $item->getType(), array (
+      Ajax::createModalWindow('popupLinkGlpiIssuetoMantisProject', $CFG_GLPI["root_doc"] . '/plugins/mantis/front/mantis.form.php?action=linkToProject&idTicket=' . $item->fields['id'] . '&itemType=' . $item->getType(), array(
             'title' => __("MantisBT actions", "mantis"),
             'width' => 620,
-            'height' => 650 
+            'height' => 650
       ));
       
       $content .= "<table id='table1'  class='tab_cadre_fixe' >";
@@ -505,7 +505,7 @@ class PluginMantisMantis extends CommonDBTM {
       $disabled = "";
       
       // show option to delete mantis issue or not (display:none)
-      if ($conf->fields ['show_option_delete'] == 0)
+      if ($conf->fields['show_option_delete'] == 0)
          $style = "style='display:none;'";
          // disabled "delete mantisBT issue if issue not exist"
       if (! $issue)
@@ -533,7 +533,7 @@ class PluginMantisMantis extends CommonDBTM {
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td><input  id=" . $id_link . "  name='delo' value='" . __("Delete", "mantis") . "' class='submit' onclick='delLinkAndOrIssue(" . $id_link . "," . $id_mantis . "," . $id_Item . ");'></td>";
       $content .= "<td><div id='infoDel" . $id_link . "' ></div>";
-      $content .= "<img id='waitDelete" . $id_link . "' src='" . $CFG_GLPI ["root_doc"] . "/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
+      $content .= "<img id='waitDelete" . $id_link . "' src='" . $CFG_GLPI["root_doc"] . "/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
       $content .= "</tr>";
       
       // INPUT HIDDEN
@@ -571,66 +571,66 @@ class PluginMantisMantis extends CommonDBTM {
       // ID ISSUE MANTIS
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th width='100'>" . __('Id Ticket', 'mantis') . "</th>";
-      $content .= "<td ><input size=35 id='idMantis1' type='text' name='idMantis1' onkeypress=\"if(event.keyCode==13)findProjectById();\" />" . "<img id='searchImg' alt='rechercher' src='" . $CFG_GLPI ['root_doc'] . "/pics/aide.png'
+      $content .= "<td ><input size=35 id='idMantis1' type='text' name='idMantis1' onkeypress=\"if(event.keyCode==13)findProjectById();\" />" . "<img id='searchImg' alt='rechercher' src='" . $CFG_GLPI['root_doc'] . "/pics/aide.png'
         onclick='findProjectById();'style='cursor: pointer;padding-left:5px; padding-right:5px;'/></td>";
       $content .= "</tr>";
       
       // MANTIS FIELD FOR GLPI FIELDS
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)", "mantis") . "</th><td>";
-      $content .= Dropdown::showFromArray('fieldsGlpi1', array (), array (
+      $content .= Dropdown::showFromArray('fieldsGlpi1', array(), array(
             'rand' => '',
-            'display' => false 
+            'display' => false
       ));
       $content .= "</td></tr>";
       
       // MANTIS FIELD FOR GLPI FIELDS
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("MantisBT field for the link to the ticket GLPI", "mantis") . "</th><td>";
-      $content .= Dropdown::showFromArray('fieldUrl1', array (), array (
+      $content .= Dropdown::showFromArray('fieldUrl1', array(), array(
             'rand' => '',
-            'display' => false 
+            'display' => false
       ));
       $content .= "</td></tr>";
       
       // FORWORD ATTACHMENT
-      $checked = ($pref->fields ['followAttachment']) ? "checked" : "";
+      $checked = ($pref->fields['followAttachment']) ? "checked" : "";
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Attachments", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followAttachment1'  onclick='getAttachment1();' id='followAttachment1' " . $checked . " >" . __("To forward attachments", "mantis") . "<div id='attachmentforLinkToProject1' ><div/></td></tr>";
       
       // FORWORD FOLLOW
-      $checked = ($pref->fields ['followFollow'] && $style == "") ? "checked" : "";
+      $checked = ($pref->fields['followFollow'] && $style == "") ? "checked" : "";
       $content .= "<tr class='tab_bg_1' " . $style . ">";
       $content .= "<th>" . __("Glpi follow", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followFollow1' id='followFollow1' " . $checked . ">" . __("To forward follow", "mantis") . "</td></tr>";
       
       // FORWORD TASK
-      $checked = ($pref->fields ['followTask']) ? "checked" : "";
+      $checked = ($pref->fields['followTask']) ? "checked" : "";
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Glpi task", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followTask1' id='followTask1'  " . $checked . ">" . __("To forward task", "mantis") . "</td></tr>";
       
       // FORWORD TITLE
-      $checked = ($pref->fields ['followTitle']) ? "checked" : "";
+      $checked = ($pref->fields['followTitle']) ? "checked" : "";
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Glpi title", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followTitle1' id='followTitle1' " . $checked . ">" . __("To forward title", "mantis") . "</td></tr>";
       
       // FORWORD DESCRIPTION
-      $checked = ($pref->fields ['followDescription']) ? "checked" : "";
+      $checked = ($pref->fields['followDescription']) ? "checked" : "";
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Glpi description", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followDescription1' id='followDescription1' " . $checked . ">" . __("To forward description", "mantis") . "</td></tr>";
       
       // FORWORD CATEGORIE
-      $checked = ($pref->fields ['followCategorie']) ? "checked" : "";
+      $checked = ($pref->fields['followCategorie']) ? "checked" : "";
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Glpi categorie", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followCategorie1' id='followCategorie1' " . $checked . ">" . __("To forward categorie", "mantis") . "</td></tr>";
       
       // FOLLOW GLPI LINKED
-      $checked = ($pref->fields ['followLinkedItem'] && $style == "") ? "checked" : "";
+      $checked = ($pref->fields['followLinkedItem'] && $style == "") ? "checked" : "";
       $content .= "<tr class='tab_bg_1' " . $style . ">";
       $content .= "<th>" . _n('Linked ticket', 'Linked tickets', 2) . "</th>";
       $content .= "<td><INPUT type='checkbox' name='linkedTicket1' id='linkedTicket1' " . $checked . ">" . __("To forward linked Ticket", "mantis") . "</td></tr>";
@@ -642,7 +642,7 @@ class PluginMantisMantis extends CommonDBTM {
       // INFO
       $content .= "<td width='150' height='20'>";
       $content .= "<div id='infoLinIssueGlpiToIssueMantis' ></div>";
-      $content .= "<img id='waitForLinkIssueGlpiToIssueMantis'  src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
+      $content .= "<img id='waitForLinkIssueGlpiToIssueMantis'  src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
       $content .= "</tr>";
       
       // INPUT HIDDEN
@@ -677,7 +677,7 @@ class PluginMantisMantis extends CommonDBTM {
          $styleItemType = "style='display:none;'";
       
       $styleAssignation = "";
-      if (! $config->fields ['enable_assign'])
+      if (! $config->fields['enable_assign'])
          $styleAssignation = "style='display:none;'";
       
       $content = "<form action='#' >";
@@ -689,43 +689,43 @@ class PluginMantisMantis extends CommonDBTM {
       $content .= "<th>Nom du projet</th>";
       $content .= "<td id='tdSearch' height='24'>";
       $content .= "<input  id='nameMantisProject' type='text'  name='resume'  onkeypress=\"if(event.keyCode==13)findProjectByName();\" />";
-      $content .= "<img id='searchImg' alt='rechercher' src='" . $CFG_GLPI ['root_doc'] . "/pics/aide.png'
+      $content .= "<img id='searchImg' alt='rechercher' src='" . $CFG_GLPI['root_doc'] . "/pics/aide.png'
         onclick='findProjectByName();'style='cursor: pointer;padding-left:5px; padding-right:5px;'/></td>";
       $content .= "</tr>";
       
       // MANTIS CATEGORIE
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Category", "mantis") . "</th><td>";
-      $content .= Dropdown::showFromArray('categorie', array (), array (
+      $content .= Dropdown::showFromArray('categorie', array(), array(
             'rand' => '',
-            'display' => false 
+            'display' => false
       ));
       $content .= "</td></tr>";
       
       // MANTIS FIELD FOR GLPI FIELDS
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)", "mantis") . "</th><td>";
-      $content .= Dropdown::showFromArray('fieldsGlpi', array (), array (
+      $content .= Dropdown::showFromArray('fieldsGlpi', array(), array(
             'rand' => '',
-            'display' => false 
+            'display' => false
       ));
       $content .= "</td></tr>";
       
       // MANTIS FIELD FOR GLPI FIELDS
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("MantisBT field for the link to the ticket GLPI", "mantis") . "</th><td>";
-      $content .= Dropdown::showFromArray('fieldUrl', array (), array (
+      $content .= Dropdown::showFromArray('fieldUrl', array(), array(
             'rand' => '',
-            'display' => false 
+            'display' => false
       ));
       $content .= "</td></tr>";
       
       // MANTIS ASSIGNATION
       $content .= "<tr class='tab_bg_1' " . $styleAssignation . ">";
       $content .= "<th>" . __("Assignation", "mantis") . "</th><td>";
-      $content .= Dropdown::showFromArray('assignation', array (), array (
+      $content .= Dropdown::showFromArray('assignation', array(), array(
             'rand' => '',
-            'display' => false 
+            'display' => false
       ));
       $content .= "</td></tr>";
       
@@ -745,43 +745,43 @@ class PluginMantisMantis extends CommonDBTM {
       $content .= "<td><textarea  rows='5' cols='55' name='stepToReproduce' id='stepToReproduce'></textarea></td></tr>";
       
       // FOLLOW ATTACHMENT
-      $checked = ($pref->fields ['followAttachment']) ? "checked" : "";
+      $checked = ($pref->fields['followAttachment']) ? "checked" : "";
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Attachments", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followAttachment' id='followAttachment' onclick='getAttachment();'style='cursor: pointer;' " . $checked . ">" . __("To forward attachments", "mantis") . "<div id='attachmentforLinkToProject' ><div/></td></tr>";
       
       // FOLLOW GLPI FOLLOW
-      $checked = ($pref->fields ['followFollow'] && $styleItemType == "") ? "checked" : "";
+      $checked = ($pref->fields['followFollow'] && $styleItemType == "") ? "checked" : "";
       $content .= "<tr class='tab_bg_1' " . $styleItemType . ">";
       $content .= "<th>" . __("Glpi follow", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followFollow' id='followFollow' " . $checked . ">" . __("To forward follow", "mantis") . "</td></tr>";
       
       // FOLLOW GLPI TASK
-      $checked = ($pref->fields ['followTask']) ? "checked" : "";
+      $checked = ($pref->fields['followTask']) ? "checked" : "";
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Glpi task", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followTask' id='followTask' " . $checked . " >" . __("To forward task", "mantis") . "</td></tr>";
       
       // FOLLOW GLPI TITLE
-      $checked = ($pref->fields ['followTitle']) ? "checked" : "";
+      $checked = ($pref->fields['followTitle']) ? "checked" : "";
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Glpi title", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followTitle' id='followTitle' " . $checked . " >" . __("To forward title", "mantis") . "</td></tr>";
       
       // FOLLOW GLPI DEXCRIPTION
-      $checked = ($pref->fields ['followDescription']) ? "checked" : "";
+      $checked = ($pref->fields['followDescription']) ? "checked" : "";
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Glpi description", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followDescription' id='followDescription' " . $checked . " >" . __("To forward description", "mantis") . "</td></tr>";
       
       // FOLLOW GLPI CATEGORIE
-      $checked = ($pref->fields ['followCategorie']) ? "checked" : "";
+      $checked = ($pref->fields['followCategorie']) ? "checked" : "";
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<th>" . __("Glpi categorie", "mantis") . "</th>";
       $content .= "<td><INPUT type='checkbox' name='followCategorie' id='followCategorie' " . $checked . ">" . __("To forward categorie", "mantis") . "</td></tr>";
       
       // FOLLOW GLPI LINKED
-      $checked = ($pref->fields ['followLinkedItem'] && $styleItemType == "") ? "checked" : "";
+      $checked = ($pref->fields['followLinkedItem'] && $styleItemType == "") ? "checked" : "";
       $content .= "<tr class='tab_bg_1' " . $styleItemType . ">";
       $content .= "<th>" . _n('Linked ticket', 'Linked tickets', 2) . "</th>";
       $content .= "<td><INPUT type='checkbox' name='linkedTicket' id='linkedTicket' " . $checked . ">" . __("To forward linked Ticket", "mantis") . "</td></tr>";
@@ -799,7 +799,7 @@ class PluginMantisMantis extends CommonDBTM {
       // DIV INVO FOR CALL AJAX ERROR
       $content .= "<td width='150' >";
       $content .= "<div id='infoLinkIssueGlpiToProjectMantis' ></div>";
-      $content .= "<img id='waitForLinkIssueGlpiToProjectMantis' src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/please_wait.gif' style='display:none;'/>";
+      $content .= "<img id='waitForLinkIssueGlpiToProjectMantis' src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/please_wait.gif' style='display:none;'/>";
       $content .= "</td>";
       
       $content .= "</table>";
@@ -820,10 +820,10 @@ class PluginMantisMantis extends CommonDBTM {
       $conf = new PluginMantisConfig();
       $conf->getFromDB(1);
       
-      if ($item->fields ['status'] == $conf->fields ['neutralize_escalation'] || $item->fields ['status'] > $conf->fields ['neutralize_escalation']) {
+      if ($item->fields['status'] == $conf->fields['neutralize_escalation'] || $item->fields['status'] > $conf->fields['neutralize_escalation']) {
          $can_write = false;
       } else {
-         $can_write = PluginMantisProfile::canWriteMantis($_SESSION ['glpiactiveprofile'] ['id']);
+         $can_write = PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id']);
       }
       
       $content = "";
@@ -856,33 +856,33 @@ class PluginMantisMantis extends CommonDBTM {
          
          while ( $row = $res->fetch_assoc() ) {
             
-            $user->getFromDB($row ["user"]);
-            $issue = $ws->getIssueById($row ["idMantis"]);
+            $user->getFromDB($row["user"]);
+            $issue = $ws->getIssueById($row["idMantis"]);
             $conf->getFromDB(1);
             
-            $content .= '<div id=\'popupToDelete' . $row ['id'] . '\'></div>';
+            $content .= '<div id=\'popupToDelete' . $row['id'] . '\'></div>';
             
-            if ($conf->fields ['show_option_delete'] != 0) {
+            if ($conf->fields['show_option_delete'] != 0) {
                $height = 550;
             } else {
                $height = 110;
             }
             
-            Ajax::createModalWindow('popupToDelete' . $row ['id'], $CFG_GLPI ['root_doc'] . '/plugins/mantis/front/mantis.form.php?action=deleteIssue&id=' . $row ['id'] . '&idTicket=' . $row ['items_id'] . '&idMantis=' . $row ['idMantis'] . '&itemType=' . $itemType, array (
+            Ajax::createModalWindow('popupToDelete' . $row['id'], $CFG_GLPI['root_doc'] . '/plugins/mantis/front/mantis.form.php?action=deleteIssue&id=' . $row['id'] . '&idTicket=' . $row['items_id'] . '&idMantis=' . $row['idMantis'] . '&itemType=' . $itemType, array(
                   'title' => __("Delete", "mantis"),
                   'width' => 550,
-                  'height' => $height 
+                  'height' => $height
             ));
             
             if (! $issue) {
                
                $content .= "<tr>";
-               $content .= "<td class='center'><img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/cross16.png'/></td>";
-               $content .= "<td>" . $row ["idMantis"] . "</td>";
+               $content .= "<td class='center'><img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross16.png'/></td>";
+               $content .= "<td>" . $row["idMantis"] . "</td>";
                
                if ($can_write) {
                   $content .= "<td class='center' colspan='5'>" . __('This ticket does not in the  MantisBT database', 'mantis') . "</td>";
-                  $content .= "<td class = 'center'> <img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/bin16.png'  onclick='popupToDelete" . $row ['id'] . ".show()';   style='cursor: pointer;' title=" . __("Delete link", "mantis") . "/></td>";
+                  $content .= "<td class = 'center'> <img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/bin16.png'  onclick='popupToDelete" . $row['id'] . ".show()';   style='cursor: pointer;' title=" . __("Delete link", "mantis") . "/></td>";
                   $content .= "</tr>";
                } else {
                   $content .= "<td colspan='6' class='center'>" . __('This ticket does not in the  MantisBT database', 'mantis') . "</td>";
@@ -892,20 +892,20 @@ class PluginMantisMantis extends CommonDBTM {
                
                $content .= "<tr>";
                $content .= "<td class='center'>";
-               $content .= "<a href='" . $conf->fields ['host'] . "/view.php?id=" . $issue->id . "' target='_blank' >";
-               $content .= "<img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/arrowRight16.png'/>";
+               $content .= "<a href='" . $conf->fields['host'] . "/view.php?id=" . $issue->id . "' target='_blank' >";
+               $content .= "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/arrowRight16.png'/>";
                $content .= "</a></td>";
                $content .= "<td class='center'>" . $issue->id . "</td>";
                $content .= "<td class='center'>" . stripslashes($issue->summary) . "</td>";
                $content .= "<td class='center'>" . $issue->project->name . "</td>";
                $content .= "<td class='center'>" . $issue->status->name . "</td>";
-               $content .= "<td class='center'>" . $row ["dateEscalade"] . "</td>";
+               $content .= "<td class='center'>" . $row["dateEscalade"] . "</td>";
                $content .= "<td class='center'>" . $user->getName() . "</td>";
                
                if ($can_write) {
                   $content .= "<td class = 'center'>";
-                  $content .= "<img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/bin16.png'
-                  onclick='popupToDelete" . $row ['id'] . ".show()';
+                  $content .= "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/bin16.png'
+                  onclick='popupToDelete" . $row['id'] . ".show()';
                   style='cursor: pointer;' title='" . __("Delete link", "mantis") . "'/></td>";
                } else {
                   $content .= "<td ></td>";

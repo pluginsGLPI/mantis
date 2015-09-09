@@ -71,8 +71,8 @@ class PluginMantisConfig extends CommonDBTM {
       $this->getFromDB(1);
       
       $target = $this->getFormURL();
-      if (isset($options ['target'])) {
-         $target = $options ['target'];
+      if (isset($options['target'])) {
+         $target = $options['target'];
       }
       
       $content = "<form method='post' action='" . $target . "' method='post'>";
@@ -84,28 +84,28 @@ class PluginMantisConfig extends CommonDBTM {
       // HOST OF MANTIS SERVER
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("MantisBT server IP", "mantis") . "</td>";
-      $content .= "<td><input id='host' name='host' type='text' value='" . $this->fields ["host"] . "'/></td>";
+      $content .= "<td><input id='host' name='host' type='text' value='" . $this->fields["host"] . "'/></td>";
       $content .= "<td>ex: http(s)://128.65.25.74 or http(s)://serveurName</td>";
       $content .= "</tr>";
       
       // PATH FOR WSDL FILE
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("Wsdl file path", "mantis") . "</td>";
-      $content .= "<td><input id='url' name='url' type='text' value='" . $this->fields ["url"] . "'/></td>";
+      $content .= "<td><input id='url' name='url' type='text' value='" . $this->fields["url"] . "'/></td>";
       $content .= "<td>ex: mantis/api/soap/mantisconnect.php?wsdl</td>";
       $content .= "</tr>";
       
       // MANTIS USER LOGIN
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("MantisBT user login", "mantis") . "</td>";
-      $content .= "<td><input  id='login' name='login' type='text' value='" . $this->fields ["login"] . "'/></td>";
+      $content .= "<td><input  id='login' name='login' type='text' value='" . $this->fields["login"] . "'/></td>";
       $content .= "<td>ex : administrator</td>";
       $content .= "</tr>";
       
       // MANTIS USER PASSWORD
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("MantisBT user password", "mantis") . "</td>";
-      $content .= "<td><input  id='pwd' name='pwd' type='password' value='" . $this->fields ["pwd"] . "'/></td>";
+      $content .= "<td><input  id='pwd' name='pwd' type='password' value='" . $this->fields["pwd"] . "'/></td>";
       $content .= "<td></td>";
       $content .= "</tr>";
       
@@ -113,8 +113,8 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("Allow assignation", "mantis") . "</td>";
       $content .= "<td>";
-      $content .= Dropdown::showYesNo("enable_assign", $this->fields ["enable_assign"], - 1, array (
-            'display' => false 
+      $content .= Dropdown::showYesNo("enable_assign", $this->fields["enable_assign"], - 1, array(
+            'display' => false
       ));
       $content .= "</td>";
       $content .= "<td></td>";
@@ -124,12 +124,12 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("Neutralize the escalating to MantisBT when the status of the GLPI tickets is", "mantis") . "</td>";
       $content .= "<td>";
-      $content .= self::dropdownStatus(array (
+      $content .= self::dropdownStatus(array(
             'showtype' => 'normal',
             'name' => 'neutralize_escalation',
-            'value' => $this->fields ["neutralize_escalation"],
+            'value' => $this->fields["neutralize_escalation"],
             'display' => false,
-            'none' => false 
+            'none' => false
       ));
       $content .= "</td>";
       $content .= "<td></td>";
@@ -139,12 +139,12 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("Status of glpi ticket after escalation to MantisBT", "mantis") . "</td>";
       $content .= "<td>";
-      $content .= self::dropdownStatus(array (
+      $content .= self::dropdownStatus(array(
             'showtype' => 'normal',
             'name' => 'status_after_escalation',
-            'value' => $this->fields ["status_after_escalation"],
+            'value' => $this->fields["status_after_escalation"],
             'display' => false,
-            'none' => true 
+            'none' => true
       ));
       $content .= "</td>";
       $content .= "<td></td>";
@@ -154,9 +154,9 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("Show option 'Delete the  MantisBT ticket' ", "mantis") . "</td>";
       $content .= "<td>";
-      $content .= Dropdown::showYesNo('show_option_delete', $this->fields ["show_option_delete"], - 1, array (
+      $content .= Dropdown::showYesNo('show_option_delete', $this->fields["show_option_delete"], - 1, array(
             'rand' => false,
-            'display' => false 
+            'display' => false
       ));
       $content .= "</td>";
       $content .= "<td></td>";
@@ -166,11 +166,11 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("Attachment type transfered to MantisBT", "mantis") . "</td>";
       $content .= "<td>";
-      $content .= DocumentCategory::dropdown(array (
-            'value' => $this->fields ["doc_categorie"],
+      $content .= DocumentCategory::dropdown(array(
+            'value' => $this->fields["doc_categorie"],
             'name' => 'doc_categorie',
             'rand' => false,
-            'display' => false 
+            'display' => false
       ));
       $content .= "</td>";
       $content .= "<td></td>";
@@ -204,12 +204,12 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("Close Glpi ticket when status ticket MantisBT is", "mantis") . "</td>";
       $content .= "<td>";
-      $content .= Dropdown::showFromArray('etatMantis', array (), array (
+      $content .= Dropdown::showFromArray('etatMantis', array(), array(
             'rand' => '',
-            'display' => false 
+            'display' => false
       ));
-      if (! empty($this->fields ["etatMantis"])) {
-         $content .= " (" . $this->fields ["etatMantis"] . ") ";
+      if (! empty($this->fields["etatMantis"])) {
+         $content .= " (" . $this->fields["etatMantis"] . ") ";
       }
       $content .= "</td>";
       $content .= "<td>Tester la connexion pour faire apparaître les états Mantis</td>";
@@ -245,21 +245,21 @@ class PluginMantisConfig extends CommonDBTM {
     *        
     */
    static function dropdownStatus(array $options = array()) {
-      $p ['name'] = 'status';
-      $p ['value'] = 0;
-      $p ['showtype'] = 'normal';
-      $p ['display'] = true;
-      $p ['none'] = false;
+      $p['name'] = 'status';
+      $p['value'] = 0;
+      $p['showtype'] = 'normal';
+      $p['display'] = true;
+      $p['none'] = false;
       
       if (is_array($options) && count($options)) {
          foreach ($options as $key => $val) {
-            $p [$key] = $val;
+            $p[$key] = $val;
          }
       }
       
-      switch ($p ['showtype']) {
+      switch ($p['showtype']) {
          case 'allowed' :
-            $tab = Ticket::getAllowedStatusArray($p ['value']);
+            $tab = Ticket::getAllowedStatusArray($p['value']);
             break;
          
          case 'search' :
@@ -271,17 +271,17 @@ class PluginMantisConfig extends CommonDBTM {
             break;
       }
       
-      if ($p ['none'] == true) {
+      if ($p['none'] == true) {
          array_unshift($tab, " ---- ");
       }
       
-      $output = "<select name='" . $p ['name'] . "'>";
+      $output = "<select name='" . $p['name'] . "'>";
       foreach ($tab as $key => $val) {
-         $output .= "<option value='$key' " . (($p ['value'] == $key) ? " selected " : "") . ">$val</option>";
+         $output .= "<option value='$key' " . (($p['value'] == $key) ? " selected " : "") . ">$val</option>";
       }
       $output .= "</select>";
       
-      if ($p ['display']) {
+      if ($p['display']) {
          echo $output;
       } else {
          return $output;

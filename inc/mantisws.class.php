@@ -71,11 +71,11 @@ class PluginMantisMantisws {
       $conf = new PluginMantisConfig();
       $conf->getFromDB(1);
       
-      if (! empty($conf->fields ["host"]) && ! empty($conf->fields ["url"])) {
-         $this->_host = $conf->fields ["host"];
-         $this->_url = $conf->fields ["url"];
-         $this->_login = $conf->fields ["login"];
-         $this->_password = $conf->fields ["pwd"];
+      if (! empty($conf->fields["host"]) && ! empty($conf->fields["url"])) {
+         $this->_host = $conf->fields["host"];
+         $this->_url = $conf->fields["url"];
+         $this->_login = $conf->fields["login"];
+         $this->_password = $conf->fields["pwd"];
          
          $this->_client = new SoapClient($this->_host . "/" . $this->_url);
          return true;
@@ -122,24 +122,24 @@ class PluginMantisMantisws {
    public function getActorFromProjectName($name) {
       $id = $this->getProjectIdWithName($name);
       try {
-         $response = $this->_client->mc_project_get_users($this->_login, $this->_password, $id, array (
+         $response = $this->_client->mc_project_get_users($this->_login, $this->_password, $id, array(
                90,
                10,
                25,
                40,
                55,
-               70 
+               70
          ));
          
-         $list = array ();
-         $list [] = array (
+         $list = array();
+         $list[] = array(
                'id' => 0,
-               'name' => '----' 
+               'name' => '----'
          );
          foreach ($response as &$actor) {
-            $list [] = array (
+            $list[] = array(
                   'id' => $actor->id,
-                  'name' => $actor->name 
+                  'name' => $actor->name
             );
          }
          
@@ -155,19 +155,19 @@ class PluginMantisMantisws {
       try {
          $response = $this->_client->mc_project_get_custom_fields($this->_login, $this->_password, $id);
          
-         $list = array ();
-         $list [] = array (
+         $list = array();
+         $list[] = array(
                'id' => 'additional_information',
-               'name' => 'additional_information' 
+               'name' => 'additional_information'
          );
-         $list [] = array (
+         $list[] = array(
                'id' => 'note',
-               'name' => 'note' 
+               'name' => 'note'
          );
          foreach ($response as $field) {
-            $list [] = array (
+            $list[] = array(
                   'id' => $field->field->name,
-                  'name' => $field->field->name 
+                  'name' => $field->field->name
             );
          }
          
@@ -183,10 +183,10 @@ class PluginMantisMantisws {
       try {
          $response = $this->_client->mc_project_get_custom_fields($this->_login, $this->_password, $id);
          
-         $list = array ();
-         $list [] = array (
+         $list = array();
+         $list[] = array(
                'id' => 0,
-               'name' => '----' 
+               'name' => '----'
          );
          foreach ($response as $field) {
             if ($field->field->name == $nameCustomField) {

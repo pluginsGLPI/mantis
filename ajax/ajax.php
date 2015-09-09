@@ -41,25 +41,25 @@
  */
 include ('../../../inc/includes.php');
 
-if (isset($_POST ['action'])) {
+if (isset($_POST['action'])) {
    
    global $CFG_GLPI;
    
-   switch ($_POST ['action']) {
+   switch ($_POST['action']) {
       
       // TEST DE LA CONNECTIVITE A MANTIS CONNECT
       case 'testConnexionMantisWS' :
          error_reporting(0);
          $ws = new PluginMantisMantisws();
          try {
-            $res = $ws->testConnectionWS($_POST ['host'], $_POST ['url'], $_POST ['login'], $_POST ['pwd']);
+            $res = $ws->testConnectionWS($_POST['host'], $_POST['url'], $_POST['login'], $_POST['pwd']);
             if ($res) {
-               echo "<img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/check24.png'/>";
+               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/check24.png'/>";
             } else {
-               echo "<img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/cross24.png'/>Access denied";
+               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross24.png'/>Access denied";
             }
          } catch ( Exception $e ) {
-            echo "<img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/cross24.png'/>Error IP or Path";
+            echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross24.png'/>Error IP or Path";
          }
          break;
       
@@ -67,29 +67,29 @@ if (isset($_POST ['action'])) {
       case 'findIssueById' :
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
-         $res = $ws->existIssueWithId($_POST ['id']);
+         $res = $ws->existIssueWithId($_POST['id']);
          if ($res)
-            echo "<img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/check24.png' />";
+            echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/check24.png' />";
          else
-            echo "<img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/cross24.png'/>";
+            echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross24.png'/>";
          break;
       
       // FIND PROJECT BY NAME
       case 'findProjectByName' :
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
-         $res = $ws->existProjectWithName($_POST ['name']);
+         $res = $ws->existProjectWithName($_POST['name']);
          if ($res)
-            echo "<img id='resultImg' src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/check24.png' />";
+            echo "<img id='resultImg' src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/check24.png' />";
          else
-            echo "<img id='resultImg' src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/cross24.png'/>";
+            echo "<img id='resultImg' src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross24.png'/>";
          break;
       
       // GET MANTIS STATE
       case 'getStateMantis' :
          
          $ws = new PluginMantisMantisws();
-         $ws->getConnexion($_POST ['host'], $_POST ['url'], $_POST ['login'], $_POST ['pwd']);
+         $ws->getConnexion($_POST['host'], $_POST['url'], $_POST['login'], $_POST['pwd']);
          $result = $ws->getStateMantis();
          
          if (! $result) {
@@ -111,8 +111,8 @@ if (isset($_POST ['action'])) {
       // GET ATTACHMENT SENDING
       case 'getTicketAttachment' :
          
-         $id_ticket = $_POST ['idTicket'];
-         $itemType = $_POST ['itemType'];
+         $id_ticket = $_POST['idTicket'];
+         $itemType = $_POST['itemType'];
          
          $ticket = new $itemType();
          $ticket->getFromDB($id_ticket);
@@ -125,7 +125,7 @@ if (isset($_POST ['action'])) {
                $output .= "<br/><DL><DT><STRONG>" . __('If you fowllow linked tickets', 'mantis') . "</STRONG><br>";
                foreach ($tickets as $link_ticket) {
                   $ticketLink = new Ticket();
-                  $ticketLink->getFromDB($link_ticket ['tickets_id']);
+                  $ticketLink->getFromDB($link_ticket['tickets_id']);
                   $output .= getOutPutForticket($ticketLink, $itemType);
                }
             } else {
@@ -144,7 +144,7 @@ if (isset($_POST ['action'])) {
       case 'getCategoryFromProjectName' :
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
-         $result = $ws->getCategoryFromProjectName($_POST ['name']);
+         $result = $ws->getCategoryFromProjectName($_POST['name']);
          if (! $result)
             echo false;
          else
@@ -155,7 +155,7 @@ if (isset($_POST ['action'])) {
       case 'getActorByProjectname' :
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
-         $result = $ws->getActorFromProjectName($_POST ['name']);
+         $result = $ws->getActorFromProjectName($_POST['name']);
          if (! $result)
             echo false;
          else
@@ -164,9 +164,9 @@ if (isset($_POST ['action'])) {
       
       case 'getProjectName' :
          
-         $idItem = $_POST ['idTicket'];
-         $id_mantis_issue = $_POST ['idMantis'];
-         $itemType = $_POST ['itemType'];
+         $idItem = $_POST['idTicket'];
+         $id_mantis_issue = $_POST['idMantis'];
+         $itemType = $_POST['itemType'];
          
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
@@ -178,7 +178,7 @@ if (isset($_POST ['action'])) {
             $mantis = new PluginMantisMantis();
             // on verifie si un lien est deja creé
             if ($mantis->IfExistLink($idItem, $id_mantis_issue, $itemType)) {
-               echo "<img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/warning24.png'/> ERROR :" . __("This Glpi item is already linked to this MantisBT ticket", "mantis");
+               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/> ERROR :" . __("This Glpi item is already linked to this MantisBT ticket", "mantis");
             } else {
                $result = $ws->getIssueById($id_mantis_issue);
                if ($result->status->id == 90) {
@@ -194,7 +194,7 @@ if (isset($_POST ['action'])) {
       case 'getCustomFieldByProjectname' :
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
-         $result = $ws->getCustomFieldFromProjectName($_POST ['name']);
+         $result = $ws->getCustomFieldFromProjectName($_POST['name']);
          if (! $result)
             echo false;
          else
@@ -203,9 +203,9 @@ if (isset($_POST ['action'])) {
       
       case 'LinkIssueGlpiToIssueMantis' :
          
-         $id_ticket = $_POST ['items_id'];
-         $id_mantis_issue = $_POST ['idMantis'];
-         $itemType = $_POST ['itemtype'];
+         $id_ticket = $_POST['items_id'];
+         $id_mantis_issue = $_POST['idMantis'];
+         $itemType = $_POST['itemtype'];
          
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
@@ -217,7 +217,7 @@ if (isset($_POST ['action'])) {
             $mantis = new PluginMantisMantis();
             // on verifie si un lien est deja creé
             if ($mantis->IfExistLink($id_ticket, $id_mantis_issue, $itemType)) {
-               echo "<img src='" . $CFG_GLPI ['root_doc'] . "/plugins/mantis/pics/warning24.png'/>" . __("This Glpi item is already linked to this MantisBT ticket", "mantis");
+               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>" . __("This Glpi item is already linked to this MantisBT ticket", "mantis");
             } else {
                
                $result = $ws->getIssueById($id_mantis_issue);
@@ -231,48 +231,48 @@ if (isset($_POST ['action'])) {
                   if ($res) {
                      $mantis->add($_POST);
                      
-                     $id_ticket = $_POST ['items_id'];
+                     $id_ticket = $_POST['items_id'];
                      $ticket = new Ticket();
                      $ticket->getFromDB($id_ticket);
                      
                      $conf = new PluginMantisConfig();
                      $conf->getFromDB(1);
                      
-                     if ($_POST ['linkedTicket'] == 'true') {
+                     if ($_POST['linkedTicket'] == 'true') {
                         
                         $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
                         
                         foreach ($tickets as $link_ticket) {
                            $t = new ticket();
-                           $t->getFromDB($link_ticket ['tickets_id']);
+                           $t->getFromDB($link_ticket['tickets_id']);
                            
                            $mantis1 = new PluginMantisMantis();
-                           $post ['items_id'] = $t->fields ['id'];
-                           $post ['idMantis'] = $id_mantis_issue;
-                           $post ['dateEscalade'] = $_POST ['dateEscalade'];
-                           $post ['itemtype'] = $_POST ['itemType'];
-                           $post ['user'] = $_POST ['user'];
+                           $post['items_id'] = $t->fields['id'];
+                           $post['idMantis'] = $id_mantis_issue;
+                           $post['dateEscalade'] = $_POST['dateEscalade'];
+                           $post['itemtype'] = $_POST['itemType'];
+                           $post['user'] = $_POST['user'];
                            
-                           $id_mantis [] = $mantis1->add($post);
+                           $id_mantis[] = $mantis1->add($post);
                            unset($post);
                         }
                      }
                      
-                     if ($conf->fields ['status_after_escalation'] != 0) {
-                        $res = $ticket->update(array (
-                              'id' => $ticket->fields ['id'],
-                              'status' => $conf->fields ['status_after_escalation'] 
+                     if ($conf->fields['status_after_escalation'] != 0) {
+                        $res = $ticket->update(array(
+                              'id' => $ticket->fields['id'],
+                              'status' => $conf->fields['status_after_escalation']
                         ));
                         
-                        if ($_POST ['linkedTicket'] == 'true' && $_POST ['itemType'] == 'Ticket') {
+                        if ($_POST['linkedTicket'] == 'true' && $_POST['itemType'] == 'Ticket') {
                            $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
                            
                            foreach ($tickets as $link_ticket) {
                               $t = new ticket();
-                              $t->getFromDB($link_ticket ['tickets_id']);
-                              $t->update(array (
-                                    'id' => $t->fields ['id'],
-                                    'status' => $conf->fields ['status_after_escalation'] 
+                              $t->getFromDB($link_ticket['tickets_id']);
+                              $t->update(array(
+                                    'id' => $t->fields['id'],
+                                    'status' => $conf->fields['status_after_escalation']
                               ));
                            }
                         }
@@ -311,9 +311,9 @@ if (isset($_POST ['action'])) {
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
          
-         if ($ws->existIssueWithId($_POST ['idMantis'])) {
+         if ($ws->existIssueWithId($_POST['idMantis'])) {
             
-            if ($del = $ws->deleteIssue($_POST ['idMantis'])) {
+            if ($del = $ws->deleteIssue($_POST['idMantis'])) {
                
                $res = $mantis->delete($_POST);
                if ($res)
@@ -340,27 +340,27 @@ function getOutPutForticket($ticket, $itemType) {
    $conf = new PluginMantisConfig();
    $conf->getFromDB(1);
    
-   if ($conf->fields ['doc_categorie'] == 0) {
+   if ($conf->fields['doc_categorie'] == 0) {
       $res = $DB->query("SELECT `glpi_documents_items`.*
             FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = '" . $itemType . "'
-            AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($ticket->fields ['id']) . "'");
+            AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($ticket->fields['id']) . "'");
    } else {
       $res = $DB->query("SELECT `glpi_documents_items`.*
-            FROM `glpi_documents_items` ,`glpi_documents` WHERE `glpi_documents`.`id` =`glpi_documents_items`.`documents_id` and `glpi_documents`.`documentcategories_id` = '" . Toolbox::cleanInteger($conf->fields ['doc_categorie']) . "' and`glpi_documents_items`.`itemtype`  = '" . $itemType . "'
-            AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($ticket->fields ['id']) . "'");
+            FROM `glpi_documents_items` ,`glpi_documents` WHERE `glpi_documents`.`id` =`glpi_documents_items`.`documents_id` and `glpi_documents`.`documentcategories_id` = '" . Toolbox::cleanInteger($conf->fields['doc_categorie']) . "' and`glpi_documents_items`.`itemtype`  = '" . $itemType . "'
+            AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($ticket->fields['id']) . "'");
    }
    
    $output = "";
    if ($res->num_rows > 0) {
-      $output .= "<DL><DT><STRONG>" . $itemType . " -> " . $ticket->fields ['id'] . "</STRONG><br>";
+      $output .= "<DL><DT><STRONG>" . $itemType . " -> " . $ticket->fields['id'] . "</STRONG><br>";
       while ( $row = $res->fetch_assoc() ) {
          $doc = new Document();
-         $doc->getFromDB($row ["documents_id"]);
-         $output .= "<DD>" . $doc->getDownloadLink('', strlen($doc->fields ['filename'])) . "<br>";
+         $doc->getFromDB($row["documents_id"]);
+         $output .= "<DD>" . $doc->getDownloadLink('', strlen($doc->fields['filename'])) . "<br>";
       }
       $output .= "</DL>";
    } else {
-      $output .= "0 document for ticket " . $ticket->fields ['id'];
+      $output .= "0 document for ticket " . $ticket->fields['id'];
    }
    
    return $output;

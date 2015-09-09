@@ -54,48 +54,48 @@ define("PLUGIN_MANTIS_GLPI_MAX_VERSION", "0.92");
 function plugin_init_mantis() {
    global $PLUGIN_HOOKS;
    
-   $PLUGIN_HOOKS ['csrf_compliant'] ['mantis'] = true;
-   $PLUGIN_HOOKS ['change_profile'] ['mantis'] = array (
+   $PLUGIN_HOOKS['csrf_compliant']['mantis'] = true;
+   $PLUGIN_HOOKS['change_profile']['mantis'] = array(
          'PluginMantisProfile',
-         'changeProfile' 
+         'changeProfile'
    );
    
    $plugin = new Plugin();
    
    if (Session::getLoginUserID() && $plugin->isActivated('mantis')) {
       if (plugin_mantis_haveRight("right", "w")) {
-         $PLUGIN_HOOKS ['menu_entry'] ['mantis'] = 'front/config.form.php';
-         $PLUGIN_HOOKS ['config_page'] ['mantis'] = 'front/config.form.php';
+         $PLUGIN_HOOKS['menu_entry']['mantis'] = 'front/config.form.php';
+         $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
       }
    }
    
-   $PLUGIN_HOOKS ['add_javascript'] ['mantis'] = array (
+   $PLUGIN_HOOKS['add_javascript']['mantis'] = array(
          'scripts/scriptMantis.js.php',
-         'scripts/jquery-1.11.0.min.js' 
+         'scripts/jquery-1.11.0.min.js'
    );
    
-   Plugin::registerClass('PluginMantisProfile', array (
-         'addtabon' => array (
-               'Profile' 
-         ) 
+   Plugin::registerClass('PluginMantisProfile', array(
+         'addtabon' => array(
+               'Profile'
+         )
    ));
    
    Plugin::registerClass('PluginMantisConfig');
    
    Plugin::registerClass('PluginMantisMantisws');
    
-   Plugin::registerClass('PluginMantisMantis', array (
-         'addtabon' => array (
+   Plugin::registerClass('PluginMantisMantis', array(
+         'addtabon' => array(
                'Ticket',
-               'Problem' 
-         ) 
+               'Problem'
+         )
    ));
    
-   Plugin::registerClass('PluginMantisUserPref', array (
-         'addtabon' => array (
+   Plugin::registerClass('PluginMantisUserPref', array(
+         'addtabon' => array(
                'User',
-               'Preference' 
-         ) 
+               'Preference'
+         )
    ));
 }
 
@@ -105,13 +105,13 @@ function plugin_init_mantis() {
  * @return array
  */
 function plugin_version_mantis() {
-   return array (
+   return array(
          'name' => __("MantisBT synchronisation", "mantis"),
          'version' => PLUGIN_MANTIS_VERSION,
          'author' => 'Stanislas KITA (teclib\')',
          'license' => 'GPLv3',
          'homepage' => 'https://github.com/teclib/mantis',
-         'minGlpiVersion' => PLUGIN_MANTIS_GLPI_MIN_VERSION 
+         'minGlpiVersion' => PLUGIN_MANTIS_GLPI_MIN_VERSION
    );
 }
 
@@ -161,29 +161,29 @@ function plugin_mantis_check_config($verbose = false) {
  * @return boolean
  */
 function plugin_mantis_haveRight($module, $right) {
-   $matches = array (
-         "" => array (
+   $matches = array(
+         "" => array(
                "",
                "r",
-               "w" 
+               "w"
          ), // ne doit pas arriver normalement
-         "r" => array (
+         "r" => array(
                "r",
-               "w" 
+               "w"
          ),
-         "w" => array (
-               "w" 
+         "w" => array(
+               "w"
          ),
-         "1" => array (
-               "1" 
+         "1" => array(
+               "1"
          ),
-         "0" => array (
+         "0" => array(
                "0",
-               "1" 
-         ) 
+               "1"
+         )
    ); // ne doit pas arriver non plus
    
-   if (isset($_SESSION ["glpi_plugin_mantis_profile"] [$module]) && in_array($_SESSION ["glpi_plugin_mantis_profile"] [$module], $matches [$right]))
+   if (isset($_SESSION["glpi_plugin_mantis_profile"][$module]) && in_array($_SESSION["glpi_plugin_mantis_profile"][$module], $matches[$right]))
       return true;
    else
       return false;

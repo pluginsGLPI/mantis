@@ -70,8 +70,8 @@ function plugin_mantis_install() {
       $mig = new Migration(201);
       $table = 'glpi_plugin_mantis_mantis';
       $mig->addField($table, 'itemType', 'string');
-      $mig->changeField('glpi_plugin_mantis_mantis', 'itemType', 'itemtype', 'string', array ());
-      $mig->changeField('glpi_plugin_mantis_mantis', 'idTicket', 'items_id', 'integer', array ());
+      $mig->changeField('glpi_plugin_mantis_mantis', 'itemType', 'itemtype', 'string', array());
+      $mig->changeField('glpi_plugin_mantis_mantis', 'idTicket', 'items_id', 'integer', array());
       $mig->executeMigration();
    }
    
@@ -103,7 +103,7 @@ function plugin_mantis_install() {
       
       // creation du premier accès nécessaire lors de l'installation du plugin
       include_once ("inc/profile.class.php");
-      PluginMantisProfile::createAdminAccess($_SESSION ['glpiactiveprofile'] ['id']);
+      PluginMantisProfile::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
    }
    
    // création de la table pour la configuration du plugin
@@ -132,15 +132,15 @@ function plugin_mantis_install() {
    } else {
       $mig = new Migration(200);
       $table = 'glpi_plugin_mantis_configs';
-      $mig->addField($table, 'neutralize_escalation', 'integer', array (
-            'value' => 5 
+      $mig->addField($table, 'neutralize_escalation', 'integer', array(
+            'value' => 5
       ));
       $mig->addField($table, 'status_after_escalation', 'integer');
-      $mig->addField($table, 'show_option_delete', 'integer', array (
-            'value' => 0 
+      $mig->addField($table, 'show_option_delete', 'integer', array(
+            'value' => 0
       ));
-      $mig->addField($table, 'doc_categorie', 'integer', array (
-            'value' => 0 
+      $mig->addField($table, 'doc_categorie', 'integer', array(
+            'value' => 0
       ));
       $mig->addField($table, 'itemType', 'string');
       $mig->executeMigration();
@@ -162,31 +162,31 @@ function plugin_mantis_uninstall() {
 
 // Define Additionnal search options for types (other than the plugin ones)
 function plugin_mantis_getAddSearchOptions($itemtype) {
-   $sopt = array ();
+   $sopt = array();
    if ($itemtype == 'Ticket') {
       
-      $sopt ['common'] = "MantisBT";
+      $sopt['common'] = "MantisBT";
       
-      $sopt [78963] ['table'] = 'glpi_plugin_mantis_mantis';
-      $sopt [78963] ['field'] = 'idMantis';
-      $sopt [78963] ['searchtype'] = 'equals';
-      $sopt [78963] ['nosearch'] = true;
-      $sopt [78963] ['datatype'] = 'bool';
-      $sopt [78963] ['name'] = __('ticket linked to mantis', 'mantis');
-      $sopt [78963] ['joinparams'] = array (
-            'jointype' => "itemtype_item" 
+      $sopt[78963]['table'] = 'glpi_plugin_mantis_mantis';
+      $sopt[78963]['field'] = 'idMantis';
+      $sopt[78963]['searchtype'] = 'equals';
+      $sopt[78963]['nosearch'] = true;
+      $sopt[78963]['datatype'] = 'bool';
+      $sopt[78963]['name'] = __('ticket linked to mantis', 'mantis');
+      $sopt[78963]['joinparams'] = array(
+            'jointype' => "itemtype_item"
       );
    } else if ($itemtype == 'Problem') {
-      $sopt ['common'] = "MantisBT";
+      $sopt['common'] = "MantisBT";
       
-      $sopt [78964] ['table'] = 'glpi_plugin_mantis_mantis';
-      $sopt [78964] ['field'] = 'id';
-      $sopt [78964] ['searchtype'] = 'equals';
-      $sopt [78964] ['nosearch'] = true;
-      $sopt [78964] ['datatype'] = 'bool';
-      $sopt [78964] ['name'] = __('problem linked to mantis', 'mantis');
-      $sopt [78964] ['joinparams'] = array (
-            'jointype' => "itemtype_item" 
+      $sopt[78964]['table'] = 'glpi_plugin_mantis_mantis';
+      $sopt[78964]['field'] = 'id';
+      $sopt[78964]['searchtype'] = 'equals';
+      $sopt[78964]['nosearch'] = true;
+      $sopt[78964]['datatype'] = 'bool';
+      $sopt[78964]['name'] = __('problem linked to mantis', 'mantis');
+      $sopt[78964]['joinparams'] = array(
+            'jointype' => "itemtype_item"
       );
    }
    return $sopt;
@@ -194,12 +194,12 @@ function plugin_mantis_getAddSearchOptions($itemtype) {
 
 function plugin_mantis_giveItem($type, $ID, $data, $num) {
    $searchopt = &Search::getOptions($type);
-   $table = $searchopt [$ID] ["table"];
-   $field = $searchopt [$ID] ["field"];
+   $table = $searchopt[$ID]["table"];
+   $field = $searchopt[$ID]["field"];
    
    switch ($table . '.' . $field) {
       case "glpi_plugin_mantis_mantis.idMantis" :
-         return Dropdown::getYesNo($data ["ITEM_$num"]);
+         return Dropdown::getYesNo($data["ITEM_$num"]);
          break;
    }
    

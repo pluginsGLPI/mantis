@@ -43,7 +43,7 @@ include ('../../../inc/includes.php');
 
 global $CFG_GLPI;
 
-$root_ajax = $CFG_GLPI ['root_doc'] . "/plugins/mantis/ajax/ajax.php";
+$root_ajax = $CFG_GLPI['root_doc'] . "/plugins/mantis/ajax/ajax.php";
 
 $JS = <<<JAVASCRIPT
 

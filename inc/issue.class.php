@@ -41,7 +41,7 @@
  */
 class PluginMantisIssue {
 
-   public static $state_mantis = array (
+   public static $state_mantis = array(
          'none' => '----',
          'new' => 'new',
          'feedback' => 'feedback',
@@ -49,13 +49,13 @@ class PluginMantisIssue {
          'confirmed' => 'confirmed',
          'assigned' => 'assigned',
          'resolved' => 'resolved',
-         'closed' => 'closed' 
+         'closed' => 'closed'
    );
 
-   public static $champsMantis = array (
+   public static $champsMantis = array(
          'none' => '----',
          'note' => 'note',
-         'additional_information' => 'additional_information' 
+         'additional_information' => 'additional_information'
    );
 
    public $additional_information = "";
@@ -74,7 +74,7 @@ class PluginMantisIssue {
     */
    public function addInfoToIssueMantis($idTicket, $idMantis) {
       global $DB;
-      $itemType = $_POST ['itemtype'];
+      $itemType = $_POST['itemtype'];
       
       $ws = new PluginMantisMantisws();
       $ws->initializeConnection();
@@ -85,15 +85,15 @@ class PluginMantisIssue {
       $conf = new PluginMantisConfig();
       $conf->getFromDB(1);
       
-      $champsGlpi = $_POST ['glpiField'];
-      $champsUrl = $_POST ['glpiUrl'];
-      $followAttachment = $_POST ['followAttachment'];
-      $followFollow = $_POST ['followFollow'];
-      $followTask = $_POST ['followTask'];
-      $followTitle = $_POST ['followTitle'];
-      $followDescription = $_POST ['followDescription'];
-      $followCategorie = $_POST ['followCategorie'];
-      $followLinkedticket = $_POST ['linkedTicket'];
+      $champsGlpi = $_POST['glpiField'];
+      $champsUrl = $_POST['glpiUrl'];
+      $followAttachment = $_POST['followAttachment'];
+      $followFollow = $_POST['followFollow'];
+      $followTask = $_POST['followTask'];
+      $followTitle = $_POST['followTitle'];
+      $followDescription = $_POST['followDescription'];
+      $followCategorie = $_POST['followCategorie'];
+      $followLinkedticket = $_POST['linkedTicket'];
       
       $itilCategorie = new ITILCategory();
       
@@ -109,9 +109,9 @@ class PluginMantisIssue {
          
          // follow attachmant for ticket linked
          if ($followLinkedticket == 'true') {
-            $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields ['id']);
+            $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
             foreach ($tickets as $link_ticket) {
-               $error .= $this->addAttachment($link_ticket ['tickets_id'], $error, $ws, $idMantis, $itemType);
+               $error .= $this->addAttachment($link_ticket['tickets_id'], $error, $ws, $idMantis, $itemType);
             }
          }
       }
@@ -204,36 +204,36 @@ class PluginMantisIssue {
       $itilCategorie = new ITILCategory();
       
       // retrieve $_POST values
-      $categorie = $_POST ['categorie'];
-      $resume = $_POST ['resume'];
-      $description = $_POST ['description'];
-      $stepToReproduce = $_POST ['stepToReproduce'];
-      $followAttachment = $_POST ['followAttachment'];
-      $idTicket = $_POST ['idTicket'];
-      $nameMantisProject = $_POST ['nameMantisProject'];
-      $idUser = $_POST ['user'];
-      $date = $_POST ['dateEscalade'];
-      $assignId = $_POST ['assign'];
-      $champsGlpi = $_POST ['glpiField'];
-      $champsUrl = $_POST ['glpiUrl'];
+      $categorie = $_POST['categorie'];
+      $resume = $_POST['resume'];
+      $description = $_POST['description'];
+      $stepToReproduce = $_POST['stepToReproduce'];
+      $followAttachment = $_POST['followAttachment'];
+      $idTicket = $_POST['idTicket'];
+      $nameMantisProject = $_POST['nameMantisProject'];
+      $idUser = $_POST['user'];
+      $date = $_POST['dateEscalade'];
+      $assignId = $_POST['assign'];
+      $champsGlpi = $_POST['glpiField'];
+      $champsUrl = $_POST['glpiUrl'];
       
-      $followFollow = $_POST ['followFollow'];
-      $followTask = $_POST ['followTask'];
-      $followTitle = $_POST ['followTitle'];
-      $followDescription = $_POST ['followDescription'];
-      $followCategorie = $_POST ['followCategorie'];
-      $followLinkedticket = $_POST ['linkedTicket'];
-      $itemType = $_POST ['itemType'];
+      $followFollow = $_POST['followFollow'];
+      $followTask = $_POST['followTask'];
+      $followTitle = $_POST['followTitle'];
+      $followDescription = $_POST['followDescription'];
+      $followCategorie = $_POST['followCategorie'];
+      $followLinkedticket = $_POST['linkedTicket'];
+      $itemType = $_POST['itemType'];
       
-      $enable_assign = $conf->fields ["enable_assign"];
+      $enable_assign = $conf->fields["enable_assign"];
       
       $ticket = new $itemType();
       $ticket->getFromDB($idTicket);
       
       $id_note = 0; // id de la note creer si besoin
-      $id_mantis = array (); // id du lien mantis si besoin
-      $id_attachment = array (); // id des pieces jointe si besoin
-      $post = array (); // info mantis lors de la creation du lien
+      $id_mantis = array(); // id du lien mantis si besoin
+      $id_attachment = array(); // id des pieces jointe si besoin
+      $post = array(); // info mantis lors de la creation du lien
                         
       // si le projet existe
       if ($ws->existProjectWithName($nameMantisProject)) {
@@ -271,8 +271,8 @@ class PluginMantisIssue {
                $custom = new PluginMantisStructcustomField();
                $custom->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType));
                $custom->setField($ws->getCustomFieldByNameAndProject($champsGlpi, $nameMantisProject));
-               $this->setCustom_fields(array (
-                     $custom 
+               $this->setCustom_fields(array(
+                     $custom
                ));
             } else {
                
@@ -284,9 +284,9 @@ class PluginMantisIssue {
                $custom2->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType));
                $custom2->setField($ws->getCustomFieldByNameAndProject($champsUrl, $nameMantisProject));
                
-               $this->setCustom_fields(array (
+               $this->setCustom_fields(array(
                      $custom1,
-                     $custom2 
+                     $custom2
                ));
             }
             
@@ -300,16 +300,16 @@ class PluginMantisIssue {
                $custom = new PluginMantisStructcustomField();
                $custom->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType));
                $custom->setField($ws->getCustomFieldByNameAndProject($champsUrl, $nameMantisProject));
-               $this->setCustom_fields(array (
-                     $custom 
+               $this->setCustom_fields(array(
+                     $custom
                ));
             } else {
                
                $custom = new PluginMantisStructcustomField();
                $custom->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType));
                $custom->setField($ws->getCustomFieldByNameAndProject($champsGlpi, $nameMantisProject));
-               $this->setCustom_fields(array (
-                     $custom 
+               $this->setCustom_fields(array(
+                     $custom
                ));
             }
          }
@@ -323,14 +323,14 @@ class PluginMantisIssue {
          } else {
             
             // creation d'un lien glpi -> mantis
-            $post ['items_id'] = $idTicket;
-            $post ['idMantis'] = $idIssueCreate;
-            $post ['dateEscalade'] = $date;
-            $post ['user'] = $idUser;
-            $post ['itemtype'] = $itemType;
+            $post['items_id'] = $idTicket;
+            $post['idMantis'] = $idIssueCreate;
+            $post['dateEscalade'] = $date;
+            $post['user'] = $idUser;
+            $post['itemtype'] = $itemType;
             
             $res = $mantis->add($post);
-            $id_mantis [] = $res;
+            $id_mantis[] = $res;
             
             // si peut pas créé le lien
             if (! $res) {
@@ -343,20 +343,20 @@ class PluginMantisIssue {
                
                if ($followLinkedticket == 'true' && $itemType == "Ticket") {
                   
-                  $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields ['id']);
+                  $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
                   
                   foreach ($tickets as $link_ticket) {
                      $t = new ticket();
-                     $t->getFromDB($link_ticket ['tickets_id']);
+                     $t->getFromDB($link_ticket['tickets_id']);
                      
                      $mantis1 = new PluginMantisMantis();
-                     $post ['items_id'] = $t->fields ['id'];
-                     $post ['idMantis'] = $idIssueCreate;
-                     $post ['dateEscalade'] = $date;
-                     $post ['user'] = $idUser;
-                     $post ['itemtype'] = $itemType;
+                     $post['items_id'] = $t->fields['id'];
+                     $post['idMantis'] = $idIssueCreate;
+                     $post['dateEscalade'] = $date;
+                     $post['user'] = $idUser;
+                     $post['itemtype'] = $itemType;
                      
-                     $id_mantis [] = $mantis1->add($post);
+                     $id_mantis[] = $mantis1->add($post);
                      unset($post);
                   }
                }
@@ -379,9 +379,9 @@ class PluginMantisIssue {
                   
                   // follow attachmant for ticket linked
                   if ($followLinkedticket == 'true' && $itemType == "Ticket") {
-                     $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields ['id']);
+                     $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
                      foreach ($tickets as $link_ticket) {
-                        $error .= $this->addAttachment($link_ticket ['tickets_id'], $error, $ws, $idIssueCreate, $itemType);
+                        $error .= $this->addAttachment($link_ticket['tickets_id'], $error, $ws, $idIssueCreate, $itemType);
                      }
                   }
                }
@@ -404,7 +404,7 @@ class PluginMantisIssue {
                   try {
                      
                      foreach ($id_mantis as $idMan) {
-                        $post ['id'] = $idMan;
+                        $post['id'] = $idMan;
                         $mantis->delete($post);
                      }
                   } catch ( Exception $e ) {
@@ -419,21 +419,21 @@ class PluginMantisIssue {
                } else {
                   
                   // mise à jour du status du ticket si demandé
-                  if ($conf->fields ['status_after_escalation'] != 0) {
-                     $ticket->update(array (
-                           'id' => $ticket->fields ['id'],
-                           'status' => $conf->fields ['status_after_escalation'] 
+                  if ($conf->fields['status_after_escalation'] != 0) {
+                     $ticket->update(array(
+                           'id' => $ticket->fields['id'],
+                           'status' => $conf->fields['status_after_escalation']
                      ));
                      
                      if ($followLinkedticket == 'true' && $itemType == "Ticket") {
-                        $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields ['id']);
+                        $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
                         
                         foreach ($tickets as $link_ticket) {
                            $t = new ticket();
-                           $t->getFromDB($link_ticket ['tickets_id']);
-                           $t->update(array (
-                                 'id' => $t->fields ['id'],
-                                 'status' => $conf->fields ['status_after_escalation'] 
+                           $t->getFromDB($link_ticket['tickets_id']);
+                           $t->update(array(
+                                 'id' => $t->fields['id'],
+                                 'status' => $conf->fields['status_after_escalation']
                            ));
                         }
                      }
@@ -455,20 +455,20 @@ class PluginMantisIssue {
       $conf = new PluginMantisConfig();
       $conf->getFromDB(1);
       
-      if ($conf->fields ['doc_categorie'] == 0) {
+      if ($conf->fields['doc_categorie'] == 0) {
          $res = $DB->query("SELECT `glpi_documents_items`.*
             FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = '" . $itemType . "'
             AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idTicket) . "'");
       } else {
          $res = $DB->query("SELECT `glpi_documents_items`.*
-            FROM `glpi_documents_items` ,`glpi_documents` WHERE `glpi_documents`.`id` =`glpi_documents_items`.`documents_id` and `glpi_documents`.`documentcategories_id` = '" . Toolbox::cleanInteger($conf->fields ['doc_categorie']) . "' and`glpi_documents_items`.`itemtype`  = '" . $itemType . "'
+            FROM `glpi_documents_items` ,`glpi_documents` WHERE `glpi_documents`.`id` =`glpi_documents_items`.`documents_id` and `glpi_documents`.`documentcategories_id` = '" . Toolbox::cleanInteger($conf->fields['doc_categorie']) . "' and`glpi_documents_items`.`itemtype`  = '" . $itemType . "'
             AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idTicket) . "'");
       }
       
       if ($res->num_rows > 0) {
          while ( $row = $res->fetch_assoc() ) {
             $doc = new Document();
-            $doc->getFromDB($row ["documents_id"]);
+            $doc->getFromDB($row["documents_id"]);
             $path = GLPI_DOC_DIR . "/" . $doc->getField('filepath');
             
             if (file_exists($path)) {
@@ -486,7 +486,7 @@ class PluginMantisIssue {
                   $id_data = $ws->addAttachmentToIssue($idIssueCreate, $doc->getField('filename'), $doc->getField('mime'), $data);
                   
                   if (! $id_data) {
-                     $id_attachment [] = $id_data;
+                     $id_attachment[] = $id_data;
                      Toolbox::logInFile('mantis', sprintf(__('Can\'t send the attachment
                                         \'%1$s\' to MantisBT, the process was interrupted ', 'mantis'), $doc->getField('filename')) . "\n");
                      $error .= sprintf(__('Can\'t send the attachment \'%1$s\'
@@ -513,11 +513,11 @@ class PluginMantisIssue {
       if ($champsGlpi == 'additional_information') {
          
          if ($followTitle == 'true') {
-            $infoTicket .= sprintf(__('Title = %1$s <br/>', 'mantis'), $ticket->fields ["name"]);
+            $infoTicket .= sprintf(__('Title = %1$s <br/>', 'mantis'), $ticket->fields["name"]);
          }
          
          if ($followDescription == 'true') {
-            $infoTicket .= sprintf(__('Description = %1$s <br/>', 'mantis'), $ticket->fields ["content"]);
+            $infoTicket .= sprintf(__('Description = %1$s <br/>', 'mantis'), $ticket->fields["content"]);
          }
          
          if ($followFollow == 'true' && $itemType == "Ticket") {
@@ -529,33 +529,33 @@ class PluginMantisIssue {
          }
          
          if ($followCategorie == 'true') {
-            if ($itilCategorie->getFromDB($ticket->fields ['itilcategories_id']))
-               $infoTicket .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields ["name"]);
+            if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
+               $infoTicket .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields["name"]);
          }
       }
       
       if ($champsUrl == 'additional_information') {
-         $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER ['HTTP_REFERER']);
+         $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
       }
       
       if ($linkedTicket == 'true') {
          
-         $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields ['id']);
+         $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
          
          foreach ($tickets as $link_ticket) {
             $t = new ticket();
-            $t->getFromDB($link_ticket ['tickets_id']);
+            $t->getFromDB($link_ticket['tickets_id']);
             
             $infoTicket .= "<br/>";
             
             if ($champsGlpi == 'additional_information') {
                
                if ($followTitle == 'true') {
-                  $infoTicket .= sprintf(__('Title = %1$s <br/>', 'mantis'), $t->fields ["name"]);
+                  $infoTicket .= sprintf(__('Title = %1$s <br/>', 'mantis'), $t->fields["name"]);
                }
                
                if ($followDescription == 'true') {
-                  $infoTicket .= sprintf(__('Description = %1$s <br/>', 'mantis'), $t->fields ["content"]);
+                  $infoTicket .= sprintf(__('Description = %1$s <br/>', 'mantis'), $t->fields["content"]);
                }
                
                if ($followFollow == 'true') {
@@ -567,13 +567,13 @@ class PluginMantisIssue {
                }
                
                if ($followCategorie == 'true') {
-                  if ($itilCategorie->getFromDB($t->fields ['itilcategories_id']))
-                     $infoTicket .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields ["name"]);
+                  if ($itilCategorie->getFromDB($t->fields['itilcategories_id']))
+                     $infoTicket .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields["name"]);
                }
             }
             
             if ($champsUrl == 'additional_information') {
-               $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), str_replace('id=' . $ticket->fields ['id'], 'id=' . $t->fields ['id'], $_SERVER ['HTTP_REFERER']));
+               $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), str_replace('id=' . $ticket->fields['id'], 'id=' . $t->fields['id'], $_SERVER['HTTP_REFERER']));
             }
          }
       }
@@ -588,11 +588,11 @@ class PluginMantisIssue {
       if ($champsGlpi != 'additional_information' && $champsGlpi != 'note') {
          
          if ($followTitle == 'true') {
-            $infoTicket .= sprintf(__('Title = %1$s <br/>', 'mantis'), $ticket->fields ["name"]);
+            $infoTicket .= sprintf(__('Title = %1$s <br/>', 'mantis'), $ticket->fields["name"]);
          }
          
          if ($followDescription == 'true') {
-            $infoTicket .= sprintf(__('Description = %1$s <br/>', 'mantis'), $ticket->fields ["content"]);
+            $infoTicket .= sprintf(__('Description = %1$s <br/>', 'mantis'), $ticket->fields["content"]);
          }
          
          if ($followFollow == 'true' && $itemType == "Ticket") {
@@ -604,34 +604,34 @@ class PluginMantisIssue {
          }
          
          if ($followCategorie == 'true') {
-            if ($itilCategorie->getFromDB($ticket->fields ['itilcategories_id']))
-               $infoTicket .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields ["name"]);
+            if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
+               $infoTicket .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields["name"]);
          }
       }
       
       if ($champsUrl != 'additional_information' && $champsUrl != 'note') {
-         $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER ['HTTP_REFERER']);
+         $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
       }
       
       if ($linkedTicket == 'true') {
          
-         $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields ['id']);
+         $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
          
          foreach ($tickets as $link_ticket) {
             
             $t = new ticket();
-            $t->getFromDB($link_ticket ['tickets_id']);
+            $t->getFromDB($link_ticket['tickets_id']);
             
             $infoTicket .= "<br/>";
             
             if ($champsGlpi != 'additional_information' && $champsGlpi != 'note') {
                
                if ($followTitle == 'true') {
-                  $infoTicket .= sprintf(__('Title = %1$s <br/>', 'mantis'), $t->fields ["name"]);
+                  $infoTicket .= sprintf(__('Title = %1$s <br/>', 'mantis'), $t->fields["name"]);
                }
                
                if ($followDescription == 'true') {
-                  $infoTicket .= sprintf(__('Description = %1$s <br/>', 'mantis'), $t->fields ["content"]);
+                  $infoTicket .= sprintf(__('Description = %1$s <br/>', 'mantis'), $t->fields["content"]);
                }
                
                if ($followFollow == 'true') {
@@ -643,13 +643,13 @@ class PluginMantisIssue {
                }
                
                if ($followCategorie == 'true') {
-                  if ($itilCategorie->getFromDB($t->fields ['itilcategories_id']))
-                     $infoTicket .= sprintf(__('Category = %1$s <br/>', 'mantis'), $_SERVER ['HTTP_REFERER']);
+                  if ($itilCategorie->getFromDB($t->fields['itilcategories_id']))
+                     $infoTicket .= sprintf(__('Category = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
                }
             }
             
             if ($champsUrl != 'additional_information' && $champsUrl != 'note') {
-               $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), str_replace('id=' . $ticket->fields ['id'], 'id=' . $t->fields ['id'], $_SERVER ['HTTP_REFERER']));
+               $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), str_replace('id=' . $ticket->fields['id'], 'id=' . $t->fields['id'], $_SERVER['HTTP_REFERER']));
             }
          }
       }
@@ -664,11 +664,11 @@ class PluginMantisIssue {
       if ($champsGlpi == 'note') {
          
          if ($followTitle == 'true') {
-            $note .= sprintf(__('Title = %1$s <br/>', 'mantis'), $ticket->fields ["name"]);
+            $note .= sprintf(__('Title = %1$s <br/>', 'mantis'), $ticket->fields["name"]);
          }
          
          if ($followDescription == 'true') {
-            $note .= sprintf(__('Description = %1$s <br/>', 'mantis'), $ticket->fields ["content"]);
+            $note .= sprintf(__('Description = %1$s <br/>', 'mantis'), $ticket->fields["content"]);
          }
          
          if ($followFollow == 'true' && $itemType == "Ticket") {
@@ -680,33 +680,33 @@ class PluginMantisIssue {
          }
          
          if ($followCategorie == 'true') {
-            if ($itilCategorie->getFromDB($ticket->fields ['itilcategories_id']))
-               $note .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields ["name"]);
+            if ($itilCategorie->getFromDB($ticket->fields['itilcategories_id']))
+               $note .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields["name"]);
          }
       }
       
       if ($champsUrl == 'note') {
-         $note .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER ['HTTP_REFERER']);
+         $note .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
       }
       
       if ($linkedTicket == 'true') {
          
-         $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields ['id']);
+         $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
          
          foreach ($tickets as $link_ticket) {
             
             $note .= "<br/>";
             $t = new ticket();
-            $t->getFromDB($link_ticket ['tickets_id']);
+            $t->getFromDB($link_ticket['tickets_id']);
             
             if ($champsGlpi == 'note') {
                
                if ($followTitle == 'true') {
-                  $note .= sprintf(__('Title = %1$s <br/>', 'mantis'), $t->fields ["name"]);
+                  $note .= sprintf(__('Title = %1$s <br/>', 'mantis'), $t->fields["name"]);
                }
                
                if ($followDescription == 'true') {
-                  $note .= sprintf(__('Description = %1$s <br/>', 'mantis'), $t->fields ["content"]);
+                  $note .= sprintf(__('Description = %1$s <br/>', 'mantis'), $t->fields["content"]);
                }
                
                if ($followFollow == 'true') {
@@ -718,13 +718,13 @@ class PluginMantisIssue {
                }
                
                if ($followCategorie == 'true') {
-                  if ($itilCategorie->getFromDB($t->fields ['itilcategories_id']))
-                     $note .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields ["name"]);
+                  if ($itilCategorie->getFromDB($t->fields['itilcategories_id']))
+                     $note .= sprintf(__('Category = %1$s <br/>', 'mantis'), $itilCategorie->fields["name"]);
                }
             }
             
             if ($champsUrl == 'note') {
-               $note .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), str_replace('id=' . $ticket->fields ['id'], 'id=' . $t->fields ['id'], $_SERVER ['HTTP_REFERER']));
+               $note .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), str_replace('id=' . $ticket->fields['id'], 'id=' . $t->fields['id'], $_SERVER['HTTP_REFERER']));
             }
          }
       }
@@ -743,7 +743,7 @@ class PluginMantisIssue {
 
    static function getLinkToticket($ticket) {
       global $CFG_GLPI;
-      return '<A id ="link" href=' . $CFG_GLPI ['root_doc'] . '/front/ticket.form.php?id=' . $ticket->fields ['id'] . ' target="_blank">' . $ticket->getname() . '</A>';
+      return '<A id ="link" href=' . $CFG_GLPI['root_doc'] . '/front/ticket.form.php?id=' . $ticket->fields['id'] . ' target="_blank">' . $ticket->getname() . '</A>';
    }
 
    /**
@@ -772,22 +772,22 @@ class PluginMantisIssue {
       $content = '';
       
       $res = $DB->query("SELECT `glpi_ticketfollowups`.*
-                        FROM `glpi_ticketfollowups` WHERE `glpi_ticketfollowups`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields ["id"]) . "'");
+                        FROM `glpi_ticketfollowups` WHERE `glpi_ticketfollowups`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'");
       
       if ($res->num_rows > 0) {
          
          while ( $row = $res->fetch_assoc() ) {
             
             $ticket_followUp = new TicketFollowup();
-            $ticket_followUp->getFromDB($row ["id"]);
+            $ticket_followUp->getFromDB($row["id"]);
             
             $request_type = new RequestType();
-            $request_type->getFromDB($row ["requesttypes_id"]);
+            $request_type->getFromDB($row["requesttypes_id"]);
             
             $user = new User();
-            $user->getFromDB($row ["users_id"]);
+            $user->getFromDB($row["users_id"]);
             
-            $content .= sprintf(__('Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : %5$s<br/>', 'mantis'), $ticket_followUp->fields ['id'], $ticket_followUp->fields ['date'], $request_type->fields ['name'], $user->getName(), $ticket_followUp->getField('content'));
+            $content .= sprintf(__('Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : %5$s<br/>', 'mantis'), $ticket_followUp->fields['id'], $ticket_followUp->fields['date'], $request_type->fields['name'], $user->getName(), $ticket_followUp->getField('content'));
          }
       } else {
          $content .= __("No follow-up", "mantis");
@@ -807,7 +807,7 @@ class PluginMantisIssue {
       $content = '';
       
       $res = $DB->query("SELECT `glpi_tickettasks`.*
-                        FROM `glpi_tickettasks` WHERE `glpi_tickettasks`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields ["id"]) . "'");
+                        FROM `glpi_tickettasks` WHERE `glpi_tickettasks`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'");
       
       if ($res->num_rows > 0) {
          while ( $row = $res->fetch_assoc() ) {
@@ -818,13 +818,13 @@ class PluginMantisIssue {
                $task = new ProblemTask();
             }
             
-            $task->getFromDB($row ["id"]);
+            $task->getFromDB($row["id"]);
             
             $user = new User();
-            $user->getFromDB($row ["users_id"]);
+            $user->getFromDB($row["users_id"]);
             
             $content .= sprintf(__('Task = %1$s -> date : %2$s, description : %3$s, time : %4$s,
-               <br/>', 'mantis'), $task->fields ['id'], $task->fields ['date'], $task->fields ['content'], Html::timestampToString($task->fields ['actiontime']));
+               <br/>', 'mantis'), $task->fields['id'], $task->fields['date'], $task->fields['content'], Html::timestampToString($task->fields['actiontime']));
          }
       } else {
          $content .= __("No task", "mantis");

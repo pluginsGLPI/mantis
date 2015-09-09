@@ -11,7 +11,7 @@
  * This class stands for MantisStructCustomFieldValueForIssueData originally named CustomFieldValueForIssueData
  * Meta informations extracted from the WSDL
  * - from schema : var/wsdltophp.com/storage/wsdls/a80caff3c8dd52f94a68432974b9ab45/wsdl.xml
- * 
+ *
  * @package Mantis
  * @subpackage Structs
  * @author WsdlToPhp Team <contact@wsdltophp.fr>
@@ -24,7 +24,7 @@ class PluginMantisStructcustomField {
     * The field
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var MantisStructObjectRef
     */
    public $field;
@@ -33,14 +33,14 @@ class PluginMantisStructcustomField {
     * The value
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var string
     */
    public $value;
 
    /**
     * Get field value
-    * 
+    *
     * @return MantisStructObjectRef|null
     */
    public function getField() {
@@ -49,7 +49,7 @@ class PluginMantisStructcustomField {
 
    /**
     * Set field value
-    * 
+    *
     * @param MantisStructObjectRef $_field the field
     * @return MantisStructObjectRef
     */
@@ -59,7 +59,7 @@ class PluginMantisStructcustomField {
 
    /**
     * Get value value
-    * 
+    *
     * @return string|null
     */
    public function getValue() {
@@ -68,7 +68,7 @@ class PluginMantisStructcustomField {
 
    /**
     * Set value value
-    * 
+    *
     * @param string $_value the value
     * @return string
     */

@@ -11,7 +11,7 @@
  * This class stands for MantisStructAccountData originally named AccountData
  * Meta informations extracted from the WSDL
  * - from schema : var/wsdltophp.com/storage/wsdls/a80caff3c8dd52f94a68432974b9ab45/wsdl.xml
- * 
+ *
  * @package Mantis
  * @subpackage Structs
  * @author WsdlToPhp Team <contact@wsdltophp.fr>
@@ -25,7 +25,7 @@ class PluginMantisStructaccountdata {
     * The id
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var integer
     */
    public $id;
@@ -34,7 +34,7 @@ class PluginMantisStructaccountdata {
     * The name
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var string
     */
    public $name;
@@ -43,7 +43,7 @@ class PluginMantisStructaccountdata {
     * The real_name
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var string
     */
    public $real_name;
@@ -52,14 +52,14 @@ class PluginMantisStructaccountdata {
     * The email
     * Meta informations extracted from the WSDL
     * - minOccurs : 0
-    * 
+    *
     * @var string
     */
    public $email;
 
    /**
     * Constructor method for AccountData
-    * 
+    *
     * @see parent::__construct()
     * @param integer $_id
     * @param string $_name
@@ -72,7 +72,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * Get id value
-    * 
+    *
     * @return integer|null
     */
    public function getId() {
@@ -81,7 +81,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * Set id value
-    * 
+    *
     * @param integer $_id the id
     * @return integer
     */
@@ -91,7 +91,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * Get name value
-    * 
+    *
     * @return string|null
     */
    public function getName() {
@@ -100,7 +100,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * Set name value
-    * 
+    *
     * @param string $_name the name
     * @return string
     */
@@ -110,7 +110,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * Get real_name value
-    * 
+    *
     * @return string|null
     */
    public function getReal_name() {
@@ -119,7 +119,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * Set real_name value
-    * 
+    *
     * @param string $_real_name the real_name
     * @return string
     */
@@ -129,7 +129,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * Get email value
-    * 
+    *
     * @return string|null
     */
    public function getEmail() {
@@ -138,7 +138,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * Set email value
-    * 
+    *
     * @param string $_email the email
     * @return string
     */
@@ -149,7 +149,7 @@ class PluginMantisStructaccountdata {
    /**
     * Method called when an object has been exported with var_export() functions
     * It allows to return an object instantiated with the values
-    * 
+    *
     * @see MantisWsdlClass::__set_state()
     * @uses MantisWsdlClass::__set_state()
     * @param array $_array the exported values
@@ -161,7 +161,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * Method returning the class name
-    * 
+    *
     * @return string __CLASS__
     */
    public function __toString() {

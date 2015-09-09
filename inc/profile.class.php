@@ -45,15 +45,15 @@
 class PluginMantisProfile extends CommonDBTM {
 
    static function canCreate() {
-      if (isset($_SESSION ["glpi_plugin_mantis_profile"])) {
-         return ($_SESSION ["glpi_plugin_mantis_profile"] ['mantis'] == 'w');
+      if (isset($_SESSION["glpi_plugin_mantis_profile"])) {
+         return ($_SESSION["glpi_plugin_mantis_profile"]['mantis'] == 'w');
       }
       return false;
    }
 
    static function canView() {
-      if (isset($_SESSION ["glpi_plugin_mantis_profile"])) {
-         return ($_SESSION ["glpi_plugin_mantis_profile"] ['mantis'] == 'w' || $_SESSION ["glpi_plugin_mantis_profile"] ['mantis'] == 'r');
+      if (isset($_SESSION["glpi_plugin_mantis_profile"])) {
+         return ($_SESSION["glpi_plugin_mantis_profile"]['mantis'] == 'w' || $_SESSION["glpi_plugin_mantis_profile"]['mantis'] == 'r');
       }
       return false;
    }
@@ -81,8 +81,8 @@ class PluginMantisProfile extends CommonDBTM {
 
    function showForm($id, $options = array()) {
       $target = $this->getFormURL();
-      if (isset($options ['target'])) {
-         $target = $options ['target'];
+      if (isset($options['target'])) {
+         $target = $options['target'];
       }
       
       if (! Session::haveRight("profile", "r")) {
@@ -98,12 +98,12 @@ class PluginMantisProfile extends CommonDBTM {
       
       echo "<form action='" . $target . "' method='post'>";
       echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='2' class='center b'>" . sprintf(__('%1$s %2$s'), ('rights management :'), Dropdown::getDropdownName("glpi_profiles", $this->fields ["id"]));
+      echo "<tr><th colspan='2' class='center b'>" . sprintf(__('%1$s %2$s'), ('rights management :'), Dropdown::getDropdownName("glpi_profiles", $this->fields["id"]));
       echo "</th></tr>";
       
       echo "<tr class='tab_bg_2'>";
       echo '<td>' . __("Use the plugin MantisBT", "mantis") . '</td><td>';
-      Profile::dropdownNoneReadWrite("right", $this->fields ["right"], 1, 1, 1);
+      Profile::dropdownNoneReadWrite("right", $this->fields["right"], 1, 1, 1);
       echo "</td></tr>";
       
       if ($canedit) {
@@ -124,25 +124,25 @@ class PluginMantisProfile extends CommonDBTM {
       if (! $myProf->getFromDB($ID)) {
          // ajouter un champ dans la table comprenant l'ID du
          // profil d la personne connecté et le droit d'écriture
-         $myProf->add(array (
+         $myProf->add(array(
                'id' => $ID,
-               'right' => 'w' 
+               'right' => 'w'
          ));
       }
    }
 
    function createAccess($ID) {
-      $this->add(array (
-            'id' => $ID 
+      $this->add(array(
+            'id' => $ID
       ));
    }
 
    static function changeProfile() {
       $prof = new self();
-      if ($prof->getFromDB($_SESSION ['glpiactiveprofile'] ['id'])) {
-         $_SESSION ["glpi_plugin_mantis_profile"] = $prof->fields;
+      if ($prof->getFromDB($_SESSION['glpiactiveprofile']['id'])) {
+         $_SESSION["glpi_plugin_mantis_profile"] = $prof->fields;
       } else {
-         unset($_SESSION ["glpi_plugin_mantis_profile"]);
+         unset($_SESSION["glpi_plugin_mantis_profile"]);
       }
    }
 
@@ -152,7 +152,7 @@ class PluginMantisProfile extends CommonDBTM {
       if (! $prof)
          return false;
       else {
-         if ($prof->fields ['right'] == 'r')
+         if ($prof->fields['right'] == 'r')
             return true;
          else
             return false;
@@ -165,7 +165,7 @@ class PluginMantisProfile extends CommonDBTM {
       if (! $prof)
          return false;
       else {
-         if ($prof->fields ['right'] == 'w')
+         if ($prof->fields['right'] == 'w')
             return true;
          else
             return false;

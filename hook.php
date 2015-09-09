@@ -53,13 +53,13 @@ function plugin_mantis_install() {
    
    // création de la table du plugin
    if (! TableExists ( "glpi_plugin_mantis_mantis" )) {
-      $query = "CREATE TABLE glpi_plugin_mantis_mantis (
-               id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-               items_id int(11) NOT NULL,
-               idMantis int(11) NOT NULL,
-               dateEscalade date NOT NULL,
-               itemtype varchar NOT NULL,
-               user int(11) NOT NULL)";
+      $query = "CREATE TABLE `glpi_plugin_mantis_mantis` (
+               `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+               `items_id` int(11) NOT NULL,
+               `idMantis` int(11) NOT NULL,
+               `dateEscalade` date NOT NULL,
+               `itemtype` varchar(255) NOT NULL,
+               `user` int(11) NOT NULL)";
       $DB->query ( $query ) or die ( $DB->error () );
    } else {
       $mig = new Migration ( 200 );
@@ -77,16 +77,16 @@ function plugin_mantis_install() {
    
    // création de la table du plugin
    if (! TableExists ( "glpi_plugin_mantis_userprefs" )) {
-      $query = "CREATE TABLE glpi_plugin_mantis_userprefs (
-               id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-               users_id int(11) NOT NULL ,
-               followTask int(11) NOT NULL default '0',
-               followFollow int(11) NOT NULL default '0',
-               followAttachment int(11) NOT NULL default '0',
-               followTitle int(11) NOT NULL default '0',
-               followDescription int(11) NOT NULL default '0',
-               followCategorie int(11) NOT NULL default '0',
-               followLinkedItem int(11) NOT NULL default '0',
+      $query = "CREATE TABLE `glpi_plugin_mantis_userprefs` (
+               `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+               `users_id` int(11) NOT NULL ,
+               `followTask` int(11) NOT NULL default '0',
+               `followFollow` int(11) NOT NULL default '0',
+               `followAttachment` int(11) NOT NULL default '0',
+               `followTitle` int(11) NOT NULL default '0',
+               `followDescription` int(11) NOT NULL default '0',
+               `followCategorie` int(11) NOT NULL default '0',
+               `followLinkedItem` int(11) NOT NULL default '0',
                UNIQUE KEY (`users_id`))";
       $DB->query ( $query ) or die ( $DB->error () );
    }
@@ -108,25 +108,25 @@ function plugin_mantis_install() {
    
    // création de la table pour la configuration du plugin
    if (! TableExists ( "glpi_plugin_mantis_configs" )) {
-      $query = "CREATE TABLE glpi_plugin_mantis_configs (
-                  id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                  host varchar(255) NOT NULL default '',
-                  url varchar(255) NOT NULL default '',
-                  login varchar(255) NOT NULL default '',
-                  pwd varchar(255) NOT NULL default '',
-                  champsUrlGlpi varchar(100) NOT NULL default '',
-                  champsGlpi varchar(100) NOT NULL default '',
-                  enable_assign int(3) NOT NULL default 0,
-                  neutralize_escalation int(3) NOT NULL default 0,
-                  status_after_escalation int(3) NOT NULL default 0,
-                  show_option_delete int(3) NOT NULL default 0,
-                  doc_categorie int(3) NOT NULL default 0,
-                  itemType varchar(255) NOT NULL,
-                  etatMantis varchar(100) NOT NULL default '')";
+      $query = "CREATE TABLE `glpi_plugin_mantis_configs` (
+                  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                  `host` varchar(255) NOT NULL default '',
+                  `url` varchar(255) NOT NULL default '',
+                  `login` varchar(255) NOT NULL default '',
+                  `pwd` varchar(255) NOT NULL default '',
+                  `champsUrlGlpi` varchar(100) NOT NULL default '',
+                  `champsGlpi` varchar(100) NOT NULL default '',
+                  `enable_assign` int(3) NOT NULL default 0,
+                  `neutralize_escalation` int(3) NOT NULL default 0,
+                  `status_after_escalation` int(3) NOT NULL default 0,
+                  `show_option_delete` int(3) NOT NULL default 0,
+                  `doc_categorie` int(3) NOT NULL default 0,
+                  `itemType` varchar(255) NOT NULL,
+                  `etatMantis` varchar(100) NOT NULL default '')";
       $DB->query ( $query ) or die ( $DB->error () );
       // insertion du occcurence dans la table (occurrence par default)
-      $query = "INSERT INTO glpi_plugin_mantis_configs
-                       (id, host,url,login,pwd)
+      $query = "INSERT INTO `glpi_plugin_mantis_configs`
+                       (`id`, `host`, `url`, `login`, `pwd`)
                 VALUES (NULL, '','','','')";
       $DB->query ( $query ) or die ( "error in glpi_plugin_mantis_configs table" . $DB->error () );
    } else {

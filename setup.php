@@ -71,7 +71,7 @@ function plugin_init_mantis() {
    
    $PLUGIN_HOOKS['add_javascript']['mantis'] = array(
          'scripts/scriptMantis.js.php',
-         'scripts/jquery-1.11.0.min.js'
+         //'scripts/jquery-1.11.0.min.js'
    );
    
    Plugin::registerClass('PluginMantisProfile', array(

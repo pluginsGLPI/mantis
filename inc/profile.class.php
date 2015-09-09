@@ -44,6 +44,8 @@
  */
 class PluginMantisProfile extends CommonDBTM {
 
+   const RIGHT_MANTIS_MANTIS = "mantis:mantis";
+   
    static function canCreate() {
       if (isset($_SESSION["glpi_plugin_mantis_profile"])) {
          return ($_SESSION["glpi_plugin_mantis_profile"]['mantis'] == 'w');
@@ -65,6 +67,21 @@ class PluginMantisProfile extends CommonDBTM {
       return '';
    }
 
+   /**
+    * 
+    * Get all rights related to the plugin
+    * 
+    */
+   function getAllRights() {
+      $rights = array(
+          array('itemtype'  => 'PluginMantisProfile',
+                'label'     => __('Use the plugin MantisBT', 'mantis'),
+                'field'     => self::RIGHT_MANTIS_MANTIS
+          ),
+      );
+      return $rights;
+   }
+   
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       if ($item->getType() == 'Profile') {
          $prof = new self();
@@ -85,18 +102,20 @@ class PluginMantisProfile extends CommonDBTM {
          $target = $options['target'];
       }
       
-      if (! Session::haveRight("profile", "r")) {
+      if (! Profile::canView()) {
          return false;
       }
       
-      $canedit = Session::haveRight("profile", "w");
+      $canedit = Profile::canCreate();
       $prof = new Profile();
       if ($id) {
          $this->getFromDB($id);
          $prof->getFromDB($id);
       }
       
-      echo "<form action='" . $target . "' method='post'>";
+      if ($canedit) {
+         echo "<form action='".$this->getFormURL()."' method='post'>";
+      }
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th colspan='2' class='center b'>" . sprintf(__('%1$s %2$s'), ('rights management :'), Dropdown::getDropdownName("glpi_profiles", $this->fields["id"]));
       echo "</th></tr>";
@@ -115,7 +134,18 @@ class PluginMantisProfile extends CommonDBTM {
          echo "</td></tr>";
       }
       echo "</table>";
-      Html::closeForm();
+
+         // Right matrix : need some info to limit to some rights (read / update only)
+//       $rights = $this->getAllRights();
+//       $prof->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
+//                                                          'default_class' => 'tab_bg_2'));
+      if ($canedit) {
+//          echo "<div class='center'>";
+//          echo "<input type='hidden' name='id' value=".$id.">";
+//          echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
+//          echo "</div>";
+         Html::closeForm();
+      }
    }
 
    static function createAdminAccess($ID) {
@@ -152,7 +182,7 @@ class PluginMantisProfile extends CommonDBTM {
       if (! $prof)
          return false;
       else {
-         if ($prof->fields['right'] == 'r')
+         if ($prof->fields['right'] & READ)
             return true;
          else
             return false;
@@ -165,11 +195,34 @@ class PluginMantisProfile extends CommonDBTM {
       if (! $prof)
          return false;
       else {
-         if ($prof->fields['right'] == 'w')
+         if ($prof->fields['right'] & CREATE)
             return true;
          else
             return false;
       }
+   }
+
+   /**
+    * Init profiles
+    *
+    **/
+   static function translateARight($old_right) {
+   	  switch ($old_right) {
+   		 case 'r' :
+   			return READ;
+   			
+   		 case 'w':
+   			return ALLSTANDARDRIGHT;
+   			
+   		 case '1':
+   		    // Not translated yet
+            return '1';
+                  
+   		 case '0':
+   		 case '':
+   		 default:
+   			return 0;
+   	  }
    }
 }
 

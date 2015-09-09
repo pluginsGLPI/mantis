@@ -41,11 +41,11 @@
  */
 include ("../../../inc/includes.php");
 
-Session::checkRight("profile", "r");
+Profile::canView();
 
 $prof = new PluginMantisProfile();
 
 if (isset($_POST['update_user_profile'])) {
    $prof->update($_POST);
-   Html::back();
 }
+Html::back();

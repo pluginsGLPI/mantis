@@ -45,6 +45,8 @@ if (isset($_POST['action'])) {
    
    global $CFG_GLPI;
    
+   $output = "";
+   
    switch ($_POST['action']) {
       
       // TEST DE LA CONNECTIVITE A MANTIS CONNECT
@@ -117,7 +119,7 @@ if (isset($_POST['action'])) {
          $ticket = new $itemType();
          $ticket->getFromDB($id_ticket);
          
-         $output .= getOutPutForticket($ticket, $itemType);
+         $output .= GetOutputForTicket($ticket, $itemType);
          
          if ($itemType != 'Problem') {
             $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
@@ -126,7 +128,7 @@ if (isset($_POST['action'])) {
                foreach ($tickets as $link_ticket) {
                   $ticketLink = new Ticket();
                   $ticketLink->getFromDB($link_ticket['tickets_id']);
-                  $output .= getOutPutForticket($ticketLink, $itemType);
+                  $output .= GetOutputForTicket($ticketLink, $itemType);
                }
             } else {
                $output .= "<DL><DT><STRONG>" . __('No tickets linked', 'mantis');
@@ -335,7 +337,7 @@ if (isset($_POST['action'])) {
    echo 0;
 }
 
-function getOutPutForticket($ticket, $itemType) {
+function GetOutputForTicket($ticket, $itemType) {
    global $DB;
    $conf = new PluginMantisConfig();
    $conf->getFromDB(1);

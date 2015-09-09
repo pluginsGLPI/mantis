@@ -48,7 +48,7 @@ $plugin = new Plugin();
 if ($plugin->isActivated('mantis')) {
    $config = new PluginMantisConfig();
    if (isset($_POST['update'])) {
-      session::checkRight('config', 'w');
+      Profile::canUpdate();
       $config->update($_POST);
       Html::back();
    } else {

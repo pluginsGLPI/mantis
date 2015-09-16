@@ -921,7 +921,7 @@ class PluginMantisMantis extends CommonDBTM {
             if ($conf->fields['show_option_delete'] != 0) {
                $height = 550;
             } else {
-               $height = 110;
+               $height = 200;
             }
             
             Ajax::createModalWindow('popupToDelete' . $row['id'], $CFG_GLPI['root_doc'] . '/plugins/mantis/front/mantis.form.php?action=deleteIssue&id=' . $row['id'] . '&idTicket=' . $row['items_id'] . '&idMantis=' . $row['idMantis'] . '&itemType=' . $itemType, array(
@@ -937,7 +937,7 @@ class PluginMantisMantis extends CommonDBTM {
                
                if ($can_write) {
                   $content .= "<td class='center' colspan='5'>" . __('This ticket does not in the  MantisBT database', 'mantis') . "</td>";
-                  $content .= "<td class = 'center'> <img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/bin16.png'  onclick='popupToDelete" . $row['id'] . ".show()';   style='cursor: pointer;' title=" . __("Delete link", "mantis") . "/></td>";
+                  $content .= "<td class = 'center'> <img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/bin16.png'  onclick='popupToDelete" . $row['id'] . ".dialog(\"open\")';   style='cursor: pointer;' title=" . __("Delete link", "mantis") . "/></td>";
                   $content .= "</tr>";
                } else {
                   $content .= "<td colspan='6' class='center'>" . __('This ticket does not in the  MantisBT database', 'mantis') . "</td>";
@@ -959,7 +959,7 @@ class PluginMantisMantis extends CommonDBTM {
                if ($can_write) {
                   $content .= "<td class = 'center'>";
                   $content .= "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/bin16.png'
-                  onclick='popupToDelete" . $row['id'] . ".show()';
+                  onclick='popupToDelete" . $row['id'] . ".dialog(\"open\")'
                   style='cursor: pointer;' title='" . __("Delete link", "mantis") . "'/></td>";
                } else {
                   $content .= "<td ></td>";

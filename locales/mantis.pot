@@ -57,12 +57,24 @@ msgstr ""
 msgid "MantisBT server IP"
 msgstr ""
 
+#: inc/config.class.php:88
+msgid "host example settings"
+msgstr ""
+
 #: inc/config.class.php:92
 msgid "Wsdl file path"
 msgstr ""
 
+#: inc/config.class.php:95
+msgid "wsdl example settings"
+msgstr ""
+
 #: inc/config.class.php:99
 msgid "MantisBT user login"
+msgstr ""
+
+#: inc/config.class.php: 102
+msgid "user login example settings"
 msgstr ""
 
 #: inc/config.class.php:106

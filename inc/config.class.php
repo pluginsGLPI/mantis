@@ -85,21 +85,21 @@ class PluginMantisConfig extends CommonDBTM {
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("MantisBT server IP", "mantis") . "</td>";
       $content .= "<td><input id='host' name='host' type='text' value='" . $this->fields["host"] . "'/></td>";
-      $content .= "<td>ex: http(s)://128.65.25.74 or http(s)://serveurName</td>";
+      $content .= "<td>" . __('host example settings', 'mantis') . "</td>"; // ex: http(s)://128.65.25.74 or http(s)://serveurName
       $content .= "</tr>";
       
       // PATH FOR WSDL FILE
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("Wsdl file path", "mantis") . "</td>";
       $content .= "<td><input id='url' name='url' type='text' value='" . $this->fields["url"] . "'/></td>";
-      $content .= "<td>ex: mantis/api/soap/mantisconnect.php?wsdl</td>";
+      $content .= "<td>" . __('wsdl example settings', 'mantis') . "</td>"; // ex: mantis/api/soap/mantisconnect.php?wsdl
       $content .= "</tr>";
       
       // MANTIS USER LOGIN
       $content .= "<tr class='tab_bg_1'>";
       $content .= "<td>" . __("MantisBT user login", "mantis") . "</td>";
       $content .= "<td><input  id='login' name='login' type='text' value='" . $this->fields["login"] . "'/></td>";
-      $content .= "<td>ex : administrator</td>";
+      $content .= "<td>" . __('user login example settings', 'mantis') . "</td>"; // ex : administrator
       $content .= "</tr>";
       
       // MANTIS USER PASSWORD

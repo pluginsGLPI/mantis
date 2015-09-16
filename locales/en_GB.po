@@ -77,6 +77,18 @@ msgstr "MantisBT user password"
 msgid "MantisBT field for the link to the ticket GLPI"
 msgstr "MantisBT field for the link to the ticket GLPI"
 
+#: inc/config.class.php:88
+msgid "host example settings"
+msgstr "ex: http(s)://128.65.25.74 or http(s)://serveurName/mantis"
+
+#: inc/config.class.php:95
+msgid "wsdl example settings"
+msgstr "ex: api/soap/mantisconnect.php?wsdl"
+
+#: inc/config.class.php: 102
+msgid "user login example settings"
+msgstr "ex: administrator"
+
 #: inc/config.class.php:97
 msgid "MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)"
 msgstr "MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)"

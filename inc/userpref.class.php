@@ -8,6 +8,40 @@
 class PluginMantisUserpref extends CommonDBTM {
 
    /**
+    * Install this class in GLPI
+    * 
+    * 
+    */
+   static function install($migration) {
+      global $DB;
+      
+      if (! TableExists("glpi_plugin_mantis_userprefs")) {
+         $query = "CREATE TABLE `glpi_plugin_mantis_userprefs` (
+               `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+               `users_id` int(11) NOT NULL ,
+               `followTask` int(11) NOT NULL default '0',
+               `followFollow` int(11) NOT NULL default '0',
+               `followAttachment` int(11) NOT NULL default '0',
+               `followTitle` int(11) NOT NULL default '0',
+               `followDescription` int(11) NOT NULL default '0',
+               `followCategorie` int(11) NOT NULL default '0',
+               `followLinkedItem` int(11) NOT NULL default '0',
+               UNIQUE KEY (`users_id`))";
+         $DB->query($query) or die($DB->error());
+      }
+   }
+   
+   /**
+    *
+    * Upgrade the plugin from a older version
+    * !! Needs review
+    *
+    * @param Migration $migration
+    */
+   static function upgrade(Migration $migration) {
+   }
+   
+   /**
     * Define tab name
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -55,10 +89,10 @@ class PluginMantisUserpref extends CommonDBTM {
     */
    public function showForm($ID, $options = array()) {
       if (! $this->getFromDB($ID)) {
-         $this->add(array(
-               'users_id' => $ID,
-               'id' => $ID
-         ));
+         $this->fields['users_id'] = $ID;
+         $this->fields['id'] = $ID;
+         $this->add($this->fields);
+         $this->updateInDB($this->fields);
       }
       
       $target = $this->getFormURL();
@@ -120,5 +154,17 @@ class PluginMantisUserpref extends CommonDBTM {
       
       echo "</table>";
       Html::closeForm();
+   }
+
+   /**
+    * Uninstall Cron Task from BDD
+    */
+   static function uninstall() {
+      global $DB;
+      
+      if (TableExists("glpi_plugin_mantis_userprefs")) {
+         $query = "DROP TABLE `glpi_plugin_mantis_userprefs`";
+         $DB->query($query) or die($DB->error());
+      }
    }
 } 

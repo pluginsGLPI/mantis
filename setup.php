@@ -63,7 +63,7 @@ function plugin_init_mantis() {
    $plugin = new Plugin();
    
    if (Session::getLoginUserID() && $plugin->isActivated('mantis')) {
-      if (plugin_mantis_haveRight("right", "w")) {
+      if (true || plugin_mantis_haveRight("right", "w")) {
          $PLUGIN_HOOKS['menu_entry']['mantis'] = 'front/config.form.php';
          $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
       }

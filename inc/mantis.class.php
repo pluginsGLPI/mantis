@@ -46,9 +46,25 @@
 class PluginMantisMantis extends CommonDBTM {
 
    /**
-    * Install CronTask on BDD
+    * Install this class in GLPI
+    * 
+    * 
     */
-   static function install() {
+   static function install($migration) {
+      global $DB;
+      
+      if (! TableExists("glpi_plugin_mantis_mantis")) {
+         $query = "CREATE TABLE `glpi_plugin_mantis_mantis` (
+                  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                  `items_id` int(11) NOT NULL,
+                  `idMantis` int(11) NOT NULL,
+                  `dateEscalade` date NOT NULL,
+                  `itemtype` varchar(255) NOT NULL,
+                  `user` int(11) NOT NULL)";
+         $DB->query($query) or die($DB->error());
+      }
+      
+      //Create CLI automated task
       $cron = new CronTask();
       if (! $cron->getFromDBbyName(__CLASS__, 'mantis')) {
          CronTask::Register(__CLASS__, 'mantis', 7 * DAY_TIMESTAMP, array(
@@ -59,10 +75,43 @@ class PluginMantisMantis extends CommonDBTM {
    }
 
    /**
+    * 
+    * Upgrade the plugin from a older version
+    * !! Needs review
+    * 
+    * @param Migration $migration
+    */
+   static function upgrade(Migration $migration) {
+      
+      switch (plugin_simcard_currentVersion()) {
+         case '200' : // This string must be checked agains previous releases
+            $migration->setVersion(200);
+            $table = 'glpi_plugin_mantis_mantis';
+            $mig->addField($table, 'itemType', 'string');
+            $mig->executeMigration();
+            break;
+   
+         case '201' : // This string must be checked agains previous releases
+            $migration->setVersion(200);
+            $table = 'glpi_plugin_mantis_mantis';
+            $mig->addField($table, 'itemType', 'string');
+            $mig->changeField('glpi_plugin_mantis_mantis', 'itemType', 'itemtype', 'string', array());
+            $mig->changeField('glpi_plugin_mantis_mantis', 'idTicket', 'items_id', 'integer', array());
+            $mig->executeMigration();
+            break;
+      }
+   }
+   
+   /**
     * Uninstall Cron Task from BDD
     */
    static function uninstall() {
+      global $DB;
+      
       CronTask::Unregister(__CLASS__);
+      
+      $query = "DROP TABLE IF EXISTS `glpi_plugin_mantis_mantis`";
+      $DB->query($query) or die($DB->error());
    }
 
    /**
@@ -556,7 +605,13 @@ class PluginMantisMantis extends CommonDBTM {
       global $CFG_GLPI;
       
       $pref = new PluginMantisUserpref();
-      $pref->getFromDB(Session::getLoginUserID());
+      if (!$pref->getFromDB(Session::getLoginUserID())) {
+         $pref->getEmpty();
+         $pref->fields['users_id'] = Session::getLoginUserID();
+         $pref->fields['id'] = Session::getLoginUserID();
+         $pref->add($pref->fields);
+         $pref->updateInDB($pref->fields);
+      }
       
       $style = "";
       if ($itemType == 'Problem')
@@ -668,7 +723,13 @@ class PluginMantisMantis extends CommonDBTM {
       $config->getFromDB(1);
       
       $pref = new PluginMantisUserpref();
-      $pref->getFromDB(Session::getLoginUserID());
+      if (!$pref->getFromDB(Session::getLoginUserID())) {
+         $pref->getEmpty();
+         $pref->fields['users_id'] = Session::getLoginUserID();
+         $pref->fields['id'] = Session::getLoginUserID();
+         $pref->add($pref->fields);
+         $pref->updateInDB($pref->fields);
+      }
       
       $styleItemType = "";
       if ($itemType == 'Problem')

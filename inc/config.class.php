@@ -46,6 +46,78 @@
 class PluginMantisConfig extends CommonDBTM {
 
    /**
+    * Install this class in GLPI
+    * 
+    * 
+    */
+   static function install($migration) {
+      global $DB;
+      
+      if (! TableExists("glpi_plugin_mantis_configs")) {
+         $query = "CREATE TABLE `glpi_plugin_mantis_configs` (
+                     `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                     `version` varchar(255) NOT NULL default '',
+                     `host` varchar(255) NOT NULL default '',
+                     `url` varchar(255) NOT NULL default '',
+                     `login` varchar(255) NOT NULL default '',
+                     `pwd` varchar(255) NOT NULL default '',
+                     `champsUrlGlpi` varchar(100) NOT NULL default '',
+                     `champsGlpi` varchar(100) NOT NULL default '',
+                     `enable_assign` int(3) NOT NULL default 0,
+                     `neutralize_escalation` int(3) NOT NULL default 0,
+                     `status_after_escalation` int(3) NOT NULL default 0,
+                     `show_option_delete` int(3) NOT NULL default 0,
+                     `doc_categorie` int(3) NOT NULL default 0,
+                     `itemType` varchar(255) NOT NULL default '',
+                     `etatMantis` varchar(100) NOT NULL default '')";
+         $DB->query($query) or die($DB->error());
+         
+         // insertion du occcurence dans la table (occurrence par default)
+         $query = "INSERT INTO `glpi_plugin_mantis_configs`
+                          (`id`, `version`)
+                   VALUES (NULL, " . PLUGIN_MANTIS_VERSION . ")";
+         $DB->query($query) or die("error in glpi_plugin_mantis_configs table" . $DB->error());
+      } 
+   }
+   
+   /**
+    *
+    * Upgrade the plugin from a older version
+    * !! Needs review
+    *
+    * @param Migration $migration
+    */
+   static function upgrade(Migration $migration) {
+      global $DB;
+      
+      switch (plugin_simcard_currentVersion()) {
+         case '200' : // This string must be checked agains previous releases
+            $migration->setVersion(200);
+
+            $table = 'glpi_plugin_mantis_configs';
+            $migration->addField($table, 'neutralize_escalation', 'integer', array(
+                  'value' => 5
+            ));
+            $migration->addField($table, 'status_after_escalation', 'integer');
+            $migration->addField($table, 'show_option_delete', 'integer', array(
+                  'value' => 0
+            ));
+            $migration->addField($table, 'doc_categorie', 'integer', array(
+                  'value' => 0
+            ));
+            $migration->addField($table, 'itemType', 'string');
+            $migration->executeMigration();
+            break;
+      }
+      
+      $query = "UPDATE `glpi_plugin_mantis_configs`
+                          (`version`)
+                   VALUES (" . PLUGIN_MANTIS_VERSION . ")
+                   WHERE `id` = '1'";
+      $DB->query($query) or die("error in glpi_plugin_mantis_configs table" . $DB->error());
+   }
+   
+   /**
     * Function to define if the user have right to create
     *
     * @return bool|booleen
@@ -285,6 +357,18 @@ class PluginMantisConfig extends CommonDBTM {
          echo $output;
       } else {
          return $output;
+      }
+   }
+
+   /**
+    * Uninstall 
+    */
+   static function uninstall() {
+      global $DB;
+      
+      if (TableExists("glpi_plugin_mantis_configs")) {
+         $query = "DROP TABLE IF EXISTS `glpi_plugin_mantis_configs`";
+         $DB->query($query) or die($DB->error());
       }
    }
 }

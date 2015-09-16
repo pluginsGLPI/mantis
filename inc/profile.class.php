@@ -46,6 +46,39 @@ class PluginMantisProfile extends CommonDBTM {
 
    const RIGHT_MANTIS_MANTIS = "mantis:mantis";
    
+   /**
+    * Install this class in GLPI
+    * 
+    * 
+    */
+   static function install($migration) {
+      global $DB;
+      
+      if (! TableExists("glpi_plugin_mantis_profiles")) {
+         // requete de création de la table
+         $query = "CREATE TABLE `glpi_plugin_mantis_profiles` (
+                  `id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
+                  `right` char(1) collate utf8_unicode_ci default NULL,
+                  PRIMARY KEY  (`id`)
+                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+         $DB->queryOrDie($query, $DB->error());
+         
+         // creation du premier accès nécessaire lors de l'installation du plugin
+         self::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
+      }
+   
+   }
+   
+   /**
+    *
+    * Upgrade the plugin from a older version
+    * !! Needs review
+    *
+    * @param Migration $migration
+    */
+   static function upgrade(Migration $migration) {
+   }
+   
    static function canCreate() {
       if (isset($_SESSION["glpi_plugin_mantis_profile"])) {
          return ($_SESSION["glpi_plugin_mantis_profile"]['mantis'] == 'w');
@@ -80,6 +113,22 @@ class PluginMantisProfile extends CommonDBTM {
           ),
       );
       return $rights;
+   }
+   
+   /**
+    * Get rights for an item _ may be overload by object
+    *
+    * @since version 0.85
+    *
+    * @param $interface   string   (defalt 'central')
+    *
+    * @return array of rights to display
+    **/
+   function getRights($interface='central') {
+      $values = array(READ    => __('Read'),
+            UPDATE  => __('Update')
+      );
+      return $values;
    }
    
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
@@ -120,25 +169,25 @@ class PluginMantisProfile extends CommonDBTM {
       echo "<tr><th colspan='2' class='center b'>" . sprintf(__('%1$s %2$s'), ('rights management :'), Dropdown::getDropdownName("glpi_profiles", $this->fields["id"]));
       echo "</th></tr>";
       
-      echo "<tr class='tab_bg_2'>";
-      echo '<td>' . __("Use the plugin MantisBT", "mantis") . '</td><td>';
-      Profile::dropdownNoneReadWrite("right", $this->fields["right"], 1, 1, 1);
-      echo "</td></tr>";
+//       echo "<tr class='tab_bg_2'>";
+//       echo '<td>' . __("Use the plugin MantisBT", "mantis") . '</td><td>';
+//       Profile::dropdownNoneReadWrite("right", $this->fields["right"], 1, 1, 1);
+//       echo "</td></tr>";
       
       if ($canedit) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td class='center' colspan='2'>";
-         echo "<input type='hidden' name='id' value=$id>";
-         echo "<input type='submit' name='update_user_profile' value=" . __('Update', 'mantis') . "
-                class='submit'>";
-         echo "</td></tr>";
+//          echo "<tr class='tab_bg_1'>";
+//          echo "<td class='center' colspan='2'>";
+//          echo "<input type='hidden' name='id' value=$id>";
+//          echo "<input type='submit' name='update_user_profile' value=" . __('Update', 'mantis') . "
+//                 class='submit'>";
+//          echo "</td></tr>";
       }
       echo "</table>";
 
          // Right matrix : need some info to limit to some rights (read / update only)
-//       $rights = $this->getAllRights();
-//       $prof->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
-//                                                          'default_class' => 'tab_bg_2'));
+      $rights = $this->getAllRights();
+      $prof->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
+                                                         'default_class' => 'tab_bg_2'));
       if ($canedit) {
 //          echo "<div class='center'>";
 //          echo "<input type='hidden' name='id' value=".$id.">";
@@ -148,6 +197,11 @@ class PluginMantisProfile extends CommonDBTM {
       }
    }
 
+   /**
+    * 
+    * 
+    * @param unknown $ID
+    */
    static function createAdminAccess($ID) {
       $myProf = new self();
       // si le profile n'existe pas déjà dans la table profile de mon plugin
@@ -224,7 +278,16 @@ class PluginMantisProfile extends CommonDBTM {
    			return 0;
    	  }
    }
+
+   /**
+    * Uninstall 
+    */
+   static function uninstall() {
+      global $DB;
+      
+      if (TableExists("glpi_plugin_mantis_profiles")) {
+         $query = "DROP TABLE IF EXISTS `glpi_plugin_mantis_profiles`";
+         $DB->query($query) or die($DB->error());
+      }
+   }
 }
-
-
-

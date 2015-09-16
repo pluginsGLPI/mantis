@@ -399,8 +399,8 @@ class PluginMantisMantis extends CommonDBTM {
     */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       if ($item->getType() == 'Ticket' || $item->getType() == 'Problem') {
-         $mon_plugin = new self();
-         $mon_plugin->showForm($item);
+         $mantis = new self();
+         $mantis->showForm($item);
       }
       return true;
    }
@@ -898,7 +898,7 @@ class PluginMantisMantis extends CommonDBTM {
                if ($can_write) {
                   $content .= "<td class = 'center'>";
                   $content .= "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/bin16.png'
-                  onclick='popupToDelete" . $row['id'] . ".display(\"open\")';
+                  onclick='popupToDelete" . $row['id'] . ".show()';
                   style='cursor: pointer;' title='" . __("Delete link", "mantis") . "'/></td>";
                } else {
                   $content .= "<td ></td>";

@@ -59,7 +59,7 @@ function plugin_mantis_install() {
                items_id int(11) NOT NULL,
                idMantis int(11) NOT NULL,
                dateEscalade date NOT NULL,
-               itemtype varchar NOT NULL,
+               itemtype varchar(255) NOT NULL,
                user int(11) NOT NULL)";
         $DB->query($query) or die($DB->error());
     }else{

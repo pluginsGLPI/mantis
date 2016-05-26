@@ -46,13 +46,13 @@
  * @return boolean
  */
 function plugin_mantis_install() {
+   global $DB;
+
    require_once ('inc/mantis.class.php');
    require_once ('inc/userpref.class.php');
    require_once ('inc/config.class.php');
-    
-   global $DB;
    
-   $migration = new Migration(PLUGIN_SIMCARD_VERSION);
+   $migration = new Migration(PLUGIN_MANTIS_VERSION);
    $currentVersion = plugin_mantis_currentVersion();
    $migration->setVersion($currentVersion);
    
@@ -64,6 +64,66 @@ function plugin_mantis_install() {
       PluginMantisMantis::upgrade($migration);
       PluginMantisUserpref::upgrade($migration);
       PluginMantisConfig::upgrade($migration);
+   }
+
+    // création de la table du plugin
+    if (!TableExists("glpi_plugin_mantis_mantis")) {
+        $query = "CREATE TABLE glpi_plugin_mantis_mantis (
+               id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+               items_id int(11) NOT NULL,
+               idMantis int(11) NOT NULL,
+               dateEscalade date NOT NULL,
+               itemtype varchar(255) NOT NULL,
+               user int(11) NOT NULL)";
+        $DB->query($query) or die($DB->error());
+    }else{
+        $mig = new Migration(200);
+        $table = 'glpi_plugin_mantis_mantis';
+        $mig->addField($table, 'itemType', 'string');
+        $mig->executeMigration();
+
+        $mig = new Migration(201);
+        $table = 'glpi_plugin_mantis_mantis';
+        $mig->addField($table, 'itemType', 'string');
+        $mig->changeField('glpi_plugin_mantis_mantis','itemType','itemtype','string' ,array());
+        $mig->changeField('glpi_plugin_mantis_mantis','idTicket','items_id','integer' ,array());
+        $mig->executeMigration();
+    }
+
+
+    // création de la table du plugin
+    if (!TableExists("glpi_plugin_mantis_userprefs")) {
+        $query = "CREATE TABLE glpi_plugin_mantis_userprefs (
+               id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+               users_id int(11) NOT NULL ,
+               followTask int(11) NOT NULL default '0',
+               followFollow int(11) NOT NULL default '0',
+               followAttachment int(11) NOT NULL default '0',
+               followTitle int(11) NOT NULL default '0',
+               followDescription int(11) NOT NULL default '0',
+               followCategorie int(11) NOT NULL default '0',
+               followLinkedItem int(11) NOT NULL default '0',
+               UNIQUE KEY (`users_id`))";
+        $DB->query($query) or die($DB->error());
+    }
+
+
+
+
+   // Création de la table uniquement lors de la première installation
+   if (!TableExists("glpi_plugin_mantis_profiles")) {
+      // requete de création de la table
+      $query = "CREATE TABLE `glpi_plugin_mantis_profiles` (
+               `id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
+               `right` char(1) collate utf8_unicode_ci default NULL,
+               PRIMARY KEY  (`id`)
+             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+      $DB->queryOrDie($query, $DB->error());
+
+      //creation du premier accès nécessaire lors de l'installation du plugin
+      include_once("inc/profile.class.php");
+      PluginMantisProfile::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
+
    }
    return true;
 }

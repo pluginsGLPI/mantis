@@ -69,16 +69,6 @@ class PluginMantisProfile extends CommonDBTM {
    
    }
    
-   /**
-    *
-    * Upgrade the plugin from a older version
-    * !! Needs review
-    *
-    * @param Migration $migration
-    */
-   static function upgrade(Migration $migration) {
-   }
-   
    static function canCreate() {
       if (isset($_SESSION["glpi_plugin_mantis_profile"])) {
          return ($_SESSION["glpi_plugin_mantis_profile"]['mantis'] == 'w');

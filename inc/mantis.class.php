@@ -53,15 +53,31 @@ class PluginMantisMantis extends CommonDBTM {
    static function install($migration) {
       global $DB;
       
-      if (! TableExists("glpi_plugin_mantis_mantis")) {
-         $query = "CREATE TABLE `glpi_plugin_mantis_mantis` (
-                  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                  `items_id` int(11) NOT NULL,
-                  `idMantis` int(11) NOT NULL,
-                  `dateEscalade` date NOT NULL,
-                  `itemtype` varchar(255) NOT NULL,
-                  `user` int(11) NOT NULL)";
+      $table = getTableForItemType(__CLASS__);
+
+      if (!TableExists($table)) {
+
+         $query = "CREATE TABLE `".$table."` (
+                     `id` int(11) NOT NULL AUTO_INCREMENT,
+                     `items_id` int(11) NOT NULL,
+                     `idMantis` int(11) NOT NULL,
+                     `dateEscalade` date NOT NULL,
+                     `itemtype` varchar(255) NOT NULL,
+                     `user` int(11) NOT NULL,
+                    PRIMARY KEY (`id`)
+                  ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
+
+      }else{
+         /* TODO
+         $migration->addField($table, 'itemType', 'string');
+         $migration->executeMigration();
+
+         $migration->addField($table, 'itemType', 'string');
+         $migration->changeField('glpi_plugin_mantis_mantis','itemType','itemtype','string' ,array());
+         $migration->changeField('glpi_plugin_mantis_mantis','idTicket','items_id','integer' ,array());
+         $migration->executeMigration();
+         */
       }
       
       //Create CLI automated task
@@ -71,34 +87,6 @@ class PluginMantisMantis extends CommonDBTM {
                'param' => 24,
                'mode' => CronTask::MODE_EXTERNAL
          ));
-      }
-   }
-
-   /**
-    * 
-    * Upgrade the plugin from a older version
-    * !! Needs review
-    * 
-    * @param Migration $migration
-    */
-   static function upgrade(Migration $migration) {
-      
-      switch (plugin_simcard_currentVersion()) {
-         case '200' : // This string must be checked agains previous releases
-            $migration->setVersion(200);
-            $table = 'glpi_plugin_mantis_mantis';
-            $mig->addField($table, 'itemType', 'string');
-            $mig->executeMigration();
-            break;
-   
-         case '201' : // This string must be checked agains previous releases
-            $migration->setVersion(200);
-            $table = 'glpi_plugin_mantis_mantis';
-            $mig->addField($table, 'itemType', 'string');
-            $mig->changeField('glpi_plugin_mantis_mantis', 'itemType', 'itemtype', 'string', array());
-            $mig->changeField('glpi_plugin_mantis_mantis', 'idTicket', 'items_id', 'integer', array());
-            $mig->executeMigration();
-            break;
       }
    }
    

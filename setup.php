@@ -39,12 +39,13 @@
  *
  * ------------------------------------------------------------------------
  */
-define("PLUGIN_MANTIS_VERSION", "0.85+2.2");
+define("PLUGIN_MANTIS_VERSION", "3.0.0");
+define("PLUGIN_MANTIS_MIGRATION", "300");
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_MANTIS_GLPI_MIN_VERSION", "0.85");
+define("PLUGIN_MANTIS_MIN_GLPI", "0.85");
 // Maximum GLPI version, exclusive
-define("PLUGIN_MANTIS_GLPI_MAX_VERSION", "0.92");
+define("PLUGIN_MANTIS_MAX_GLPI", "9.2");
 
 /**
  * function to initialize the plugin
@@ -55,48 +56,36 @@ function plugin_init_mantis() {
    global $PLUGIN_HOOKS;
    
    $PLUGIN_HOOKS['csrf_compliant']['mantis'] = true;
-   $PLUGIN_HOOKS['change_profile']['mantis'] = array(
-         'PluginMantisProfile',
-         'changeProfile'
-   );
+
+   $PLUGIN_HOOKS['change_profile']['mantis'] = array('PluginMantisProfile', 'changeProfile');
    
    $plugin = new Plugin();
    
    if (Session::getLoginUserID() && $plugin->isActivated('mantis')) {
-      if (true || plugin_mantis_haveRight("right", "w")) {
-         $PLUGIN_HOOKS['menu_entry']['mantis'] = 'front/config.form.php';
+
+      if (Session::haveRight('config', UPDATE)) {
          $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
       }
+
+      $PLUGIN_HOOKS['add_javascript']['mantis'] = array(
+            'scripts/scriptMantis.js.php'
+      );
+      
+      if (Session::haveRight('profile', UPDATE)) {
+         Plugin::registerClass('PluginMantisProfile', 
+                                 array('addtabon' => 'Profile'));
+      }
+      
+      Plugin::registerClass('PluginMantisConfig');
+      
+      Plugin::registerClass('PluginMantisMantisws');
+      
+      Plugin::registerClass('PluginMantisMantis', 
+                              array('addtabon' => array('Ticket','Problem')));
+      
+      Plugin::registerClass('PluginMantisUserPref', 
+                              array('addtabon' => array('User','Preference')));
    }
-   
-   $PLUGIN_HOOKS['add_javascript']['mantis'] = array(
-         'scripts/scriptMantis.js.php',
-         //'scripts/jquery-1.11.0.min.js'
-   );
-   
-   Plugin::registerClass('PluginMantisProfile', array(
-         'addtabon' => array(
-               'Profile'
-         )
-   ));
-   
-   Plugin::registerClass('PluginMantisConfig');
-   
-   Plugin::registerClass('PluginMantisMantisws');
-   
-   Plugin::registerClass('PluginMantisMantis', array(
-         'addtabon' => array(
-               'Ticket',
-               'Problem'
-         )
-   ));
-   
-   Plugin::registerClass('PluginMantisUserPref', array(
-         'addtabon' => array(
-               'User',
-               'Preference'
-         )
-   ));
 }
 
 /**
@@ -108,10 +97,10 @@ function plugin_version_mantis() {
    return array(
          'name' => __("MantisBT synchronisation", "mantis"),
          'version' => PLUGIN_MANTIS_VERSION,
-         'author' => 'Stanislas KITA (teclib\')',
+         'author' => 'TECLIB\'',
          'license' => 'GPLv3',
-         'homepage' => 'https://github.com/teclib/mantis',
-         'minGlpiVersion' => PLUGIN_MANTIS_GLPI_MIN_VERSION
+         'homepage' => 'https://github.com/pluginsGLPI/mantis',
+         'minGlpiVersion' => PLUGIN_MANTIS_MIN_GLPI
    );
 }
 
@@ -121,13 +110,20 @@ function plugin_version_mantis() {
  * @return boolean
  */
 function plugin_mantis_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, PLUGIN_MANTIS_GLPI_MIN_VERSION, 'lt') || version_compare(GLPI_VERSION, PLUGIN_MANTIS_GLPI_MAX_VERSION, 'ge')) {
-      echo "This plugin requires GLPI >= " . PLUGIN_MANTIS_GLPI_MIN_VERSION . " and GLPI < " . PLUGIN_MANTIS_GLPI_MAX_VERSION;
+   if (version_compare(GLPI_VERSION, PLUGIN_MANTIS_MIN_GLPI,'lt')
+      || version_compare(GLPI_VERSION, PLUGIN_MANTIS_MAX_GLPI,'ge')
+   ) {
+      echo sprintf(
+         __('This plugin requires GLPi > %1$s and < %2$s'),
+               PLUGIN_MANTIS_MIN_GLPI,
+               PLUGIN_MANTIS_MAX_GLPI
+      );
+
       return false;
    }
    
-   if (! extension_loaded('soap')) {
-      echo "This plugin requires SOAP extension for PHP";
+   if (!extension_loaded('soap')) {
+      _e("This plugin requires SOAP extension for PHP");
       return false;
    }
    
@@ -151,40 +147,4 @@ function plugin_mantis_check_config($verbose = false) {
    }
    
    return false;
-}
-
-/**
- * function to check rights on plugin
- *
- * @param string $module
- * @param string $right
- * @return boolean
- */
-function plugin_mantis_haveRight($module, $right) {
-   $matches = array(
-         "" => array(
-               "",
-               "r",
-               "w"
-         ), // ne doit pas arriver normalement
-         "r" => array(
-               "r",
-               "w"
-         ),
-         "w" => array(
-               "w"
-         ),
-         "1" => array(
-               "1"
-         ),
-         "0" => array(
-               "0",
-               "1"
-         )
-   ); // ne doit pas arriver non plus
-   
-   if (isset($_SESSION["glpi_plugin_mantis_profile"][$module]) && in_array($_SESSION["glpi_plugin_mantis_profile"][$module], $matches[$right]))
-      return true;
-   else
-      return false;
 }

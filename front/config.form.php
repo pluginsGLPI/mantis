@@ -41,23 +41,23 @@
  */
 include ('../../../inc/includes.php');
 
-Html::header(__("Setup - MantisBT", "mantis"), $_SERVER['PHP_SELF'], 'plugins', 'Mantis', 'configuration');
+Session::haveRight("config", UPDATE);
 
-$plugin = new Plugin();
+Html::header(PluginMantisConfig::getTypeName(1), 
+               $_SERVER['PHP_SELF'], "plugins", "mantis", "config");
 
-if ($plugin->isActivated('mantis')) {
-   $config = new PluginMantisConfig();
-   if (isset($_POST['update'])) {
-      Profile::canUpdate();
-      $config->update($_POST);
-      Html::back();
-   } else {
-      $config->showConfigForm();
-   }
-} else {
-   global $CFG_GLPI;
-   echo '<div class=\'center\'><br><br><img src=\'' . $CFG_GLPI['root_doc'] . '/pics/warning.png\' alt=\'warning\'><br><br>';
-   echo '<b>' . __("Thank you to activate plugin", "mantis") . '</b></div>';
+if (!isset($_GET["id"])) {
+   $_GET["id"] = 1;
 }
+
+$PluginMantisConfig = new PluginMantisConfig();
+
+if (isset($_POST["update"])) {
+   $PluginMantisConfig->check($_POST["id"], UPDATE);
+   $PluginMantisConfig->update($_POST);
+   Html::back();
+}
+
+$PluginMantisConfig->showForm($_GET["id"]);
 
 Html::footer();

@@ -40,107 +40,49 @@
  * ------------------------------------------------------------------------
  */
 
+
 /**
- * function to install the plugin
+ * Install all necessary elements for the plugin
  *
- * @return boolean
+ * @return boolean True if success
  */
 function plugin_mantis_install() {
-   global $DB;
 
-   require_once ('inc/mantis.class.php');
-   require_once ('inc/userpref.class.php');
-   require_once ('inc/config.class.php');
-   
    $migration = new Migration(PLUGIN_MANTIS_VERSION);
-   $currentVersion = plugin_mantis_currentVersion();
-   $migration->setVersion($currentVersion);
-   
-   if ($currentVersion == 0) {
-      PluginMantisMantis::install($migration);
-      PluginMantisUserpref::install($migration);
-      PluginMantisConfig::install($migration);
-   } else {
-      PluginMantisMantis::upgrade($migration);
-      PluginMantisUserpref::upgrade($migration);
-      PluginMantisConfig::upgrade($migration);
-   }
 
-    // création de la table du plugin
-    if (!TableExists("glpi_plugin_mantis_mantis")) {
-        $query = "CREATE TABLE glpi_plugin_mantis_mantis (
-               id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-               items_id int(11) NOT NULL,
-               idMantis int(11) NOT NULL,
-               dateEscalade date NOT NULL,
-               itemtype varchar(255) NOT NULL,
-               user int(11) NOT NULL)";
-        $DB->query($query) or die($DB->error());
-    }else{
-        $mig = new Migration(200);
-        $table = 'glpi_plugin_mantis_mantis';
-        $mig->addField($table, 'itemType', 'string');
-        $mig->executeMigration();
-
-        $mig = new Migration(201);
-        $table = 'glpi_plugin_mantis_mantis';
-        $mig->addField($table, 'itemType', 'string');
-        $mig->changeField('glpi_plugin_mantis_mantis','itemType','itemtype','string' ,array());
-        $mig->changeField('glpi_plugin_mantis_mantis','idTicket','items_id','integer' ,array());
-        $mig->executeMigration();
-    }
-
-
-    // création de la table du plugin
-    if (!TableExists("glpi_plugin_mantis_userprefs")) {
-        $query = "CREATE TABLE glpi_plugin_mantis_userprefs (
-               id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-               users_id int(11) NOT NULL ,
-               followTask int(11) NOT NULL default '0',
-               followFollow int(11) NOT NULL default '0',
-               followAttachment int(11) NOT NULL default '0',
-               followTitle int(11) NOT NULL default '0',
-               followDescription int(11) NOT NULL default '0',
-               followCategorie int(11) NOT NULL default '0',
-               followLinkedItem int(11) NOT NULL default '0',
-               UNIQUE KEY (`users_id`))";
-        $DB->query($query) or die($DB->error());
-    }
-
-
-
-
-   // Création de la table uniquement lors de la première installation
-   if (!TableExists("glpi_plugin_mantis_profiles")) {
-      // requete de création de la table
-      $query = "CREATE TABLE `glpi_plugin_mantis_profiles` (
-               `id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
-               `right` char(1) collate utf8_unicode_ci default NULL,
-               PRIMARY KEY  (`id`)
-             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryOrDie($query, $DB->error());
-
-      //creation du premier accès nécessaire lors de l'installation du plugin
-      include_once("inc/profile.class.php");
-      PluginMantisProfile::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
-
+   // Parse inc directory
+   foreach (glob(dirname(__FILE__).'/inc/*') as $filepath) {
+      // Load *.class.php files and get the class name
+      if (preg_match("/inc.(.+)\.class.php/", $filepath, $matches)) {
+         $classname = 'PluginMantis' . ucfirst($matches[1]);
+         include_once($filepath);
+         // If the install method exists, load it
+         if (method_exists($classname, 'install')) {
+            $classname::install($migration);
+         }
+      }
    }
    return true;
 }
 
 /**
- * function to uninstall the plugin
+ * Uninstall previously installed elements of the plugin
  *
- * @return boolean
+ * @return boolean True if success
  */
 function plugin_mantis_uninstall() {
-   require_once ('inc/mantis.class.php');
-   require_once ('inc/userpref.class.php');
-   require_once ('inc/config.class.php');
-   
-   PluginMantisMantis::uninstall();
-   PluginMantisUserpref::uninstall();
-   PluginMantisConfig::uninstall();
+   // Parse inc directory
+   foreach (glob(dirname(__FILE__).'/inc/*') as $filepath) {
+      // Load *.class.php files and get the class name
+      if (preg_match("/inc.(.+)\.class.php/", $filepath, $matches)) {
+         $classname = 'PluginMantis' . ucfirst($matches[1]);
+         include_once($filepath);
+         // If the install method exists, load it
+         if (method_exists($classname, 'uninstall')) {
+            $classname::uninstall();
+         }
+      }
+   }
    return true;
 }
 
@@ -188,42 +130,4 @@ function plugin_mantis_giveItem($type, $ID, $data, $num) {
    }
    
    return "";
-}
-
-/**
- *
- * Determine if the plugin should be installed or upgraded
- *
- * Returns 0 if the plugin is not yet installed
- * Returns version string if the plugin is already installed
- *
- * @since 0.85+2.2
- *
- * @return string
- */
-function plugin_mantis_currentVersion() {
-   static $currentVersion = null;
-   
-   if ($currentVersion === null) {
-      if (TableExists("glpi_plugin_mantis_mantis")) {
-         if (!FieldExists("glpi_plugin_mantis_mantis", "version")) {
-            // Version < 0.85+2.2 : no version control for upgrade
-            // No known previous releases, give up for safety
-            // Needs further development
-            echo ('Cannot upgrade from previous versions for safety reason: unknown database model');
-            die ('\n Please, contact a developer');
-         } else {
-            // Version >= 0.85+2.2
-            $conf = new PluginMantisConfig();
-            if (!$conf->getFromDB(1)) {
-               die('Unable to get current version of the plugin.');
-            } else {
-               $currentVersion = $conf->fields['version'];
-            }
-         }
-      } else {
-         $currentVersion = 0;
-      }
-   }
-   return $currentVersion;
 }

@@ -32,16 +32,6 @@ class PluginMantisUserpref extends CommonDBTM {
    }
    
    /**
-    *
-    * Upgrade the plugin from a older version
-    * !! Needs review
-    *
-    * @param Migration $migration
-    */
-   static function upgrade(Migration $migration) {
-   }
-   
-   /**
     * Define tab name
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {

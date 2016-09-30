@@ -40,213 +40,117 @@
  * ------------------------------------------------------------------------
  */
 
-/**
- * Class PluginMantisConfig pour la partie gestion de la configuration
- */
+if (!defined('GLPI_ROOT')) {
+   die("Sorry. You can't access directly to this file");
+}
+
 class PluginMantisConfig extends CommonDBTM {
 
-   /**
-    * Install this class in GLPI
-    * 
-    * 
-    */
-   static function install($migration) {
-      global $DB;
-      
-      if (! TableExists("glpi_plugin_mantis_configs")) {
-         $query = "CREATE TABLE `glpi_plugin_mantis_configs` (
-                     `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                     `version` varchar(255) NOT NULL default '',
-                     `host` varchar(255) NOT NULL default '',
-                     `url` varchar(255) NOT NULL default '',
-                     `login` varchar(255) NOT NULL default '',
-                     `pwd` varchar(255) NOT NULL default '',
-                     `champsUrlGlpi` varchar(100) NOT NULL default '',
-                     `champsGlpi` varchar(100) NOT NULL default '',
-                     `enable_assign` int(3) NOT NULL default 0,
-                     `neutralize_escalation` int(3) NOT NULL default 0,
-                     `status_after_escalation` int(3) NOT NULL default 0,
-                     `show_option_delete` int(3) NOT NULL default 0,
-                     `doc_categorie` int(3) NOT NULL default 0,
-                     `itemType` varchar(255) NOT NULL default '',
-                     `etatMantis` varchar(100) NOT NULL default '')";
-         $DB->query($query) or die($DB->error());
-         
-         // insertion du occcurence dans la table (occurrence par default)
-         $query = "INSERT INTO `glpi_plugin_mantis_configs`
-                          (`id`, `version`)
-                   VALUES (NULL, " . PLUGIN_MANTIS_VERSION . ")";
-         $DB->query($query) or die("error in glpi_plugin_mantis_configs table" . $DB->error());
-      } 
-   }
-   
-   /**
-    *
-    * Upgrade the plugin from a older version
-    * !! Needs review
-    *
-    * @param Migration $migration
-    */
-   static function upgrade(Migration $migration) {
-      global $DB;
-      
-      switch (plugin_simcard_currentVersion()) {
-         case '200' : // This string must be checked agains previous releases
-            $migration->setVersion(200);
+   static $rightname = 'config';
 
-            $table = 'glpi_plugin_mantis_configs';
-            $migration->addField($table, 'neutralize_escalation', 'integer', array(
-                  'value' => 5
-            ));
-            $migration->addField($table, 'status_after_escalation', 'integer');
-            $migration->addField($table, 'show_option_delete', 'integer', array(
-                  'value' => 0
-            ));
-            $migration->addField($table, 'doc_categorie', 'integer', array(
-                  'value' => 0
-            ));
-            $migration->addField($table, 'itemType', 'string');
-            $migration->executeMigration();
-            break;
-      }
-      
-      $query = "UPDATE `glpi_plugin_mantis_configs`
-                          (`version`)
-                   VALUES (" . PLUGIN_MANTIS_VERSION . ")
-                   WHERE `id` = '1'";
-      $DB->query($query) or die("error in glpi_plugin_mantis_configs table" . $DB->error());
-   }
-   
    /**
-    * Function to define if the user have right to create
+    * Display name of itemtype
     *
-    * @return bool|booleen
-    */
-   static function canCreate() {
-      return Session::haveRight('config', 'w');
+    * @return value name of this itemtype
+    **/
+   static function getTypeName($nb=0) {
+
+      return __('Setup - MantisBT', 'mantis');
    }
 
    /**
-    * Function to define if the user have right to view
+    * Print the config form
     *
-    * @return bool|booleen
-    */
-   static function canView() {
-      return Session::haveRight('config', 'r');
-   }
+    * @param $ID        Integer : ID of the item
+    * @param $options   array
+    *
+    * @return Nothing (display)
+   **/
+   function showForm($ID, $options=array()) {
 
-   /**
-    * Function to show form to configure the plugin MantisBT
-    */
-   function showConfigForm() {
-      // we recover the first and only record
-      $this->getFromDB(1);
+      $options['candel'] = false;
+
+      $this->initForm($ID, $options);
+      $this->showFormHeader($options);
       
-      $target = $this->getFormURL();
-      if (isset($options['target'])) {
-         $target = $options['target'];
-      }
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("MantisBT server IP", "mantis") . "</td>";
+      echo "<td><input id='host' name='host' type='text' size='70' 
+                     value='" . $this->fields["host"] . "'/></td>";
+      echo "</tr><tr class='tab_bg_1'>";
+      echo "<td></td><td>" . __('host example settings', 'mantis') . "</td>";
+      echo "</tr>";
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("Wsdl file path", "mantis") . "</td>";
+      echo "<td><input id='url' name='url' type='text' size='70' 
+                     value='" . $this->fields["url"] . "'/></td>";
+      echo "</tr><tr class='tab_bg_1'>";
+      echo "<td></td><td>" . __('wsdl example settings', 'mantis') . "</td>";
+      echo "</tr>";
       
-      $content = "<form method='post' action='" . $target . "' method='post'>";
-      $content .= "<table class='tab_cadre' >";
-      $content .= "<tr>";
-      $content .= "<th colspan='6'>" . __("MantisBT plugin setup", "mantis") . "</th>";
-      $content .= "</tr>";
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("MantisBT user login", "mantis") . "</td>";
+      echo "<td><input  id='login' name='login' type='text' size='30' 
+                  value='" . $this->fields["login"] . "'/></td>";
+      echo "<td></td>";
+      echo "</tr>";
       
-      // HOST OF MANTIS SERVER
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("MantisBT server IP", "mantis") . "</td>";
-      $content .= "<td><input id='host' name='host' type='text' value='" . $this->fields["host"] . "'/></td>";
-      $content .= "<td>" . __('host example settings', 'mantis') . "</td>"; // ex: http(s)://128.65.25.74 or http(s)://serveurName
-      $content .= "</tr>";
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("MantisBT user password", "mantis") . "</td>";
+      echo "<td><input  id='pwd' name='pwd' type='password' size='30' 
+                  value='" . $this->fields["pwd"] . "'/></td>";
+      echo "<td></td>";
+      echo "</tr>";
       
-      // PATH FOR WSDL FILE
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("Wsdl file path", "mantis") . "</td>";
-      $content .= "<td><input id='url' name='url' type='text' value='" . $this->fields["url"] . "'/></td>";
-      $content .= "<td>" . __('wsdl example settings', 'mantis') . "</td>"; // ex: mantis/api/soap/mantisconnect.php?wsdl
-      $content .= "</tr>";
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("Allow assignation", "mantis") . "</td>";
+      echo "<td>";
+      Dropdown::showYesNo("enable_assign", $this->fields["enable_assign"]);
+      echo "</td>";
+      echo "<td></td>";
+      echo "</tr>";
       
-      // MANTIS USER LOGIN
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("MantisBT user login", "mantis") . "</td>";
-      $content .= "<td><input  id='login' name='login' type='text' value='" . $this->fields["login"] . "'/></td>";
-      $content .= "<td>" . __('user login example settings', 'mantis') . "</td>"; // ex : administrator
-      $content .= "</tr>";
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("Neutralize the escalating to MantisBT when the status of the GLPI tickets is", "mantis") . "</td>";
+      echo "<td>";
+      $p['name']        = 'neutralize_escalation';
+      $p['showtype']    = 'normal';
+      $p['value']       = $this->fields["neutralize_escalation"];
+      Ticket::dropdownStatus($p);
+      echo "</td>";
+      echo "<td></td>";
+      echo "</tr>";
       
-      // MANTIS USER PASSWORD
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("MantisBT user password", "mantis") . "</td>";
-      $content .= "<td><input  id='pwd' name='pwd' type='password' value='" . $this->fields["pwd"] . "'/></td>";
-      $content .= "<td></td>";
-      $content .= "</tr>";
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("Status of glpi ticket after escalation to MantisBT", "mantis") . "</td>";
+      echo "<td>";
+      $p['name']        = 'status_after_escalation';
+      $p['showtype']    = 'normal';
+      $p['value']       = $this->fields["status_after_escalation"];
+      Ticket::dropdownStatus($p);
+      echo "</td>";
+      echo "<td></td>";
+      echo "</tr>";
       
-      // ASSIGNATION OPTION
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("Allow assignation", "mantis") . "</td>";
-      $content .= "<td>";
-      $content .= Dropdown::showYesNo("enable_assign", $this->fields["enable_assign"], - 1, array(
-            'display' => false
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("Show option 'Delete the  MantisBT ticket' ", "mantis") . "</td>";
+      echo "<td>";
+      Dropdown::showYesNo('show_option_delete', $this->fields["show_option_delete"]);
+      echo "</td>";
+      echo "<td></td>";
+      echo "</tr>";
+      
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("Attachment type transfered to MantisBT", "mantis") . "</td>";
+      echo "<td>";
+      DocumentCategory::dropdown(array(
+            'value'     => $this->fields["doc_categorie"],
+            'name'      => 'doc_categorie'
       ));
-      $content .= "</td>";
-      $content .= "<td></td>";
-      $content .= "</tr>";
-      
-      // OPTION TO NEUTRALIZE ESCLATION SWITH GLPI STATUS
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("Neutralize the escalating to MantisBT when the status of the GLPI tickets is", "mantis") . "</td>";
-      $content .= "<td>";
-      $content .= self::dropdownStatus(array(
-            'showtype' => 'normal',
-            'name' => 'neutralize_escalation',
-            'value' => $this->fields["neutralize_escalation"],
-            'display' => false,
-            'none' => false
-      ));
-      $content .= "</td>";
-      $content .= "<td></td>";
-      $content .= "</tr>";
-      
-      // OPTION TO SET STATUS GLPI AFTER ESCALATION
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("Status of glpi ticket after escalation to MantisBT", "mantis") . "</td>";
-      $content .= "<td>";
-      $content .= self::dropdownStatus(array(
-            'showtype' => 'normal',
-            'name' => 'status_after_escalation',
-            'value' => $this->fields["status_after_escalation"],
-            'display' => false,
-            'none' => true
-      ));
-      $content .= "</td>";
-      $content .= "<td></td>";
-      $content .= "</tr>";
-      
-      // OPTION TO SHOW DELETE OPTION
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("Show option 'Delete the  MantisBT ticket' ", "mantis") . "</td>";
-      $content .= "<td>";
-      $content .= Dropdown::showYesNo('show_option_delete', $this->fields["show_option_delete"], - 1, array(
-            'rand' => false,
-            'display' => false
-      ));
-      $content .= "</td>";
-      $content .= "<td></td>";
-      $content .= "</tr>";
-      
-      // TYPE ATTCHMANT
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("Attachment type transfered to MantisBT", "mantis") . "</td>";
-      $content .= "<td>";
-      $content .= DocumentCategory::dropdown(array(
-            'value' => $this->fields["doc_categorie"],
-            'name' => 'doc_categorie',
-            'rand' => false,
-            'display' => false
-      ));
-      $content .= "</td>";
-      $content .= "<td></td>";
-      $content .= "</tr>";
+      echo "</td>";
+      echo "<td></td>";
+      echo "</tr>";
       
       // MANTIS FIELD FOR GLPI FIELD
       /*
@@ -272,103 +176,82 @@ class PluginMantisConfig extends CommonDBTM {
        * $content .= "</tr>";
        */
       
-      // MANTIS STATUS TO CLOSE GLPI TICKET
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td>" . __("Close Glpi ticket when status ticket MantisBT is", "mantis") . "</td>";
-      $content .= "<td>";
-      $content .= Dropdown::showFromArray('etatMantis', array(), array(
-            'rand' => '',
-            'display' => false
-      ));
+      /* TODO new ajax method
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("Close Glpi ticket when status ticket MantisBT is", "mantis") . "</td>";
+      echo "<td>";
+      Dropdown::showFromArray('etatMantis', array());
       if (! empty($this->fields["etatMantis"])) {
-         $content .= " (" . $this->fields["etatMantis"] . ") ";
+         echo " (" . $this->fields["etatMantis"] . ") ";
       }
-      $content .= "</td>";
-      $content .= "<td>Tester la connexion pour faire apparaître les états Mantis</td>";
-      $content .= "</tr>";
+      echo  __("Test the connection if empty.", "mantis") . "</td>";
+      echo "</tr>";
+      */
       
-      // INPUT BUTTON
-      $content .= "<tr class='tab_bg_1'>";
-      $content .= "<td><input type='hidden' name='id' value='1' class='submit'>";
-      $content .= "<input id='update' type='submit' name='update' value='" . __("Update", "mantis") . "' class='submit'></td>";
-      $content .= "<td><input id='test' onclick='testConnexionMantisWS();'  value='" . __("Test the connection", "mantis") . "' class='submit'></td>";
-      $content .= "<td><div id='infoAjax'/></td>";
-      $content .= "</tr>";
-      
-      $content .= "</table>";
-      $content .= Html::closeForm(false);
-      
-      echo $content;
+      echo "<tr class='tab_bg_1'>";      
+      echo "<td><input id='test' onclick='testConnexionMantisWS();' 
+               value='" . __("Test the connection", "mantis") . "' class='submit'></td>";
+      echo "<td><div id='infoAjax'></div></td>";
+      echo "</tr>";
+
+      $this->showFormButtons($options);
    }
 
    /**
-    * Dropdown of object status
+    * Install all necessary table for the plugin
     *
-    * @since version 0.84 new proto
-    *       
-    * @param $options array of options
-    *        - name : select name (default is status)
-    *        - value : default value (default self::INCOMING)
-    *        - showtype : list proposed : normal, search or allowed (default normal)
-    *        - display : boolean if false get string
-    *        - none : display none option : default false
-    *       
-    * @return nothing (display)
-    *        
+    * @return boolean True if success
     */
-   static function dropdownStatus(array $options = array()) {
-      $p['name'] = 'status';
-      $p['value'] = 0;
-      $p['showtype'] = 'normal';
-      $p['display'] = true;
-      $p['none'] = false;
+   static function install($migration) {
+      global $DB;
       
-      if (is_array($options) && count($options)) {
-         foreach ($options as $key => $val) {
-            $p[$key] = $val;
+      $table = getTableForItemType(__CLASS__);
+
+      if (!TableExists($table)) {
+         $query = "CREATE TABLE `".$table."` (
+                     `id` int(11) NOT NULL AUTO_INCREMENT,
+                     `host` varchar(255) NOT NULL default '',
+                     `url` varchar(255) NOT NULL default '',
+                     `login` varchar(255) NOT NULL default '',
+                     `pwd` varchar(255) NOT NULL default '',
+                     `champsUrlGlpi` varchar(100) NOT NULL default '',
+                     `champsGlpi` varchar(100) NOT NULL default '',
+                     `enable_assign` int(3) NOT NULL default 0,
+                     `neutralize_escalation` int(3) NOT NULL default 0,
+                     `status_after_escalation` int(3) NOT NULL default 0,
+                     `show_option_delete` int(3) NOT NULL default 0,
+                     `doc_categorie` int(3) NOT NULL default 0,
+                     `itemType` varchar(255) NOT NULL default '',
+                     `etatMantis` varchar(100) NOT NULL default '',
+                     PRIMARY KEY (`id`)
+                  ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+         $DB->query($query) or die($DB->error());
+
+         $query = "INSERT INTO `$table` (id) VALUES (1)";
+         $DB->query($query) or die ($DB->error());
+      } else {
+
+         if (FieldExists($table, 'version')) {
+            $migration->dropField($table, 'version');
          }
       }
-      
-      switch ($p['showtype']) {
-         case 'allowed' :
-            $tab = Ticket::getAllowedStatusArray($p['value']);
-            break;
-         
-         case 'search' :
-            $tab = Ticket::getAllStatusArray(true);
-            break;
-         
-         default :
-            $tab = Ticket::getAllStatusArray(false);
-            break;
-      }
-      
-      if ($p['none'] == true) {
-         array_unshift($tab, " ---- ");
-      }
-      
-      $output = "<select name='" . $p['name'] . "'>";
-      foreach ($tab as $key => $val) {
-         $output .= "<option value='$key' " . (($p['value'] == $key) ? " selected " : "") . ">$val</option>";
-      }
-      $output .= "</select>";
-      
-      if ($p['display']) {
-         echo $output;
-      } else {
-         return $output;
-      }
+
+      $migration->executeMigration();
    }
 
    /**
-    * Uninstall 
+    * Uninstall previously installed table of the plugin
+    *
+    * @return boolean True if success
     */
    static function uninstall() {
       global $DB;
       
-      if (TableExists("glpi_plugin_mantis_configs")) {
-         $query = "DROP TABLE IF EXISTS `glpi_plugin_mantis_configs`";
-         $DB->query($query) or die($DB->error());
-      }
+      $table = getTableForItemType(__CLASS__);
+
+      $query = "DROP TABLE IF EXISTS  `".$table."`";
+      $DB->query($query) or die ($DB->error());
    }
+
+
 }

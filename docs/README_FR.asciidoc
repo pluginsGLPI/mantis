@@ -3,7 +3,7 @@
 Cette documentation vous permettra de configurer rapidement le plugin MantisBT
 
 == Prérequis
-Glpi version 0.84
+GLPi version 0.85 min
 
 == Configuration
 

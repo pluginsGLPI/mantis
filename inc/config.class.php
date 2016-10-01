@@ -167,41 +167,36 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<td></td>";
       echo "</tr>";
       
-      // MANTIS FIELD FOR GLPI FIELD
-      /*
-       * $content .= "<tr class='tab_bg_1'>";
-       * $content .= "<td>"
-       * . __("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)", "mantis") . "</td>";
-       * $content .= "<td>";
-       * $content .= DropDown::showFromArray('champsGlpi',PluginMantisIssue::$champsMantis, array(
-       * 'value' => $this->fields["champsGlpi"],'display' => false));
-       * $content .= "</td>";
-       * $content .= "<td></td>";
-       * $content .= "</tr>";
-       */
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>";
+      echo __("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)", "mantis") . "</td>";
+      echo "<td>";
+      DropDown::showFromArray('champsGlpi', PluginMantisIssue::$champsMantis, 
+                              array('value' => $this->fields["champsGlpi"])
+      );
+      echo "</td>";
+      echo "<td></td>";
+      echo "</tr>";
       
-      // MANTIS FIELD FOR GLPI URL
-      /*
-       * $content .= "<tr class='tab_bg_1'>";
-       * $content .= "<td>" . __("MantisBT field for the link to the ticket GLPI", "mantis") . "</td>";
-       * $content .= "<td>";
-       * $content .= DropDown::showFromArray('champsUrlGlpi',PluginMantisIssue::$champsMantis, array('value' => $this->fields["champsUrlGlpi"],'display'=> false));
-       * $content .= "</td>";
-       * $content .= "<td></td>";
-       * $content .= "</tr>";
-       */
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("MantisBT field for the link to the ticket GLPI", "mantis") . "</td>";
+      echo "<td>";
+      DropDown::showFromArray('champsUrlGlpi', PluginMantisIssue::$champsMantis, 
+                              array('value' => $this->fields["champsUrlGlpi"]));
+      echo "</td>";
+      echo "<td></td>";
+      echo "</tr>";
       
-      /* TODO new ajax method
+      // NOT WORKING - TODO
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Close Glpi ticket when status ticket MantisBT is", "mantis") . "</td>";
       echo "<td>";
-      Dropdown::showFromArray('etatMantis', array());
+      Dropdown::showFromArray('etatMantis', array(), array('rand' => false));
       if (! empty($this->fields["etatMantis"])) {
          echo " (" . $this->fields["etatMantis"] . ") ";
       }
       echo  __("Test the connection if empty.", "mantis") . "</td>";
       echo "</tr>";
-      */
       
       echo "<tr class='tab_bg_1'>";      
       echo "<td><input id='test' onclick='testConnexionMantisWS();' 

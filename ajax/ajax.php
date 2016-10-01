@@ -57,7 +57,7 @@ if (isset($_POST['action'])) {
             $res = $ws->testConnectionWS($_POST['host'], 
                                          $_POST['url'], 
                                          $_POST['login'], 
-                                         Toolbox::decrypt($_POST['pwd'], GLPIKEY));
+                                         $_POST['pwd']);
             if ($res) {
                echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/check24.png'/>";
             } else {

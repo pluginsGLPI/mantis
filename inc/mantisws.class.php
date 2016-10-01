@@ -75,7 +75,7 @@ class PluginMantisMantisws {
          $this->_host = $conf->fields["host"];
          $this->_url = $conf->fields["url"];
          $this->_login = $conf->fields["login"];
-         $this->_password = $conf->fields["pwd"];
+         $this->_password = Toolbox::decrypt($conf->fields["pwd"], GLPIKEY);
          
          $this->_client = new SoapClient($this->_host . "/" . $this->_url);
          return true;

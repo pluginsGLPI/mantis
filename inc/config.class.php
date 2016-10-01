@@ -59,6 +59,21 @@ class PluginMantisConfig extends CommonDBTM {
    }
 
    /**
+    * Prepare input datas for updating the item
+    *
+    * @param $input datas used to update the item
+    *
+    * @return the modified $input array
+   **/
+   function prepareInputForUpdate($input) {
+
+      if (isset($input["pwd"]) AND !empty($input["pwd"])) {
+         $input["pwd"] = Toolbox::encrypt(stripslashes($input["pwd"]), GLPIKEY);
+      }
+      return $input;
+   }
+
+   /**
     * Print the config form
     *
     * @param $ID        Integer : ID of the item
@@ -98,8 +113,8 @@ class PluginMantisConfig extends CommonDBTM {
       
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT user password", "mantis") . "</td>";
-      echo "<td><input  id='pwd' name='pwd' type='password' size='30' 
-                  value='" . $this->fields["pwd"] . "'/></td>";
+      echo "<td><input id='pwd' name='pwd' type='password' size='30' 
+                  value='" . Toolbox::decrypt($this->fields["pwd"], GLPIKEY) . "' /></td>";
       echo "<td></td>";
       echo "</tr>";
       

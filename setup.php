@@ -79,12 +79,14 @@ function plugin_init_mantis() {
       Plugin::registerClass('PluginMantisConfig');
       
       Plugin::registerClass('PluginMantisMantisws');
+
+      if (Session::haveRightsOr('plugin_mantis_use', array(READ, UPDATE))) {
+         Plugin::registerClass('PluginMantisMantis', 
+                                 array('addtabon' => array('Ticket', 'Problem')));
       
-      Plugin::registerClass('PluginMantisMantis', 
-                              array('addtabon' => array('Ticket','Problem')));
-      
-      Plugin::registerClass('PluginMantisUserPref', 
-                              array('addtabon' => array('User','Preference')));
+         Plugin::registerClass('PluginMantisUserPref', 
+                                 array('addtabon' => array('User', 'Preference')));
+      }
    }
 }
 

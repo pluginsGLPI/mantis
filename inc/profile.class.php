@@ -44,206 +44,109 @@
  */
 class PluginMantisProfile extends CommonDBTM {
 
-   const RIGHT_MANTIS_MANTIS = "mantis:mantis";
+   // Necassary rights to edit the rights of this plugin
+   static $rightname = "profile";
    
    /**
-    * Install this class in GLPI
-    * 
-    * 
-    */
-   static function install($migration) {
-      global $DB;
-      
-      if (! TableExists("glpi_plugin_mantis_profiles")) {
-         // requete de création de la table
-         $query = "CREATE TABLE `glpi_plugin_mantis_profiles` (
-                  `id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
-                  `right` char(1) collate utf8_unicode_ci default NULL,
-                  PRIMARY KEY  (`id`)
-                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-         $DB->queryOrDie($query, $DB->error());
-         
-         // creation du premier accès nécessaire lors de l'installation du plugin
-         self::createAdminAccess($_SESSION['glpiactiveprofile']['id']);
-      }
-   
-   }
-   
-   static function canCreate() {
-      if (isset($_SESSION["glpi_plugin_mantis_profile"])) {
-         return ($_SESSION["glpi_plugin_mantis_profile"]['mantis'] == 'w');
-      }
-      return false;
-   }
+    * @see CommonGLPI::getTabNameForItem()
+   **/
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
 
-   static function canView() {
-      if (isset($_SESSION["glpi_plugin_mantis_profile"])) {
-         return ($_SESSION["glpi_plugin_mantis_profile"]['mantis'] == 'w' || $_SESSION["glpi_plugin_mantis_profile"]['mantis'] == 'r');
-      }
-      return false;
-   }
-
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      if ($item->getType() == 'Profile') {
-         return "MantisBT";
+      if ($item->getType()=='Profile') {
+            return PluginMantisMantis::getTypeName();
       }
       return '';
    }
 
    /**
-    * 
-    * Get all rights related to the plugin
-    * 
-    */
-   function getAllRights() {
+    * Describe all prossible rights for the plugin
+    * @return array
+   **/
+   static function getAllRights() {
+
       $rights = array(
           array('itemtype'  => 'PluginMantisProfile',
                 'label'     => __('Use the plugin MantisBT', 'mantis'),
-                'field'     => self::RIGHT_MANTIS_MANTIS
-          ),
-      );
+                'field'     => 'plugin_mantis_use',
+                'rights'    =>  array(READ   => __('Read'),
+                                      UPDATE => __('Update')),
+                'default'   => 3));
       return $rights;
    }
    
    /**
-    * Get rights for an item _ may be overload by object
-    *
-    * @since version 0.85
-    *
-    * @param $interface   string   (defalt 'central')
-    *
-    * @return array of rights to display
-    **/
-   function getRights($interface='central') {
-      $values = array(READ    => __('Read'),
-            UPDATE  => __('Update')
-      );
-      return $values;
-   }
-   
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      if ($item->getType() == 'Profile') {
-         $prof = new self();
-         $ID = $item->getField('id');
-         // si le profil n'existe pas dans la base, je l'ajoute
-         if (! $prof->GetfromDB($ID)) {
-            $prof->createAccess($ID);
+    * addDefaultProfileInfos
+    * @param $profiles_id
+    * @param $rights
+   **/
+   static function addDefaultProfileInfos($profiles_id, $rights) {
+      $profileRight = new ProfileRight();
+      foreach ($rights as $right => $value) {
+         if (!countElementsInTable('glpi_profilerights',
+                                   "`profiles_id`='$profiles_id' AND `name`='$right'")) {
+            $myright['profiles_id'] = $profiles_id;
+            $myright['name']        = $right;
+            $myright['rights']      = $value;
+            $profileRight->add($myright);
+            //Add right to the current session
+            $_SESSION['glpiactiveprofile'][$right] = $value;
          }
-         // j'affiche le formulaire
+      }
+   }
+
+   /**
+    * @see CommonGLPI::displayTabContentForItem()
+   **/
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      global $CFG_GLPI;
+
+      if ($item->getType()=='Profile') {
+         $ID = $item->getID();
+         $prof = new self();
+         //In case there's no right for this profile, create it
+         foreach (self::getAllRights() as $right) {
+            self::addDefaultProfileInfos($ID, array($right['field'] => 0));
+         }
          $prof->showForm($ID);
       }
       return true;
    }
 
-   function showForm($id, $options = array()) {
-      $target = $this->getFormURL();
-      if (isset($options['target'])) {
-         $target = $options['target'];
-      }
-      
-      if (! Profile::canView()) {
-         return false;
-      }
-      
-      $canedit = Profile::canCreate();
-      $prof = new Profile();
-      if ($id) {
-         $this->getFromDB($id);
-         $prof->getFromDB($id);
-      }
-      
-      if ($canedit) {
-         echo "<form action='".$this->getFormURL()."' method='post'>";
-      }
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='2' class='center b'>" . sprintf(__('%1$s %2$s'), ('rights management :'), Dropdown::getDropdownName("glpi_profiles", $this->fields["id"]));
-      echo "</th></tr>";
-      
-//       echo "<tr class='tab_bg_2'>";
-//       echo '<td>' . __("Use the plugin MantisBT", "mantis") . '</td><td>';
-//       Profile::dropdownNoneReadWrite("right", $this->fields["right"], 1, 1, 1);
-//       echo "</td></tr>";
-      
-      if ($canedit) {
-//          echo "<tr class='tab_bg_1'>";
-//          echo "<td class='center' colspan='2'>";
-//          echo "<input type='hidden' name='id' value=$id>";
-//          echo "<input type='submit' name='update_user_profile' value=" . __('Update', 'mantis') . "
-//                 class='submit'>";
-//          echo "</td></tr>";
-      }
-      echo "</table>";
-
-         // Right matrix : need some info to limit to some rights (read / update only)
-      $rights = $this->getAllRights();
-      $prof->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
-                                                         'default_class' => 'tab_bg_2'));
-      if ($canedit) {
-//          echo "<div class='center'>";
-//          echo "<input type='hidden' name='id' value=".$id.">";
-//          echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
-//          echo "</div>";
-         Html::closeForm();
-      }
-   }
 
    /**
-    * 
-    * 
-    * @param unknown $ID
-    */
-   static function createAdminAccess($ID) {
-      $myProf = new self();
-      // si le profile n'existe pas déjà dans la table profile de mon plugin
-      if (! $myProf->getFromDB($ID)) {
-         // ajouter un champ dans la table comprenant l'ID du
-         // profil d la personne connecté et le droit d'écriture
-         $myProf->add(array(
-               'id' => $ID,
-               'right' => 'w'
-         ));
-      }
-   }
+   * Show profile form
+   *
+   * @param $items_id integer id of the profile
+   * @param $target value url of target
+   *
+   * @return nothing
+   **/
+   function showForm($profiles_id=0, $openform=TRUE, $closeform=TRUE) {
 
-   function createAccess($ID) {
-      $this->add(array(
-            'id' => $ID
-      ));
-   }
-
-   static function changeProfile() {
-      $prof = new self();
-      if ($prof->getFromDB($_SESSION['glpiactiveprofile']['id'])) {
-         $_SESSION["glpi_plugin_mantis_profile"] = $prof->fields;
-      } else {
-         unset($_SESSION["glpi_plugin_mantis_profile"]);
+      echo "<div class='firstbloc'>";
+      if (($canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE)))
+          && $openform) {
+         $profile = new Profile();
+         echo "<form method='post' action='".$profile->getFormURL()."'>";
       }
-   }
 
-   static function canViewMantis($id) {
-      $prof = new self();
-      $prof->getFromDB($id);
-      if (! $prof)
-         return false;
-      else {
-         if ($prof->fields['right'] & READ)
-            return true;
-         else
-            return false;
-      }
-   }
+      $profile = new Profile();
+      $profile->getFromDB($profiles_id);
 
-   static function canWriteMantis($id) {
-      $prof = new self();
-      $prof->getFromDB($id);
-      if (! $prof)
-         return false;
-      else {
-         if ($prof->fields['right'] & CREATE)
-            return true;
-         else
-            return false;
+      $profile->displayRightsChoiceMatrix($this->getAllRights(), 
+                                                array('canedit'       => $canedit,
+                                                      'default_class' => 'tab_bg_2',
+                                                      'title'         => __('General')));
+      
+      if ($canedit
+          && $closeform) {
+         echo "<div class='center'>";
+         echo Html::hidden('id', array('value' => $profiles_id));
+         echo Html::submit(_sx('button', 'Save'), array('name' => 'update'));
+         echo "</div>\n";
+         Html::closeForm();
       }
+      echo "</div>";
    }
 
    /**
@@ -251,33 +154,110 @@ class PluginMantisProfile extends CommonDBTM {
     *
     **/
    static function translateARight($old_right) {
-   	  switch ($old_right) {
-   		 case 'r' :
-   			return READ;
-   			
-   		 case 'w':
-   			return ALLSTANDARDRIGHT;
-   			
-   		 case '1':
-   		    // Not translated yet
-            return '1';
-                  
-   		 case '0':
-   		 case '':
-   		 default:
-   			return 0;
-   	  }
+      switch ($old_right) {
+         case '':
+            return 0;
+         case 'r' :
+            return READ;
+         case 'w':
+            return UPDATE + READ;
+         case '0':
+         case '1':
+            return $old_right;
+
+         default :
+            return 0;
+      }
    }
 
    /**
-    * Uninstall 
+    * Initialize profiles, and migrate it necessary
+    */
+   static function migrateAllProfiles() {
+      global $DB;
+
+      foreach ($DB->request("SELECT `id` FROM `glpi_profiles`") as $prof) {
+         self::migrateOneProfile($prof['id']);
+      }
+   }
+
+   /**
+    * @since 0.85
+    * Migration rights from old system to the new one for one profile
+    * @param $profiles_id the profile ID
+    */
+   static function migrateOneProfile($profiles_id) {
+      global $DB;
+
+      $table = "glpi_plugin_mantis_profiles";
+
+      if (!TableExists($table)) {
+         return true;
+      }
+
+      foreach ($DB->request($table, "`id`='$profiles_id'") as $profile_data) {
+         $translatedRight = self::translateARight($profile_data["right"]);
+         ProfileRight::updateProfileRights($profiles_id, array('mantis:mantis' => $translatedRight));
+      }
+   }
+
+   /**
+    * Change active profile to the $ID one. Update glpiactiveprofile session variable.
+    *
+    * @param $ID : ID of the new profile
+    *
+    * @return Nothing
+   **/
+   static function changeProfile() {
+      global $DB;
+
+      foreach ($DB->request("SELECT *
+                           FROM `glpi_profilerights` 
+                           WHERE `profiles_id`='".$_SESSION['glpiactiveprofile']['id']."' 
+                              AND `name` = 'plugin_mantis_use'") as $prof) {
+         $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights']; 
+      }
+   }
+
+   /**
+    * Install all necessary profile for the plugin
+    *
+    * @return boolean True if success
+    */
+   static function install(Migration $migration) {
+      global $DB;
+      
+      $table = "glpi_plugin_mantis_profiles";
+
+      if (TableExists($table)) {
+
+         self::migrateAllProfiles();
+
+         $migration->dropTable($table);
+      } else {
+         foreach (self::getAllRights() as $right) {
+            self::addDefaultProfileInfos($_SESSION['glpiactiveprofile']['id'], 
+                                          array($right['field'] => $right['default']));
+         }
+      }
+   }
+
+   /**
+    * Uninstall previously installed profile of the plugin
+    *
+    * @return boolean True if success
     */
    static function uninstall() {
       global $DB;
-      
-      if (TableExists("glpi_plugin_mantis_profiles")) {
-         $query = "DROP TABLE IF EXISTS `glpi_plugin_mantis_profiles`";
-         $DB->query($query) or die($DB->error());
+
+      foreach (self::getAllRights() as $right) {
+         $query = "DELETE FROM `glpi_profilerights` 
+                   WHERE `name` = '".$right['field']."'";
+         $DB->query($query);
+
+         if (isset($_SESSION['glpiactiveprofile'][$right['field']])) {
+            unset($_SESSION['glpiactiveprofile'][$right['field']]);
+         }
       }
    }
 }

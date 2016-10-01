@@ -45,6 +45,53 @@
  */
 class PluginMantisMantis extends CommonDBTM {
 
+
+   static function getTypeName($nb = 0) {
+
+      return __('MantisBT', 'mantis');
+   }
+
+   /**
+    * @see CommonGLPI::getTabNameForItem()
+   **/
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+
+      if ($item->getType()=='Ticket' || $item->getType()=='Problem') {
+         if ($_SESSION['glpishow_count_on_tabs']) {
+            return self::createTabEntry(self::getTypeName(), self::countForItem($item));
+         }
+         return self::getTypeName();
+      }
+      return '';
+   }
+
+   /**
+    * @see CommonGLPI::displayTabContentForItem()
+   **/
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      global $CFG_GLPI;
+
+      if ($item->getType()=='Ticket' || $item->getType()=='Problem') {
+         if (Session::haveRightsOr('plugin_mantis_use', array(READ, UPDATE))) {
+            $PluginMantisMantis = new self();
+            $PluginMantisMantis->showForm($item);
+         } else {
+            echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] .
+                     "/pics/warning.png\" alt=\"warning\"><br><br>";
+            echo "<b>" . __("Access denied") . "</b></div>";
+         }
+
+      }
+   }
+
+   /**
+    * @param $item    CommonDBTM object
+   **/
+   public static function countForItem(CommonDBTM $item) {
+      return countElementsInTable(getTableForItemType(__CLASS__), 
+                                    "`items_id` = '".$item->getID()."'");
+   }
+
    /**
     * Install this class in GLPI
     * 
@@ -405,41 +452,12 @@ class PluginMantisMantis extends CommonDBTM {
       return $info;
    }
 
-   /**
-    * Define tab name
-    */
-   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      $id = $_SESSION['glpiactiveprofile']['id'];
-      if (PluginMantisProfile::canViewMantis($id) || PluginMantisProfile::canWriteMantis($id))
-         if ($item->getType() == 'Ticket' || $item->getType() == 'Problem') {
-            return __("MantisBT", "mantis");
-         }
-      return '';
-   }
-
-   static function getTypeName($nb = 0) {
-      return __("MantisBT", "mantis");
-   }
-
    static function canCreate() {
-      // return Session::haveRight('ticket', 'w');
-      return Profile::canUpdate();
+      return Session::haveRight('plugin_mantis_use', UPDATE);
    }
 
    static function canView() {
-      // return Session::haveRight('ticket', 'r');
-      return Profile::canView();
-   }
-
-   /**
-    * Define tab content
-    */
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      if ($item->getType() == 'Ticket' || $item->getType() == 'Problem') {
-         $mantis = new self();
-         $mantis->showForm($item);
-      }
-      return true;
+      return Session::haveRight('plugin_mantis_use', READ);
    }
 
    /**
@@ -455,17 +473,20 @@ class PluginMantisMantis extends CommonDBTM {
       $conf->getFromDB(1);
       
       // check if Web Service Mantis works fine
-      if ($ws->testConnectionWS($conf->getField('host'), $conf->getField('url'), $conf->getField('login'), $conf->getField('pwd'))) {
+      if ($ws->testConnectionWS($conf->getField('host'), 
+                                $conf->getField('url'), 
+                                $conf->getField('login'), 
+                                Toolbox::decrypt($conf->getField('pwd'), GLPIKEY))) {
+
          if ($item->fields['status'] == $conf->fields['neutralize_escalation'] 
                || $item->fields['status'] > $conf->fields['neutralize_escalation']) {
             $this->getFormForDisplayInfo($item, $item->getType());
          } else {
             // if canView or canWrite
-            if (PluginMantisProfile::canViewMantis($_SESSION['glpiactiveprofile']['id']) 
-                  || PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
+            if (Session::haveRightsOr('plugin_mantis_use', array(READ, UPDATE))) {
                $this->getFormForDisplayInfo($item, $item->getType());
                // if canWrite
-               if (PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id'])) {
+               if (Session::haveRight('plugin_mantis_use', UPDATE)) {
                   $this->displayBtnToLinkissueGlpi($item);
                }
             }
@@ -870,7 +891,7 @@ class PluginMantisMantis extends CommonDBTM {
       if ($item->fields['status'] == $conf->fields['neutralize_escalation'] || $item->fields['status'] > $conf->fields['neutralize_escalation']) {
          $can_write = false;
       } else {
-         $can_write = PluginMantisProfile::canWriteMantis($_SESSION['glpiactiveprofile']['id']);
+         $can_write = Session::haveRight('plugin_mantis_use', UPDATE);
       }
       
       $content = "";

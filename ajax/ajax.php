@@ -54,7 +54,10 @@ if (isset($_POST['action'])) {
          error_reporting(0);
          $ws = new PluginMantisMantisws();
          try {
-            $res = $ws->testConnectionWS($_POST['host'], $_POST['url'], $_POST['login'], $_POST['pwd']);
+            $res = $ws->testConnectionWS($_POST['host'], 
+                                         $_POST['url'], 
+                                         $_POST['login'], 
+                                         Toolbox::decrypt($_POST['pwd'], GLPIKEY));
             if ($res) {
                echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/check24.png'/>";
             } else {
@@ -91,7 +94,10 @@ if (isset($_POST['action'])) {
       case 'getStateMantis' :
          
          $ws = new PluginMantisMantisws();
-         $ws->getConnexion($_POST['host'], $_POST['url'], $_POST['login'], $_POST['pwd']);
+         $ws->getConnexion($_POST['host'], 
+                           $_POST['url'], 
+                           $_POST['login'], 
+                           Toolbox::decrypt($_POST['pwd'], GLPIKEY));
          $result = $ws->getStateMantis();
          
          if (! $result) {

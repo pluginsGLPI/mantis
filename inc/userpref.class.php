@@ -149,12 +149,13 @@ class PluginMantisUserpref extends CommonDBTM {
    /**
     * Uninstall Cron Task from BDD
     */
-   static function uninstall() {
-      global $DB;
-      
-      if (TableExists("glpi_plugin_mantis_userprefs")) {
-         $query = "DROP TABLE `glpi_plugin_mantis_userprefs`";
-         $DB->query($query) or die($DB->error());
+   static function uninstall(Migration $migration) {
+
+      $table = getTableForItemType(__CLASS__);
+
+      if (TableExists($table)) {
+         $migration->dropTable($table);
+         $migration->executeMigration();
       }
    }
 } 

@@ -217,7 +217,7 @@ class PluginMantisConfig extends CommonDBTM {
     *
     * @return boolean True if success
     */
-   static function install($migration) {
+   static function install(Migration $migration) {
       global $DB;
       
       $table = getTableForItemType(__CLASS__);
@@ -259,13 +259,14 @@ class PluginMantisConfig extends CommonDBTM {
     *
     * @return boolean True if success
     */
-   static function uninstall() {
-      global $DB;
-      
+   static function uninstall(Migration $migration) {
+
       $table = getTableForItemType(__CLASS__);
 
-      $query = "DROP TABLE IF EXISTS  `".$table."`";
-      $DB->query($query) or die ($DB->error());
+      if (TableExists($table)) {
+         $migration->dropTable($table);
+         $migration->executeMigration();
+      }
    }
 
 

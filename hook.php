@@ -71,6 +71,9 @@ function plugin_mantis_install() {
  * @return boolean True if success
  */
 function plugin_mantis_uninstall() {
+
+   $migration = new Migration(PLUGIN_MANTIS_VERSION);
+
    // Parse inc directory
    foreach (glob(dirname(__FILE__).'/inc/*') as $filepath) {
       // Load *.class.php files and get the class name
@@ -79,7 +82,7 @@ function plugin_mantis_uninstall() {
          include_once($filepath);
          // If the install method exists, load it
          if (method_exists($classname, 'uninstall')) {
-            $classname::uninstall();
+            $classname::uninstall($migration);
          }
       }
    }

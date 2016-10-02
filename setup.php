@@ -73,7 +73,7 @@ function plugin_init_mantis() {
 
       if (Session::haveRightsOr('plugin_mantis_use', array(READ, UPDATE))) {
          Plugin::registerClass('PluginMantisMantis', 
-                                 array('addtabon' => array('Ticket', 'Problem')));
+                                 array('addtabon' => array('Ticket', 'Problem', 'Change')));
       
          Plugin::registerClass('PluginMantisUserPref', 
                                  array('addtabon' => array('User', 'Preference')));

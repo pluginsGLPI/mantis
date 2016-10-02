@@ -52,7 +52,10 @@ class PluginMantisMantis extends CommonDBTM {
    **/
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
 
-      if ($item->getType()=='Ticket' || $item->getType()=='Problem') {
+      if ($item->getType()=='Ticket' 
+            || $item->getType()=='Problem'
+              || $item->getType()=='Change') {
+
          if ($_SESSION['glpishow_count_on_tabs']) {
             return self::createTabEntry(self::getTypeName(), self::countForItem($item));
          }
@@ -67,7 +70,10 @@ class PluginMantisMantis extends CommonDBTM {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       global $CFG_GLPI;
 
-      if ($item->getType()=='Ticket' || $item->getType()=='Problem') {
+      if ($item->getType()=='Ticket' 
+            || $item->getType()=='Problem'
+              || $item->getType()=='Change') {
+
          if (Session::haveRightsOr('plugin_mantis_use', array(READ, UPDATE))) {
             $PluginMantisMantis = new self();
             $PluginMantisMantis->showForm($item);
@@ -84,8 +90,8 @@ class PluginMantisMantis extends CommonDBTM {
     * @param $item    CommonDBTM object
    **/
    public static function countForItem(CommonDBTM $item) {
-      return countElementsInTable(getTableForItemType(__CLASS__), 
-                                    "`items_id` = '".$item->getID()."'");
+      return countElementsInTable(self::getTable(), "`items_id` = '".$item->getID()."'
+                                                      AND `itemtype` = '".$item->getType()."'");
    }
 
    /**
@@ -177,7 +183,7 @@ class PluginMantisMantis extends CommonDBTM {
     */
    static function cronInfo($name) {
       return array(
-            'description' => __("Update ticket", "mantis")
+            'description' => __("MantisBT synchronization", "mantis")
       );
    }
 
@@ -188,9 +194,8 @@ class PluginMantisMantis extends CommonDBTM {
    static function updateAttachment() {      
       global $DB;
       
-      Toolbox::logInFile("mantis", "**************************************************");
-      Toolbox::logInFile("mantis", "* CRON MANTIS : Starting update attachments cron *");
-      Toolbox::logInFile("mantis", "**************************************************");
+      // Log
+      Toolbox::logInFile("mantis", __('Starting update attachments.', 'mantis'));
 
       $res = self::getItemWhichIsLinked();
 
@@ -204,25 +209,34 @@ class PluginMantisMantis extends CommonDBTM {
          $item = new $itemType();
          $item->getFromDB($row['items_id']);
          
-         if ($item->fields['status'] == 5 || $item->fields['status'] == 6) {
+         if (in_array($item->fields['status'], $item->getClosedStatusArray()) 
+               || in_array($item->fields['status'], $item->getSolvedStatusArray())) {
 
             // Log
-            $msg = "GLPi {$itemType}-{$row['items_id']} is already solve or closed.";
-            Toolbox::logInFile("mantis", "CRON MANTIS : {$msg}");
+            $msg = sprintf(
+               __('GLPi object [%1$s:%2$s] is already solved or closed.', 'mantis'),
+                     $itemType, 
+                     $row['items_id']
+            );
+            Toolbox::logInFile("mantis", $msg);
 
          } else {
             
             // Log
-            $msg = "Checking GLPi {$itemType}-{$row['items_id']}";
-            Toolbox::logInFile("mantis", "CRON MANTIS : {$msg}");
+            $msg = sprintf(
+               __('Checking GLPi object [%1$s:%2$s].'),
+                     $itemType, 
+                     $row['items_id']
+            );
+            Toolbox::logInFile("mantis", $msg);
 
             $list_link = self::getLinkBetweenItemGlpiAndTicketMantis($row['items_id'], $itemType);
 
             while ( $line = $list_link->fetch_assoc() ) {
 
                // Log
-               $msg = "Checking MantisBT issue {$line['idMantis']}";
-               Toolbox::logInFile("mantis", "CRON MANTIS : {$msg}");
+               $msg = sprintf(__('Checking MantisBT issue [%1$s].', 'mantis'), $line['idMantis']);
+               Toolbox::logInFile("mantis", $msg);
 
                $issue = $ws->getIssueById($line['idMantis']);
                $attachmentsMantisBT = $issue->attachments;
@@ -234,8 +248,11 @@ class PluginMantisMantis extends CommonDBTM {
                   if (!self::existAttachmentInMantisBT($doc, $attachmentsMantisBT)) {
 
                      // Log
-                     $msg = "File " . $doc->getField('filename') . " does not exist in MantisBT issue.";
-                     Toolbox::logInFile("mantis", "CRON MANTIS : {$msg}");
+                     $msg = sprintf(
+                        __('File [%1$s] doesn\'t exists in MantisBT issue.', 'mantis'),
+                              $doc->getField('filename')
+                     );
+                     Toolbox::logInFile("mantis", $msg);
 
                      $path = GLPI_DOC_DIR . "/" . $doc->getField('filepath');
                      if (file_exists($path)) {
@@ -243,8 +260,9 @@ class PluginMantisMantis extends CommonDBTM {
                         if (!$data) {
 
                            // Log
-                           $msg = "Can't load " . $doc->getField('filename') . ".";
-                           Toolbox::logInFile("mantis", "CRON MANTIS : {$msg}");
+                           $msg = sprintf(__('Can\'t load GLPi file [%1$s].', 'mantis'), 
+                                          $doc->getField('filename'));
+                           Toolbox::logInFile("mantis", $msg);
                         } else {
 
                            $id_data = $ws->addAttachmentToIssue($line['idMantis'], 
@@ -255,34 +273,36 @@ class PluginMantisMantis extends CommonDBTM {
                               $id_attachment[] = $id_data;
 
                               // Log
-                              $msg = "Can't send " . $doc->getField('filename') . " to MantisBT. ";
-                              Toolbox::logInFile("mantis", "CRON MANTIS : {$msg}");
+                              $msg = sprintf(__('Can\'t send GLPi file [%1$s] to MantisBD.', 'mantis'), 
+                                             $doc->getField('filename'));
+                              Toolbox::logInFile("mantis", $msg);
                            } else {
 
                               // Log
-                              $msg = "Send " . $doc->getField('filename') . " to MantisBT with success.";
-                              Toolbox::logInFile("mantis", "CRON MANTIS : {$msg}");
+                              $msg = sprintf(__('GLPi file [%1$s] successfully sended to MantisBT.' , 'mantis'), 
+                                             $doc->getField('filename'));
+                              Toolbox::logInFile("mantis", $msg);
                            }
                         }
                      } else {
 
                         // Log
-                        $msg = "File " . $doc->getField('filename') . " doesn't exist on GLPi.";
-                        Toolbox::logInFile("mantis", "CRON MANTIS : {$msg}");
+                        $msg = sprintf(__('GLPi file [%1$s] doesn\'t exists.', 'mantis'), 
+                                       $doc->getField('filename'));
+                        Toolbox::logInFile("mantis", $msg);
                      }
                   } else {
 
                      // Log
-                     $msg = "File " . $doc->getField('filename') . " already exist in MantisBT issue.";
-                     Toolbox::logInFile("mantis", "CRON MANTIS : {$msg}");
+                     $msg = sprintf(__('GLPi file [%1$s] already exists in MantisBT issue.', 'mantis'), 
+                                    $doc->getField('filename'));
+                     Toolbox::logInFile("mantis", $msg);
                   }
                }
             }
          }
       }
-      Toolbox::logInFile("mantis", "************************************************");
-      Toolbox::logInFile("mantis", "* CRON MANTIS : Ending update attachments cron *");
-      Toolbox::logInFile("mantis", "************************************************");
+      Toolbox::logInFile("mantis", _('Ending update attachments.', 'mantis'));
    }
 
    /**

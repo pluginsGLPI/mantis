@@ -80,7 +80,7 @@ class PluginMantisConfig extends CommonDBTM {
       $this->showFormHeader($options);
       
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("MantisBT server IP", "mantis") . "</td>";
+      echo "<td>" . __("MantisBT server base URL", "mantis") . "</td>";
       echo "<td><input id='host' name='host' type='text' size='70' 
                      value='" . $this->fields["host"] . "'/></td>";
       echo "</tr><tr class='tab_bg_1'>";
@@ -118,7 +118,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</tr>";
       
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Neutralize the escalating to MantisBT when the status of the GLPI tickets is", "mantis") . "</td>";
+      echo "<td>" . __("Neutralize the escalation to MantisBT when the status of the GLPi object is", "mantis") . "</td>";
       echo "<td>";
       $p['name']        = 'neutralize_escalation';
       $p['showtype']    = 'normal';
@@ -129,7 +129,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</tr>";
       
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Status of glpi ticket after escalation to MantisBT", "mantis") . "</td>";
+      echo "<td>" . __("Status of GLPi object after escalation to MantisBT", "mantis") . "</td>";
       echo "<td>";
       $p['name']        = 'status_after_escalation';
       $p['showtype']    = 'normal';
@@ -140,7 +140,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</tr>";
       
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Show option 'Delete the  MantisBT ticket' ", "mantis") . "</td>";
+      echo "<td>" . __("Show option 'Delete the MantisBT issue' ", "mantis") . "</td>";
       echo "<td>";
       Dropdown::showYesNo('show_option_delete', $this->fields["show_option_delete"]);
       echo "</td>";
@@ -159,8 +159,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</tr>";
       
       echo "<tr class='tab_bg_1'>";
-      echo "<td>";
-      echo __("MantisBT field for GLPI fields<br/> (title, description, category, follow-up, tasks)", "mantis") . "</td>";
+      echo "<td>" . __("MantisBT field for GLPI fields", "mantis") . "</td>";
       echo "<td>";
       DropDown::showFromArray('champsGlpi', PluginMantisIssue::$champsMantis, 
                               array('value' => $this->fields["champsGlpi"])
@@ -170,17 +169,16 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</tr>";
       
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("MantisBT field for the link to the ticket GLPI", "mantis") . "</td>";
+      echo "<td>" . __("MantisBT field for the link URL to the GLPi object", "mantis") . "</td>";
       echo "<td>";
       DropDown::showFromArray('champsUrlGlpi', PluginMantisIssue::$champsMantis, 
                               array('value' => $this->fields["champsUrlGlpi"]));
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
-      // NOT WORKING - TODO
+
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Close Glpi ticket when status ticket MantisBT is", "mantis") . "</td>";
+      echo "<td>" . __("Close GLPi ticket when MantisBT issue status is", "mantis") . "</td>";
       echo "<td>";
       DropDown::showFromArray('etatMantis', PluginMantisIssue::$state_mantis, 
                               array('value' => $this->fields["etatMantis"]));

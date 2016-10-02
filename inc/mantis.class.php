@@ -949,14 +949,14 @@ class PluginMantisMantis extends CommonDBTM {
                                           'height' => 200)
             );
             
+            echo "<tr>";
+
             if (!$issue) {
-               echo "<tr>";
                echo "<td class='center'>
                         <img src='" . $CFG_GLPI["root_doc"] . "/plugins/mantis/pics/cross16.png'/></td>";
                echo "<td>" . $row["idMantis"] . "</td>";
-               echo "<td colspan='8' class='center'>" 
+               echo "<td colspan='5' class='center'>" 
                      . __('Error when loading MantisBT issue', 'mantis') . "</td>";
-               echo "</tr>";
             } else {
                echo "<tr>";
                echo "<td class='center'>";
@@ -969,17 +969,18 @@ class PluginMantisMantis extends CommonDBTM {
                echo "<td class='center'>" . $issue->status->name . "</td>";
                echo "<td class='center'>" . $row["dateEscalade"] . "</td>";
                echo "<td class='center'>" . $user->getName() . "</td>";
-               
-               if ($can_write && !$neutralize_escalation) {
-                  echo "<td class = 'center'>";
-                  echo "<img src='" . $CFG_GLPI["root_doc"] . "/plugins/mantis/pics/bin16.png'
-                                 onclick='popupToDelete" . $row['id'] . ".dialog(\"open\")'
-                                 style='cursor: pointer;' title='" . __('Delete') . "'/></td>";
-               } else {
-                  echo "<td>-</td>";
-                  echo "</tr>";
-               }
             }
+
+            if ($can_write && !$neutralize_escalation) {
+               echo "<td class = 'center'>";
+               echo "<img src='" . $CFG_GLPI["root_doc"] . "/plugins/mantis/pics/bin16.png'
+                              onclick='popupToDelete" . $row['id'] . ".dialog(\"open\")'
+                              style='cursor: pointer;' title='" . __('Delete') . "'/></td>";
+            } else {
+               echo "<td>-</td>";
+            }
+
+            echo "</tr>";
          }
 
       } else {

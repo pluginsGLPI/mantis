@@ -1,24 +1,40 @@
 <?php
-/**
- * File for class MantisStructAccountData
- * @package Mantis
- * @subpackage Structs
- * @author WsdlToPhp Team <contact@wsdltophp.fr>
- * @version 20140325-01
- * @date 2014-03-26
+/*
+ * @version $Id$
+ -------------------------------------------------------------------------
+ GLPI - Gestionnaire Libre de Parc Informatique
+ Copyright (C) 2015-2016 Teclib'.
+
+ http://glpi-project.org
+
+ based on GLPI - Gestionnaire Libre de Parc Informatique
+ Copyright (C) 2003-2014 by the INDEPNET Development Team.
+
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of GLPI.
+
+ GLPI is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ GLPI is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with GLPI. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
  */
-/**
- * This class stands for MantisStructAccountData originally named AccountData
- * Meta informations extracted from the WSDL
- * - from schema : var/wsdltophp.com/storage/wsdls/a80caff3c8dd52f94a68432974b9ab45/wsdl.xml
- *
- * @package Mantis
- * @subpackage Structs
- * @author WsdlToPhp Team <contact@wsdltophp.fr>
- * @version 20140325-01
- *          @date 2014-03-26
- *          PluginMantisStructissuenotedata
- */
+
+if (!defined('GLPI_ROOT')) {
+   die("Sorry. You can't access directly to this file");
+}
+
 class PluginMantisStructaccountdata {
 
    /**

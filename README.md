@@ -30,11 +30,3 @@ Documentation
 
 Actuellement disponible dans le dossier *docs* du plugin téléchargé.
 
-
-*Serveur MantisBT de test*
-
-* [http://demo.teclib.net/mantis/](http://demo.teclib.net/mantis/)
-
-* WS : [http://demo.teclib.net/mantis/api/soap/mantisconnect.php?wsdl](http://demo.teclib.net/mantis/api/soap/mantisconnect.php?wsdl)
-
-* Utilisateur Reporter : *test-glpi* / *test-glpi*

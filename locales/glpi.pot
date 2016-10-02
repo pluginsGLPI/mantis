@@ -1,26 +1,28 @@
-# GLPI Plugin MantisBT
-# Copyright (c) 2014 GLPI Plugin MantisBT Development team
-# This file is distributed under the same license as the GLPI Plugin MantisBT package.
-# Stanislas Kita <teclib.com>, 2014.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0\n"
-"Report-Msgid-Bugs-To: skita@teclib.com\n"
-"POT-Creation-Date: 2014-03-10 14:31+0100\n"
-"PO-Revision-Date: 2014-03-10 14:31+0100\n"
-"Last-Translator: Stanislas Kita <teclib.com>\n"
-"Language-Team: TECLIB <teclib.com>\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-02 16:04+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
 #: hook.php:94
-msgid "ticket linked to mantis"
+msgid "Tickets linked to MantisBT"
 msgstr ""
 
 #: hook.php:106
-msgid "problem linked to mantis"
+msgid "Problems linked to MantisBT"
 msgstr ""
 
 #: setup.php:91
@@ -157,93 +159,69 @@ msgstr ""
 msgid "Project '%1$s' does not exist."
 msgstr ""
 
-#: inc/issue.class.php:541
+#: inc/issue.class.php:542 inc/issue.class.php:546
 #, php-format
 msgid ""
-"Can't load the attachment '%1$s'\n"
-"                                    to MantisBT, the process was interrupted "
+"Can't load the attachment [%1$s] to MantisBT, the process was interrupted."
 msgstr ""
 
-#: inc/issue.class.php:543
+#: inc/issue.class.php:556 inc/issue.class.php:560
 #, php-format
 msgid ""
-"Can't load the attachment '%1$s',\n"
-"                                    the process was interrupted "
+"Can't send the attachment [%1$s] to MantisBT, the process was interrupted."
 msgstr ""
 
-#: inc/issue.class.php:552
+#: inc/issue.class.php:567
 #, php-format
-msgid ""
-"Can't send the attachment\n"
-"                                        '%1$s' to MantisBT, the process was "
-"interrupted "
+msgid "Attachment [%1$s] doesn't exists, the process was interrupted."
 msgstr ""
 
-#: inc/issue.class.php:554
+#: inc/issue.class.php:571
 #, php-format
-msgid ""
-"Can't send the attachment '%1$s'\n"
-"                                        to MantisBT, the process was "
-"interrupted "
+msgid "Attachment [%1$s] doesn't exists,the process was interrupted."
 msgstr ""
 
-#: inc/issue.class.php:560
-#, php-format
-msgid ""
-"Attachment '%1$s'\n"
-"                                does not exist,the process was interrupted "
-msgstr ""
-
-#: inc/issue.class.php:562
-#, php-format
-msgid ""
-"Attachment '%1$s' does not exist,the\n"
-"                                process was interrupted "
-msgstr ""
-
-#: inc/issue.class.php:578 inc/issue.class.php:616 inc/issue.class.php:653
-#: inc/issue.class.php:692 inc/issue.class.php:729 inc/issue.class.php:767
+#: inc/issue.class.php:587 inc/issue.class.php:625 inc/issue.class.php:665
+#: inc/issue.class.php:704 inc/issue.class.php:744 inc/issue.class.php:782
 #, php-format
 msgid "Title = %1$s <br/>"
 msgstr ""
 
-#: inc/issue.class.php:582 inc/issue.class.php:620 inc/issue.class.php:657
-#: inc/issue.class.php:696 inc/issue.class.php:733 inc/issue.class.php:771
+#: inc/issue.class.php:591 inc/issue.class.php:629 inc/issue.class.php:669
+#: inc/issue.class.php:708 inc/issue.class.php:748 inc/issue.class.php:786
 #, php-format
 msgid "Description = %1$s <br/>"
 msgstr ""
 
-#: inc/issue.class.php:595 inc/issue.class.php:633 inc/issue.class.php:670
-#: inc/issue.class.php:709 inc/issue.class.php:746 inc/issue.class.php:784
+#: inc/issue.class.php:604 inc/issue.class.php:642 inc/issue.class.php:682
+#: inc/issue.class.php:721 inc/issue.class.php:761 inc/issue.class.php:799
 #, php-format
 msgid "Category = %1$s <br/>"
 msgstr ""
 
-#: inc/issue.class.php:600 inc/issue.class.php:638 inc/issue.class.php:675
-#: inc/issue.class.php:714 inc/issue.class.php:751 inc/issue.class.php:789
+#: inc/issue.class.php:609 inc/issue.class.php:647 inc/issue.class.php:687
+#: inc/issue.class.php:726 inc/issue.class.php:766 inc/issue.class.php:804
 #, php-format
-msgid "Link to Glpi ticket = %1$s <br/>"
+msgid "Link to GLPi object = %1$s <br/>"
 msgstr ""
 
-#: inc/issue.class.php:853
+#: inc/issue.class.php:872
 #, php-format
 msgid ""
-"Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : "
+"Followups = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : "
 "%5$s<br/>"
 msgstr ""
 
-#: inc/issue.class.php:856
+#: inc/issue.class.php:880
 msgid "No follow-up"
 msgstr ""
 
-#: inc/issue.class.php:890
+#: inc/issue.class.php:915
 #, php-format
-msgid ""
-"Task = %1$s -> date : %2$s, description : %3$s, time : %4$s,\n"
-"               <br/>"
+msgid "Task = %1$s -> date : %2$s, description : %3$s, time : %4$s<br/>"
 msgstr ""
 
-#: inc/issue.class.php:894
+#: inc/issue.class.php:922
 msgid "No task"
 msgstr ""
 
@@ -337,35 +315,35 @@ msgstr ""
 msgid "MantisBT field for GLPi fields"
 msgstr ""
 
-#: inc/mantis.class.php:677 inc/mantis.class.php:823 inc/userpref.class.php:130
+#: inc/mantis.class.php:677 inc/mantis.class.php:823 inc/userpref.class.php:129
 msgid "Attachments"
 msgstr ""
 
-#: inc/mantis.class.php:680 inc/mantis.class.php:826
+#: inc/mantis.class.php:680 inc/mantis.class.php:826 inc/userpref.class.php:131
 msgid "Forward attachments"
 msgstr ""
 
-#: inc/mantis.class.php:688 inc/mantis.class.php:834
+#: inc/mantis.class.php:688 inc/mantis.class.php:834 inc/userpref.class.php:138
 msgid "Forward followups"
 msgstr ""
 
-#: inc/mantis.class.php:696 inc/mantis.class.php:842
+#: inc/mantis.class.php:696 inc/mantis.class.php:842 inc/userpref.class.php:144
 msgid "Forward tasks"
 msgstr ""
 
-#: inc/mantis.class.php:703 inc/mantis.class.php:849
+#: inc/mantis.class.php:703 inc/mantis.class.php:849 inc/userpref.class.php:150
 msgid "Forward title"
 msgstr ""
 
-#: inc/mantis.class.php:709 inc/mantis.class.php:855
+#: inc/mantis.class.php:709 inc/mantis.class.php:855 inc/userpref.class.php:156
 msgid "Forward description"
 msgstr ""
 
-#: inc/mantis.class.php:715 inc/mantis.class.php:861
+#: inc/mantis.class.php:715 inc/mantis.class.php:861 inc/userpref.class.php:162
 msgid "Forward category"
 msgstr ""
 
-#: inc/mantis.class.php:722 inc/mantis.class.php:868
+#: inc/mantis.class.php:722 inc/mantis.class.php:868 inc/userpref.class.php:168
 msgid "Forward linked tickets"
 msgstr ""
 
@@ -493,57 +471,25 @@ msgid "Use the plugin MantisBT"
 msgstr ""
 
 #: inc/userpref.class.php:125
-msgid "Checkbox checked by default"
-msgstr ""
-
-#: inc/userpref.class.php:131
-msgid "To forward attachments"
+msgid "Default checkbox status"
 msgstr ""
 
 #: inc/userpref.class.php:136
 msgid "Glpi follow"
 msgstr ""
 
-#: inc/userpref.class.php:137
-msgid "To forward follow"
-msgstr ""
-
 #: inc/userpref.class.php:142
 msgid "Glpi task"
-msgstr ""
-
-#: inc/userpref.class.php:143
-msgid "To forward task"
 msgstr ""
 
 #: inc/userpref.class.php:148
 msgid "Glpi title"
 msgstr ""
 
-#: inc/userpref.class.php:149
-msgid "To forward title"
-msgstr ""
-
 #: inc/userpref.class.php:154
 msgid "Glpi description"
 msgstr ""
 
-#: inc/userpref.class.php:155
-msgid "To forward description"
-msgstr ""
-
 #: inc/userpref.class.php:160
 msgid "Glpi categorie"
-msgstr ""
-
-#: inc/userpref.class.php:161
-msgid "To forward categorie"
-msgstr ""
-
-#: inc/userpref.class.php:167
-msgid "To forward linked Ticket"
-msgstr ""
-
-#: inc/userpref.class.php:171
-msgid "Update"
 msgstr ""

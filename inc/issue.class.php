@@ -538,10 +538,13 @@ class PluginMantisIssue {
                $data = file_get_contents($path);
                if (! $data) {
                   
-                  Toolbox::logInFile('mantis', sprintf(__('Can\'t load the attachment \'%1$s\'
-                                    to MantisBT, the process was interrupted ', 'mantis'), $doc->getField('filename')) . "\n");
-                  $error .= sprintf(__('Can\'t load the attachment \'%1$s\',
-                                    the process was interrupted ', 'mantis'), $doc->getField('filename'));
+                  Toolbox::logInFile('mantis', sprintf(
+                     __('Can\'t load the attachment [%1$s] to MantisBT, the process was interrupted.', 'mantis'), 
+                              $doc->getField('filename')));
+
+                  $error .= sprintf(
+                     __('Can\'t load the attachment [%1$s] to MantisBT, the process was interrupted.', 'mantis'), 
+                              $doc->getField('filename'));
                } else {
                   
                   // $data = base64_encode($data);
@@ -549,18 +552,24 @@ class PluginMantisIssue {
                   
                   if (! $id_data) {
                      $id_attachment[] = $id_data;
-                     Toolbox::logInFile('mantis', sprintf(__('Can\'t send the attachment
-                                        \'%1$s\' to MantisBT, the process was interrupted ', 'mantis'), $doc->getField('filename')) . "\n");
-                     $error .= sprintf(__('Can\'t send the attachment \'%1$s\'
-                                        to MantisBT, the process was interrupted ', 'mantis'), $doc->getField('filename'));
+                     Toolbox::logInFile('mantis', sprintf(
+                        __('Can\'t send the attachment [%1$s] to MantisBT, the process was interrupted.', 'mantis'), 
+                              $doc->getField('filename')));
+
+                     $error .= sprintf(
+                        __('Can\'t send the attachment [%1$s] to MantisBT, the process was interrupted.', 'mantis'), 
+                              $doc->getField('filename'));
                   }
                }
             } else {
                
-               Toolbox::logInFile('mantis', sprintf(__('Attachment \'%1$s\'
-                                does not exist,the process was interrupted ', 'mantis'), $doc->getField('filename')) . "\n");
-               $error .= sprintf(__('Attachment \'%1$s\' does not exist,the
-                                process was interrupted ', 'mantis'), $doc->getField('filename'));
+               Toolbox::logInFile('mantis', sprintf(
+                  __('Attachment [%1$s] doesn\'t exists, the process was interrupted.', 'mantis'), 
+                           $doc->getField('filename')));
+
+               $error .= sprintf(
+                  __('Attachment [%1$s] doesn\'t exists,the process was interrupted.', 'mantis'), 
+                           $doc->getField('filename'));
             }
          }
       }
@@ -597,7 +606,7 @@ class PluginMantisIssue {
       }
       
       if ($champsUrl == 'additional_information') {
-         $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
+         $infoTicket .= sprintf(__('Link to GLPi object = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
       }
       
       if ($linkedTicket == 'true') {
@@ -635,7 +644,10 @@ class PluginMantisIssue {
             }
             
             if ($champsUrl == 'additional_information') {
-               $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), str_replace('id=' . $ticket->fields['id'], 'id=' . $t->fields['id'], $_SERVER['HTTP_REFERER']));
+               $infoTicket .= sprintf(__('Link to GLPi object = %1$s <br/>', 'mantis'), 
+                                      str_replace('id=' . $ticket->fields['id'], 
+                                                  'id=' . $t->fields['id'], 
+                                                  $_SERVER['HTTP_REFERER']));
             }
          }
       }
@@ -672,7 +684,7 @@ class PluginMantisIssue {
       }
       
       if ($champsUrl != 'additional_information' && $champsUrl != 'note') {
-         $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
+         $infoTicket .= sprintf(__('Link to GLPi object = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
       }
       
       if ($linkedTicket == 'true') {
@@ -711,7 +723,10 @@ class PluginMantisIssue {
             }
             
             if ($champsUrl != 'additional_information' && $champsUrl != 'note') {
-               $infoTicket .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), str_replace('id=' . $ticket->fields['id'], 'id=' . $t->fields['id'], $_SERVER['HTTP_REFERER']));
+               $infoTicket .= sprintf(__('Link to GLPi object = %1$s <br/>', 'mantis'), 
+                                      str_replace('id=' . $ticket->fields['id'], 
+                                                  'id=' . $t->fields['id'], 
+                                                  $_SERVER['HTTP_REFERER']));
             }
          }
       }
@@ -748,7 +763,7 @@ class PluginMantisIssue {
       }
       
       if ($champsUrl == 'note') {
-         $note .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
+         $note .= sprintf(__('Link to GLPi object = %1$s <br/>', 'mantis'), $_SERVER['HTTP_REFERER']);
       }
       
       if ($linkedTicket == 'true') {
@@ -786,7 +801,10 @@ class PluginMantisIssue {
             }
             
             if ($champsUrl == 'note') {
-               $note .= sprintf(__('Link to Glpi ticket = %1$s <br/>', 'mantis'), str_replace('id=' . $ticket->fields['id'], 'id=' . $t->fields['id'], $_SERVER['HTTP_REFERER']));
+               $note .= sprintf(__('Link to GLPi object = %1$s <br/>', 'mantis'), 
+                                str_replace('id=' . $ticket->fields['id'], 
+                                            'id=' . $t->fields['id'], 
+                                            $_SERVER['HTTP_REFERER']));
             }
          }
       }
@@ -850,7 +868,13 @@ class PluginMantisIssue {
             $user = new User();
             $user->getFromDB($row["users_id"]);
             
-            $content .= sprintf(__('Follow = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : %5$s<br/>', 'mantis'), $ticket_followUp->fields['id'], $ticket_followUp->fields['date'], $request_type->fields['name'], $user->getName(), $ticket_followUp->getField('content'));
+            $content .= sprintf(
+               __('Followups = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : %5$s<br/>', 'mantis'), 
+                        $ticket_followUp->fields['id'], 
+                        $ticket_followUp->fields['date'], 
+                        $request_type->fields['name'], 
+                        $user->getName(), 
+                        $ticket_followUp->getField('content'));
          }
       } else {
          $content .= __("No follow-up", "mantis");
@@ -887,8 +911,12 @@ class PluginMantisIssue {
             $user = new User();
             $user->getFromDB($row["users_id"]);
             
-            $content .= sprintf(__('Task = %1$s -> date : %2$s, description : %3$s, time : %4$s,
-               <br/>', 'mantis'), $task->fields['id'], $task->fields['date'], $task->fields['content'], Html::timestampToString($task->fields['actiontime']));
+            $content .= sprintf(
+               __('Task = %1$s -> date : %2$s, description : %3$s, time : %4$s<br/>', 'mantis'), 
+                        $task->fields['id'], 
+                        $task->fields['date'], 
+                        $task->fields['content'], 
+                        Html::timestampToString($task->fields['actiontime']));
          }
       } else {
          $content .= __("No task", "mantis");

@@ -91,7 +91,7 @@ function plugin_mantis_getAddSearchOptions($itemtype) {
       $sopt[78963]['searchtype'] = 'equals';
       $sopt[78963]['nosearch'] = true;
       $sopt[78963]['datatype'] = 'bool';
-      $sopt[78963]['name'] = __('ticket linked to mantis', 'mantis');
+      $sopt[78963]['name'] = __('Tickets linked to MantisBT', 'mantis');
       $sopt[78963]['joinparams'] = array(
             'jointype' => "itemtype_item"
       );
@@ -103,7 +103,7 @@ function plugin_mantis_getAddSearchOptions($itemtype) {
       $sopt[78964]['searchtype'] = 'equals';
       $sopt[78964]['nosearch'] = true;
       $sopt[78964]['datatype'] = 'bool';
-      $sopt[78964]['name'] = __('problem linked to mantis', 'mantis');
+      $sopt[78964]['name'] = __('Problems linked to MantisBT', 'mantis');
       $sopt[78964]['joinparams'] = array(
             'jointype' => "itemtype_item"
       );

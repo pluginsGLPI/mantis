@@ -114,13 +114,16 @@ class PluginMantisIssue {
       
       // on creer la note si besoin
       if ($this->needNote($champsUrl, $champsGlpi)) {
-         $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, $ws, $idMantis, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType);
+         $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, 
+                                      $ws, $idMantis, $followFollow, $followTask, $followTitle, 
+                                      $followDescription, $followCategorie, $followLinkedticket, $itemType);
          if (! $id_note)
             return __("Error creating the note, the process was interrupted", "mantis");
       }
       
       // si les deux ont besoin d'un custom field
-      if (($champsUrl != 'additional_information' && $champsUrl != 'note') && ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
+      if (($champsUrl != 'additional_information' && $champsUrl != 'note') 
+            && ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
          
          include_once ('structcustomfield.php');
          
@@ -130,7 +133,12 @@ class PluginMantisIssue {
             // on parcours chaque custom field , quand on trouve le bon on le met à jour
             foreach ($issue->custom_fields as $field) {
                if ($field->name = $champsGlpi) {
-                  $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType);
+                  $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl, 
+                                                                      $ticket, $itilCategorie, 
+                                                                      $followFollow, $followTask, 
+                                                                      $followTitle, $followDescription, 
+                                                                      $followCategorie, $followLinkedticket, 
+                                                                      $itemType);
                }
             }
          } else {
@@ -138,20 +146,31 @@ class PluginMantisIssue {
             // on parcours chaque custom field , quand on trouve le bon on le met à jour
             foreach ($issue->custom_fields as $field) {
                if ($field->name = $champsGlpi) {
-                  $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType);
+                  $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl, 
+                                                                      $ticket, $itilCategorie, 
+                                                                      $followFollow, $followTask, 
+                                                                      $followTitle, $followDescription, 
+                                                                      $followCategorie, $followLinkedticket, 
+                                                                      $itemType);
                }
             }
             
             // on parcours chaque custom field , quand on trouve le bon on le met à jour
             foreach ($issue->custom_fields as $field) {
                if ($field->name = $champsUrl) {
-                  $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType);
+                  $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl, 
+                                                                      $ticket, $itilCategorie, 
+                                                                      $followFollow, $followTask, 
+                                                                      $followTitle, $followDescription, 
+                                                                      $followCategorie, $followLinkedticket, 
+                                                                      $itemType);
                }
             }
          }
          
          // si l'un deux deux en à besoin
-      } else if (($champsUrl != 'additional_information' && $champsUrl != 'note') || ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
+      } else if (($champsUrl != 'additional_information' && $champsUrl != 'note') 
+                  || ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
          
          include_once ('structcustomfield.php');
          
@@ -159,21 +178,36 @@ class PluginMantisIssue {
             // on parcours chaque custom field , quand on trouve le bon on le met à jour
             foreach ($issue->custom_fields as $field) {
                if ($field->name = $champsGlpi) {
-                  $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType);
+                  $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl, 
+                                                                      $ticket, $itilCategorie, 
+                                                                      $followFollow, $followTask, 
+                                                                      $followTitle, $followDescription, 
+                                                                      $followCategorie, $followLinkedticket, 
+                                                                      $itemType);
                }
             }
          } else {
             // on parcours chaque custom field , quand on trouve le bon on le met à jour
             foreach ($issue->custom_fields as $field) {
                if ($field->name = $champsUrl) {
-                  $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType);
+                  $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl, 
+                                                                      $ticket, $itilCategorie, 
+                                                                      $followFollow, $followTask, 
+                                                                      $followTitle, $followDescription, 
+                                                                      $followCategorie, $followLinkedticket, 
+                                                                      $itemType);
                }
             }
          }
       }
       
       // on met a jour l'additionnal info
-      $issue->additional_information .= "<br>" . $this->getAdditionalInfo($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType);
+      $issue->additional_information .= "<br>" . $this->getAdditionalInfo($champsGlpi, $champsUrl, 
+                                                                          $ticket, $itilCategorie, 
+                                                                          $followFollow, $followTask, 
+                                                                          $followTitle, $followDescription, 
+                                                                          $followCategorie, $followLinkedticket, 
+                                                                          $itemType);
       
       if ($ws->updateIssueMantis($issue->id, $issue)) {
          return true;
@@ -254,10 +288,16 @@ class PluginMantisIssue {
          $this->setDescription(stripslashes(str_replace('\n', '</br>', $description)));
          $this->setSteps_to_reproduce(stripslashes(str_replace('\n', '</br>', $stepToReproduce)));
          $this->setSummary(stripslashes($resume));
-         $this->setAdditional_information($this->getAdditionalInfo($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType));
+         $this->setAdditional_information($this->getAdditionalInfo($champsGlpi, $champsUrl, 
+                                                                   $ticket, $itilCategorie, 
+                                                                   $followFollow, $followTask, 
+                                                                   $followTitle, $followDescription, 
+                                                                   $followCategorie, $followLinkedticket, 
+                                                                   $itemType));
          
          // si les deux ont besoin d'un custom field
-         if (($champsUrl != 'additional_information' && $champsUrl != 'note') && ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
+         if (($champsUrl != 'additional_information' && $champsUrl != 'note') 
+               && ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
             
             include_once ('structcustomfield.php');
             
@@ -265,7 +305,10 @@ class PluginMantisIssue {
             if ($champsGlpi == $champsUrl) {
                
                $custom = new PluginMantisStructcustomField();
-               $custom->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType));
+               $custom->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, 
+                                                          $itilCategorie, $followFollow, $followTask, 
+                                                          $followTitle, $followDescription, $followCategorie, 
+                                                          $followLinkedticket, $itemType));
                $custom->setField($ws->getCustomFieldByNameAndProject($champsGlpi, $nameMantisProject));
                $this->setCustom_fields(array(
                      $custom
@@ -273,11 +316,19 @@ class PluginMantisIssue {
             } else {
                
                $custom1 = new PluginMantisStructcustomField();
-               $custom1->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType));
+               $custom1->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, 
+                                                           $itilCategorie, $followFollow, 
+                                                           $followTask, $followTitle, 
+                                                           $followDescription, $followCategorie, 
+                                                           $followLinkedticket, $itemType));
                $custom1->setField($ws->getCustomFieldByNameAndProject($champsGlpi, $nameMantisProject));
                
                $custom2 = new PluginMantisStructcustomField();
-               $custom2->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType));
+               $custom2->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, 
+                                                           $itilCategorie, $followFollow, 
+                                                           $followTask, $followTitle, 
+                                                           $followDescription, $followCategorie, 
+                                                           $followLinkedticket, $itemType));
                $custom2->setField($ws->getCustomFieldByNameAndProject($champsUrl, $nameMantisProject));
                
                $this->setCustom_fields(array(
@@ -287,14 +338,18 @@ class PluginMantisIssue {
             }
             
             // si l'un deux deux en à besoin
-         } else if (($champsUrl != 'additional_information' && $champsUrl != 'note') || ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
+         } else if (($champsUrl != 'additional_information' && $champsUrl != 'note') 
+                     || ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
             
             include_once ('structcustomfield.php');
             
             if (($champsUrl != 'additional_information' && $champsUrl != 'note')) {
                
                $custom = new PluginMantisStructcustomField();
-               $custom->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType));
+               $custom->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, 
+                                                          $itilCategorie, $followFollow, $followTask, 
+                                                          $followTitle, $followDescription, $followCategorie, 
+                                                          $followLinkedticket, $itemType));
                $custom->setField($ws->getCustomFieldByNameAndProject($champsUrl, $nameMantisProject));
                $this->setCustom_fields(array(
                      $custom
@@ -302,7 +357,10 @@ class PluginMantisIssue {
             } else {
                
                $custom = new PluginMantisStructcustomField();
-               $custom->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, $itilCategorie, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType));
+               $custom->setValue($this->getInfoFromTicket($champsGlpi, $champsUrl, $ticket, 
+                                                          $itilCategorie, $followFollow, $followTask, 
+                                                          $followTitle, $followDescription, $followCategorie, 
+                                                          $followLinkedticket, $itemType));
                $custom->setField($ws->getCustomFieldByNameAndProject($champsGlpi, $nameMantisProject));
                $this->setCustom_fields(array(
                      $custom
@@ -361,7 +419,10 @@ class PluginMantisIssue {
                
                // on s'occupe des note
                if ($this->needNote($champsUrl, $champsGlpi)) {
-                  $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, $ws, $idIssueCreate, $followFollow, $followTask, $followTitle, $followDescription, $followCategorie, $followLinkedticket, $itemType);
+                  $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl, 
+                                               $ws, $idIssueCreate, $followFollow, $followTask, 
+                                               $followTitle, $followDescription, $followCategorie, 
+                                               $followLinkedticket, $itemType);
                   // Erreur lors de la création de la note
                   if (! $id_note)
                      $error .= __("Error creating the note, the process was interrupted", "mantis");
@@ -377,7 +438,8 @@ class PluginMantisIssue {
                   if ($followLinkedticket == 'true' && $itemType == "Ticket") {
                      $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
                      foreach ($tickets as $link_ticket) {
-                        $error .= $this->addAttachment($link_ticket['tickets_id'], $error, $ws, $idIssueCreate, $itemType);
+                        $error .= $this->addAttachment($link_ticket['tickets_id'], $error, $ws, 
+                                                       $idIssueCreate, $itemType);
                      }
                   }
                }
@@ -448,18 +510,22 @@ class PluginMantisIssue {
 
    private function addAttachment($idTicket, $error, $ws, $idIssueCreate, $itemType) {
       global $DB;
+      
       $conf = new PluginMantisConfig();
       $conf->getFromDB(1);
       
-      if ($conf->fields['doc_categorie'] == 0) {
-         $res = $DB->query("SELECT `glpi_documents_items`.*
-            FROM `glpi_documents_items` WHERE `glpi_documents_items`.`itemtype` = '" . $itemType . "'
-            AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idTicket) . "'");
-      } else {
-         $res = $DB->query("SELECT `glpi_documents_items`.*
-            FROM `glpi_documents_items` ,`glpi_documents` WHERE `glpi_documents`.`id` =`glpi_documents_items`.`documents_id` and `glpi_documents`.`documentcategories_id` = '" . Toolbox::cleanInteger($conf->fields['doc_categorie']) . "' and`glpi_documents_items`.`itemtype`  = '" . $itemType . "'
-            AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idTicket) . "'");
+      $query = "  SELECT `glpi_documents`.`id`
+                  FROM `glpi_documents_items`, `glpi_documents`
+                  WHERE `glpi_documents`.`id` = `glpi_documents_items`.`documents_id`
+                  AND `glpi_documents_items`.`itemtype` = '" . $itemType . "'
+                  AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idItem) . "'";
+
+      if ($conf->fields['doc_categorie'] != 0) {
+         $query.= " AND `glpi_documents`.`documentcategories_id` = '" 
+                        . Toolbox::cleanInteger($conf->fields['doc_categorie']);
       }
+      
+      $res = $DB->query($query);
       
       if ($res->num_rows > 0) {
          while ( $row = $res->fetch_assoc() ) {
@@ -739,7 +805,7 @@ class PluginMantisIssue {
 
    static function getLinkToticket($ticket) {
       global $CFG_GLPI;
-      return '<A id ="link" href=' . $CFG_GLPI['root_doc'] . '/front/ticket.form.php?id=' . $ticket->fields['id'] . ' target="_blank">' . $ticket->getname() . '</A>';
+      return '<a id="link" href=' . $CFG_GLPI['root_doc'] . '/front/ticket.form.php?id=' . $ticket->fields['id'] . ' target="_blank">' . $ticket->getname() . '</a>';
    }
 
    /**
@@ -768,7 +834,8 @@ class PluginMantisIssue {
       $content = '';
       
       $res = $DB->query("SELECT `glpi_ticketfollowups`.*
-                        FROM `glpi_ticketfollowups` WHERE `glpi_ticketfollowups`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'");
+                        FROM `glpi_ticketfollowups` 
+                        WHERE `glpi_ticketfollowups`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'");
       
       if ($res->num_rows > 0) {
          
@@ -803,7 +870,8 @@ class PluginMantisIssue {
       $content = '';
       
       $res = $DB->query("SELECT `glpi_tickettasks`.*
-                        FROM `glpi_tickettasks` WHERE `glpi_tickettasks`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'");
+                        FROM `glpi_tickettasks` 
+                        WHERE `glpi_tickettasks`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'");
       
       if ($res->num_rows > 0) {
          while ( $row = $res->fetch_assoc() ) {

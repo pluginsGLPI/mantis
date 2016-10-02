@@ -119,25 +119,18 @@ if (isset($_POST['action'])) {
          
          $output .= GetOutputForTicket($ticket, $itemType);
          
-         if ($itemType != 'Problem') {
+         if ($itemType == 'Ticket') {
             $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
             if (count($tickets)) {
-               $output .= "<br/><DL><DT><STRONG>" . __('If you fowllow linked tickets', 'mantis') . "</STRONG><br>";
+               $output .= "<br/><strong>" . __('Documents for related tickets', 'mantis') . "</strong><br>";
                foreach ($tickets as $link_ticket) {
                   $ticketLink = new Ticket();
                   $ticketLink->getFromDB($link_ticket['tickets_id']);
                   $output .= GetOutputForTicket($ticketLink, $itemType);
                }
-            } else {
-               $output .= "<DL><DT><STRONG>" . __('No tickets linked', 'mantis');
             }
          }
-         
-         if ($output == "") {
-            echo "<STRONG>" . __('No documents attached', 'mantis') . "<STRONG/>";
-         } else {
-            echo $output;
-         }
+         echo $output;
          break;
       
       // GET CATEGORIE FROM PROJECT MANTIS
@@ -178,11 +171,12 @@ if (isset($_POST['action'])) {
             $mantis = new PluginMantisMantis();
             // on verifie si un lien est deja creé
             if ($mantis->IfExistLink($idItem, $id_mantis_issue, $itemType)) {
-               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/> ERROR :" . __("This Glpi item is already linked to this MantisBT ticket", "mantis");
+               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>" 
+                  . __("This GLPi object is already linked to the selected MantisBT issue", "mantis");
             } else {
                $result = $ws->getIssueById($id_mantis_issue);
                if ($result->status->id == 90) {
-                  echo "ERROR :" . __('"This issue is closed"', 'mantis');
+                  echo __('This MantisBT issue is closed', 'mantis');
                } else {
                   echo $result->project->name;
                }
@@ -217,12 +211,13 @@ if (isset($_POST['action'])) {
             $mantis = new PluginMantisMantis();
             // on verifie si un lien est deja creé
             if ($mantis->IfExistLink($id_ticket, $id_mantis_issue, $itemType)) {
-               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>" . __("This Glpi item is already linked to this MantisBT ticket", "mantis");
+               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>"
+                  . __("This GLPi object is already linked to the selected MantisBT issue", "mantis");
             } else {
                
                $result = $ws->getIssueById($id_mantis_issue);
                if ($result->status->id == 90) {
-                  echo "ERROR :" . __('"This issue is closed"', 'mantis');
+                  echo __('"This issue is closed"', 'mantis');
                } else {
                   
                   $issue = new PluginMantisIssue();
@@ -302,7 +297,7 @@ if (isset($_POST['action'])) {
          if ($res)
             echo true;
          else
-            echo __("Error while deleting the link between Glpi ticket and MantisBT ticket", "mantis");
+            echo __("Error while deleting the link between GLPi object and MantisBT issue", "mantis");
          break;
       
       case 'deleteIssueMantisAndLink' :
@@ -319,12 +314,12 @@ if (isset($_POST['action'])) {
                if ($res)
                   echo true;
                else
-                  echo __("Error while deleting the link between Glpi ticket and MantisBT ticket", "mantis");
+                  echo __("Error while deleting the link between GLPi object and MantisBT issue", "mantis");
             } else {
-               echo __("Error while deleting the mantisBD ticket", "mantis");
+               echo __("Error while deleting the mantisBD issue", "mantis");
             }
          } else {
-            echo __("The MantisBT ticket does not exist", "mantis");
+            echo __("The MantisBT issue does not exist", "mantis");
          }
          break;
       

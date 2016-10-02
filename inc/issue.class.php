@@ -514,15 +514,15 @@ class PluginMantisIssue {
       $conf = new PluginMantisConfig();
       $conf->getFromDB(1);
       
-      $query = "  SELECT `glpi_documents`.`id`
-                  FROM `glpi_documents_items`, `glpi_documents`
-                  WHERE `glpi_documents`.`id` = `glpi_documents_items`.`documents_id`
-                  AND `glpi_documents_items`.`itemtype` = '" . $itemType . "'
-                  AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idItem) . "'";
+      $query = "SELECT `glpi_documents_items`.*
+            FROM `glpi_documents_items`,`glpi_documents`
+            WHERE `glpi_documents`.`id` = `glpi_documents_items`.`documents_id`
+            AND `glpi_documents_items`.`itemtype` = '" . $itemType . "'
+            AND `glpi_documents_items`.`items_id` = '" . Toolbox::cleanInteger($idTicket) . "'";
 
       if ($conf->fields['doc_categorie'] != 0) {
          $query.= " AND `glpi_documents`.`documentcategories_id` = '" 
-                        . Toolbox::cleanInteger($conf->fields['doc_categorie']);
+                        . Toolbox::cleanInteger($conf->fields['doc_categorie']) . "'";
       }
       
       $res = $DB->query($query);

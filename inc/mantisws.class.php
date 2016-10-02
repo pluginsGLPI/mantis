@@ -238,12 +238,7 @@ class PluginMantisMantisws {
     * @return boolean
     */
    public function deleteIssue($_issue_id) {
-      try {
-         return $this->_client->mc_issue_delete($this->_login, $this->_password, $_issue_id);
-      } catch ( SoapFault $e ) {
-         Toolbox::logInFile('mantis', sprintf(__('Error while deleting the ticket \'%1$s\' => \'%2$s\'', 'mantis'), $_issue_id, $e->getMessage()) . "\n");
-         return false;
-      }
+      return $this->_client->mc_issue_delete($this->_login, $this->_password, $_issue_id);
    }
 
    /**

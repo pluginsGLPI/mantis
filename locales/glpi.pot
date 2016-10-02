@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-02 19:29+0200\n"
+"POT-Creation-Date: 2016-10-02 21:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,38 +30,30 @@ msgid "MantisBT synchronisation"
 msgstr ""
 
 #: ajax/ajax.php:125
-msgid "If you fowllow linked tickets"
+msgid "Documents for related tickets"
 msgstr ""
 
-#: ajax/ajax.php:132
-msgid "No tickets linked"
-msgstr ""
-
-#: ajax/ajax.php:137
-msgid "No documents attached"
-msgstr ""
-
-#: ajax/ajax.php:175 ajax/ajax.php:215
+#: ajax/ajax.php:168 ajax/ajax.php:208
 msgid "MantisBT issue does not exist"
 msgstr ""
 
-#: ajax/ajax.php:181 ajax/ajax.php:220
+#: ajax/ajax.php:174 ajax/ajax.php:213
 msgid "This Glpi item is already linked to this MantisBT ticket"
 msgstr ""
 
-#: ajax/ajax.php:185 ajax/ajax.php:225
+#: ajax/ajax.php:178 ajax/ajax.php:218
 msgid "\"This issue is closed\""
 msgstr ""
 
-#: ajax/ajax.php:305 ajax/ajax.php:322
+#: ajax/ajax.php:298 ajax/ajax.php:315
 msgid "Error while deleting the link between Glpi ticket and MantisBT ticket"
 msgstr ""
 
-#: ajax/ajax.php:324
+#: ajax/ajax.php:317
 msgid "Error while deleting the mantisBD ticket"
 msgstr ""
 
-#: ajax/ajax.php:327
+#: ajax/ajax.php:320
 msgid "The MantisBT ticket does not exist"
 msgstr ""
 
@@ -375,15 +367,15 @@ msgstr ""
 msgid "List of linked MantisBT issues"
 msgstr ""
 
-#: inc/mantis.class.php:958
+#: inc/mantis.class.php:959
 msgid "Error when loading MantisBT issue"
 msgstr ""
 
-#: inc/mantis.class.php:989
+#: inc/mantis.class.php:990
 msgid "This GLPi object is not linked to MantisBT"
 msgstr ""
 
-#: inc/mantis.class.php:995
+#: inc/mantis.class.php:996
 msgid "Escalation to MantisBT is neutralized by GLPi status"
 msgstr ""
 

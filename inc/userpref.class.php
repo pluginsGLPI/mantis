@@ -126,38 +126,38 @@ class PluginMantisUserpref extends CommonDBTM {
       
       $checked = ($this->fields['followAttachment']) ? "checked" : "";
       echo "<tr class='tab_bg_1'>";
-      echo "<th>" . __("Attachments", "mantis") . "</th>";
+      echo "<th>" . __('Document') . "</th>";
       echo "<td><input type='checkbox' name='followAttachment' id='followAttachment' " . $checked . ">" 
-              . __("Forward attachments", "mantis") 
+              . __("Forward document(s)", "mantis") 
               . "<div id='attachmentforLinkToProject' ><div/></td></tr>";
       
       $checked = ($this->fields['followFollow']) ? "checked" : "";
       echo "<tr class='tab_bg_1' >";
-      echo "<th>" . __("Glpi follow", "mantis") . "</th>";
+      echo "<th>" . __('Ticket followup') . "</th>";
       echo "<td><input type='checkbox' name='followFollow' id='followFollow' " . $checked . ">" 
-              . __("Forward followups", "mantis") . "</td></tr>";
+              . __("Forward ticket followup", "mantis") . "</td></tr>";
       
       $checked = ($this->fields['followTask']) ? "checked" : "";
       echo "<tr class='tab_bg_1'>";
-      echo "<th>" . __("Glpi task", "mantis") . "</th>";
+      echo "<th>" . __('Ticket tasks') . "</th>";
       echo "<td><input type='checkbox' name='followTask' id='followTask' " . $checked . ">" 
-              . __("Forward tasks", "mantis") . "</td></tr>";
+              . __("Forward ticket tasks", "mantis") . "</td></tr>";
       
       $checked = ($this->fields['followTitle']) ? "checked" : "";
       echo "<tr class='tab_bg_1'>";
-      echo "<th>" . __("Glpi title", "mantis") . "</th>";
+      echo "<th>" . __('Title') . "</th>";
       echo "<td><input type='checkbox' name='followTitle' id='followTitle' " . $checked . ">" 
               . __("Forward title", "mantis") . "</td></tr>";
       
       $checked = ($this->fields['followDescription']) ? "checked" : "";
       echo "<tr class='tab_bg_1'>";
-      echo "<th>" . __("Glpi description", "mantis") . "</th>";
+      echo "<th>" . __('Description') . "</th>";
       echo "<td><input type='checkbox' name='followDescription' id='followDescription' " . $checked . ">" 
               . __("Forward description", "mantis") . "</td></tr>";
       
       $checked = ($this->fields['followCategorie']) ? "checked" : "";
       echo "<tr class='tab_bg_1'>";
-      echo "<th>" . __("Glpi categorie", "mantis") . "</th>";
+      echo "<th>" . __('Category') . "</th>";
       echo "<td><input type='checkbox' name='followCategorie' id='followCategorie' " . $checked . ">" 
               . __("Forward category", "mantis") . "</td></tr>";
       

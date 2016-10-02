@@ -685,7 +685,7 @@ class PluginMantisMantis extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
          echo "<th>" . __('Followups') . "</th>";
          echo "<td><input type='checkbox' name='followFollow' id='followFollow' " . $checked . ">" 
-                           . __("Forward followups", "mantis") . "</td></tr>";   
+                           . __("Forward ticket followup", "mantis") . "</td></tr>";   
       }
 
       if ($itemType == 'Ticket') {
@@ -693,7 +693,7 @@ class PluginMantisMantis extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
          echo "<th>" . __('Tasks') . "</th>";
          echo "<td><input type='checkbox' name='followTask' id='followTask' " . $checked . " >" 
-                              . __("Forward tasks", "mantis") . "</td></tr>";
+                              . __("Forward ticket tasks", "mantis") . "</td></tr>";
       }
 
       $checked = ($pref->fields['followTitle']) ? "checked" : "";

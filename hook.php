@@ -79,48 +79,23 @@ function plugin_mantis_uninstall() {
    return true;
 }
 
-// Define Additionnal search options for types (other than the plugin ones)
 function plugin_mantis_getAddSearchOptions($itemtype) {
    $sopt = array();
-   if ($itemtype == 'Ticket') {
-      
-      $sopt['common'] = "MantisBT";
-      
-      $sopt[78963]['table'] = 'glpi_plugin_mantis_mantis';
-      $sopt[78963]['field'] = 'idMantis';
-      $sopt[78963]['searchtype'] = 'equals';
-      $sopt[78963]['nosearch'] = true;
-      $sopt[78963]['datatype'] = 'bool';
-      $sopt[78963]['name'] = __('Tickets linked to MantisBT', 'mantis');
-      $sopt[78963]['joinparams'] = array(
-            'jointype' => "itemtype_item"
-      );
-   } else if ($itemtype == 'Problem') {
-      $sopt['common'] = "MantisBT";
-      
-      $sopt[78964]['table'] = 'glpi_plugin_mantis_mantis';
-      $sopt[78964]['field'] = 'id';
-      $sopt[78964]['searchtype'] = 'equals';
-      $sopt[78964]['nosearch'] = true;
-      $sopt[78964]['datatype'] = 'bool';
-      $sopt[78964]['name'] = __('Problems linked to MantisBT', 'mantis');
-      $sopt[78964]['joinparams'] = array(
-            'jointype' => "itemtype_item"
-      );
-   }
-   return $sopt;
-}
 
-function plugin_mantis_giveItem($type, $ID, $data, $num) {
-   $searchopt = &Search::getOptions($type);
-   $table = $searchopt[$ID]["table"];
-   $field = $searchopt[$ID]["field"];
-   
-   switch ($table . '.' . $field) {
-      case "glpi_plugin_mantis_mantis.idMantis" :
-         return Dropdown::getYesNo($data["ITEM_$num"]);
-         break;
+   if ($item->getType()=='Ticket' 
+         || $item->getType()=='Problem'
+            || $item->getType()=='Change') {
+
+      $sopt[78963]['table']            = 'glpi_plugin_mantis_mantis';
+      $sopt[78963]['field']            = 'id';
+      $sopt[78963]['forcegroupby']     = true;
+      $sopt[78963]['usehaving']        = true;
+      $sopt[78963]['datatype']         = 'count';
+      $sopt[78963]['massiveaction']    = false;
+      $sopt[78963]['name']             = __('Number of linked MantisBT issues', 'mantis');
+      $sopt[78963]['joinparams']       = array('jointype' => "itemtype_item");
+
    }
-   
-   return "";
+
+   return $sopt;
 }

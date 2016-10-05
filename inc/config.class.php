@@ -84,7 +84,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<td><input id='host' name='host' type='text' size='70' 
                      value='" . $this->fields["host"] . "'/></td>";
       echo "</tr><tr class='tab_bg_1'>";
-      echo "<td></td><td>" . __('host example settings', 'mantis') . "</td>";
+      echo "<td></td><td>ex : http(s)://localhost/mantisbt</td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -92,7 +92,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<td><input id='url' name='url' type='text' size='70' 
                      value='" . $this->fields["url"] . "'/></td>";
       echo "</tr><tr class='tab_bg_1'>";
-      echo "<td></td><td>" . __('wsdl example settings', 'mantis') . "</td>";
+      echo "<td></td><td>ex : api/soap/mantisconnect.php?wsdl</td>";
       echo "</tr>";
       
       echo "<tr class='tab_bg_1'>";

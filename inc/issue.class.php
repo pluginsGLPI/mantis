@@ -388,9 +388,6 @@ class PluginMantisIssue {
             
             // si peut pas créé le lien
             if (! $res) {
-               // on log et on supprime l'issue crée
-               Toolbox::logInFile('mantis', __("Error creating link between Glpi and mantisBT", "mantis") . "\n");
-               Toolbox::logInFile('mantis', __("Deleting MantisBT ticket previously created", "mantis") . "\n");
                $ws->deleteIssue($idIssueCreate);
                return __("Error: The process was interrupted", "mantis");
             } else {
@@ -445,8 +442,7 @@ class PluginMantisIssue {
                }
                
                if ($error != "") {
-                  
-                  Toolbox::logInFile('mantis', __("Deleting items previously created", "mantis") . "\n");
+
                   try {
                      foreach ($id_attachment as &$id) {
                         $ws->deleteAttachment($id);
@@ -503,6 +499,7 @@ class PluginMantisIssue {
          }
       } else {
          
+         //TRANS: %1$s is the MantisBT project name
          Toolbox::logInFile('mantis', sprintf(__('Project \'%1$s\' does not exist.', 'mantis'), $nameMantisProject) . "\n");
          echo sprintf(__('Project \'%1$s\' does not exist.', 'mantis'), $nameMantisProject);
       }
@@ -568,7 +565,7 @@ class PluginMantisIssue {
                            $doc->getField('filename')));
 
                $error .= sprintf(
-                  __('Attachment [%1$s] doesn\'t exists,the process was interrupted.', 'mantis'), 
+                  __('Attachment [%1$s] doesn\'t exists, the process was interrupted.', 'mantis'), 
                            $doc->getField('filename'));
             }
          }

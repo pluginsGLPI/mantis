@@ -217,7 +217,7 @@ if (isset($_POST['action'])) {
                
                $result = $ws->getIssueById($id_mantis_issue);
                if ($result->status->id == 90) {
-                  echo __('"This issue is closed"', 'mantis');
+                  echo __('This MantisBT issue is closed', 'mantis');
                } else {
                   
                   $issue = new PluginMantisIssue();
@@ -316,10 +316,10 @@ if (isset($_POST['action'])) {
                else
                   echo __("Error while deleting the link between GLPi object and MantisBT issue", "mantis");
             } else {
-               echo __("Error while deleting the mantisBD issue", "mantis");
+               echo __("Error while deleting the MantisBT issue", "mantis");
             }
          } else {
-            echo __("The MantisBT issue does not exist", "mantis");
+            echo __("The MantisBT issue doesn't exists", "mantis");
          }
          break;
       

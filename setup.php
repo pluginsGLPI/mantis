@@ -88,7 +88,7 @@ function plugin_init_mantis() {
  */
 function plugin_version_mantis() {
    return array(
-         'name' => __("MantisBT synchronisation", "mantis"),
+         'name' => __("MantisBT synchronization", "mantis"),
          'version' => PLUGIN_MANTIS_VERSION,
          'author' => 'TECLIB\'',
          'license' => 'GPLv3',

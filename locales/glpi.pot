@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-02 21:27+0200\n"
+"POT-Creation-Date: 2016-10-05 20:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,44 +17,40 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: hook.php:94
-msgid "Tickets linked to MantisBT"
+#: hook.php:95
+msgid "Number of linked MantisBT issues"
 msgstr ""
 
-#: hook.php:106
-msgid "Problems linked to MantisBT"
-msgstr ""
-
-#: setup.php:91
-msgid "MantisBT synchronisation"
+#: setup.php:91 inc/mantis.class.php:186
+msgid "MantisBT synchronization"
 msgstr ""
 
 #: ajax/ajax.php:125
 msgid "Documents for related tickets"
 msgstr ""
 
-#: ajax/ajax.php:168 ajax/ajax.php:208
+#: ajax/ajax.php:168 ajax/ajax.php:209
 msgid "MantisBT issue does not exist"
 msgstr ""
 
-#: ajax/ajax.php:174 ajax/ajax.php:213
-msgid "This Glpi item is already linked to this MantisBT ticket"
+#: ajax/ajax.php:175 ajax/ajax.php:215
+msgid "This GLPi object is already linked to the selected MantisBT issue"
 msgstr ""
 
-#: ajax/ajax.php:178 ajax/ajax.php:218
-msgid "\"This issue is closed\""
+#: ajax/ajax.php:179 ajax/ajax.php:220
+msgid "This MantisBT issue is closed"
 msgstr ""
 
-#: ajax/ajax.php:298 ajax/ajax.php:315
-msgid "Error while deleting the link between Glpi ticket and MantisBT ticket"
+#: ajax/ajax.php:300 ajax/ajax.php:317
+msgid "Error while deleting the link between GLPi object and MantisBT issue"
 msgstr ""
 
-#: ajax/ajax.php:317
-msgid "Error while deleting the mantisBD ticket"
+#: ajax/ajax.php:319
+msgid "Error while deleting the MantisBT issue"
 msgstr ""
 
-#: ajax/ajax.php:320
-msgid "The MantisBT ticket does not exist"
+#: ajax/ajax.php:322
+msgid "The MantisBT issue doesn't exists"
 msgstr ""
 
 #: inc/config.class.php:49
@@ -65,16 +61,8 @@ msgstr ""
 msgid "MantisBT server base URL"
 msgstr ""
 
-#: inc/config.class.php:87
-msgid "host example settings"
-msgstr ""
-
 #: inc/config.class.php:91
 msgid "Wsdl file path"
-msgstr ""
-
-#: inc/config.class.php:95
-msgid "wsdl example settings"
 msgstr ""
 
 #: inc/config.class.php:99
@@ -122,7 +110,7 @@ msgstr ""
 msgid "Test the connection"
 msgstr ""
 
-#: inc/issue.class.php:121 inc/issue.class.php:428
+#: inc/issue.class.php:121 inc/issue.class.php:425
 msgid "Error creating the note, the process was interrupted"
 msgstr ""
 
@@ -130,99 +118,79 @@ msgstr ""
 msgid "Error when updating MantisBT issue"
 msgstr ""
 
-#: inc/issue.class.php:376 inc/issue.class.php:395
+#: inc/issue.class.php:376 inc/issue.class.php:392
 msgid "Error: The process was interrupted"
 msgstr ""
 
-#: inc/issue.class.php:392
-msgid "Error creating link between Glpi and mantisBT"
-msgstr ""
-
-#: inc/issue.class.php:393
-msgid "Deleting MantisBT ticket previously created"
-msgstr ""
-
-#: inc/issue.class.php:449
-msgid "Deleting items previously created"
-msgstr ""
-
-#: inc/issue.class.php:506 inc/issue.class.php:507
+#. TRANS: %1$s is the MantisBT project name
+#: inc/issue.class.php:503 inc/issue.class.php:504
 #, php-format
 msgid "Project '%1$s' does not exist."
 msgstr ""
 
-#: inc/issue.class.php:542 inc/issue.class.php:546
+#: inc/issue.class.php:539 inc/issue.class.php:543
 #, php-format
 msgid ""
 "Can't load the attachment [%1$s] to MantisBT, the process was interrupted."
 msgstr ""
 
-#: inc/issue.class.php:556 inc/issue.class.php:560
+#: inc/issue.class.php:553 inc/issue.class.php:557
 #, php-format
 msgid ""
 "Can't send the attachment [%1$s] to MantisBT, the process was interrupted."
 msgstr ""
 
-#: inc/issue.class.php:567
+#: inc/issue.class.php:564 inc/issue.class.php:568
 #, php-format
 msgid "Attachment [%1$s] doesn't exists, the process was interrupted."
 msgstr ""
 
-#: inc/issue.class.php:571
-#, php-format
-msgid "Attachment [%1$s] doesn't exists,the process was interrupted."
-msgstr ""
-
-#: inc/issue.class.php:587 inc/issue.class.php:625 inc/issue.class.php:665
-#: inc/issue.class.php:704 inc/issue.class.php:744 inc/issue.class.php:782
+#: inc/issue.class.php:584 inc/issue.class.php:622 inc/issue.class.php:662
+#: inc/issue.class.php:701 inc/issue.class.php:741 inc/issue.class.php:779
 #, php-format
 msgid "Title = %1$s <br/>"
 msgstr ""
 
-#: inc/issue.class.php:591 inc/issue.class.php:629 inc/issue.class.php:669
-#: inc/issue.class.php:708 inc/issue.class.php:748 inc/issue.class.php:786
+#: inc/issue.class.php:588 inc/issue.class.php:626 inc/issue.class.php:666
+#: inc/issue.class.php:705 inc/issue.class.php:745 inc/issue.class.php:783
 #, php-format
 msgid "Description = %1$s <br/>"
 msgstr ""
 
-#: inc/issue.class.php:604 inc/issue.class.php:642 inc/issue.class.php:682
-#: inc/issue.class.php:721 inc/issue.class.php:761 inc/issue.class.php:799
+#: inc/issue.class.php:601 inc/issue.class.php:639 inc/issue.class.php:679
+#: inc/issue.class.php:718 inc/issue.class.php:758 inc/issue.class.php:796
 #, php-format
 msgid "Category = %1$s <br/>"
 msgstr ""
 
-#: inc/issue.class.php:609 inc/issue.class.php:647 inc/issue.class.php:687
-#: inc/issue.class.php:726 inc/issue.class.php:766 inc/issue.class.php:804
+#: inc/issue.class.php:606 inc/issue.class.php:644 inc/issue.class.php:684
+#: inc/issue.class.php:723 inc/issue.class.php:763 inc/issue.class.php:801
 #, php-format
 msgid "Link to GLPi object = %1$s <br/>"
 msgstr ""
 
-#: inc/issue.class.php:872
+#: inc/issue.class.php:869
 #, php-format
 msgid ""
 "Followups = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : "
 "%5$s<br/>"
 msgstr ""
 
-#: inc/issue.class.php:880
+#: inc/issue.class.php:877
 msgid "No follow-up"
 msgstr ""
 
-#: inc/issue.class.php:915
+#: inc/issue.class.php:912
 #, php-format
 msgid "Task = %1$s -> date : %2$s, description : %3$s, time : %4$s<br/>"
 msgstr ""
 
-#: inc/issue.class.php:922
+#: inc/issue.class.php:919
 msgid "No task"
 msgstr ""
 
 #: inc/mantis.class.php:47 inc/userpref.class.php:72 inc/userpref.class.php:78
 msgid "MantisBT"
-msgstr ""
-
-#: inc/mantis.class.php:186
-msgid "MantisBT synchronization"
 msgstr ""
 
 #: inc/mantis.class.php:198
@@ -400,68 +368,63 @@ msgstr ""
 msgid "Error when checking existence of the MantisBT ticket '%1$s' => '%2$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:244
-#, php-format
-msgid "Error while deleting the ticket '%1$s' => '%2$s'"
-msgstr ""
-
-#: inc/mantisws.class.php:261
+#: inc/mantisws.class.php:256
 #, php-format
 msgid "error while creating note => '%1$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:282
+#: inc/mantisws.class.php:277
 msgid "WARNIG "
 msgstr ""
 
-#: inc/mantisws.class.php:285
+#: inc/mantisws.class.php:280
 #, php-format
 msgid "error while creating attachment => '%1$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:305
+#: inc/mantisws.class.php:300
 #, php-format
 msgid "error while getting attachment => '%1$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:321
+#: inc/mantisws.class.php:316
 #, php-format
 msgid "Error creating MantisBT ticket '%1$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:338
+#: inc/mantisws.class.php:333
 #, php-format
 msgid "Error searching MantisBT ticket '%1$s' => '%2$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:354
+#: inc/mantisws.class.php:349
 #, php-format
 msgid "Error retrieving the id of the project by it's name  '%1$s' => '%2$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:374
+#: inc/mantisws.class.php:369
 #, php-format
 msgid ""
 "Error when checking the  existence of the project by his name '%1$s' => "
 "'%2$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:390
+#: inc/mantisws.class.php:385
 #, php-format
 msgid "Error when deleting note '%1$s' => '%2$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:406
+#: inc/mantisws.class.php:401
 #, php-format
 msgid "Error when deleting attachment '%1$s' => '%2$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:420
+#: inc/mantisws.class.php:415
 #, php-format
 msgid "Error when getting MantisBT states => '%1$s'"
 msgstr ""
 
-#: inc/mantisws.class.php:429
+#: inc/mantisws.class.php:424
 #, php-format
 msgid "Error when updating MantisBT => '%1$s'"
 msgstr ""

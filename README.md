@@ -1,6 +1,8 @@
 # Plugin GLPi - Synchronisation MantisBT
 
-## Introduction
+## French
+
+### Description
 
 Ce plugin permet une synchronisation simple entre les tickets GLPI et les issues MantisBT.
 
@@ -22,15 +24,50 @@ Voici une liste de ses fonctionnalités actuelles :
 
 * gestion de la configuration de l'interconnexion
 
+### Documentation
 
-## Documentation
+Actuellement disponible dans le dossier *docs*.
 
-Actuellement disponible dans le dossier *docs* du plugin téléchargé.
-
-## Processus de développement
+### Processus de développement
  
 Pour développer ce plugin, nous utilisons au maximum le workflow GitFlow :
     
 http://nvie.com/posts/a-successful-git-branching-model/
       
 Merci de respecter ce workflow :)
+
+## English
+
+### Description
+
+This plugin allows to synchronize tickets, problems and changes with the MantisBT tool:
+
+Here is a list of current features:
+
+* Connection via webservices of MantisBT (MantisConnect);
+
+* Creation of a new MantisBT issue from a ticket, problem or GLPi change;
+
+* Link an existing MantisBT issue from a ticket, problem or GLPi change;
+
+* Transmission of information from the GLPi object to the created / linked MantisBT issue;
+
+* Transfer and auto-update attachments of GLPi object to the MantisBT created / linked issue;
+
+* Automatic update of GLPi object (transition to the resolved state) when the MantisBT issue is resolved;
+
+* Management rights for the plugin;
+
+* Configuration management of interconnection.
+
+### Documentation
+
+Only available in French in *docs* directory.
+
+### Development workflow
+ 
+To develop this plugin, we've used the GitFlow workflow:
+    
+http://nvie.com/posts/a-successful-git-branching-model/
+      
+Please respect the workflow :)

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+   <name>MantisBT synchronization</name>
+   <key>mantisbt</key>
+   <state>stable</state>
+   <logo>https://raw.githubusercontent.com/pluginsGLPI/mantis/master/mantis.png</logo>
+   <description>
+      <short>
+         <fr><![CDATA[Ce plugin permet de synchroniser les tickets, problèmes et changements avec l'outil MantisBT.]]></fr>
+         <en><![CDATA[This plugin allows to synchronize tickets, problems and changes with the MantisBT tool.]]></en>
+      </short>
+      <long>
+         <fr><![CDATA[Ce plugin permet de synchroniser les tickets, problèmes et changements avec l'outil MantisBT :
+            Voici une liste de ses fonctionnalités actuelles :
+
+            * connexion via les Webservices de MantisBT (MantisConnect);
+
+            * création d'une nouvelle issue MantisBT depuis un ticket, un problème ou un changement GLPi;
+
+            * liaison d'une issue MantisBT existante depuis un ticket, un problème ou un changement GLPi;
+
+            * transmission des informations de l'objet GLPi vers l'issue MantisBT créée/liéée;
+
+            * transfert et mise à jour des pièces jointes de l'objet GLPi vers l'issue MantisBT créée/liéée;
+
+            * tâche automatique de mise à jour de l'objet GLPi (passage à l'état résolu) lors que l'issue MantisBT est résolue;
+
+            * gestion des droits sur le plugin;
+
+            * gestion de la configuration de l'interconnexion.]]></fr>
+         <en><![CDATA[This plugin allows to synchronize tickets, problems and changes with the MantisBT tool:
+             Here is a list of current features:
+
+             * Connection via webservices of MantisBT (MantisConnect);
+
+             * Creation of a new MantisBT issue from a ticket, problem or GLPi change;
+
+             * Link an existing MantisBT issue from a ticket, problem or GLPi change;
+
+             * Transmission of information from the GLPi object to the created / linked MantisBT issue;
+
+             * Transfer and auto-update attachments of GLPi object to the MantisBT created / linked issue;
+
+             * Automatic update of GLPi object (transition to the resolved state) when the MantisBT issue is resolved;
+
+             * Management rights for the plugin;
+
+             * Configuration management of interconnection.]]></en>
+      </long>
+   </description>
+   <homepage>https://github.com/pluginsGLPI/mantis</homepage>
+   <download>https://github.com/pluginsGLPI/mantis/releases</download>
+   <issues>https://github.com/pluginsGLPI/mantis/issues</issues>
+   <readme>https://raw.githubusercontent.com/pluginsGLPI/mantis/master/README.md</readme>
+   <authors>
+      <author>TECLIB</author>
+   </authors>
+   <versions>
+      <version>
+         <num>3.0.0</num>
+          <compatibility>0.85</compatibility>
+          <compatibility>0.90</compatibility>
+          <compatibility>9.1</compatibility>
+      </version>
+      <version>
+          <num>1.0</num>
+          <compatibility>0.84</compatibility>
+      </version>
+   </versions>
+   <langs>
+      <lang>fr_FR</lang>
+      <lang>en_GB</lang>
+   </langs>
+   <license>GPLv3</license>
+   <category></category>
+   <tags>
+         <fr>
+            <tag>ticket</tag>
+            <tag>problème</tag>
+            <tag>changement</tag>
+            <tag>synchronisation</tag>
+            <tag>mantisbt</tag>
+         </fr>
+         <en>
+            <tag>ticket</tag>
+            <tag>problem</tag>
+            <tag>change</tag>
+            <tag>synchronization</tag>
+            <tag>mantisbt</tag>
+         </en>
+   </tags>
+   <screenshots>
+      <screenshot>https://raw.githubusercontent.com/pluginsGLPI/mantis/master/screenshots/fr_mantis-configuration.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/pluginsGLPI/mantis/master/screenshots/fr_mantis-liste-des-issues-liees.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/pluginsGLPI/mantis/master/screenshots/fr_mantis-popup-creation-issue.png</screenshot>
+   </screenshots>
+</root>

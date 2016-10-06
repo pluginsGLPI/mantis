@@ -1,8 +1,6 @@
-GLPI Plugin mantis
-=============
+# Plugin GLPi - Synchronisation MantisBT
 
-Introduction
--------------
+## Introduction
 
 Ce plugin permet une synchronisation simple entre les tickets GLPI et les issues MantisBT.
 
@@ -25,8 +23,14 @@ Voici une liste de ses fonctionnalités actuelles :
 * gestion de la configuration de l'interconnexion
 
 
-Documentation
--------------
+## Documentation
 
 Actuellement disponible dans le dossier *docs* du plugin téléchargé.
 
+## Processus de développement
+ 
+Pour développer ce plugin, nous utilisons au maximum le workflow GitFlow :
+    
+http://nvie.com/posts/a-successful-git-branching-model/
+      
+Merci de respecter ce workflow :)

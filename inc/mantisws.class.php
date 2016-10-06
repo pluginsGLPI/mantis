@@ -1,44 +1,40 @@
 <?php
-
 /*
- * ------------------------------------------------------------------------
- * GLPI Plugin MantisBT
- * Copyright (C) 2014 by the GLPI Plugin MantisBT Development Team.
- *
- * https://forge.indepnet.net/projects/mantis
- * ------------------------------------------------------------------------
- *
- * LICENSE
- *
- * This file is part of GLPI Plugin MantisBT project.
- *
- * GLPI Plugin MantisBT is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * GLPI Plugin MantisBT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GLPI Plugin MantisBT. If not, see <http://www.gnu.org/licenses/>.
- *
- * ------------------------------------------------------------------------
- *
- * @package GLPI Plugin MantisBT
- * @author Stanislas Kita (teclib')
- * @co-author François Legastelois (teclib')
- * @co-author Le Conseil d'Etat
- * @copyright Copyright (c) 2014 GLPI Plugin MantisBT Development team
- * @license GPLv3 or (at your option) any later version
- * http://www.gnu.org/licenses/gpl.html
- * @link https://forge.indepnet.net/projects/mantis
- * @since 2014
- *
- * ------------------------------------------------------------------------
+ * @version $Id$
+ -------------------------------------------------------------------------
+ GLPI - Gestionnaire Libre de Parc Informatique
+ Copyright (C) 2015-2016 Teclib'.
+
+ http://glpi-project.org
+
+ based on GLPI - Gestionnaire Libre de Parc Informatique
+ Copyright (C) 2003-2014 by the INDEPNET Development Team.
+
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of GLPI.
+
+ GLPI is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ GLPI is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with GLPI. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
  */
+
+if (!defined('GLPI_ROOT')) {
+   die("Sorry. You can't access directly to this file");
+}
+
 class PluginMantisMantisws {
 
    private $_host;
@@ -75,7 +71,7 @@ class PluginMantisMantisws {
          $this->_host = $conf->fields["host"];
          $this->_url = $conf->fields["url"];
          $this->_login = $conf->fields["login"];
-         $this->_password = $conf->fields["pwd"];
+         $this->_password = Toolbox::decrypt($conf->fields["pwd"], GLPIKEY);
          
          $this->_client = new SoapClient($this->_host . "/" . $this->_url);
          return true;
@@ -242,12 +238,7 @@ class PluginMantisMantisws {
     * @return boolean
     */
    public function deleteIssue($_issue_id) {
-      try {
-         return $this->_client->mc_issue_delete($this->_login, $this->_password, $_issue_id);
-      } catch ( SoapFault $e ) {
-         Toolbox::logInFile('mantis', sprintf(__('Error while deleting the ticket \'%1$s\' => \'%2$s\'', 'mantis'), $_issue_id, $e->getMessage()) . "\n");
-         return false;
-      }
+      return $this->_client->mc_issue_delete($this->_login, $this->_password, $_issue_id);
    }
 
    /**

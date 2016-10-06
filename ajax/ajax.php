@@ -1,44 +1,36 @@
 <?php
-
 /*
- * ------------------------------------------------------------------------
- * GLPI Plugin MantisBT
- * Copyright (C) 2014 by the GLPI Plugin MantisBT Development Team.
- *
- * https://forge.indepnet.net/projects/mantis
- * ------------------------------------------------------------------------
- *
- * LICENSE
- *
- * This file is part of GLPI Plugin MantisBT project.
- *
- * GLPI Plugin MantisBT is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * GLPI Plugin MantisBT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GLPI Plugin MantisBT. If not, see <http://www.gnu.org/licenses/>.
- *
- * ------------------------------------------------------------------------
- *
- * @package GLPI Plugin MantisBT
- * @author Stanislas Kita (teclib')
- * @co-author François Legastelois (teclib')
- * @co-author Le Conseil d'Etat
- * @copyright Copyright (c) 2014 GLPI Plugin MantisBT Development team
- * @license GPLv3 or (at your option) any later version
- * http://www.gnu.org/licenses/gpl.html
- * @link https://forge.indepnet.net/projects/mantis
- * @since 2014
- *
- * ------------------------------------------------------------------------
+ * @version $Id$
+ -------------------------------------------------------------------------
+ GLPI - Gestionnaire Libre de Parc Informatique
+ Copyright (C) 2015-2016 Teclib'.
+
+ http://glpi-project.org
+
+ based on GLPI - Gestionnaire Libre de Parc Informatique
+ Copyright (C) 2003-2014 by the INDEPNET Development Team.
+
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of GLPI.
+
+ GLPI is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ GLPI is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with GLPI. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
  */
+
 include ('../../../inc/includes.php');
 
 if (isset($_POST['action'])) {
@@ -54,7 +46,10 @@ if (isset($_POST['action'])) {
          error_reporting(0);
          $ws = new PluginMantisMantisws();
          try {
-            $res = $ws->testConnectionWS($_POST['host'], $_POST['url'], $_POST['login'], $_POST['pwd']);
+            $res = $ws->testConnectionWS($_POST['host'], 
+                                         $_POST['url'], 
+                                         $_POST['login'], 
+                                         $_POST['pwd']);
             if ($res) {
                echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/check24.png'/>";
             } else {
@@ -91,7 +86,10 @@ if (isset($_POST['action'])) {
       case 'getStateMantis' :
          
          $ws = new PluginMantisMantisws();
-         $ws->getConnexion($_POST['host'], $_POST['url'], $_POST['login'], $_POST['pwd']);
+         $ws->getConnexion($_POST['host'], 
+                           $_POST['url'], 
+                           $_POST['login'], 
+                           Toolbox::decrypt($_POST['pwd'], GLPIKEY));
          $result = $ws->getStateMantis();
          
          if (! $result) {
@@ -121,25 +119,18 @@ if (isset($_POST['action'])) {
          
          $output .= GetOutputForTicket($ticket, $itemType);
          
-         if ($itemType != 'Problem') {
+         if ($itemType == 'Ticket') {
             $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
             if (count($tickets)) {
-               $output .= "<br/><DL><DT><STRONG>" . __('If you fowllow linked tickets', 'mantis') . "</STRONG><br>";
+               $output .= "<br/><strong>" . __('Documents for related tickets', 'mantis') . "</strong><br>";
                foreach ($tickets as $link_ticket) {
                   $ticketLink = new Ticket();
                   $ticketLink->getFromDB($link_ticket['tickets_id']);
                   $output .= GetOutputForTicket($ticketLink, $itemType);
                }
-            } else {
-               $output .= "<DL><DT><STRONG>" . __('No tickets linked', 'mantis');
             }
          }
-         
-         if ($output == "") {
-            echo "<STRONG>" . __('No documents attached', 'mantis') . "<STRONG/>";
-         } else {
-            echo $output;
-         }
+         echo $output;
          break;
       
       // GET CATEGORIE FROM PROJECT MANTIS
@@ -180,11 +171,12 @@ if (isset($_POST['action'])) {
             $mantis = new PluginMantisMantis();
             // on verifie si un lien est deja creé
             if ($mantis->IfExistLink($idItem, $id_mantis_issue, $itemType)) {
-               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/> ERROR :" . __("This Glpi item is already linked to this MantisBT ticket", "mantis");
+               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>" 
+                  . __("This GLPi object is already linked to the selected MantisBT issue", "mantis");
             } else {
                $result = $ws->getIssueById($id_mantis_issue);
                if ($result->status->id == 90) {
-                  echo "ERROR :" . __('"This issue is closed"', 'mantis');
+                  echo __('This MantisBT issue is closed', 'mantis');
                } else {
                   echo $result->project->name;
                }
@@ -219,12 +211,13 @@ if (isset($_POST['action'])) {
             $mantis = new PluginMantisMantis();
             // on verifie si un lien est deja creé
             if ($mantis->IfExistLink($id_ticket, $id_mantis_issue, $itemType)) {
-               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>" . __("This Glpi item is already linked to this MantisBT ticket", "mantis");
+               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>"
+                  . __("This GLPi object is already linked to the selected MantisBT issue", "mantis");
             } else {
                
                $result = $ws->getIssueById($id_mantis_issue);
                if ($result->status->id == 90) {
-                  echo "ERROR :" . __('"This issue is closed"', 'mantis');
+                  echo __('This MantisBT issue is closed', 'mantis');
                } else {
                   
                   $issue = new PluginMantisIssue();
@@ -304,7 +297,7 @@ if (isset($_POST['action'])) {
          if ($res)
             echo true;
          else
-            echo __("Error while deleting the link between Glpi ticket and MantisBT ticket", "mantis");
+            echo __("Error while deleting the link between GLPi object and MantisBT issue", "mantis");
          break;
       
       case 'deleteIssueMantisAndLink' :
@@ -321,12 +314,12 @@ if (isset($_POST['action'])) {
                if ($res)
                   echo true;
                else
-                  echo __("Error while deleting the link between Glpi ticket and MantisBT ticket", "mantis");
+                  echo __("Error while deleting the link between GLPi object and MantisBT issue", "mantis");
             } else {
-               echo __("Error while deleting the mantisBD ticket", "mantis");
+               echo __("Error while deleting the MantisBT issue", "mantis");
             }
          } else {
-            echo __("The MantisBT ticket does not exist", "mantis");
+            echo __("The MantisBT issue doesn't exists", "mantis");
          }
          break;
       

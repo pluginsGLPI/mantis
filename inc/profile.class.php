@@ -193,7 +193,7 @@ class PluginMantisProfile extends CommonDBTM {
 
       foreach ($DB->request($table, "`id`='$profiles_id'") as $profile_data) {
          $translatedRight = self::translateARight($profile_data["right"]);
-         ProfileRight::updateProfileRights($profiles_id, array('mantis:mantis' => $translatedRight));
+         ProfileRight::updateProfileRights($profiles_id, array('plugin_mantis_use' => $translatedRight));
       }
    }
 
@@ -216,26 +216,52 @@ class PluginMantisProfile extends CommonDBTM {
    }
 
    /**
+   * Test if old right name exists (mantis:mantis)
+   * @return bool
+   */
+   static function oldRightNameExists() {
+      if (countElementsInTable(ProfileRight::getTable(), "name = 'mantis:mantis'") > 0) {
+         return true;
+      }
+      return false;
+   }
+
+   /**
+   * Update old right name (mantis:mantis to plugin_mantis_use)
+   * @return nothing
+   */
+   static function updateOldRightName() {
+      global $DB;
+
+      $query = "UPDATE ".ProfileRight::getTable()."
+                  SET name = 'plugin_mantis_use 
+                  WHERE name = 'mantis:mantis'";
+      $DB->query($query);
+   }
+
+   /**
     * Install all necessary profile for the plugin
     *
     * @return boolean True if success
     */
    static function install(Migration $migration) {
-      global $DB;
-      
-      $table = "glpi_plugin_mantis_profiles";
 
-      if (TableExists($table)) {
-
-         self::migrateAllProfiles();
-
-         $migration->dropTable($table);
-      } else {
-         foreach (self::getAllRights() as $right) {
-            self::addDefaultProfileInfos($_SESSION['glpiactiveprofile']['id'], 
-                                          array($right['field'] => $right['default']));
-         }
+      if (self::oldRightNameExists()) {
+         self::updateOldRightName();
       }
+
+      if (TableExists("glpi_plugin_mantis_profiles")) {
+         self::migrateAllProfiles();
+         $migration->dropTable("glpi_plugin_mantis_profiles");
+         return true;
+      }
+
+      // Set default rights
+      foreach (self::getAllRights() as $right) {
+         self::addDefaultProfileInfos($_SESSION['glpiactiveprofile']['id'], 
+                                       array($right['field'] => $right['default']));
+      }
+
    }
 
    /**

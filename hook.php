@@ -82,9 +82,7 @@ function plugin_mantis_uninstall() {
 function plugin_mantis_getAddSearchOptions($itemtype) {
    $sopt = array();
 
-   if ($item->getType()=='Ticket' 
-         || $item->getType()=='Problem'
-            || $item->getType()=='Change') {
+   if (in_array($itemtype, array('Ticket','Problem','Change'))) {
 
       $sopt[78963]['table']            = 'glpi_plugin_mantis_mantis';
       $sopt[78963]['field']            = 'id';

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
    <name>MantisBT synchronization</name>
-   <key>mantisbt</key>
+   <key>mantis</key>
    <state>stable</state>
    <logo>https://raw.githubusercontent.com/pluginsGLPI/mantis/master/mantis.png</logo>
    <description>

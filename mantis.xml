@@ -10,42 +10,28 @@
          <en><![CDATA[This plugin allows to synchronize tickets, problems and changes with the MantisBT tool.]]></en>
       </short>
       <long>
-         <fr><![CDATA[Ce plugin permet de synchroniser les tickets, problèmes et changements avec l'outil MantisBT :
-            Voici une liste de ses fonctionnalités actuelles :
-
-            * connexion via les Webservices de MantisBT (MantisConnect);
-
-            * création d'une nouvelle issue MantisBT depuis un ticket, un problème ou un changement GLPi;
-
-            * liaison d'une issue MantisBT existante depuis un ticket, un problème ou un changement GLPi;
-
-            * transmission des informations de l'objet GLPi vers l'issue MantisBT créée/liéée;
-
-            * transfert et mise à jour des pièces jointes de l'objet GLPi vers l'issue MantisBT créée/liéée;
-
-            * tâche automatique de mise à jour de l'objet GLPi (passage à l'état résolu) lors que l'issue MantisBT est résolue;
-
-            * gestion des droits sur le plugin;
-
-            * gestion de la configuration de l'interconnexion.]]></fr>
-         <en><![CDATA[This plugin allows to synchronize tickets, problems and changes with the MantisBT tool:
-             Here is a list of current features:
-
-             * Connection via webservices of MantisBT (MantisConnect);
-
-             * Creation of a new MantisBT issue from a ticket, problem or GLPi change;
-
-             * Link an existing MantisBT issue from a ticket, problem or GLPi change;
-
-             * Transmission of information from the GLPi object to the created / linked MantisBT issue;
-
-             * Transfer and auto-update attachments of GLPi object to the MantisBT created / linked issue;
-
-             * Automatic update of GLPi object (transition to the resolved state) when the MantisBT issue is resolved;
-
-             * Management rights for the plugin;
-
-             * Configuration management of interconnection.]]></en>
+         <fr><![CDATA[Ce plugin permet de synchroniser les tickets, problèmes et changements avec l'outil MantisBT.
+            <br />Voici une liste de ses fonctionnalités actuelles :
+            <ul><li>Connexion via les Webservices de MantisBT (MantisConnect);</li>
+            <li>Création d'une nouvelle issue MantisBT depuis un ticket, un problème ou un changement GLPi;</li>
+            <li>Liaison d'une issue MantisBT existante depuis un ticket, un problème ou un changement GLPi;</li>
+            <li>Transmission des informations de l'objet GLPi vers l'issue MantisBT créée/liéée;</li>
+            <li>Transfert et mise à jour des pièces jointes de l'objet GLPi vers l'issue MantisBT créée/liéée;</li>
+            <li>Tâche automatique de mise à jour de l'objet GLPi (passage à l'état résolu) lors que l'issue MantisBT est résolue;</li>
+            <li>Gestion des droits sur le plugin;</li>
+            <li>Gestion de la configuration de l'interconnexion.</li>
+         </ul>]]></fr>
+         <en><![CDATA[This plugin allows to synchronize tickets, problems and changes with the MantisBT tool.
+             <br />Here is a list of current features:
+             <ul><li>Connection via webservices of MantisBT (MantisConnect);</li>
+             <li>Creation of a new MantisBT issue from a ticket, problem or GLPi change;</li>
+             <li>Link an existing MantisBT issue from a ticket, problem or GLPi change;</li>
+             <li>Transmission of information from the GLPi object to the created / linked MantisBT issue;</li>
+             <li>Transfer and auto-update attachments of GLPi object to the MantisBT created / linked issue;</li>
+             <li>Automatic update of GLPi object (transition to the resolved state) when the MantisBT issue is resolved;</li>
+             <li>Management rights for the plugin;</li>
+             <li>Configuration management of interconnection.</li>
+         </ul>]]></en>
       </long>
    </description>
    <homepage>https://github.com/pluginsGLPI/mantis</homepage>

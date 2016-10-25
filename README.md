@@ -28,12 +28,14 @@ Voici une liste de ses fonctionnalités actuelles :
 
 Actuellement disponible dans le dossier *docs*.
 
-### Processus de développement
- 
-Pour développer ce plugin, nous utilisons au maximum le workflow GitFlow :
-    
-http://nvie.com/posts/a-successful-git-branching-model/
-      
+### Contribuer
+
+* Ouvrez un ticket pour chaque bogue/fonctionnalité que cela puisse être discuté
+* Suivez [les règles de développement](http://glpi-developer-documentation.readthedocs.io/en/latest/plugins.html)
+* Référez-vous au processus [GitFlow](http://git-flow.readthedocs.io/) pour gérer les branches
+* Travaillez sur une nouvelle branche sur votre fork
+* Ouvreez une PR qui sera revue par un développeur
+
 Merci de respecter ce workflow :)
 
 ## English
@@ -64,10 +66,12 @@ Here is a list of current features:
 
 Only available in French in *docs* directory.
 
-### Development workflow
- 
-To develop this plugin, we've used the GitFlow workflow:
-    
-http://nvie.com/posts/a-successful-git-branching-model/
-      
+### Contributing
+
+* Open a ticket for each bug/feature so it can be discussed
+* Follow [development guidelines](http://glpi-developer-documentation.readthedocs.io/en/latest/plugins.html)
+* Refer to [GitFlow](http://git-flow.readthedocs.io/) process for branching
+* Work on a new branch on your own fork
+* Open a PR that will be reviewed by a developer
+
 Please respect the workflow :)

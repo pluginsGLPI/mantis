@@ -34,7 +34,7 @@ Actuellement disponible dans le dossier *docs*.
 * Suivez [les règles de développement](http://glpi-developer-documentation.readthedocs.io/en/latest/plugins.html)
 * Référez-vous au processus [GitFlow](http://git-flow.readthedocs.io/) pour gérer les branches
 * Travaillez sur une nouvelle branche sur votre fork
-* Ouvreez une PR qui sera revue par un développeur
+* Ouvrez une PR qui sera revue par un développeur
 
 Merci de respecter ce workflow :)
 

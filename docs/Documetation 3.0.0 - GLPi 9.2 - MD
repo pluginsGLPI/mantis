@@ -1,0 +1,154 @@
+# Documentation pour le plugin MantisBT
+
+:::info 
+Cette documentation vous permettra de configurer rapidement le plugin MantisBT 
+:::
+
+# Prérequis
+
+* GLPi version 0.85 min
+
+# Configuration du plugin
+
+![](https://i.imgur.com/jOtoghi.png)
+
+
+Configuration du plugin MantisBT
+
+**Adresse web de l'application MantisBT** :
+> Fait référence à l’adresse IP du Serveur qui heberge votre MantisBT.
+
+**Chemin du fichier WSDL**
+> Fait référence un chemin du fichier WSDL 
+> (par défaut: mantis/api/soap/mantisconnect.php?wsdl)
+
+**Nom d'utilisateur MantisBT**
+
+> Nom d'utilisateur MantisBT permettant la connnexion
+
+**Mot de passe de l’utilisateur MantisBT**
+
+> Mot de passe de l'utilisateur MantisBT permettant la connexion
+
+**Autoriser l'assignation des issues**
+
+> Permet d'assigner l'issue dans MantisBT au moment de l'escalade depuis GLPi
+
+**Interdire l'escalade vers MantisBT lorsque le statut de l'objet GLPi est**
+
+> Permet de ne pas transférer les tickets dont le statut est défini
+
+**Statut de l'objet GLPi après l'escalade vers MantisBT**	
+
+> Statut dans GLPi du ticket qui a été transféré dans MantisBT
+
+**Afficher l'option 'Forcer la suppression de l'issue MantisBT'**
+
+> Affichage ou non de cette option
+
+**Type de documents à transférer vers MantisBT**
+
+> Choix des documents autorisés à être transféré vers MantisBT
+
+**Champ de MantisBT pour les champs de l'objet GLPi**
+
+> Champ MantisBT qui va accueillir le infos du ticket Glpi (informations additionnels ou note).
+
+**Champ de MantisBT pour l'URL vers l'objet GLPi qui est lié**
+
+> Champ MantisBT qui va accueillir le lien vers l'objet Glpi (informations additionnels ou note).
+
+**Clôturer l'objet GLPi lorsque l'issue MantisBT est au statut**
+
+> Choix du statut MantisBT permettant la clôture automatique du ticket GLPi lié
+> Une tâche automatique va interroger tous les tickets MantisBT liés à un ticket Glpi. Lorsque tout les tickets MantisBT ont le statut choisi par l’utilisateur, la tâche va alors changer le statut du ticket GLPi en "résolu" et intégrer à la solution l’ensemble des notes de tout les tickets MantisBT.
+
+**Tester la connexion**
+
+> Tester la connexion à MantisBT après avoir renseigné l’IP, le chemin du WSDL, le login et le password.
+
+# Configuration des droits
+
+La gestion des droit se fait à travers les profils utilisateurs.
+
+Se rendre dans Administration > Profils
+
+![](https://i.imgur.com/BkhkXwd.png)
+
+* Aucun droit (aucune case cochée) → l’utilisateur ne verra pas l'onglet MantisBT dans le ticket Glpi.
+
+* Lecture → l’utilisateur peut juste voir le tableau qui recense les tickets MantisBT liés au ticket Glpi.
+
+* Ecriture → l’utilisateur voit le tableau qui recense les tickets MantisBT liés au ticket Glpi ainsi que les deux boutons permettant de lier un ticket Glpi à MantisBT.
+
+Configuration des droits du plugin MantisBT
+
+# Configuration de l'action automatique
+
+Se rendre dans Configuration > Actions automatiques
+
+Cliquer sur l'action autmomatique appelée **"mantis"**
+
+![](https://i.imgur.com/z49dfuw.png)
+
+**Fréquence d’éxécution**
+Vous pouvez choisir la fréquence à laquelle la tâche va être exécuté.
+
+**Statut**
+Programmé ou désactivé.
+
+**Mode d’éxécution**
+
+* GLPI → Exécuté tant qu’il y a de l’activité sur l’application.
+
+* CLI → Exécution automatique (cf : php-cli), à privilégier.
+
+**Plage horaire**
+Fourchette de temps durant laquelle la tâche peut s’éxécuter.
+
+
+# Utilisation du plugin
+
+Lors de l'ouverture d'un ticket, nouvel onglet **MantisBT** est disponible:
+
+![](https://i.imgur.com/NiSji4a.png)
+
+Celui-ci affiche 2 nouvelles options: 
+Selectionnez l’onglet MantisBT, vous verez apparaître deux nouveaux bouton
+
+Boutton du plugin MantisBT
+Lier un ticket Glpi à un ticket MantisBT
+
+* Lier à une issue MantisBT existante
+
+![](https://i.imgur.com/N0ylC7O.png)
+
+* Créer une nouvelle issue MantisBT
+
+![](https://i.imgur.com/2sqVw1M.png)
+
+
+# Suivi des tickets MantisBT
+
+Lorsqu'un ticket GLPi est lié à un ticket MantisBT, le lien entre les deux tickets apparait dans l'onglet **MantisBT**.
+
+Les information suivantes apparaissent:
+
+* Le titre du ticket MantisBT
+
+* Sa catégorie
+
+* l' État dans MantisBT
+
+* la date d’escalade vers MantisBT
+
+* l’utilisateur qui l’a escaladé.
+
+* Une flèche verte permettant d’ouvrir le ticket MantisBT.
+
+
+Une poubelle permet de supprimer au choix le lien entre le ticket GLPi et le ticket Mantis ou le ticket Mantis directement (ce qui implique également la suppression du lien). Deux choix sont proposés:
+
+* Supprimer le lien entre le ticket Glpi et le ticket Mantis → le lien n’apparaitra plus dans le tableau mais le ticket MantisBT existera toujours
+
+* Supprimer le ticket MantisBT → le ticket MantisBT sera supprimé ainsi que le lien qui l’uni au ticket Glpi (ne sera plus visible dans le tableau)

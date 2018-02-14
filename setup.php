@@ -31,7 +31,7 @@
  --------------------------------------------------------------------------
  */
 
-define("PLUGIN_MANTIS_VERSION", "3.0.1");
+define("PLUGIN_MANTIS_VERSION", "3.0.2");
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_MANTIS_MIN_GLPI", "0.85");

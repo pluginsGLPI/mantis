@@ -196,7 +196,19 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<td></td>";
       echo "</tr>";
 
-      echo "<tr class='tab_bg_1'>";      
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("GLPi user who solves ticket ?", "mantis") . "</td>";
+      echo "<td>";
+      User::dropdown(['name'   => 'users_id',
+                                 'value'  => $this->fields["users_id"],
+                                 'entity' => -1,
+                                 'right'  => 'all']);
+      echo "</td>";
+      echo "<td></td>";
+      echo "</tr>";
+
+      echo "<tr class='tab_bg_1'>";
       echo "<td><input id='test' onclick='testConnexionMantisWS();' 
                value='" . __("Test the connection", "mantis") . "' class='submit'></td>";
       echo "<td><div id='infoAjax'></div></td>";
@@ -232,6 +244,7 @@ class PluginMantisConfig extends CommonDBTM {
                      `itemType` varchar(255) NOT NULL default '',
                      `etatMantis` varchar(100) NOT NULL default '',
                      `solutiontypes_id` int(11) NOT NULL DEFAULT 0,
+                     `users_id` int(11) NOT NULL DEFAULT 0,
                      PRIMARY KEY (`id`)
                   ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
@@ -246,6 +259,10 @@ class PluginMantisConfig extends CommonDBTM {
 
          if (!FieldExists($table, 'solutiontypes_id')) {
             $migration->addField($table, "solutiontypes_id", "INT( 11 ) NOT NULL DEFAULT 0");
+         }
+
+         if (!FieldExists($table, 'users_id')) {
+            $migration->addField($table, "users_id", "INT( 11 ) NOT NULL DEFAULT 0");
          }
 
       }

@@ -377,7 +377,7 @@ class PluginMantisMantis extends CommonDBTM {
       
       $document = array();
       
-      $query = "  SELECT `glpi_documents`.`id`
+      $query = "  SELECT `glpi_documents_items`.`documents_id`
                   FROM `glpi_documents_items`, `glpi_documents`
                   WHERE `glpi_documents`.`id` = `glpi_documents_items`.`documents_id`
                   AND `glpi_documents_items`.`itemtype` = '" . $itemType . "'

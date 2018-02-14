@@ -331,6 +331,8 @@ class PluginMantisMantis extends CommonDBTM {
                   $item->fields['status'] = $itemType::SOLVED;
                   $item->fields['solvedate'] = date("Y-m-d");
                   $item->fields['solution'] = $info_solved;
+                  $item->fields['solutiontypes_id'] = $conf->getField('solutiontypes_id');
+                  $item->fields['users_id'] = $conf->getField('users_id');
                   $item->update($item->fields);
 
                }

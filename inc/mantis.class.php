@@ -353,6 +353,10 @@ class PluginMantisMantis extends CommonDBTM {
     * @return bool
     */
    static function existAttachmentInMantisBT($doc, $attachmentsMantisBT) {
+      if (!isset($doc->fields['filename'])) {
+         return false;
+      }
+
       foreach ($attachmentsMantisBT as $attachment) {
          if ($attachment->filename == $doc->fields['filename']) {
             return true;

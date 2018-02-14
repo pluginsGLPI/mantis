@@ -55,8 +55,8 @@ class PluginMantisMantisws {
       $this->_url = $url;
       $this->_password = $pwd;
       $this->_login = $login;
-      
-      $this->_client = new SoapClient($this->_host . "/" . $this->_url);
+
+      $this->_client = new SoapClient($this->_host . "/" . $this->_url, self::getOptionsStreamContext());
    }
 
    /**
@@ -72,8 +72,8 @@ class PluginMantisMantisws {
          $this->_url = $conf->fields["url"];
          $this->_login = $conf->fields["login"];
          $this->_password = Toolbox::decrypt($conf->fields["pwd"], GLPIKEY);
-         
-         $this->_client = new SoapClient($this->_host . "/" . $this->_url);
+
+         $this->_client = new SoapClient($this->_host . "/" . $this->_url, self::getOptionsStreamContext());
          return true;
       } else {
          return false;
@@ -96,7 +96,7 @@ class PluginMantisMantisws {
       }
       
       try {
-         $client = new SoapClient($host . "/" . $url);
+         $client = new SoapClient($host . "/" . $url, self::getOptionsStreamContext());
          $client->mc_login($login, $password);
          return true;
       } catch ( SoapFault $sp ) {
@@ -464,5 +464,18 @@ class PluginMantisMantisws {
 
    public function getUrl() {
       return $this->_url;
+   }
+
+   /**
+    * Creates a stream context array for SSL option.
+    *
+    * @param nothing
+    * @return array
+    */
+   static function getOptionsStreamContext() {
+      $opts = ["ssl" => ["verify_peer"      => false,
+                         "verify_peer_name" => false]];
+      $context = stream_context_create($opts);
+      return ['stream_context' => $context];
    }
 }

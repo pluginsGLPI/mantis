@@ -45,13 +45,13 @@ define("PLUGIN_MANTIS_MAX_GLPI", "9.3");
  */
 function plugin_init_mantis() {
    global $PLUGIN_HOOKS;
-   
+
    $PLUGIN_HOOKS['csrf_compliant']['mantis'] = true;
 
    $PLUGIN_HOOKS['change_profile']['mantis'] = array('PluginMantisProfile', 'changeProfile');
-   
+
    $plugin = new Plugin();
-   
+
    if (Session::getLoginUserID() && $plugin->isActivated('mantis')) {
 
       if (Session::haveRight('config', UPDATE)) {
@@ -61,21 +61,21 @@ function plugin_init_mantis() {
       $PLUGIN_HOOKS['add_javascript']['mantis'] = array(
             'scripts/scriptMantis.js.php'
       );
-      
+
       if (Session::haveRight('profile', UPDATE)) {
-         Plugin::registerClass('PluginMantisProfile', 
+         Plugin::registerClass('PluginMantisProfile',
                                  array('addtabon' => 'Profile'));
       }
-      
+
       Plugin::registerClass('PluginMantisConfig');
-      
+
       Plugin::registerClass('PluginMantisMantisws');
 
       if (Session::haveRightsOr('plugin_mantis_use', array(READ, UPDATE))) {
-         Plugin::registerClass('PluginMantisMantis', 
+         Plugin::registerClass('PluginMantisMantis',
                                  array('addtabon' => array('Ticket', 'Problem', 'Change')));
-      
-         Plugin::registerClass('PluginMantisUserPref', 
+
+         Plugin::registerClass('PluginMantisUserPref',
                                  array('addtabon' => array('User', 'Preference')));
       }
    }
@@ -103,8 +103,8 @@ function plugin_version_mantis() {
  * @return boolean
  */
 function plugin_mantis_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, PLUGIN_MANTIS_MIN_GLPI,'lt')
-      || version_compare(GLPI_VERSION, PLUGIN_MANTIS_MAX_GLPI,'ge')
+   if (version_compare(GLPI_VERSION, PLUGIN_MANTIS_MIN_GLPI, 'lt')
+      || version_compare(GLPI_VERSION, PLUGIN_MANTIS_MAX_GLPI, 'ge')
    ) {
       echo sprintf(
          __('This plugin requires GLPi > %1$s and < %2$s'),
@@ -114,12 +114,12 @@ function plugin_mantis_check_prerequisites() {
 
       return false;
    }
-   
+
    if (!extension_loaded('soap')) {
       _e("This plugin requires SOAP extension for PHP");
       return false;
    }
-   
+
    return true;
 }
 
@@ -134,10 +134,10 @@ function plugin_mantis_check_config($verbose = false) {
       // your configuration check
       return true;
    }
-   
+
    if ($verbose) {
       echo _x('plugin', 'Installed / not configured');
    }
-   
+
    return false;
 }

@@ -80,7 +80,7 @@ class PluginMantisConfig extends CommonDBTM {
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT server base URL", "mantis") . "</td>";
       echo "<td><input id='host' name='host' type='text' size='70' 
@@ -114,21 +114,21 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</tr><tr class='tab_bg_1'>";
       echo "<td></td><td>ex : api/soap/mantisconnect.php?wsdl</td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT user login", "mantis") . "</td>";
       echo "<td><input  id='login' name='login' type='text' size='30' 
                   value='" . $this->fields["login"] . "'/></td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT user password", "mantis") . "</td>";
       echo "<td><input id='pwd' name='pwd' type='password' size='30' 
                   value='" . Toolbox::decrypt($this->fields["pwd"], GLPIKEY) . "' /></td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Allow assignation", "mantis") . "</td>";
       echo "<td>";
@@ -136,7 +136,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Neutralize the escalation to MantisBT when the status of the GLPi object is", "mantis") . "</td>";
       echo "<td>";
@@ -147,7 +147,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Status of GLPi object after escalation to MantisBT", "mantis") . "</td>";
       echo "<td>";
@@ -158,7 +158,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Show option 'Delete the MantisBT issue' ", "mantis") . "</td>";
       echo "<td>";
@@ -166,7 +166,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Attachment type transfered to MantisBT", "mantis") . "</td>";
       echo "<td>";
@@ -177,21 +177,21 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT field for GLPI fields", "mantis") . "</td>";
       echo "<td>";
-      DropDown::showFromArray('champsGlpi', PluginMantisIssue::$champsMantis, 
+      DropDown::showFromArray('champsGlpi', PluginMantisIssue::$champsMantis,
                               array('value' => $this->fields["champsGlpi"])
       );
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT field for the link URL to the GLPi object", "mantis") . "</td>";
       echo "<td>";
-      DropDown::showFromArray('champsUrlGlpi', PluginMantisIssue::$champsMantis, 
+      DropDown::showFromArray('champsUrlGlpi', PluginMantisIssue::$champsMantis,
                               array('value' => $this->fields["champsUrlGlpi"]));
       echo "</td>";
       echo "<td></td>";
@@ -200,7 +200,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Close GLPi ticket when MantisBT issue status is", "mantis") . "</td>";
       echo "<td>";
-      DropDown::showFromArray('etatMantis', PluginMantisIssue::$state_mantis, 
+      DropDown::showFromArray('etatMantis', PluginMantisIssue::$state_mantis,
                               array('value' => $this->fields["etatMantis"]));
       echo "</td>";
       echo "<td></td>";
@@ -215,7 +215,6 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("GLPi user who solves ticket ?", "mantis") . "</td>";
@@ -244,7 +243,7 @@ class PluginMantisConfig extends CommonDBTM {
     */
    static function install(Migration $migration) {
       global $DB;
-      
+
       $table = getTableForItemType(__CLASS__);
 
       if (!TableExists($table)) {

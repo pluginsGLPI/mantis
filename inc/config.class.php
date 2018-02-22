@@ -74,6 +74,8 @@ class PluginMantisConfig extends CommonDBTM {
    **/
    function showForm($ID, $options=array()) {
 
+      global $CFG_GLPI;
+
       $options['candel'] = false;
 
       $this->initForm($ID, $options);
@@ -86,6 +88,24 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</tr><tr class='tab_bg_1'>";
       echo "<td></td><td>ex : http(s)://localhost/mantisbt</td>";
       echo "</tr>";
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("Check SSL", "mantis") . "</td>";
+      echo "<td>";
+      Dropdown::showYesNo('check_ssl', $this->fields['check_ssl']);
+      echo "</tr><tr class='tab_bg_1'>";
+      echo "<td></td><td></td>";
+      echo "</tr>";
+
+      if (!empty($CFG_GLPI['proxy_name'])) {
+         echo "<tr class='tab_bg_1'>";
+         echo "<td>" . __("Use GLPi proxy configuration", "mantis") . "</td>";
+         echo "<td>";
+         Dropdown::showYesNo('use_proxy', $this->fields['use_proxy']);
+         echo "</tr><tr class='tab_bg_1'>";
+         echo "<td></td><td></td>";
+         echo "</tr>";
+      }
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Wsdl file path", "mantis") . "</td>";
@@ -245,6 +265,8 @@ class PluginMantisConfig extends CommonDBTM {
                      `etatMantis` varchar(100) NOT NULL default '',
                      `solutiontypes_id` int(11) NOT NULL DEFAULT 0,
                      `users_id` int(11) NOT NULL DEFAULT 0,
+                     `check_ssl` int(1) NOT NULL DEFAULT 0,
+                     `use_proxy` int(1) NOT NULL DEFAULT 0,
                      PRIMARY KEY (`id`)
                   ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
@@ -263,6 +285,14 @@ class PluginMantisConfig extends CommonDBTM {
 
          if (!FieldExists($table, 'users_id')) {
             $migration->addField($table, "users_id", "INT( 11 ) NOT NULL DEFAULT 0");
+         }
+
+         if (!FieldExists($table, 'check_ssl')) {
+            $migration->addField($table, "check_ssl", "INT( 1 ) NOT NULL DEFAULT 0");
+         }
+
+         if (!FieldExists($table, 'use_proxy')) {
+            $migration->addField($table, "use_proxy", "INT( 1 ) NOT NULL DEFAULT 0");
          }
 
       }

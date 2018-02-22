@@ -473,8 +473,30 @@ class PluginMantisMantisws {
     * @return array
     */
    static function getOptionsStreamContext() {
-      $opts = ["ssl" => ["verify_peer"      => false,
-                         "verify_peer_name" => false]];
+
+      global $CFG_GLPI;
+
+      $conf = new PluginMantisConfig();
+      $conf->getFromDB(1);
+
+      $opts = ["ssl" => ["verify_peer"      => $conf->fields['check_ssl'],
+                         "verify_peer_name" => $conf->fields['check_ssl']]];
+
+
+      if(!empty($CFG_GLPI['proxy_name']
+         && $conf->fields['use_proxy']){
+
+         $proxy = $CFG_GLPI['proxy_user'].
+                  ":".$CFG_GLPI['proxy_passwd'].
+                  "@".preg_replace('#https?://#', '', $CFG_GLPI['proxy_name']).
+                  ":".$CFG_GLPI['proxy_port'];
+
+         $opts['http'] = [
+            'proxy'  => "tcp://$proxy"
+         ];
+
+      }
+
       $context = stream_context_create($opts);
       return ['stream_context' => $context];
    }

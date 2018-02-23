@@ -43,6 +43,10 @@
    </authors>
    <versions>
       <version>
+         <num>4.0.0</num>
+          <compatibility>9.2</compatibility>
+      </version>
+      <version>
          <num>3.0.0</num>
           <compatibility>0.85</compatibility>
           <compatibility>0.90</compatibility>

@@ -35,7 +35,7 @@ include ('../../../inc/includes.php');
 
 Session::haveRight("config", UPDATE);
 
-Html::header(PluginMantisConfig::getTypeName(1), 
+Html::header(PluginMantisConfig::getTypeName(1),
                $_SERVER['PHP_SELF'], "plugins", "mantis", "config");
 
 if (!isset($_GET["id"])) {

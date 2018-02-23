@@ -36,42 +36,49 @@ include ('../../../inc/includes.php');
 Session::checkRight('plugin_mantis_use', UPDATE);
 
 if (isset($_POST['update'])) {
-   
-   if (isset($_POST['followFollow']))
+
+   if (isset($_POST['followFollow'])) {
       $_POST['followFollow'] = 1;
-   else
+   } else {
       $_POST['followFollow'] = 0;
-   
-   if (isset($_POST['followTitle']))
+   }
+
+   if (isset($_POST['followTitle'])) {
       $_POST['followTitle'] = 1;
-   else
+   } else {
       $_POST['followTitle'] = 0;
-   
-   if (isset($_POST['followTask']))
+   }
+
+   if (isset($_POST['followTask'])) {
       $_POST['followTask'] = 1;
-   else
+   } else {
       $_POST['followTask'] = 0;
-   
-   if (isset($_POST['followCategorie']))
+   }
+
+   if (isset($_POST['followCategorie'])) {
       $_POST['followCategorie'] = 1;
-   else
+   } else {
       $_POST['followCategorie'] = 0;
-   
-   if (isset($_POST['followDescription']))
+   }
+
+   if (isset($_POST['followDescription'])) {
       $_POST['followDescription'] = 1;
-   else
+   } else {
       $_POST['followDescription'] = 0;
-   
-   if (isset($_POST['followLinkedItem']))
+   }
+
+   if (isset($_POST['followLinkedItem'])) {
       $_POST['followLinkedItem'] = 1;
-   else
+   } else {
       $_POST['followLinkedItem'] = 0;
-   
-   if (isset($_POST['followAttachment']))
+   }
+
+   if (isset($_POST['followAttachment'])) {
       $_POST['followAttachment'] = 1;
-   else
+   } else {
       $_POST['followAttachment'] = 0;
-   
+   }
+
    $userpref = new PluginMantisUserpref();
    $userpref->update($_POST);
 }

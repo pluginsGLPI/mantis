@@ -33,6 +33,9 @@
 
 include ('../../../inc/includes.php');
 
+//change mimetype
+header("Content-type: application/javascript");
+
 global $CFG_GLPI;
 
 $root_ajax = $CFG_GLPI['root_doc'] . "/plugins/mantis/ajax/ajax.php";

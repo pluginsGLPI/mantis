@@ -39,13 +39,13 @@ class PluginMantisUserpref extends CommonDBTM {
 
    /**
     * Install this class in GLPI
-    * 
-    * 
+    *
+    *
     */
    static function install($migration) {
       global $DB;
-      
-      if (! TableExists("glpi_plugin_mantis_userprefs")) {
+
+      if (!$DB->TableExists("glpi_plugin_mantis_userprefs")) {
          $query = "CREATE TABLE `glpi_plugin_mantis_userprefs` (
                `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                `users_id` int(11) NOT NULL ,
@@ -60,7 +60,7 @@ class PluginMantisUserpref extends CommonDBTM {
          $DB->query($query) or die($DB->error());
       }
    }
-   
+
    /**
     * Define tab name
     */
@@ -95,10 +95,10 @@ class PluginMantisUserpref extends CommonDBTM {
       } else if ($item->getType() == 'Preference') {
          $ID = Session::getLoginUserID();
       }
-      
+
       $self = new self();
       $self->showForm($ID);
-      
+
       return true;
    }
 
@@ -114,64 +114,64 @@ class PluginMantisUserpref extends CommonDBTM {
          $this->add($this->fields);
          $this->updateInDB($this->fields);
       }
-      
+
       $target = $this->getFormURL();
       if (isset($options['target'])) {
          $target = $options['target'];
       }
-      
+
       echo "<form method='post' action='" . $target . "' method='post'>";
       echo "<table id='table2' class='tab_cadre_fixe' cellpadding='2'>";
       echo "<tr class='headerRow'><th colspan='2'>" . __("Default checkbox status", "mantis") . "</th></tr>";
-      
+
       $checked = ($this->fields['followAttachment']) ? "checked" : "";
       echo "<tr class='tab_bg_1'>";
       echo "<th>" . __('Document') . "</th>";
-      echo "<td><input type='checkbox' name='followAttachment' id='followAttachment' " . $checked . ">" 
-              . __("Forward document(s)", "mantis") 
+      echo "<td><input type='checkbox' name='followAttachment' id='followAttachment' " . $checked . ">"
+              . __("Forward document(s)", "mantis")
               . "<div id='attachmentforLinkToProject' ><div/></td></tr>";
-      
+
       $checked = ($this->fields['followFollow']) ? "checked" : "";
       echo "<tr class='tab_bg_1' >";
       echo "<th>" . __('Ticket followup') . "</th>";
-      echo "<td><input type='checkbox' name='followFollow' id='followFollow' " . $checked . ">" 
+      echo "<td><input type='checkbox' name='followFollow' id='followFollow' " . $checked . ">"
               . __("Forward ticket followup", "mantis") . "</td></tr>";
-      
+
       $checked = ($this->fields['followTask']) ? "checked" : "";
       echo "<tr class='tab_bg_1'>";
       echo "<th>" . __('Ticket tasks') . "</th>";
-      echo "<td><input type='checkbox' name='followTask' id='followTask' " . $checked . ">" 
+      echo "<td><input type='checkbox' name='followTask' id='followTask' " . $checked . ">"
               . __("Forward ticket tasks", "mantis") . "</td></tr>";
-      
+
       $checked = ($this->fields['followTitle']) ? "checked" : "";
       echo "<tr class='tab_bg_1'>";
       echo "<th>" . __('Title') . "</th>";
-      echo "<td><input type='checkbox' name='followTitle' id='followTitle' " . $checked . ">" 
+      echo "<td><input type='checkbox' name='followTitle' id='followTitle' " . $checked . ">"
               . __("Forward title", "mantis") . "</td></tr>";
-      
+
       $checked = ($this->fields['followDescription']) ? "checked" : "";
       echo "<tr class='tab_bg_1'>";
       echo "<th>" . __('Description') . "</th>";
-      echo "<td><input type='checkbox' name='followDescription' id='followDescription' " . $checked . ">" 
+      echo "<td><input type='checkbox' name='followDescription' id='followDescription' " . $checked . ">"
               . __("Forward description", "mantis") . "</td></tr>";
-      
+
       $checked = ($this->fields['followCategorie']) ? "checked" : "";
       echo "<tr class='tab_bg_1'>";
       echo "<th>" . __('Category') . "</th>";
-      echo "<td><input type='checkbox' name='followCategorie' id='followCategorie' " . $checked . ">" 
+      echo "<td><input type='checkbox' name='followCategorie' id='followCategorie' " . $checked . ">"
               . __("Forward category", "mantis") . "</td></tr>";
-      
+
       $checked = ($this->fields['followLinkedItem']) ? "checked" : "";
       echo "<tr class='tab_bg_1' >";
       echo "<th>" . _n('Linked ticket', 'Linked tickets', 2) . "</th>";
-      echo "<td><input type='checkbox' name='followLinkedItem' id='followLinkedItem' " . $checked . ">" 
+      echo "<td><input type='checkbox' name='followLinkedItem' id='followLinkedItem' " . $checked . ">"
               . __("Forward linked tickets", "mantis") . "</td></tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td><input id='update' type='submit' name='update' value='" . __('Update') . "' class='submit'></td><td></td></tr>";
       echo "<input type='hidden' name='id' value=" . $this->fields["id"] . ">";
       echo "<input type='hidden' name='users_id' value=" . $this->fields["users_id"] . ">";
-      
+
       echo "</table>";
       Html::closeForm();
    }
@@ -180,12 +180,13 @@ class PluginMantisUserpref extends CommonDBTM {
     * Uninstall Cron Task from BDD
     */
    static function uninstall(Migration $migration) {
+      global $DB;
 
       $table = getTableForItemType(__CLASS__);
 
-      if (TableExists($table)) {
+      if ($DB->TableExists($table)) {
          $migration->dropTable($table);
          $migration->executeMigration();
       }
    }
-} 
+}

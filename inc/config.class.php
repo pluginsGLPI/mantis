@@ -74,11 +74,13 @@ class PluginMantisConfig extends CommonDBTM {
    **/
    function showForm($ID, $options=array()) {
 
+      global $CFG_GLPI;
+
       $options['candel'] = false;
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT server base URL", "mantis") . "</td>";
       echo "<td><input id='host' name='host' type='text' size='70' 
@@ -88,27 +90,45 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("Check SSL", "mantis") . "</td>";
+      echo "<td>";
+      Dropdown::showYesNo('check_ssl', $this->fields['check_ssl']);
+      echo "</tr><tr class='tab_bg_1'>";
+      echo "<td></td><td></td>";
+      echo "</tr>";
+
+      if (!empty($CFG_GLPI['proxy_name'])) {
+         echo "<tr class='tab_bg_1'>";
+         echo "<td>" . __("Use GLPi proxy configuration", "mantis") . "</td>";
+         echo "<td>";
+         Dropdown::showYesNo('use_proxy', $this->fields['use_proxy']);
+         echo "</tr><tr class='tab_bg_1'>";
+         echo "<td></td><td></td>";
+         echo "</tr>";
+      }
+
+      echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Wsdl file path", "mantis") . "</td>";
       echo "<td><input id='url' name='url' type='text' size='70' 
                      value='" . $this->fields["url"] . "'/></td>";
       echo "</tr><tr class='tab_bg_1'>";
       echo "<td></td><td>ex : api/soap/mantisconnect.php?wsdl</td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT user login", "mantis") . "</td>";
       echo "<td><input  id='login' name='login' type='text' size='30' 
                   value='" . $this->fields["login"] . "'/></td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT user password", "mantis") . "</td>";
       echo "<td><input id='pwd' name='pwd' type='password' size='30' 
                   value='" . Toolbox::decrypt($this->fields["pwd"], GLPIKEY) . "' /></td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Allow assignation", "mantis") . "</td>";
       echo "<td>";
@@ -116,7 +136,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Neutralize the escalation to MantisBT when the status of the GLPi object is", "mantis") . "</td>";
       echo "<td>";
@@ -127,7 +147,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Status of GLPi object after escalation to MantisBT", "mantis") . "</td>";
       echo "<td>";
@@ -138,7 +158,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Show option 'Delete the MantisBT issue' ", "mantis") . "</td>";
       echo "<td>";
@@ -146,7 +166,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Attachment type transfered to MantisBT", "mantis") . "</td>";
       echo "<td>";
@@ -157,21 +177,21 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT field for GLPI fields", "mantis") . "</td>";
       echo "<td>";
-      DropDown::showFromArray('champsGlpi', PluginMantisIssue::$champsMantis, 
+      DropDown::showFromArray('champsGlpi', PluginMantisIssue::$champsMantis,
                               array('value' => $this->fields["champsGlpi"])
       );
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT field for the link URL to the GLPi object", "mantis") . "</td>";
       echo "<td>";
-      DropDown::showFromArray('champsUrlGlpi', PluginMantisIssue::$champsMantis, 
+      DropDown::showFromArray('champsUrlGlpi', PluginMantisIssue::$champsMantis,
                               array('value' => $this->fields["champsUrlGlpi"]));
       echo "</td>";
       echo "<td></td>";
@@ -180,13 +200,34 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Close GLPi ticket when MantisBT issue status is", "mantis") . "</td>";
       echo "<td>";
-      DropDown::showFromArray('etatMantis', PluginMantisIssue::$state_mantis, 
+      DropDown::showFromArray('etatMantis', PluginMantisIssue::$state_mantis,
                               array('value' => $this->fields["etatMantis"]));
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
-      
-      echo "<tr class='tab_bg_1'>";      
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("Solution type when MantisBT issue is resolved", "mantis") . "</td>";
+      echo "<td>";
+      SolutionType::dropdown(['value'  => $this->fields['solutiontypes_id'],
+                                      'rand'   => mt_rand(),
+                                      'entity' => -1]);
+      echo "</td>";
+      echo "<td></td>";
+      echo "</tr>";
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>" . __("GLPi user who solves ticket ?", "mantis") . "</td>";
+      echo "<td>";
+      User::dropdown(['name'   => 'users_id',
+                                 'value'  => $this->fields["users_id"],
+                                 'entity' => -1,
+                                 'right'  => 'all']);
+      echo "</td>";
+      echo "<td></td>";
+      echo "</tr>";
+
+      echo "<tr class='tab_bg_1'>";
       echo "<td><input id='test' onclick='testConnexionMantisWS();' 
                value='" . __("Test the connection", "mantis") . "' class='submit'></td>";
       echo "<td><div id='infoAjax'></div></td>";
@@ -202,10 +243,10 @@ class PluginMantisConfig extends CommonDBTM {
     */
    static function install(Migration $migration) {
       global $DB;
-      
+
       $table = getTableForItemType(__CLASS__);
 
-      if (!TableExists($table)) {
+      if (!$DB->TableExists($table)) {
          $query = "CREATE TABLE `".$table."` (
                      `id` int(11) NOT NULL AUTO_INCREMENT,
                      `host` varchar(255) NOT NULL default '',
@@ -221,6 +262,10 @@ class PluginMantisConfig extends CommonDBTM {
                      `doc_categorie` int(3) NOT NULL default 0,
                      `itemType` varchar(255) NOT NULL default '',
                      `etatMantis` varchar(100) NOT NULL default '',
+                     `solutiontypes_id` int(11) NOT NULL DEFAULT 0,
+                     `users_id` int(11) NOT NULL DEFAULT 0,
+                     `check_ssl` int(1) NOT NULL DEFAULT 0,
+                     `use_proxy` int(1) NOT NULL DEFAULT 0,
                      PRIMARY KEY (`id`)
                   ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
@@ -229,9 +274,26 @@ class PluginMantisConfig extends CommonDBTM {
          $DB->query($query) or die ($DB->error());
       } else {
 
-         if (FieldExists($table, 'version')) {
+         if ($DB->FieldExists($table, 'version')) {
             $migration->dropField($table, 'version');
          }
+
+         if (!$DB->FieldExists($table, 'solutiontypes_id')) {
+            $migration->addField($table, "solutiontypes_id", "INT( 11 ) NOT NULL DEFAULT 0");
+         }
+
+         if (!$DB->FieldExists($table, 'users_id')) {
+            $migration->addField($table, "users_id", "INT( 11 ) NOT NULL DEFAULT 0");
+         }
+
+         if (!$DB->FieldExists($table, 'check_ssl')) {
+            $migration->addField($table, "check_ssl", "INT( 1 ) NOT NULL DEFAULT 0");
+         }
+
+         if (!$DB->FieldExists($table, 'use_proxy')) {
+            $migration->addField($table, "use_proxy", "INT( 1 ) NOT NULL DEFAULT 0");
+         }
+
       }
 
       $migration->executeMigration();
@@ -243,10 +305,11 @@ class PluginMantisConfig extends CommonDBTM {
     * @return boolean True if success
     */
    static function uninstall(Migration $migration) {
+      global $DB;
 
       $table = getTableForItemType(__CLASS__);
 
-      if (TableExists($table)) {
+      if ($DB->TableExists($table)) {
          $migration->dropTable($table);
          $migration->executeMigration();
       }

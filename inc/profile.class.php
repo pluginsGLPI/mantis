@@ -42,7 +42,7 @@ class PluginMantisProfile extends CommonDBTM {
 
    // Necassary rights to edit the rights of this plugin
    static $rightname = "profile";
-   
+
    /**
     * @see CommonGLPI::getTabNameForItem()
    **/
@@ -69,7 +69,7 @@ class PluginMantisProfile extends CommonDBTM {
                 'default'   => 3));
       return $rights;
    }
-   
+
    /**
     * addDefaultProfileInfos
     * @param $profiles_id
@@ -129,11 +129,11 @@ class PluginMantisProfile extends CommonDBTM {
       $profile = new Profile();
       $profile->getFromDB($profiles_id);
 
-      $profile->displayRightsChoiceMatrix($this->getAllRights(), 
+      $profile->displayRightsChoiceMatrix($this->getAllRights(),
                                                 array('canedit'       => $canedit,
                                                       'default_class' => 'tab_bg_2',
                                                       'title'         => __('General')));
-      
+
       if ($canedit
           && $closeform) {
          echo "<div class='center'>";
@@ -187,7 +187,7 @@ class PluginMantisProfile extends CommonDBTM {
 
       $table = "glpi_plugin_mantis_profiles";
 
-      if (!TableExists($table)) {
+      if (!$DB->TableExists($table)) {
          return true;
       }
 
@@ -211,7 +211,7 @@ class PluginMantisProfile extends CommonDBTM {
                            FROM `glpi_profilerights` 
                            WHERE `profiles_id`='".$_SESSION['glpiactiveprofile']['id']."' 
                               AND `name` = 'plugin_mantis_use'") as $prof) {
-         $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights']; 
+         $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights'];
       }
    }
 
@@ -245,12 +245,13 @@ class PluginMantisProfile extends CommonDBTM {
     * @return boolean True if success
     */
    static function install(Migration $migration) {
+      global $DB;
 
       if (self::oldRightNameExists()) {
          self::updateOldRightName();
       }
 
-      if (TableExists("glpi_plugin_mantis_profiles")) {
+      if ($DB->TableExists("glpi_plugin_mantis_profiles")) {
          self::migrateAllProfiles();
          $migration->dropTable("glpi_plugin_mantis_profiles");
          return true;
@@ -258,7 +259,7 @@ class PluginMantisProfile extends CommonDBTM {
 
       // Set default rights
       foreach (self::getAllRights() as $right) {
-         self::addDefaultProfileInfos($_SESSION['glpiactiveprofile']['id'], 
+         self::addDefaultProfileInfos($_SESSION['glpiactiveprofile']['id'],
                                        array($right['field'] => $right['default']));
       }
 

@@ -187,7 +187,7 @@ class PluginMantisProfile extends CommonDBTM {
 
       $table = "glpi_plugin_mantis_profiles";
 
-      if (!TableExists($table)) {
+      if (!$DB->TableExists($table)) {
          return true;
       }
 
@@ -245,12 +245,13 @@ class PluginMantisProfile extends CommonDBTM {
     * @return boolean True if success
     */
    static function install(Migration $migration) {
+      global $DB;
 
       if (self::oldRightNameExists()) {
          self::updateOldRightName();
       }
 
-      if (TableExists("glpi_plugin_mantis_profiles")) {
+      if ($DB->TableExists("glpi_plugin_mantis_profiles")) {
          self::migrateAllProfiles();
          $migration->dropTable("glpi_plugin_mantis_profiles");
          return true;

@@ -104,7 +104,7 @@ class PluginMantisMantis extends CommonDBTM {
 
       $table = getTableForItemType(__CLASS__);
 
-      if (!TableExists($table)) {
+      if (!$DB->TableExists($table)) {
 
          $query = "CREATE TABLE `".$table."` (
                      `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -119,17 +119,17 @@ class PluginMantisMantis extends CommonDBTM {
 
       } else {
 
-         if (!FieldExists($table, 'itemType') && !FieldExists($table, 'itemtype')) {
+         if (!$DB->FieldExists($table, 'itemType') && !$DB->FieldExists($table, 'itemtype')) {
             $migration->addField($table, 'itemtype', 'string');
             $migration->executeMigration();
          }
 
-         if (FieldExists($table, 'itemType') && !FieldExists($table, 'itemtype')) {
+         if ($DB->FieldExists($table, 'itemType') && !$DB->FieldExists($table, 'itemtype')) {
             $migration->changeField($table, 'itemType', 'itemtype', 'string', array());
             $migration->executeMigration();
          }
 
-         if (FieldExists($table, 'idTicket') && !FieldExists($table, 'items_id')) {
+         if ($DB->FieldExists($table, 'idTicket') && !$DB->FieldExists($table, 'items_id')) {
             $migration->changeField($table, 'idTicket', 'items_id', 'integer', array());
             $migration->executeMigration();
          }
@@ -157,7 +157,7 @@ class PluginMantisMantis extends CommonDBTM {
 
       $table = getTableForItemType(__CLASS__);
 
-      if (TableExists($table)) {
+      if ($DB->TableExists($table)) {
          $migration->dropTable($table);
          $migration->executeMigration();
       }

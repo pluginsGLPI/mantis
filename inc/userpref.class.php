@@ -45,7 +45,7 @@ class PluginMantisUserpref extends CommonDBTM {
    static function install($migration) {
       global $DB;
 
-      if (! TableExists("glpi_plugin_mantis_userprefs")) {
+      if (!$DB->TableExists("glpi_plugin_mantis_userprefs")) {
          $query = "CREATE TABLE `glpi_plugin_mantis_userprefs` (
                `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                `users_id` int(11) NOT NULL ,
@@ -180,10 +180,11 @@ class PluginMantisUserpref extends CommonDBTM {
     * Uninstall Cron Task from BDD
     */
    static function uninstall(Migration $migration) {
+      global $DB;
 
       $table = getTableForItemType(__CLASS__);
 
-      if (TableExists($table)) {
+      if ($DB->TableExists($table)) {
          $migration->dropTable($table);
          $migration->executeMigration();
       }

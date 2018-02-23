@@ -246,7 +246,7 @@ class PluginMantisConfig extends CommonDBTM {
 
       $table = getTableForItemType(__CLASS__);
 
-      if (!TableExists($table)) {
+      if (!$DB->TableExists($table)) {
          $query = "CREATE TABLE `".$table."` (
                      `id` int(11) NOT NULL AUTO_INCREMENT,
                      `host` varchar(255) NOT NULL default '',
@@ -274,23 +274,23 @@ class PluginMantisConfig extends CommonDBTM {
          $DB->query($query) or die ($DB->error());
       } else {
 
-         if (FieldExists($table, 'version')) {
+         if ($DB->FieldExists($table, 'version')) {
             $migration->dropField($table, 'version');
          }
 
-         if (!FieldExists($table, 'solutiontypes_id')) {
+         if (!$DB->FieldExists($table, 'solutiontypes_id')) {
             $migration->addField($table, "solutiontypes_id", "INT( 11 ) NOT NULL DEFAULT 0");
          }
 
-         if (!FieldExists($table, 'users_id')) {
+         if (!$DB->FieldExists($table, 'users_id')) {
             $migration->addField($table, "users_id", "INT( 11 ) NOT NULL DEFAULT 0");
          }
 
-         if (!FieldExists($table, 'check_ssl')) {
+         if (!$DB->FieldExists($table, 'check_ssl')) {
             $migration->addField($table, "check_ssl", "INT( 1 ) NOT NULL DEFAULT 0");
          }
 
-         if (!FieldExists($table, 'use_proxy')) {
+         if (!$DB->FieldExists($table, 'use_proxy')) {
             $migration->addField($table, "use_proxy", "INT( 1 ) NOT NULL DEFAULT 0");
          }
 
@@ -305,10 +305,11 @@ class PluginMantisConfig extends CommonDBTM {
     * @return boolean True if success
     */
    static function uninstall(Migration $migration) {
+      global $DB;
 
       $table = getTableForItemType(__CLASS__);
 
-      if (TableExists($table)) {
+      if ($DB->TableExists($table)) {
          $migration->dropTable($table);
          $migration->executeMigration();
       }

@@ -181,7 +181,7 @@ if (isset($_POST['action'])) {
             } else {
                $result = $ws->getIssueById($id_mantis_issue);
                if ($result->status->id == 90) {
-                  echo __('This MantisBT issue is closed', 'mantis');
+                  echo "ERROR :". __('This MantisBT issue is closed', 'mantis');
                } else {
                   echo $result->project->name;
                }

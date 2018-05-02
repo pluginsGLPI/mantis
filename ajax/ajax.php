@@ -33,7 +33,7 @@ if (isset($_POST['action'])) {
 
    switch ($_POST['action']) {
 
-      // TEST DE LA CONNECTIVITE A MANTIS CONNECT
+      // TEST CONNECTION TO MANTIS
       case 'testConnexionMantisWS' :
          error_reporting(0);
          $ws = new PluginMantisMantisws();
@@ -166,7 +166,7 @@ if (isset($_POST['action'])) {
          } else {
 
             $mantis = new PluginMantisMantis();
-            // on verifie si un lien est deja creé
+            // verify if a link already exists
             if ($mantis->IfExistLink($idItem, $id_mantis_issue, $itemType)) {
                echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>"
                   . __("This GLPi object is already linked to the selected MantisBT issue", "mantis");
@@ -202,7 +202,7 @@ if (isset($_POST['action'])) {
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
 
-         // on verifie que l'id du ticket mantis existe
+         // verify that the id of the mantis ticket already exists
          if (! $ws->existIssueWithId($id_mantis_issue)) {
             echo __("MantisBT issue does not exist", "mantis");
          } else {

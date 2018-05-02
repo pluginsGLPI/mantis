@@ -31,7 +31,7 @@ class PluginMantisStructcustomField {
 
    /**
     * The field
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var MantisStructObjectRef

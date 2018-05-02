@@ -28,7 +28,7 @@ if (!defined('GLPI_ROOT')) {
 }
 
 /**
- * Class PluginMantis -> class générale du plugin Mantis
+ * Class PluginMantis -> general class of Mantis plugin
  */
 class PluginMantisMantis extends CommonDBTM {
 
@@ -273,8 +273,8 @@ class PluginMantisMantis extends CommonDBTM {
    }
 
    /**
-    * this function check the status of mantis issuelinked to a ticket
-    * If status == status to close glpi ticket the the cron clos the ticket
+    * this function check the status of mantis issue linked to a ticket
+    * If status == status to close glpi ticket then the cron closes the ticket
     */
    static function updateTicket() {
 
@@ -338,7 +338,7 @@ class PluginMantisMantis extends CommonDBTM {
    }
 
    /**
-    * Function to check if $doc exist in MantisBT attachment
+    * Function to check if $doc exists in MantisBT attachment
     *
     * @param $doc
     * @param $attachmentsMantisBT
@@ -433,7 +433,7 @@ class PluginMantisMantis extends CommonDBTM {
    }
 
    /**
-    * Function to get link between glpi ticket and mantisBT ticket for an glpi ticket
+    * Function to get link between glpi ticket and mantisBT ticket for a glpi ticket
     *
     * @param $idItem
     * @param $itemType
@@ -451,7 +451,7 @@ class PluginMantisMantis extends CommonDBTM {
    }
 
    /**
-    * Function to get information in Note for each ticket MAntisBT
+    * Function to get information in Note for each ticket MantisBT
     *
     * @param $list_ticket_mantis
     * @return string
@@ -514,7 +514,7 @@ class PluginMantisMantis extends CommonDBTM {
    }
 
    /**
-    * function to show action give by plugin
+    * function to show action given by plugin
     *
     * @param $item
     */
@@ -905,7 +905,7 @@ class PluginMantisMantis extends CommonDBTM {
 
       $can_write = self::canUpdate();
 
-      // on recupere l'ensemble des lien entre ticket glpi et ticket(s) mantis
+      // get together the links from glpi ticket and mantis tickets
       $res = $this->getLinkBetweenGlpiAndMantis($item, $itemType);
 
       echo "<table id='table1' class='tab_cadre_fixe'>";
@@ -1000,7 +1000,7 @@ class PluginMantisMantis extends CommonDBTM {
    }
 
    /**
-    * Function to check if link between glpi items and mantis issue exist
+    * Function to check if link between glpi items and mantis issue exists
     *
     * @param $idItem
     * @param $id_mantis

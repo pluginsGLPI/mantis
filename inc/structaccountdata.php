@@ -31,7 +31,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * The id
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var integer
@@ -40,7 +40,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * The name
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string
@@ -49,7 +49,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * The real_name
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string
@@ -58,7 +58,7 @@ class PluginMantisStructaccountdata {
 
    /**
     * The email
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string

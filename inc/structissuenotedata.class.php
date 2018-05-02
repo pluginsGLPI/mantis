@@ -31,7 +31,7 @@ class PluginMantisStructissuenotedata {
 
    /**
     * The id
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var integer
@@ -40,7 +40,7 @@ class PluginMantisStructissuenotedata {
 
    /**
     * The reporter
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var MantisStructAccountData
@@ -49,7 +49,7 @@ class PluginMantisStructissuenotedata {
 
    /**
     * The text
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string
@@ -58,7 +58,7 @@ class PluginMantisStructissuenotedata {
 
    /**
     * The view_state
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var MantisStructObjectRef
@@ -67,7 +67,7 @@ class PluginMantisStructissuenotedata {
 
    /**
     * The date_submitted
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var dateTime
@@ -76,7 +76,7 @@ class PluginMantisStructissuenotedata {
 
    /**
     * The last_modified
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var dateTime
@@ -85,7 +85,7 @@ class PluginMantisStructissuenotedata {
 
    /**
     * The time_tracking
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var integer
@@ -94,7 +94,7 @@ class PluginMantisStructissuenotedata {
 
    /**
     * The note_type
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var integer
@@ -103,7 +103,7 @@ class PluginMantisStructissuenotedata {
 
    /**
     * The note_attr
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string

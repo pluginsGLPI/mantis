@@ -207,7 +207,7 @@ class PluginMantisMantisws {
    }
 
    /**
-    * function to check if an issue exist
+    * function to check if an issue exists
     *
     * @param $_issue_id
     * @return bool
@@ -344,7 +344,7 @@ class PluginMantisMantisws {
    }
 
    /**
-    * function to check if project exist (with name)
+    * function to check if project exists (with name)
     *
     * @param $name
     * @return bool

@@ -42,9 +42,9 @@ class PluginMantisConfig extends CommonDBTM {
    }
 
    /**
-    * Prepare input datas for updating the item
+    * Prepare input data for updating the item
     *
-    * @param $input datas used to update the item
+    * @param $input data used to update the item
     *
     * @return the modified $input array
    **/
@@ -229,7 +229,7 @@ class PluginMantisConfig extends CommonDBTM {
    }
 
    /**
-    * Install all necessary table for the plugin
+    * Install all necessary tables for the plugin
     *
     * @return boolean True if success
     */

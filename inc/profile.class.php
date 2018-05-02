@@ -28,11 +28,11 @@ if (!defined('GLPI_ROOT')) {
 }
 
 /**
- * Class PluginMantisProfile pour la gestion des profiles
+ * Class PluginMantisProfile to manage the profiles
  */
 class PluginMantisProfile extends CommonDBTM {
 
-   // Necassary rights to edit the rights of this plugin
+   // Necessary rights to edit the rights of this plugin
    static $rightname = "profile";
 
    /**
@@ -47,7 +47,7 @@ class PluginMantisProfile extends CommonDBTM {
    }
 
    /**
-    * Describe all prossible rights for the plugin
+    * Describe all possible rights for the plugin
     * @return array
    **/
    static function getAllRights() {
@@ -232,7 +232,7 @@ class PluginMantisProfile extends CommonDBTM {
    }
 
    /**
-    * Install all necessary profile for the plugin
+    * Install all necessary profiles for the plugin
     *
     * @return boolean True if success
     */
@@ -258,7 +258,7 @@ class PluginMantisProfile extends CommonDBTM {
    }
 
    /**
-    * Uninstall previously installed profile of the plugin
+    * Uninstall previously installed profiles of the plugin
     *
     * @return boolean True if success
     */

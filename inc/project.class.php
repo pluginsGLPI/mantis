@@ -31,7 +31,7 @@ class PluginMantisProject {
 
    /**
     * The id
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var integer
@@ -40,7 +40,7 @@ class PluginMantisProject {
 
    /**
     * The name
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string
@@ -49,7 +49,7 @@ class PluginMantisProject {
 
    /**
     * The status
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var MantisStructObjectRef
@@ -58,7 +58,7 @@ class PluginMantisProject {
 
    /**
     * The enabled
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var boolean
@@ -67,7 +67,7 @@ class PluginMantisProject {
 
    /**
     * The view_state
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var MantisStructObjectRef
@@ -76,7 +76,7 @@ class PluginMantisProject {
 
    /**
     * The access_min
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var MantisStructObjectRef
@@ -85,7 +85,7 @@ class PluginMantisProject {
 
    /**
     * The file_path
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string
@@ -94,7 +94,7 @@ class PluginMantisProject {
 
    /**
     * The description
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string
@@ -103,7 +103,7 @@ class PluginMantisProject {
 
    /**
     * The subprojects
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     * - from schema : var/wsdltophp.com/storage/wsdls/a80caff3c8dd52f94a68432974b9ab45/wsdl.xml
     *
@@ -113,7 +113,7 @@ class PluginMantisProject {
 
    /**
     * The inherit_global
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var boolean

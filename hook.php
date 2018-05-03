@@ -16,8 +16,8 @@
  * GNU General Public License for more details.
  * --------------------------------------------------------------------------
  * @author    François Legastelois
- * @copyright Copyright (C) 2015-2018 by Teclib' and contributors.
- * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @copyright Copyright (C) 2018 Teclib
+ * @license   AGPLv3+ http://www.gnu.org/licenses/agpl.txt
  * @link      https://github.com/pluginsGLPI/mantis
  * @link      https://pluginsglpi.github.io/mantis/
  * -------------------------------------------------------------------------

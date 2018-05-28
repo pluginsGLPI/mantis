@@ -179,7 +179,7 @@ class PluginMantisProfile extends CommonDBTM {
 
       $table = "glpi_plugin_mantis_profiles";
 
-      if (!$DB->TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          return true;
       }
 
@@ -200,8 +200,8 @@ class PluginMantisProfile extends CommonDBTM {
       global $DB;
 
       foreach ($DB->request("SELECT *
-                           FROM `glpi_profilerights` 
-                           WHERE `profiles_id`='".$_SESSION['glpiactiveprofile']['id']."' 
+                           FROM `glpi_profilerights`
+                           WHERE `profiles_id`='".$_SESSION['glpiactiveprofile']['id']."'
                               AND `name` = 'plugin_mantis_use'") as $prof) {
          $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights'];
       }
@@ -226,7 +226,7 @@ class PluginMantisProfile extends CommonDBTM {
       global $DB;
 
       $query = "UPDATE ".ProfileRight::getTable()."
-                  SET name = 'plugin_mantis_use 
+                  SET name = 'plugin_mantis_use
                   WHERE name = 'mantis:mantis'";
       $DB->query($query);
    }
@@ -243,7 +243,7 @@ class PluginMantisProfile extends CommonDBTM {
          self::updateOldRightName();
       }
 
-      if ($DB->TableExists("glpi_plugin_mantis_profiles")) {
+      if ($DB->tableExists("glpi_plugin_mantis_profiles")) {
          self::migrateAllProfiles();
          $migration->dropTable("glpi_plugin_mantis_profiles");
          return true;
@@ -266,7 +266,7 @@ class PluginMantisProfile extends CommonDBTM {
       global $DB;
 
       foreach (self::getAllRights() as $right) {
-         $query = "DELETE FROM `glpi_profilerights` 
+         $query = "DELETE FROM `glpi_profilerights`
                    WHERE `name` = '".$right['field']."'";
          $DB->query($query);
 

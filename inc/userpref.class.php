@@ -37,7 +37,7 @@ class PluginMantisUserpref extends CommonDBTM {
    static function install($migration) {
       global $DB;
 
-      if (!$DB->TableExists("glpi_plugin_mantis_userprefs")) {
+      if (!$DB->tableExists("glpi_plugin_mantis_userprefs")) {
          $query = "CREATE TABLE `glpi_plugin_mantis_userprefs` (
                `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                `users_id` int(11) NOT NULL ,
@@ -176,7 +176,7 @@ class PluginMantisUserpref extends CommonDBTM {
 
       $table = getTableForItemType(__CLASS__);
 
-      if ($DB->TableExists($table)) {
+      if ($DB->tableExists($table)) {
          $migration->dropTable($table);
          $migration->executeMigration();
       }

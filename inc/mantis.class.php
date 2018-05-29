@@ -1008,10 +1008,13 @@ class PluginMantisMantis extends CommonDBTM {
     * @return true if succeed else false
     */
    public function IfExistLink($idItem, $id_mantis, $itemType) {
-      return $this->getFromDBByQuery($this->getTable() . " WHERE `" . "`.`items_id` = '"
-                                     . Toolbox::cleanInteger($idItem) . "'  AND  `"
-                                     . "`.`idMantis` = '" . Toolbox::cleanInteger($id_mantis)
-                                     . "'  AND  `" . "`.`itemtype` = '" . $itemType . "'");
+      return $this->getFromDBByCrit(
+         [
+            'items_id' => Toolbox::cleanInteger($idItem),
+            'idMantis' => Toolbox::cleanInteger($id_mantis),
+            'itemtype' => $itemType,
+         ]
+      );
    }
 
    /**

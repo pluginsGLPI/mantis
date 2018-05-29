@@ -28,7 +28,7 @@ define("PLUGIN_MANTIS_VERSION", "4.0.1");
 // Minimal GLPI version, inclusive
 define("PLUGIN_MANTIS_MIN_GLPI", "9.2");
 // Maximum GLPI version, exclusive
-define("PLUGIN_MANTIS_MAX_GLPI", "9.3");
+define("PLUGIN_MANTIS_MAX_GLPI", "9.4");
 
 /**
  * function to initialize the plugin

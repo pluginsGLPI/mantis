@@ -28,7 +28,7 @@ define("PLUGIN_MANTIS_VERSION", "4.0.0");
 // Minimal GLPI version, inclusive
 define("PLUGIN_MANTIS_MIN_GLPI", "9.2");
 // Maximum GLPI version, exclusive
-define("PLUGIN_MANTIS_MAX_GLPI", "9.3");
+define("PLUGIN_MANTIS_MAX_GLPI", "9.4");
 
 /**
  * function to initialize the plugin
@@ -90,7 +90,7 @@ function plugin_version_mantis() {
          'glpi' => [
             'min' => PLUGIN_MANTIS_MIN_GLPI,
             'max' => PLUGIN_MANTIS_MAX_GLPI,
-            'dev' => true
+            'dev' => true, //Required to allow 9.2-dev
          ],
          'php' => [
             'exts' => [
@@ -109,6 +109,21 @@ function plugin_version_mantis() {
  * @return boolean
  */
 function plugin_mantis_check_prerequisites() {
+
+   // Version check not automatically done by GLPI < 9.2.
+   $version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
+   if (!version_compare($version, PLUGIN_MANTIS_MIN_GLPI, '>=')
+      || !version_compare($version, PLUGIN_MANTIS_MAX_GLPI, '<')) {
+      echo vsprintf(
+         'This plugin requires GLPI >= %1$s and < %2$s',
+         [
+            PLUGIN_MANTIS_MIN_GLPI,
+            PLUGIN_MANTIS_MAX_GLPI,
+         ]
+      );
+      return false;
+   }
+
    return true;
 }
 

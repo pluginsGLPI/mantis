@@ -91,6 +91,13 @@ function plugin_version_mantis() {
             'min' => PLUGIN_MANTIS_MIN_GLPI,
             'max' => PLUGIN_MANTIS_MAX_GLPI,
             'dev' => true
+         ],
+         'php' => [
+            'exts' => [
+               'soap'     => [
+                  'required' => true,
+               ]
+            ]
          ]
       ]
    ];

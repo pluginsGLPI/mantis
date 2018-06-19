@@ -23,7 +23,7 @@
  * -------------------------------------------------------------------------
  */
 
-define("PLUGIN_MANTIS_VERSION", "4.0.0");
+define("PLUGIN_MANTIS_VERSION", "4.0.1");
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_MANTIS_MIN_GLPI", "9.2");

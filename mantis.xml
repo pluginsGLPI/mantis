@@ -34,7 +34,7 @@
          </ul>]]></en>
       </long>
    </description>
-   <homepage>https://github.com/pluginsGLPI/mantis</homepage>
+   <homepage>https://pluginsglpi.github.io/mantis/</homepage>
    <download>https://github.com/pluginsGLPI/mantis/releases</download>
    <issues>https://github.com/pluginsGLPI/mantis/issues</issues>
    <readme>https://raw.githubusercontent.com/pluginsGLPI/mantis/master/README.md</readme>
@@ -42,6 +42,10 @@
       <author>TECLIB'</author>
    </authors>
    <versions>
+      <version>
+         <num>4.0.1</num>
+          <compatibility>9.2</compatibility>
+      </version>
       <version>
          <num>4.0.0</num>
           <compatibility>9.2</compatibility>

@@ -1,34 +1,26 @@
 <?php
-/*
- * @version $Id$
- -------------------------------------------------------------------------
- GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2015-2016 Teclib'.
-
- http://glpi-project.org
-
- based on GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2014 by the INDEPNET Development Team.
-
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of GLPI.
-
- GLPI is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- GLPI is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with GLPI. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * --------------------------------------------------------------------------
+ * LICENSE
+ *
+ * This file is part of mantis.
+ *
+ * mantis is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * mantis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * --------------------------------------------------------------------------
+ * @author    François Legastelois
+ * @copyright Copyright (C) 2018 Teclib
+ * @license   AGPLv3+ http://www.gnu.org/licenses/agpl.txt
+ * @link      https://github.com/pluginsGLPI/mantis
+ * @link      https://pluginsglpi.github.io/mantis/
+ * -------------------------------------------------------------------------
  */
 
 if (!defined('GLPI_ROOT')) {
@@ -39,7 +31,7 @@ class PluginMantisProject {
 
    /**
     * The id
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var integer
@@ -48,7 +40,7 @@ class PluginMantisProject {
 
    /**
     * The name
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string
@@ -57,7 +49,7 @@ class PluginMantisProject {
 
    /**
     * The status
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var MantisStructObjectRef
@@ -66,7 +58,7 @@ class PluginMantisProject {
 
    /**
     * The enabled
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var boolean
@@ -75,7 +67,7 @@ class PluginMantisProject {
 
    /**
     * The view_state
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var MantisStructObjectRef
@@ -84,7 +76,7 @@ class PluginMantisProject {
 
    /**
     * The access_min
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var MantisStructObjectRef
@@ -93,7 +85,7 @@ class PluginMantisProject {
 
    /**
     * The file_path
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string
@@ -102,7 +94,7 @@ class PluginMantisProject {
 
    /**
     * The description
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var string
@@ -111,7 +103,7 @@ class PluginMantisProject {
 
    /**
     * The subprojects
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     * - from schema : var/wsdltophp.com/storage/wsdls/a80caff3c8dd52f94a68432974b9ab45/wsdl.xml
     *
@@ -121,7 +113,7 @@ class PluginMantisProject {
 
    /**
     * The inherit_global
-    * Meta informations extracted from the WSDL
+    * Meta information extracted from the WSDL
     * - minOccurs : 0
     *
     * @var boolean

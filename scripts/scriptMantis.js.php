@@ -1,34 +1,26 @@
 <?php
-/*
- * @version $Id$
- -------------------------------------------------------------------------
- GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2015-2016 Teclib'.
-
- http://glpi-project.org
-
- based on GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2014 by the INDEPNET Development Team.
-
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of GLPI.
-
- GLPI is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- GLPI is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with GLPI. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * --------------------------------------------------------------------------
+ * LICENSE
+ *
+ * This file is part of mantis.
+ *
+ * mantis is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * mantis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * --------------------------------------------------------------------------
+ * @author    François Legastelois
+ * @copyright Copyright (C) 2015-2018 by Teclib' and contributors.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/pluginsGLPI/mantis
+ * @link      https://pluginsglpi.github.io/mantis/
+ * -------------------------------------------------------------------------
  */
 
 include ('../../../inc/includes.php');
@@ -51,14 +43,14 @@ function getAttachment(){
 
     if(checkBox == true){
 
-        $.ajax({ // fonction permettant de faire de l'ajax
-            type: "POST", // methode de transmission des données au fichier php
-            url: "{$root_ajax}", // url du fichier php
+        $.ajax({ // function that allows the ajax
+            type: "POST", // method to transmit data to php file
+            url: "{$root_ajax}", // url of php file
             data: "action=getTicketAttachment&" +
             "itemType=" + itemType + "&" +
-            "idTicket=" + idTicket , // données à transmettre
+            "idTicket=" + idTicket , // data to be transmitted
 
-            success: function (msg) { // si l'appel a bien fonctionné
+            success: function (msg) { // if the call has worked fine
                 div_info.html(msg);
             },
             error: function () {
@@ -66,7 +58,7 @@ function getAttachment(){
             }
         });
 
-        return false; // permet de rester sur la même page à la soumission du formulaire
+        return false; // allows to stay in the same page when submitting the form
 
     }else{
         div_info.empty();
@@ -83,14 +75,14 @@ function getAttachment1(){
 
     if(checkBox == true){
 
-        $.ajax({ // fonction permettant de faire de l'ajax
-            type: "POST", // methode de transmission des données au fichier php
-            url: "{$root_ajax}", // url du fichier php
+        $.ajax({ // function that allows the ajax
+            type: "POST", // method to transmit data to php file
+            url: "{$root_ajax}", // url of php file
             data: "action=getTicketAttachment&" +
             "itemType=" + itemType + "&" +
-            "idTicket=" + idTicket , // données à transmettre
+            "idTicket=" + idTicket , // data to be transmitted
 
-            success: function (msg) { // si l'appel a bien fonctionné
+            success: function (msg) { // if the call has worked fine
                 div_info.html(msg);
             },
             error: function () {
@@ -98,7 +90,7 @@ function getAttachment1(){
             }
         });
 
-        return false; // permet de rester sur la même page à la soumission du formulaire
+        return false; // allows to stay in the same page when submitting the form
 
     }else{
         div_info.empty();
@@ -115,16 +107,16 @@ function testConnexionMantisWS() {
     var dropdown = $("#dropdown_etatMantis");
     var div = $("#infoAjax");
 
-    $.ajax({ // fonction permettant de faire de l'ajax
-        type: "POST", // methode de transmission des données au fichier php
-        url: "{$root_ajax}", // url du fichier php
+    $.ajax({ // function that allows the ajax
+        type: "POST", // method to transmit data to php file
+        url: "{$root_ajax}", // url of php file
         data: "action=testConnexionMantisWS&" +
             "host=" + $("#host").val() + "&" +
             "url=" + $("#url").val() + "&" +
             "login=" + $("#login").val() + "&" +
-            "pwd=" + $("#pwd").val(), // données à transmettre
+            "pwd=" + $("#pwd").val(), // data to be transmitted
 
-            success: function (msg) { // si l'appel a bien fonctionné
+            success: function (msg) { // if the call has worked fine
 
                 div.html(msg);
 
@@ -140,7 +132,7 @@ function testConnexionMantisWS() {
             }
 
     });
-   return false; // permet de rester sur la même page à la soumission du formulaire
+   return false; // allows to stay in the same page when submitting the form
 
 }
 
@@ -149,13 +141,13 @@ function ifExistissueWithId() {
    var div = $("#infoFindIssueMantis");
    var id = $("#idMantis").val();
 
-   $.ajax({ // fonction permettant de faire de l'ajax
-      type: "POST", // methode de transmission des données au fichier php
-      url: "{$root_ajax}", // url du fichier php
+   $.ajax({ // function that allows the ajax
+      type: "POST", // method to transmit data to php file
+      url: "{$root_ajax}", // url of php file
       data: "action=findIssueById&" +
-         "id=" + id, // données à transmettre
+         "id=" + id, // data to be transmitted
 
-      success: function (msg) { // si l'appel a bien fonctionné
+      success: function (msg) { // if the call has worked fine
          div.html(msg);
       },
       error: function () {
@@ -163,7 +155,7 @@ function ifExistissueWithId() {
       }
 
    });
-   return false; // permet de rester sur la même page à la soumission du formulaire
+   return false; // allows to stay in the same page when submitting the form
 
 }
 
@@ -187,15 +179,15 @@ function findProjectById(){
     }else{
         $("#idMantis").css('border-color','#888888');
 
-        $.ajax({ // fonction permettant de faire de l'ajax
-        type: "POST", // methode de transmission des données au fichier php
-        url: "{$root_ajax}", // url du fichier php
+        $.ajax({ // function that allows the ajax
+        type: "POST", // method to transmit data to php file
+        url: "{$root_ajax}", // url of php file
         data: "action=getProjectName&" +
             "idTicket=" + idTicket + "&" +
             "itemType=" + itemType + "&" +
-            "idMantis=" + idMantisIssue, // données à transmettre
+            "idMantis=" + idMantisIssue, // data to be transmitted
 
-            success: function (msg) { // si l'appel a bien fonctionné
+            success: function (msg) { // if the call has worked fine
 
                 if (msg.indexOf('ERROR :') != -1) {
                     removeOptionOfSelect(dropdownCustomField);
@@ -273,9 +265,9 @@ function linkIssueglpiToIssueMantis() {
         $("#dropdown_fieldUrl").css('border-color','#888888');
         $("#dropdown_fieldsGlpi").css('border-color','#888888');
 
-        $.ajax({ // fonction permettant de faire de l'ajax
-            type: "POST", // methode de transmission des données au fichier php
-            url: "{$root_ajax}", // url du fichier php
+        $.ajax({ // function that allows the ajax
+            type: "POST", // method to transmit data to php file
+            url: "{$root_ajax}", // url of php file
             data: "action=LinkIssueGlpiToIssueMantis&" +
                 "items_id=" + idTicket + "&" +
                 "idMantis=" + idMantisIssue + "&" +
@@ -290,9 +282,9 @@ function linkIssueglpiToIssueMantis() {
                 "followDescription=" + followDescription + "&" +
                 "followCategorie=" + followCategorie + "&" +
                 "user=" + idUser + "&" +
-                "dateEscalade=" + date, // données à transmettre
+                "dateEscalade=" + date, // data to be transmitted
 
-                    success: function (msg) { // si l'appel a bien fonctionné
+                    success: function (msg) { // if the call has worked fine
 
                     if (msg == true) {
 
@@ -327,13 +319,13 @@ function addCustomFieldtoSelect(dropdownCustomField,name) {
 
    var nameProject = name;
 
-   $.ajax({ // fonction permettant de faire de l'ajax
-      type: "POST", // methode de transmission des données au fichier php
-      url: "{$root_ajax}", // url du fichier php
+   $.ajax({ // function that allows the ajax
+      type: "POST", // method to transmit data to php file
+      url: "{$root_ajax}", // url of php file
       dataType: "json",
       data: "action=getCustomFieldByProjectname&" +
-         "name=" + name, // données à transmettre
-      success: function (msg) { // si l'appel a bien fonctionné
+         "name=" + name, // data to be transmitted
+      success: function (msg) { // if the call has worked fine
 
          if (msg == false) {
 
@@ -357,7 +349,7 @@ function addCustomFieldtoSelect(dropdownCustomField,name) {
       }
 
    });
-   return false; // permet de rester sur la même page à la soumission du formulaire
+   return false; // allows to stay in the same page when submitting the form
 
 }
 
@@ -375,12 +367,12 @@ function findProjectByName() {
    div_wait.css('display', 'block');
    img.remove();
 
-   $.ajax({ // fonction permettant de faire de l'ajax
-      type: "POST", // methode de transmission des données au fichier php
-      url: "{$root_ajax}", // url du fichier php
+   $.ajax({ // function that allows the ajax
+      type: "POST", // method to transmit data to php file
+      url: "{$root_ajax}", // url of php file
       data: "action=findProjectByName&" +
-         "name=" + name, // données à transmettre
-      success: function (msg) { // si l'appel a bien fonctionné
+         "name=" + name, // data to be transmitted
+      success: function (msg) { // if the call has worked fine
 
          td.append(msg);
 
@@ -405,7 +397,7 @@ function findProjectByName() {
       }
 
    });
-   return false; // permet de rester sur la même page à la soumission du formulaire
+   return false; // allows to stay in the same page when submitting the form
 
 }
 
@@ -414,15 +406,15 @@ function addStateToSelect(){
 
   var dropdown = $("#dropdown_etatMantis");
 
-      $.ajax({ // fonction permettant de faire de l'ajax
-      type: "POST", // methode de transmission des données au fichier php
-      url: "{$root_ajax}", // url du fichier php
+      $.ajax({ // function that allows the ajax
+      type: "POST", // method to transmit data to php file
+      url: "{$root_ajax}", // url of php file
       data: "action=getStateMantis&" +
          "host=" + $("#host").val() + "&" +
          "url=" + $("#url").val() + "&" +
          "login=" + $("#login").val() + "&" +
-         "pwd=" + $("#pwd").val(), // données à transmettre
-      success: function (msg) { // si l'appel a bien fonctionné
+         "pwd=" + $("#pwd").val(), // data to be transmitted
+      success: function (msg) { // if the call has worked fine
 
          if (msg == false) {
 
@@ -455,13 +447,13 @@ function addActortoSelect(dropdown,name) {
 
    var nameProject = name;
 
-   $.ajax({ // fonction permettant de faire de l'ajax
-      type: "POST", // methode de transmission des données au fichier php
-      url: "{$root_ajax}", // url du fichier php
+   $.ajax({ // function that allows the ajax
+      type: "POST", // method to transmit data to php file
+      url: "{$root_ajax}", // url of php file
       dataType: "json",
       data: "action=getActorByProjectname&" +
-         "name=" + name, // données à transmettre
-      success: function (msg) { // si l'appel a bien fonctionné
+         "name=" + name, // data to be transmitted
+      success: function (msg) { // if the call has worked fine
 
          if (msg == false) {
 
@@ -485,7 +477,7 @@ function addActortoSelect(dropdown,name) {
       }
 
    });
-   return false; // permet de rester sur la même page à la soumission du formulaire
+   return false; // allows to stay in the same page when submitting the form
 
 }
 
@@ -496,13 +488,13 @@ function addOptionToSelect(dropdown, name) {
 
    var nameProject = name;
 
-   $.ajax({ // fonction permettant de faire de l'ajax
-      type: "POST", // methode de transmission des données au fichier php
-      url: "{$root_ajax}", // url du fichier php
+   $.ajax({ // function that allows the ajax
+      type: "POST", // method to transmit data to php file
+      url: "{$root_ajax}", // url of php file
       dataType: "json",
       data: "action=getCategoryFromProjectName&" +
-         "name=" + name, // données à transmettre
-      success: function (msg) { // si l'appel a bien fonctionné
+         "name=" + name, // data to be transmitted
+      success: function (msg) { // if the call has worked fine
 
          if (msg == false) {
 
@@ -525,7 +517,7 @@ function addOptionToSelect(dropdown, name) {
 
 
    });
-   return false; // permet de rester sur la même page à la soumission du formulaire
+   return false; // allows to stay in the same page when submitting the form
 
 }
 
@@ -583,9 +575,9 @@ function linkIssueglpiToProjectMantis() {
    }else{
 
 
-      $.ajax({ // fonction permettant de faire de l'ajax
-         type: "POST", // methode de transmission des données au fichier php
-         url: "{$root_ajax}", // url du fichier php
+      $.ajax({ // function that allows the ajax
+         type: "POST", // method to transmit data to php file
+         url: "{$root_ajax}", // url of php file
          data: "action=LinkIssueGlpiToProjectMantis&" +
             "idTicket=" + idTicket + "&" +
             "nameMantisProject=" + nameMantisProject + "&" +
@@ -605,8 +597,8 @@ function linkIssueglpiToProjectMantis() {
             "followDescription=" + followDescription + "&" +
             "followCategorie=" + followCategorie + "&" +
             "categorie=" + cate + "&" +
-            "description=" + description, // données à transmettre
-         success: function (msg) { // si l'appel a bien fonctionné
+            "description=" + description, // data to be transmitted
+         success: function (msg) { // if the call has worked fine
 
             if (msg == true) {
                div_wait.css('display', 'none');
@@ -640,14 +632,14 @@ function deleteLinkGlpiMantis(id, idticket, idMantis, deleteAll) {
 
    if (confirm(question)) {
 
-      $.ajax({ // fonction permettant de faire de l'ajax
-         type: "POST", // methode de transmission des données au fichier php
-         url: "{$root_ajax}", // url du fichier php
+      $.ajax({ // function that allows the ajax
+         type: "POST", // method to transmit data to php file
+         url: "{$root_ajax}", // url of php file
          data: "action=deleteLinkMantis&" +
             "id=" + id + "&" +
             "idMantis=" + idMantis + "&" +
-            "items_id=" + idticket,// données à transmettre
-         success: function (msg) { // si l'appel a bien fonctionné
+            "items_id=" + idticket,// data to be transmitted
+         success: function (msg) { // if the call has worked fine
 
             if (msg == true) {
                window.location.reload(true);
@@ -686,14 +678,14 @@ function delLinkAndOrIssue(id, idMantis, idTicket) {
       checkIssue.is(':checked') && checkLink.is(':checked')) {
 
       div_wait.css('display', 'block');
-      $.ajax({ // fonction permettant de faire de l'ajax
-         type: "POST", // methode de transmission des données au fichier php
-         url: "{$root_ajax}", // url du fichier php
+      $.ajax({ // function that allows the ajax
+         type: "POST", // method to transmit data to php file
+         url: "{$root_ajax}", // url of php file
          data: "action=deleteIssueMantisAndLink&" +
             "id=" + id + "&" +
             "idMantis=" + idMantis + "&" +
-            "items_id=" + idTicket,// données à transmettre
-         success: function (msg) { // si l'appel a bien fonctionné
+            "items_id=" + idTicket,// data to be transmitted
+         success: function (msg) { // if the call has worked fine
 
             if (msg == true) {
                div_wait.css('display', 'none');
@@ -717,14 +709,14 @@ function delLinkAndOrIssue(id, idMantis, idTicket) {
    if (!checkIssue.is(':checked') && checkLink.is(':checked')) {
 
       div_wait.css('display', 'block');
-      $.ajax({ // fonction permettant de faire de l'ajax
-         type: "POST", // methode de transmission des données au fichier php
-         url: "{$root_ajax}", // url du fichier php
+      $.ajax({ // function that allows the ajax
+         type: "POST", // method to transmit data to php file
+         url: "{$root_ajax}", // url of php file
          data: "action=deleteLinkMantis&" +
             "id=" + id + "&" +
             "idMantis=" + idMantis + "&" +
-            "items_id=" + idTicket,// données à transmettre
-         success: function (msg) { // si l'appel a bien fonctionné
+            "items_id=" + idTicket,// data to be transmitted
+         success: function (msg) { // if the call has worked fine
 
             if (msg == true) {
                div_wait.css('display', 'none');

@@ -1,34 +1,26 @@
 <?php
-/*
- * @version $Id$
- -------------------------------------------------------------------------
- GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2015-2016 Teclib'.
-
- http://glpi-project.org
-
- based on GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2014 by the INDEPNET Development Team.
-
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of GLPI.
-
- GLPI is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- GLPI is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with GLPI. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * --------------------------------------------------------------------------
+ * LICENSE
+ *
+ * This file is part of mantis.
+ *
+ * mantis is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * mantis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * --------------------------------------------------------------------------
+ * @author    François Legastelois
+ * @copyright Copyright (C) 2018 Teclib
+ * @license   AGPLv3+ http://www.gnu.org/licenses/agpl.txt
+ * @link      https://github.com/pluginsGLPI/mantis
+ * @link      https://pluginsglpi.github.io/mantis/
+ * -------------------------------------------------------------------------
  */
 
 if (!defined('GLPI_ROOT')) {
@@ -50,9 +42,9 @@ class PluginMantisConfig extends CommonDBTM {
    }
 
    /**
-    * Prepare input datas for updating the item
+    * Prepare input data for updating the item
     *
-    * @param $input datas used to update the item
+    * @param $input data used to update the item
     *
     * @return the modified $input array
    **/
@@ -83,7 +75,7 @@ class PluginMantisConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT server base URL", "mantis") . "</td>";
-      echo "<td><input id='host' name='host' type='text' size='70' 
+      echo "<td><input id='host' name='host' type='text' size='70'
                      value='" . $this->fields["host"] . "'/></td>";
       echo "</tr><tr class='tab_bg_1'>";
       echo "<td></td><td>ex : http(s)://localhost/mantisbt</td>";
@@ -109,7 +101,7 @@ class PluginMantisConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Wsdl file path", "mantis") . "</td>";
-      echo "<td><input id='url' name='url' type='text' size='70' 
+      echo "<td><input id='url' name='url' type='text' size='70'
                      value='" . $this->fields["url"] . "'/></td>";
       echo "</tr><tr class='tab_bg_1'>";
       echo "<td></td><td>ex : api/soap/mantisconnect.php?wsdl</td>";
@@ -117,14 +109,14 @@ class PluginMantisConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT user login", "mantis") . "</td>";
-      echo "<td><input  id='login' name='login' type='text' size='30' 
+      echo "<td><input  id='login' name='login' type='text' size='30'
                   value='" . $this->fields["login"] . "'/></td>";
       echo "<td></td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT user password", "mantis") . "</td>";
-      echo "<td><input id='pwd' name='pwd' type='password' size='30' 
+      echo "<td><input id='pwd' name='pwd' type='password' size='30'
                   value='" . Toolbox::decrypt($this->fields["pwd"], GLPIKEY) . "' /></td>";
       echo "<td></td>";
       echo "</tr>";
@@ -228,7 +220,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td><input id='test' onclick='testConnexionMantisWS();' 
+      echo "<td><input id='test' onclick='testConnexionMantisWS();'
                value='" . __("Test the connection", "mantis") . "' class='submit'></td>";
       echo "<td><div id='infoAjax'></div></td>";
       echo "</tr>";
@@ -237,7 +229,7 @@ class PluginMantisConfig extends CommonDBTM {
    }
 
    /**
-    * Install all necessary table for the plugin
+    * Install all necessary tables for the plugin
     *
     * @return boolean True if success
     */
@@ -246,7 +238,7 @@ class PluginMantisConfig extends CommonDBTM {
 
       $table = getTableForItemType(__CLASS__);
 
-      if (!$DB->TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE `".$table."` (
                      `id` int(11) NOT NULL AUTO_INCREMENT,
                      `host` varchar(255) NOT NULL default '',
@@ -274,23 +266,23 @@ class PluginMantisConfig extends CommonDBTM {
          $DB->query($query) or die ($DB->error());
       } else {
 
-         if ($DB->FieldExists($table, 'version')) {
+         if ($DB->fieldExists($table, 'version')) {
             $migration->dropField($table, 'version');
          }
 
-         if (!$DB->FieldExists($table, 'solutiontypes_id')) {
+         if (!$DB->fieldExists($table, 'solutiontypes_id')) {
             $migration->addField($table, "solutiontypes_id", "INT( 11 ) NOT NULL DEFAULT 0");
          }
 
-         if (!$DB->FieldExists($table, 'users_id')) {
+         if (!$DB->fieldExists($table, 'users_id')) {
             $migration->addField($table, "users_id", "INT( 11 ) NOT NULL DEFAULT 0");
          }
 
-         if (!$DB->FieldExists($table, 'check_ssl')) {
+         if (!$DB->fieldExists($table, 'check_ssl')) {
             $migration->addField($table, "check_ssl", "INT( 1 ) NOT NULL DEFAULT 0");
          }
 
-         if (!$DB->FieldExists($table, 'use_proxy')) {
+         if (!$DB->fieldExists($table, 'use_proxy')) {
             $migration->addField($table, "use_proxy", "INT( 1 ) NOT NULL DEFAULT 0");
          }
 
@@ -309,7 +301,7 @@ class PluginMantisConfig extends CommonDBTM {
 
       $table = getTableForItemType(__CLASS__);
 
-      if ($DB->TableExists($table)) {
+      if ($DB->tableExists($table)) {
          $migration->dropTable($table);
          $migration->executeMigration();
       }

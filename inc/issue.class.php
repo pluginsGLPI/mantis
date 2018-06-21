@@ -1,34 +1,26 @@
 <?php
-/*
- * @version $Id$
- -------------------------------------------------------------------------
- GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2015-2016 Teclib'.
-
- http://glpi-project.org
-
- based on GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2014 by the INDEPNET Development Team.
-
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of GLPI.
-
- GLPI is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- GLPI is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with GLPI. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * --------------------------------------------------------------------------
+ * LICENSE
+ *
+ * This file is part of mantis.
+ *
+ * mantis is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * mantis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * --------------------------------------------------------------------------
+ * @author    François Legastelois
+ * @copyright Copyright (C) 2018 Teclib
+ * @license   AGPLv3+ http://www.gnu.org/licenses/agpl.txt
+ * @link      https://github.com/pluginsGLPI/mantis
+ * @link      https://pluginsglpi.github.io/mantis/
+ * -------------------------------------------------------------------------
  */
 
 if (!defined('GLPI_ROOT')) {
@@ -62,7 +54,7 @@ class PluginMantisIssue {
    }
 
    /**
-    * Function to add information to an existant issue
+    * Function to add information to an existent issue
     *
     * @param $idTicket
     * @param $idMantis
@@ -97,13 +89,13 @@ class PluginMantisIssue {
 
       $error = "";
 
-      // check si on follow les pieces jointe
+      // check if we follow the attachment
       if ($followAttachment == 'true') {
 
-         // follow attchmant for ticket
+         // follow attachment for ticket
          $error .= $this->addAttachment($idTicket, $error, $ws, $idMantis, $itemType);
 
-         // follow attachmant for ticket linked
+         // follow attachment for ticket linked
          if ($followLinkedticket == 'true') {
             $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
             foreach ($tickets as $link_ticket) {
@@ -112,7 +104,7 @@ class PluginMantisIssue {
          }
       }
 
-      // on creer la note si besoin
+      // create the note if needed
       if ($this->needNote($champsUrl, $champsGlpi)) {
          $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl,
                                       $ws, $idMantis, $followFollow, $followTask, $followTitle,
@@ -122,16 +114,16 @@ class PluginMantisIssue {
          }
       }
 
-      // si les deux ont besoin d'un custom field
+      // if both need a custom field
       if (($champsUrl != 'additional_information' && $champsUrl != 'note')
             && ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
 
          include_once ('structcustomfield.php');
 
-         // si cela concerna le mm custom field
+         // if it concerns the mm custom field
          if ($champsGlpi == $champsUrl) {
 
-            // on parcours chaque custom field , quand on trouve le bon on le met à jour
+            // check every custom field, when the right one is found, update it
             foreach ($issue->custom_fields as $field) {
                if ($field->name = $champsGlpi) {
                   $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl,
@@ -144,7 +136,7 @@ class PluginMantisIssue {
             }
          } else {
 
-            // on parcours chaque custom field , quand on trouve le bon on le met à jour
+            // check every custom field, when the right one is found, update it
             foreach ($issue->custom_fields as $field) {
                if ($field->name = $champsGlpi) {
                   $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl,
@@ -156,7 +148,7 @@ class PluginMantisIssue {
                }
             }
 
-            // on parcours chaque custom field , quand on trouve le bon on le met à jour
+            // check every custom field, when the right one is found, update it
             foreach ($issue->custom_fields as $field) {
                if ($field->name = $champsUrl) {
                   $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl,
@@ -169,14 +161,14 @@ class PluginMantisIssue {
             }
          }
 
-         // si l'un deux deux en à besoin
+         // if one of them requires it
       } else if (($champsUrl != 'additional_information' && $champsUrl != 'note')
                   || ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
 
          include_once ('structcustomfield.php');
 
          if (($champsUrl != 'additional_information' && $champsUrl != 'note')) {
-            // on parcours chaque custom field , quand on trouve le bon on le met à jour
+            // check every custom field, when the right one is found, update it
             foreach ($issue->custom_fields as $field) {
                if ($field->name = $champsGlpi) {
                   $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl,
@@ -188,7 +180,7 @@ class PluginMantisIssue {
                }
             }
          } else {
-            // on parcours chaque custom field , quand on trouve le bon on le met à jour
+            // check every custom field, when the right one is found, update it
             foreach ($issue->custom_fields as $field) {
                if ($field->name = $champsUrl) {
                   $field->value .= "<br/>" . $this->getInfoFromTicket($champsGlpi, $champsUrl,
@@ -202,7 +194,7 @@ class PluginMantisIssue {
          }
       }
 
-      // on met a jour l'additionnal info
+      // update additional information
       $issue->additional_information .= "<br>" . $this->getAdditionalInfo($champsGlpi, $champsUrl,
                                                                           $ticket, $itilCategorie,
                                                                           $followFollow, $followTask,
@@ -262,15 +254,15 @@ class PluginMantisIssue {
       $ticket = new $itemType();
       $ticket->getFromDB($idTicket);
 
-      $id_note = 0; // id de la note creer si besoin
-      $id_mantis = array(); // id du lien mantis si besoin
-      $id_attachment = array(); // id des pieces jointe si besoin
-      $post = array(); // info mantis lors de la creation du lien
+      $id_note = 0; // id of the note, create if needed
+      $id_mantis = array(); // id of mantis link if needed
+      $id_attachment = array(); // id of attachments if needed
+      $post = array(); // info mantis at the moment of creating the link
 
-      // si le projet existe
+      // if the project exists
       if ($ws->existProjectWithName($nameMantisProject)) {
 
-         // on creer un projet avec l'id juste pour creer l'issue mantis
+         // create a project with the id for the mantis issue creation
          $project = new PluginMantisProject();
          $project->setId($ws->getProjectIdWithName($nameMantisProject));
 
@@ -284,7 +276,7 @@ class PluginMantisIssue {
             }
          }
 
-         // on remplit l'issue Mantis
+         // fullfil Mantis issue
          $this->setProject($project);
          $this->setCategory($categorie);
          $this->setDescription(stripslashes(str_replace('\n', '</br>', $description)));
@@ -297,13 +289,13 @@ class PluginMantisIssue {
                                                                    $followCategorie, $followLinkedticket,
                                                                    $itemType));
 
-         // si les deux ont besoin d'un custom field
+         // if both need a custom field
          if (($champsUrl != 'additional_information' && $champsUrl != 'note')
                && ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
 
             include_once ('structcustomfield.php');
 
-            // si cela concerna le mm custom field
+            // if it concerns the mm custom field
             if ($champsGlpi == $champsUrl) {
 
                $custom = new PluginMantisStructcustomField();
@@ -339,7 +331,7 @@ class PluginMantisIssue {
                ));
             }
 
-            // si l'un deux deux en à besoin
+            // if both need a custom field
          } else if (($champsUrl != 'additional_information' && $champsUrl != 'note')
                      || ($champsGlpi != 'additional_information' && $champsGlpi != 'note')) {
 
@@ -370,15 +362,15 @@ class PluginMantisIssue {
             }
          }
 
-         // on insert lissue
+         // add issue
          $idIssueCreate = $ws->addIssue($this);
 
-         // si l'issue mantis n'est pas creé
+         // if mantis issue is not created
          if (! $idIssueCreate) {
             return __("Error: The process was interrupted", "mantis");
          } else {
 
-            // creation d'un lien glpi -> mantis
+            // create a link glpi -> mantis
             $post['items_id'] = $idTicket;
             $post['idMantis'] = $idIssueCreate;
             $post['dateEscalade'] = $date;
@@ -388,7 +380,7 @@ class PluginMantisIssue {
             $res = $mantis->add($post);
             $id_mantis[] = $res;
 
-            // si peut pas créé le lien
+            // if the link is not created
             if (! $res) {
                $ws->deleteIssue($idIssueCreate);
                return __("Error: The process was interrupted", "mantis");
@@ -416,25 +408,25 @@ class PluginMantisIssue {
 
                $error = "";
 
-               // on s'occupe des note
+               // take care of notes
                if ($this->needNote($champsUrl, $champsGlpi)) {
                   $id_note = $this->createNote($champsGlpi, $ticket, $itilCategorie, $champsUrl,
                                                $ws, $idIssueCreate, $followFollow, $followTask,
                                                $followTitle, $followDescription, $followCategorie,
                                                $followLinkedticket, $itemType);
-                  // Erreur lors de la création de la note
+                  // if there is an error at the moment of creating the note
                   if (! $id_note) {
                      $error .= __("Error creating the note, the process was interrupted", "mantis");
                   }
                }
 
-               // check si on follow les pieces jointe
+               // check if we follow the attachemnts
                if ($followAttachment == 'true') {
 
-                  // follow attchmant for ticket
+                  // follow attachment for ticket
                   $error .= $this->addAttachment($idTicket, $error, $ws, $idIssueCreate, $itemType);
 
-                  // follow attachmant for ticket linked
+                  // follow attachment for ticket linked
                   if ($followLinkedticket == 'true' && $itemType == "Ticket") {
                      $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
                      foreach ($tickets as $link_ticket) {
@@ -479,7 +471,7 @@ class PluginMantisIssue {
                   return $error;
                } else {
 
-                  // mise à jour du status du ticket si demandé
+                  // update ticket status if asked
                   if ($conf->fields['status_after_escalation'] != 0) {
                      $ticket->update(array(
                            'id' => $ticket->fields['id'],

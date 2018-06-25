@@ -252,10 +252,10 @@ if (isset($_POST['action'])) {
                      }
 
                      if ($conf->fields['status_after_escalation'] != 0) {
-                        $res = $ticket->update(array(
+                        $res = $ticket->update([
                               'id' => $ticket->fields['id'],
                               'status' => $conf->fields['status_after_escalation']
-                        ));
+                        ]);
 
                         if ($_POST['linkedTicket'] == 'true' && $_POST['itemType'] == 'Ticket') {
                            $tickets = Ticket_Ticket::getLinkedTicketsTo($id_ticket);
@@ -263,10 +263,10 @@ if (isset($_POST['action'])) {
                            foreach ($tickets as $link_ticket) {
                               $t = new ticket();
                               $t->getFromDB($link_ticket['tickets_id']);
-                              $t->update(array(
+                              $t->update([
                                     'id' => $t->fields['id'],
                                     'status' => $conf->fields['status_after_escalation']
-                              ));
+                              ]);
                            }
                         }
                      }

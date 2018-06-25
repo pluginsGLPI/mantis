@@ -75,7 +75,7 @@ class PluginMantisStructaccountdata {
     * @param string $_email
     * @return MantisStructAccountData
     */
-   public function __construct($_id = NULL, $_name = NULL, $_real_name = NULL, $_email = NULL) {
+   public function __construct($_id = null, $_name = null, $_real_name = null, $_email = null) {
    }
 
    /**

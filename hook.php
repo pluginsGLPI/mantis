@@ -72,9 +72,9 @@ function plugin_mantis_uninstall() {
 }
 
 function plugin_mantis_getAddSearchOptions($itemtype) {
-   $sopt = array();
+   $sopt = [];
 
-   if (in_array($itemtype, array('Ticket','Problem','Change'))) {
+   if (in_array($itemtype, ['Ticket','Problem','Change'])) {
 
       $sopt[78963]['table']            = 'glpi_plugin_mantis_mantis';
       $sopt[78963]['field']            = 'id';
@@ -83,7 +83,7 @@ function plugin_mantis_getAddSearchOptions($itemtype) {
       $sopt[78963]['datatype']         = 'count';
       $sopt[78963]['massiveaction']    = false;
       $sopt[78963]['name']             = __('Number of linked MantisBT issues', 'mantis');
-      $sopt[78963]['joinparams']       = array('jointype' => "itemtype_item");
+      $sopt[78963]['joinparams']       = ['jointype' => "itemtype_item"];
 
    }
 

@@ -29,7 +29,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginMantisIssue {
 
-   public static $state_mantis = array(
+   public static $state_mantis = [
          'none' => '----',
          'new' => 'new',
          'feedback' => 'feedback',
@@ -38,13 +38,13 @@ class PluginMantisIssue {
          'assigned' => 'assigned',
          'resolved' => 'resolved',
          'closed' => 'closed'
-   );
+   ];
 
-   public static $champsMantis = array(
+   public static $champsMantis = [
          'none' => '----',
          'note' => 'note',
          'additional_information' => 'additional_information'
-   );
+   ];
 
    public $additional_information = "";
 
@@ -255,9 +255,9 @@ class PluginMantisIssue {
       $ticket->getFromDB($idTicket);
 
       $id_note = 0; // id of the note, create if needed
-      $id_mantis = array(); // id of mantis link if needed
-      $id_attachment = array(); // id of attachments if needed
-      $post = array(); // info mantis at the moment of creating the link
+      $id_mantis = []; // id of mantis link if needed
+      $id_attachment = []; // id of attachments if needed
+      $post = []; // info mantis at the moment of creating the link
 
       // if the project exists
       if ($ws->existProjectWithName($nameMantisProject)) {
@@ -304,9 +304,9 @@ class PluginMantisIssue {
                                                           $followTitle, $followDescription, $followCategorie,
                                                           $followLinkedticket, $itemType));
                $custom->setField($ws->getCustomFieldByNameAndProject($champsGlpi, $nameMantisProject));
-               $this->setCustom_fields(array(
+               $this->setCustom_fields([
                      $custom
-               ));
+               ]);
             } else {
 
                $custom1 = new PluginMantisStructcustomField();
@@ -325,10 +325,10 @@ class PluginMantisIssue {
                                                            $followLinkedticket, $itemType));
                $custom2->setField($ws->getCustomFieldByNameAndProject($champsUrl, $nameMantisProject));
 
-               $this->setCustom_fields(array(
+               $this->setCustom_fields([
                      $custom1,
                      $custom2
-               ));
+               ]);
             }
 
             // if both need a custom field
@@ -345,9 +345,9 @@ class PluginMantisIssue {
                                                           $followTitle, $followDescription, $followCategorie,
                                                           $followLinkedticket, $itemType));
                $custom->setField($ws->getCustomFieldByNameAndProject($champsUrl, $nameMantisProject));
-               $this->setCustom_fields(array(
+               $this->setCustom_fields([
                      $custom
-               ));
+               ]);
             } else {
 
                $custom = new PluginMantisStructcustomField();
@@ -356,9 +356,9 @@ class PluginMantisIssue {
                                                           $followTitle, $followDescription, $followCategorie,
                                                           $followLinkedticket, $itemType));
                $custom->setField($ws->getCustomFieldByNameAndProject($champsGlpi, $nameMantisProject));
-               $this->setCustom_fields(array(
+               $this->setCustom_fields([
                      $custom
-               ));
+               ]);
             }
          }
 
@@ -473,10 +473,10 @@ class PluginMantisIssue {
 
                   // update ticket status if asked
                   if ($conf->fields['status_after_escalation'] != 0) {
-                     $ticket->update(array(
+                     $ticket->update([
                            'id' => $ticket->fields['id'],
                            'status' => $conf->fields['status_after_escalation']
-                     ));
+                     ]);
 
                      if ($followLinkedticket == 'true' && $itemType == "Ticket") {
                         $tickets = Ticket_Ticket::getLinkedTicketsTo($ticket->fields['id']);
@@ -484,10 +484,10 @@ class PluginMantisIssue {
                         foreach ($tickets as $link_ticket) {
                            $t = new ticket();
                            $t->getFromDB($link_ticket['tickets_id']);
-                           $t->update(array(
+                           $t->update([
                                  'id' => $t->fields['id'],
                                  'status' => $conf->fields['status_after_escalation']
-                           ));
+                           ]);
                         }
                      }
                   }

@@ -38,7 +38,7 @@ class PluginMantisProfile extends CommonDBTM {
    /**
     * @see CommonGLPI::getTabNameForItem()
    **/
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       if ($item->getType()=='Profile') {
             return PluginMantisMantis::getTypeName();
@@ -52,13 +52,13 @@ class PluginMantisProfile extends CommonDBTM {
    **/
    static function getAllRights() {
 
-      $rights = array(
-          array('itemtype'  => 'PluginMantisProfile',
-                'label'     => __('Use the plugin MantisBT', 'mantis'),
-                'field'     => 'plugin_mantis_use',
-                'rights'    =>  array(READ   => __('Read'),
-                                      UPDATE => __('Update')),
-                'default'   => 3));
+      $rights = [
+          ['itemtype'  => 'PluginMantisProfile',
+           'label'     => __('Use the plugin MantisBT', 'mantis'),
+           'field'     => 'plugin_mantis_use',
+           'rights'    =>  [READ   => __('Read'),
+                            UPDATE => __('Update')],
+           'default'   => 3]];
       return $rights;
    }
 
@@ -85,7 +85,7 @@ class PluginMantisProfile extends CommonDBTM {
    /**
     * @see CommonGLPI::displayTabContentForItem()
    **/
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       global $CFG_GLPI;
 
       if ($item->getType()=='Profile') {
@@ -93,7 +93,7 @@ class PluginMantisProfile extends CommonDBTM {
          $prof = new self();
          //In case there's no right for this profile, create it
          foreach (self::getAllRights() as $right) {
-            self::addDefaultProfileInfos($ID, array($right['field'] => 0));
+            self::addDefaultProfileInfos($ID, [$right['field'] => 0]);
          }
          $prof->showForm($ID);
       }
@@ -109,10 +109,10 @@ class PluginMantisProfile extends CommonDBTM {
    *
    * @return nothing
    **/
-   function showForm($profiles_id=0, $openform=TRUE, $closeform=TRUE) {
+   function showForm($profiles_id = 0, $openform = true, $closeform = true) {
 
       echo "<div class='firstbloc'>";
-      if (($canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE)))
+      if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
           && $openform) {
          $profile = new Profile();
          echo "<form method='post' action='".$profile->getFormURL()."'>";
@@ -122,15 +122,15 @@ class PluginMantisProfile extends CommonDBTM {
       $profile->getFromDB($profiles_id);
 
       $profile->displayRightsChoiceMatrix($this->getAllRights(),
-                                                array('canedit'       => $canedit,
-                                                      'default_class' => 'tab_bg_2',
-                                                      'title'         => __('General')));
+                                                ['canedit'       => $canedit,
+                                                 'default_class' => 'tab_bg_2',
+                                                 'title'         => __('General')]);
 
       if ($canedit
           && $closeform) {
          echo "<div class='center'>";
-         echo Html::hidden('id', array('value' => $profiles_id));
-         echo Html::submit(_sx('button', 'Save'), array('name' => 'update'));
+         echo Html::hidden('id', ['value' => $profiles_id]);
+         echo Html::submit(_sx('button', 'Save'), ['name' => 'update']);
          echo "</div>\n";
          Html::closeForm();
       }
@@ -185,7 +185,7 @@ class PluginMantisProfile extends CommonDBTM {
 
       foreach ($DB->request($table, "`id`='$profiles_id'") as $profile_data) {
          $translatedRight = self::translateARight($profile_data["right"]);
-         ProfileRight::updateProfileRights($profiles_id, array('plugin_mantis_use' => $translatedRight));
+         ProfileRight::updateProfileRights($profiles_id, ['plugin_mantis_use' => $translatedRight]);
       }
    }
 
@@ -252,7 +252,7 @@ class PluginMantisProfile extends CommonDBTM {
       // Set default rights
       foreach (self::getAllRights() as $right) {
          self::addDefaultProfileInfos($_SESSION['glpiactiveprofile']['id'],
-                                       array($right['field'] => $right['default']));
+                                       [$right['field'] => $right['default']]);
       }
 
    }

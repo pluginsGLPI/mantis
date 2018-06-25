@@ -40,7 +40,7 @@ function plugin_init_mantis() {
 
    $PLUGIN_HOOKS['csrf_compliant']['mantis'] = true;
 
-   $PLUGIN_HOOKS['change_profile']['mantis'] = array('PluginMantisProfile', 'changeProfile');
+   $PLUGIN_HOOKS['change_profile']['mantis'] = ['PluginMantisProfile', 'changeProfile'];
 
    $plugin = new Plugin();
 
@@ -50,25 +50,25 @@ function plugin_init_mantis() {
          $PLUGIN_HOOKS['config_page']['mantis'] = 'front/config.form.php';
       }
 
-      $PLUGIN_HOOKS['add_javascript']['mantis'] = array(
+      $PLUGIN_HOOKS['add_javascript']['mantis'] = [
             'scripts/scriptMantis.js.php'
-      );
+      ];
 
       if (Session::haveRight('profile', UPDATE)) {
          Plugin::registerClass('PluginMantisProfile',
-                                 array('addtabon' => 'Profile'));
+                                 ['addtabon' => 'Profile']);
       }
 
       Plugin::registerClass('PluginMantisConfig');
 
       Plugin::registerClass('PluginMantisMantisws');
 
-      if (Session::haveRightsOr('plugin_mantis_use', array(READ, UPDATE))) {
+      if (Session::haveRightsOr('plugin_mantis_use', [READ, UPDATE])) {
          Plugin::registerClass('PluginMantisMantis',
-                                 array('addtabon' => array('Ticket', 'Problem', 'Change')));
+                                 ['addtabon' => ['Ticket', 'Problem', 'Change']]);
 
          Plugin::registerClass('PluginMantisUserPref',
-                                 array('addtabon' => array('User', 'Preference')));
+                                 ['addtabon' => ['User', 'Preference']]);
       }
    }
 }

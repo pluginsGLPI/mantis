@@ -110,25 +110,25 @@ class PluginMantisMantisws {
    public function getActorFromProjectName($name) {
       $id = $this->getProjectIdWithName($name);
       try {
-         $response = $this->_client->mc_project_get_users($this->_login, $this->_password, $id, array(
+         $response = $this->_client->mc_project_get_users($this->_login, $this->_password, $id, [
                90,
                10,
                25,
                40,
                55,
                70
-         ));
+         ]);
 
-         $list = array();
-         $list[] = array(
+         $list = [];
+         $list[] = [
                'id' => 0,
                'name' => '----'
-         );
+         ];
          foreach ($response as &$actor) {
-            $list[] = array(
+            $list[] = [
                   'id' => $actor->id,
                   'name' => $actor->name
-            );
+            ];
          }
 
          return ($list);
@@ -143,20 +143,20 @@ class PluginMantisMantisws {
       try {
          $response = $this->_client->mc_project_get_custom_fields($this->_login, $this->_password, $id);
 
-         $list = array();
-         $list[] = array(
+         $list = [];
+         $list[] = [
                'id' => 'additional_information',
                'name' => 'additional_information'
-         );
-         $list[] = array(
+         ];
+         $list[] = [
                'id' => 'note',
                'name' => 'note'
-         );
+         ];
          foreach ($response as $field) {
-            $list[] = array(
+            $list[] = [
                   'id' => $field->field->name,
                   'name' => $field->field->name
-            );
+            ];
          }
 
          return ($list);
@@ -171,11 +171,11 @@ class PluginMantisMantisws {
       try {
          $response = $this->_client->mc_project_get_custom_fields($this->_login, $this->_password, $id);
 
-         $list = array();
-         $list[] = array(
+         $list = [];
+         $list[] = [
                'id' => 0,
                'name' => '----'
-         );
+         ];
          foreach ($response as $field) {
             if ($field->field->name == $nameCustomField) {
                return $field->field;

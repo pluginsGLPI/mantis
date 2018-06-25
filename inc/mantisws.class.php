@@ -266,7 +266,7 @@ class PluginMantisMantisws {
       } catch (SoapFault $e) {
 
          if ($e->getMessage() == "Duplicate filename.") {
-            Toolbox::logInFile('mantis', __('WARNIG ' . $_name . ' already exist', 'mantis') . "\n");
+            Toolbox::logInFile('mantis', sprintf(__('WARNING: %1$s already exists', 'mantis'), $_name) . "\n");
             return true;
          } else {
             Toolbox::logInFile('mantis', sprintf(__('error while creating attachment => \'%1$s\'', 'mantis'), $e->getMessage()) . "\n");

@@ -1,7 +1,8 @@
 [main]
 host = https://www.transifex.com
 
-[glpi-plugin-mantisbt.en_gbpo]
+[glpi-plugin-mantisbt.mantis-pot]
 file_filter = locales/<lang>.po
 source_file = locales/mantis.pot
 source_lang = en_GB
+type = PO

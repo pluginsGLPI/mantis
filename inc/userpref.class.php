@@ -57,10 +57,10 @@ class PluginMantisUserpref extends CommonDBTM {
     * Define tab name
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      if (in_array($item->getType(), array(
+      if (in_array($item->getType(), [
             'User',
             'Preference'
-      ))) {
+      ])) {
          return __("MantisBT", "mantis");
       }
       return '';
@@ -99,7 +99,7 @@ class PluginMantisUserpref extends CommonDBTM {
     *
     * @param $item
     */
-   public function showForm($ID, $options = array()) {
+   public function showForm($ID, $options = []) {
       if (! $this->getFromDB($ID)) {
          $this->fields['users_id'] = $ID;
          $this->fields['id'] = $ID;

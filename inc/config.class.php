@@ -36,7 +36,7 @@ class PluginMantisConfig extends CommonDBTM {
     *
     * @return value name of this itemtype
     **/
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
 
       return __('Setup - MantisBT', 'mantis');
    }
@@ -64,7 +64,7 @@ class PluginMantisConfig extends CommonDBTM {
     *
     * @return Nothing (display)
    **/
-   function showForm($ID, $options=array()) {
+   function showForm($ID, $options = []) {
 
       global $CFG_GLPI;
 
@@ -162,10 +162,10 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Attachment type transfered to MantisBT", "mantis") . "</td>";
       echo "<td>";
-      DocumentCategory::dropdown(array(
+      DocumentCategory::dropdown([
             'value'     => $this->fields["doc_categorie"],
             'name'      => 'doc_categorie'
-      ));
+      ]);
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
@@ -174,7 +174,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<td>" . __("MantisBT field for GLPI fields", "mantis") . "</td>";
       echo "<td>";
       DropDown::showFromArray('champsGlpi', PluginMantisIssue::$champsMantis,
-                              array('value' => $this->fields["champsGlpi"])
+                              ['value' => $this->fields["champsGlpi"]]
       );
       echo "</td>";
       echo "<td></td>";
@@ -184,7 +184,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<td>" . __("MantisBT field for the link URL to the GLPi object", "mantis") . "</td>";
       echo "<td>";
       DropDown::showFromArray('champsUrlGlpi', PluginMantisIssue::$champsMantis,
-                              array('value' => $this->fields["champsUrlGlpi"]));
+                              ['value' => $this->fields["champsUrlGlpi"]]);
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";
@@ -193,7 +193,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<td>" . __("Close GLPi ticket when MantisBT issue status is", "mantis") . "</td>";
       echo "<td>";
       DropDown::showFromArray('etatMantis', PluginMantisIssue::$state_mantis,
-                              array('value' => $this->fields["etatMantis"]));
+                              ['value' => $this->fields["etatMantis"]]);
       echo "</td>";
       echo "<td></td>";
       echo "</tr>";

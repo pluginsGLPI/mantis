@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 12:35+0000\n"
+"POT-Creation-Date: 2018-07-06 09:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cédric Anne, 2018\n"
 "Language-Team: French (France) (https://www.transifex.com/teclib/teams/28042/fr_FR/)\n"
@@ -68,31 +68,31 @@ msgstr "Choix par défaut des options d'escalade de MantisBT"
 msgid "Forward document(s)"
 msgstr "Transférer les documents attachés"
 
-#: inc/userpref.class.php:130 inc/mantis.class.php:686
+#: inc/userpref.class.php:130 inc/mantis.class.php:688
 msgid "Forward ticket followup"
 msgstr "Transférer les suivis"
 
-#: inc/userpref.class.php:136 inc/mantis.class.php:694
+#: inc/userpref.class.php:136 inc/mantis.class.php:696
 msgid "Forward ticket tasks"
 msgstr "Transférer les tâches"
 
-#: inc/userpref.class.php:142 inc/mantis.class.php:701
-#: inc/mantis.class.php:847
+#: inc/userpref.class.php:142 inc/mantis.class.php:703
+#: inc/mantis.class.php:849
 msgid "Forward title"
 msgstr "Transférer le titre"
 
-#: inc/userpref.class.php:148 inc/mantis.class.php:707
-#: inc/mantis.class.php:853
+#: inc/userpref.class.php:148 inc/mantis.class.php:709
+#: inc/mantis.class.php:855
 msgid "Forward description"
 msgstr "Transférer la description"
 
-#: inc/userpref.class.php:154 inc/mantis.class.php:713
-#: inc/mantis.class.php:859
+#: inc/userpref.class.php:154 inc/mantis.class.php:715
+#: inc/mantis.class.php:861
 msgid "Forward category"
 msgstr "Transférer la catégorie"
 
-#: inc/userpref.class.php:160 inc/mantis.class.php:720
-#: inc/mantis.class.php:866
+#: inc/userpref.class.php:160 inc/mantis.class.php:722
+#: inc/mantis.class.php:868
 msgid "Forward linked tickets"
 msgstr "Transférer les tickets liés"
 
@@ -150,7 +150,7 @@ msgstr "Type de documents à transférer vers MantisBT"
 msgid "MantisBT field for GLPI fields"
 msgstr "Champ de MantisBT pour les champs de l'objet GLPI"
 
-#: inc/config.class.php:184 inc/mantis.class.php:667 inc/mantis.class.php:792
+#: inc/config.class.php:184 inc/mantis.class.php:669 inc/mantis.class.php:794
 msgid "MantisBT field for the link URL to the GLPi object"
 msgstr "Champ de MantisBT pour l'URL vers l'objet GLPI qui est lié"
 
@@ -171,7 +171,7 @@ msgstr ""
 msgid "Test the connection"
 msgstr "Tester la connexion"
 
-#: inc/mantis.class.php:178 setup.php:84
+#: inc/mantis.class.php:178 setup.php:88
 msgid "MantisBT synchronization"
 msgstr "Synchronisation MantisBT"
 
@@ -209,102 +209,102 @@ msgstr "Le fichier [%1$s] existe déjà sur l'issue MantisBT."
 msgid "GLPi object [%1$s:%2$s] is already solved or closed."
 msgstr "L'objet GLPI [%1$s:%2$s] est déjà résolu ou clos."
 
-#: inc/mantis.class.php:334
+#: inc/mantis.class.php:336
 msgid "Plugin configuration is not correct (MantisBT status is missing)"
 msgstr ""
 "La configuration du plugin n'est pas correcte (le statut MantisBT est "
 "manquant)."
 
-#: inc/mantis.class.php:509
+#: inc/mantis.class.php:511
 msgid "Plugin configuration is not correct (connection error)."
 msgstr "La configuration du plugin n'est pas correcte (erreur de connexion)."
 
-#: inc/mantis.class.php:543 inc/mantis.class.php:563
+#: inc/mantis.class.php:545 inc/mantis.class.php:565
 msgid "Link to an existing MantisBT issue"
 msgstr "Lier à une issue MantisBT existante"
 
-#: inc/mantis.class.php:552 inc/mantis.class.php:568 inc/mantis.class.php:765
+#: inc/mantis.class.php:554 inc/mantis.class.php:570 inc/mantis.class.php:767
 msgid "Create a new MantisBT issue"
 msgstr "Créer une nouvelle issue MantisBT"
 
-#: inc/mantis.class.php:558
+#: inc/mantis.class.php:560
 msgid "MantisBT actions"
 msgstr "Actions MantisBT"
 
-#: inc/mantis.class.php:596
+#: inc/mantis.class.php:598
 msgid "What do you want to do ?"
 msgstr "Que voulez-vous faire ?"
 
-#: inc/mantis.class.php:600
+#: inc/mantis.class.php:602
 msgid "Only delete link between GLPi object AND MantisBT issue."
 msgstr "Simplement supprimer le lien entre GLPI et l'issue MantisBT"
 
-#: inc/mantis.class.php:606
+#: inc/mantis.class.php:608
 msgid "Force delete MantisBT issue (and GLPi object link)."
 msgstr ""
 "Forcer la suppression de l'issue MantisBT (supprime aussi le lien avec GLPI)"
 
-#: inc/mantis.class.php:649
+#: inc/mantis.class.php:651
 msgid "Link to an existing MantisBT issue."
 msgstr "Lier à une issue MantisBT existante."
 
-#: inc/mantis.class.php:652
+#: inc/mantis.class.php:654
 msgid "Id of MantisBT issue"
 msgstr "id de l'issue MantisBT"
 
-#: inc/mantis.class.php:655
+#: inc/mantis.class.php:657
 msgid "Click to load issue from MantisBT"
 msgstr "Cliquez pour charger l'issue depuis MantisBT"
 
-#: inc/mantis.class.php:660 inc/mantis.class.php:785
+#: inc/mantis.class.php:662 inc/mantis.class.php:787
 msgid "MantisBT field for GLPi fields"
 msgstr "Champ de MantisBT pour les champs de l'objet GLPI"
 
-#: inc/mantis.class.php:675 inc/mantis.class.php:821
+#: inc/mantis.class.php:677 inc/mantis.class.php:823
 msgid "Attachments"
 msgstr "Fichiers attachés"
 
-#: inc/mantis.class.php:678 inc/mantis.class.php:824
+#: inc/mantis.class.php:680 inc/mantis.class.php:826
 msgid "Forward attachments"
 msgstr "Transférer les documents attachés"
 
-#: inc/mantis.class.php:768
+#: inc/mantis.class.php:770
 msgid "Exact MantisBT project name"
 msgstr "Nom exact du projet MantisBT"
 
-#: inc/mantis.class.php:773
+#: inc/mantis.class.php:775
 msgid "Click to load project from MantisBT"
 msgstr "Cliquer ici pour charger le projet depuis MantisBT"
 
-#: inc/mantis.class.php:816
+#: inc/mantis.class.php:818
 msgid "Steps to reproduce"
 msgstr "Étapes pour reproduire"
 
-#: inc/mantis.class.php:832
+#: inc/mantis.class.php:834
 msgid "Forward followups"
 msgstr "Transférer les suivis"
 
-#: inc/mantis.class.php:840
+#: inc/mantis.class.php:842
 msgid "Forward tasks"
 msgstr "Transférer les tâches"
 
-#: inc/mantis.class.php:871
+#: inc/mantis.class.php:873
 msgid "Link"
 msgstr "Lien vers MantisBT"
 
-#: inc/mantis.class.php:912
+#: inc/mantis.class.php:914
 msgid "List of linked MantisBT issues"
 msgstr "Liste des issues MantisBT liées"
 
-#: inc/mantis.class.php:957
+#: inc/mantis.class.php:959
 msgid "Error when loading MantisBT issue"
 msgstr "Erreur lors du chargement de l'issue MantisBT"
 
-#: inc/mantis.class.php:988
+#: inc/mantis.class.php:990
 msgid "This GLPi object is not linked to MantisBT"
 msgstr "Cet objet GLPI n'est lié à aucune issue MantisBT"
 
-#: inc/mantis.class.php:994
+#: inc/mantis.class.php:996
 msgid "Escalation to MantisBT is neutralized by GLPi status"
 msgstr ""
 "L'escalade vers MantisBT est neutralisée à cause du statut de l'objet GLPI"

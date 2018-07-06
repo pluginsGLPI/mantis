@@ -320,13 +320,15 @@ class PluginMantisMantis extends CommonDBTM {
                if (self::checkAllMantisBTStatus($list_ticket_mantis, $etat_mantis)) {
 
                   $info_solved = self::getInfoSolved($list_ticket_mantis);
-                  $item->fields['status'] = $itemType::SOLVED;
-                  $item->fields['solvedate'] = date("Y-m-d");
-                  $item->fields['solution'] = $info_solved;
-                  $item->fields['solutiontypes_id'] = $conf->getField('solutiontypes_id');
-                  $item->fields['users_id'] = $conf->getField('users_id');
-                  $item->update($item->fields);
 
+                  $solution = new ITILSolution();
+                  $solution->add([
+                     'itemtype'         => $item->getType(),
+                     'items_id'         => $item->fields['id'],
+                     'solutiontypes_id' => $conf->getField('solutiontypes_id'),
+                     'content'          => Toolbox::addslashes_deep($info_solved),
+                     '_from_mantis'     => true,
+                  ]);
                }
             }
          }
@@ -1043,5 +1045,21 @@ class PluginMantisMantis extends CommonDBTM {
       global $DB;
 
       return $DB->query("SELECT `glpi_plugin_mantis_mantis`.* FROM `glpi_plugin_mantis_mantis`");
+   }
+
+   /**
+    * Force solution user when solution comes from Mantis.
+    *
+    * @param ITILSolution $solution
+    *
+    * @return void
+    */
+   public static function forceSolutionUserOnSolutionAdd(ITILSolution $solution) {
+      if (array_key_exists('_from_mantis', $solution->input) && $solution->input['_from_mantis']) {
+         $conf = new PluginMantisConfig();
+         $conf->getFromDB(1);
+         $solution->input['users_id'] = $conf->getField('users_id');
+         unset($solution->input['_from_mantis']);
+      }
    }
 }

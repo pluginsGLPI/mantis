@@ -71,7 +71,7 @@ class PluginMantisProfile extends CommonDBTM {
       $profileRight = new ProfileRight();
       foreach ($rights as $right => $value) {
          if (!countElementsInTable('glpi_profilerights',
-                                   "`profiles_id`='$profiles_id' AND `name`='$right'")) {
+                                   ['profiles_id' => $profiles_id, 'name' => $right])) {
             $myright['profiles_id'] = $profiles_id;
             $myright['name']        = $right;
             $myright['rights']      = $value;
@@ -212,7 +212,7 @@ class PluginMantisProfile extends CommonDBTM {
    * @return bool
    */
    static function oldRightNameExists() {
-      if (countElementsInTable(ProfileRight::getTable(), "name = 'mantis:mantis'") > 0) {
+      if (countElementsInTable(ProfileRight::getTable(), ['name' => 'mantis:mantis']) > 0) {
          return true;
       }
       return false;

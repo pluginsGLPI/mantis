@@ -82,8 +82,13 @@ class PluginMantisMantis extends CommonDBTM {
     * @param $item    CommonDBTM object
    **/
    public static function countForItem(CommonDBTM $item) {
-      return countElementsInTable(self::getTable(), "`items_id` = '".$item->getID()."'
-                                                      AND `itemtype` = '".$item->getType()."'");
+      return countElementsInTable(
+         self::getTable(),
+         [
+            'items_id' => $item->getID(),
+            'itemtype' => $item->getType(),
+         ]
+      );
    }
 
    /**

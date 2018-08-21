@@ -111,7 +111,7 @@ class PluginMantisMantis extends CommonDBTM {
                      `itemtype` varchar(255) NOT NULL,
                      `user` int(11) NOT NULL,
                     PRIMARY KEY (`id`)
-                  ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
 
       } else {

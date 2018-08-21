@@ -259,7 +259,7 @@ class PluginMantisConfig extends CommonDBTM {
                      `check_ssl` int(1) NOT NULL DEFAULT 0,
                      `use_proxy` int(1) NOT NULL DEFAULT 0,
                      PRIMARY KEY (`id`)
-                  ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
 
          $query = "INSERT INTO `$table` (id) VALUES (1)";

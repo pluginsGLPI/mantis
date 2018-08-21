@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-06 09:37+0000\n"
+"POT-Creation-Date: 2018-08-21 14:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>, 2018\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/teclib/teams/28042/cs_CZ/)\n"
@@ -66,31 +66,31 @@ msgstr "Výchozí stav zaškrtávací kolonky"
 msgid "Forward document(s)"
 msgstr "Přeposlat dokumenty"
 
-#: inc/userpref.class.php:130 inc/mantis.class.php:688
+#: inc/userpref.class.php:130 inc/mantis.class.php:693
 msgid "Forward ticket followup"
 msgstr "Přeposlat komunikaci navazující na požadavek"
 
-#: inc/userpref.class.php:136 inc/mantis.class.php:696
+#: inc/userpref.class.php:136 inc/mantis.class.php:701
 msgid "Forward ticket tasks"
 msgstr "Přeposlat úkoly plynoucí z požadavku"
 
-#: inc/userpref.class.php:142 inc/mantis.class.php:703
-#: inc/mantis.class.php:849
+#: inc/userpref.class.php:142 inc/mantis.class.php:708
+#: inc/mantis.class.php:854
 msgid "Forward title"
 msgstr "Přeposlat nadpis"
 
-#: inc/userpref.class.php:148 inc/mantis.class.php:709
-#: inc/mantis.class.php:855
+#: inc/userpref.class.php:148 inc/mantis.class.php:714
+#: inc/mantis.class.php:860
 msgid "Forward description"
 msgstr "Přeposlat popis"
 
-#: inc/userpref.class.php:154 inc/mantis.class.php:715
-#: inc/mantis.class.php:861
+#: inc/userpref.class.php:154 inc/mantis.class.php:720
+#: inc/mantis.class.php:866
 msgid "Forward category"
 msgstr "Přeposlat kategorii"
 
-#: inc/userpref.class.php:160 inc/mantis.class.php:722
-#: inc/mantis.class.php:868
+#: inc/userpref.class.php:160 inc/mantis.class.php:727
+#: inc/mantis.class.php:873
 msgid "Forward linked tickets"
 msgstr "Přeposlat propojené požadavky"
 
@@ -147,7 +147,7 @@ msgstr "Typ přílohy přenášené do MantisBT"
 msgid "MantisBT field for GLPI fields"
 msgstr "Kolonky v MantisBT pro kolonky z GLPi"
 
-#: inc/config.class.php:184 inc/mantis.class.php:669 inc/mantis.class.php:794
+#: inc/config.class.php:184 inc/mantis.class.php:674 inc/mantis.class.php:799
 msgid "MantisBT field for the link URL to the GLPi object"
 msgstr "Kolonka v MantisBT pro URL odkazu na GLPi objekt"
 
@@ -167,137 +167,137 @@ msgstr "GLPi uživatel který řeší požadavek?"
 msgid "Test the connection"
 msgstr "Vyzkoušet spojení"
 
-#: inc/mantis.class.php:178 setup.php:88
+#: inc/mantis.class.php:183 setup.php:88
 msgid "MantisBT synchronization"
 msgstr "Synchronizace s MantisBT"
 
-#: inc/mantis.class.php:190
+#: inc/mantis.class.php:195
 msgid "Starting update attachments."
 msgstr "Zahajuje se aktualizace příloh."
 
-#: inc/mantis.class.php:209
+#: inc/mantis.class.php:214
 #, php-format
 msgid "GLPi object [%1$s:%2$s] is solved or closed."
 msgstr "GLPi objekt [%1$s:%2$s] je vyřešen nebo uzavřen."
 
-#: inc/mantis.class.php:236
+#: inc/mantis.class.php:241
 #, php-format
 msgid "Can't load GLPi file [%1$s]."
 msgstr "Nedaří se načíst GLPi soubor [%1$s]."
 
-#: inc/mantis.class.php:249
+#: inc/mantis.class.php:254
 #, php-format
 msgid "Can't send GLPi file [%1$s] to MantisBD."
 msgstr "Nedaří se poslat GLPi soubor [%1$s] do MantisBT."
 
-#: inc/mantis.class.php:257
+#: inc/mantis.class.php:262
 #, php-format
 msgid "GLPi file [%1$s] doesn't exists."
 msgstr "GLPi soubor [%1$s] neexistuje."
 
-#: inc/mantis.class.php:264
+#: inc/mantis.class.php:269
 #, php-format
 msgid "GLPi file [%1$s] already exists in MantisBT issue."
 msgstr "GLPi soubor [%1$s] už v MantisBT hlášení existuje."
 
-#: inc/mantis.class.php:304
+#: inc/mantis.class.php:309
 #, php-format
 msgid "GLPi object [%1$s:%2$s] is already solved or closed."
 msgstr "GLPi objekt [%1$s:%2$s] už je vyřešený nebo uzavřený."
 
-#: inc/mantis.class.php:336
+#: inc/mantis.class.php:341
 msgid "Plugin configuration is not correct (MantisBT status is missing)"
 msgstr "Nastavení zásuvného modulu není správné (chybí stav v MantisBT)"
 
-#: inc/mantis.class.php:511
+#: inc/mantis.class.php:516
 msgid "Plugin configuration is not correct (connection error)."
 msgstr "Nastavení zásuvného modulu není správné (chyba spojení)."
 
-#: inc/mantis.class.php:545 inc/mantis.class.php:565
+#: inc/mantis.class.php:550 inc/mantis.class.php:570
 msgid "Link to an existing MantisBT issue"
 msgstr "Propojit s existujícím hlášením v MantisBT"
 
-#: inc/mantis.class.php:554 inc/mantis.class.php:570 inc/mantis.class.php:767
+#: inc/mantis.class.php:559 inc/mantis.class.php:575 inc/mantis.class.php:772
 msgid "Create a new MantisBT issue"
 msgstr "Vytvořit nové hlášení v MantisBT"
 
-#: inc/mantis.class.php:560
+#: inc/mantis.class.php:565
 msgid "MantisBT actions"
 msgstr "Akce s MantisBT"
 
-#: inc/mantis.class.php:598
+#: inc/mantis.class.php:603
 msgid "What do you want to do ?"
 msgstr "Co chcete udělat?"
 
-#: inc/mantis.class.php:602
+#: inc/mantis.class.php:607
 msgid "Only delete link between GLPi object AND MantisBT issue."
 msgstr "Pouze smazat propojení mezi GLPi objektem a hlášením v MantisBT."
 
-#: inc/mantis.class.php:608
+#: inc/mantis.class.php:613
 msgid "Force delete MantisBT issue (and GLPi object link)."
 msgstr "Vynutit smazání hlášení v MantisBT (a propojení na GLPi objekt)."
 
-#: inc/mantis.class.php:651
+#: inc/mantis.class.php:656
 msgid "Link to an existing MantisBT issue."
 msgstr "Propojit s existujícím hlášením v MantisBT."
 
-#: inc/mantis.class.php:654
+#: inc/mantis.class.php:659
 msgid "Id of MantisBT issue"
 msgstr "Identifikátor hlášení v MantisBT"
 
-#: inc/mantis.class.php:657
+#: inc/mantis.class.php:662
 msgid "Click to load issue from MantisBT"
 msgstr "Kliknutím načtěte hlášení z MantisBT"
 
-#: inc/mantis.class.php:662 inc/mantis.class.php:787
+#: inc/mantis.class.php:667 inc/mantis.class.php:792
 msgid "MantisBT field for GLPi fields"
 msgstr "Kolonky v MantisBT pro ty z GLPi"
 
-#: inc/mantis.class.php:677 inc/mantis.class.php:823
+#: inc/mantis.class.php:682 inc/mantis.class.php:828
 msgid "Attachments"
 msgstr "Přílohy"
 
-#: inc/mantis.class.php:680 inc/mantis.class.php:826
+#: inc/mantis.class.php:685 inc/mantis.class.php:831
 msgid "Forward attachments"
 msgstr "Přeposlat přílohy"
 
-#: inc/mantis.class.php:770
+#: inc/mantis.class.php:775
 msgid "Exact MantisBT project name"
 msgstr "Přesný název projektu v MantisBT"
 
-#: inc/mantis.class.php:775
+#: inc/mantis.class.php:780
 msgid "Click to load project from MantisBT"
 msgstr "Kliknutím načtěte projekt z MantisBT"
 
-#: inc/mantis.class.php:818
+#: inc/mantis.class.php:823
 msgid "Steps to reproduce"
 msgstr "Kroky vedoucí k zopakování"
 
-#: inc/mantis.class.php:834
+#: inc/mantis.class.php:839
 msgid "Forward followups"
 msgstr "Přeposlat následnou komunikaci"
 
-#: inc/mantis.class.php:842
+#: inc/mantis.class.php:847
 msgid "Forward tasks"
 msgstr "Přeposlat úkoly"
 
-#: inc/mantis.class.php:873
+#: inc/mantis.class.php:878
 msgid "Link"
 msgstr "Odkaz"
 
-#: inc/mantis.class.php:914
+#: inc/mantis.class.php:919
 msgid "List of linked MantisBT issues"
 msgstr "Seznam odkazovaných hlášení v MantisBT"
 
-#: inc/mantis.class.php:959
+#: inc/mantis.class.php:964
 msgid "Error when loading MantisBT issue"
 msgstr "Chyba při načítání hlášení z MantisBT"
 
-#: inc/mantis.class.php:990
+#: inc/mantis.class.php:995
 msgid "This GLPi object is not linked to MantisBT"
 msgstr "Tento GLPi objekt není propojen s MantisBT"
 
-#: inc/mantis.class.php:996
+#: inc/mantis.class.php:1001
 msgid "Escalation to MantisBT is neutralized by GLPi status"
 msgstr "Eskalace do MantisBT je neutralizována stavem v GLPi"
 

@@ -82,8 +82,13 @@ class PluginMantisMantis extends CommonDBTM {
     * @param $item    CommonDBTM object
    **/
    public static function countForItem(CommonDBTM $item) {
-      return countElementsInTable(self::getTable(), "`items_id` = '".$item->getID()."'
-                                                      AND `itemtype` = '".$item->getType()."'");
+      return countElementsInTable(
+         self::getTable(),
+         [
+            'items_id' => $item->getID(),
+            'itemtype' => $item->getType(),
+         ]
+      );
    }
 
    /**
@@ -106,7 +111,7 @@ class PluginMantisMantis extends CommonDBTM {
                      `itemtype` varchar(255) NOT NULL,
                      `user` int(11) NOT NULL,
                     PRIMARY KEY (`id`)
-                  ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
 
       } else {

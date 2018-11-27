@@ -55,6 +55,10 @@
    </authors>
    <versions>
       <version>
+         <num>4.3.0</num>
+         <compatibility>9.4</compatibility>
+      </version>
+      <version>
          <num>4.2.1</num>
           <compatibility>9.3</compatibility>
       </version>

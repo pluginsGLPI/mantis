@@ -844,7 +844,7 @@ class PluginMantisIssue {
    }
 
    /**
-    * Function to get the information of ticketFollowup
+    * Function to get the information of ticket followup
     *
     * @param $ticket
     * @return string content
@@ -854,15 +854,16 @@ class PluginMantisIssue {
 
       $content = '';
 
-      $res = $DB->query("SELECT `glpi_ticketfollowups`.*
-                        FROM `glpi_ticketfollowups` 
-                        WHERE `glpi_ticketfollowups`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'");
+      $res = $DB->query("SELECT *
+                        FROM `glpi_itilfollowups`
+                        WHERE `items_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'
+                        AND `itemtype` = 'Ticket'");
 
       if ($res->num_rows > 0) {
 
          while ($row = $res->fetch_assoc()) {
 
-            $ticket_followUp = new TicketFollowup();
+            $ticket_followUp = new ITILFollowup();
             $ticket_followUp->getFromDB($row["id"]);
 
             $request_type = new RequestType();
@@ -897,7 +898,7 @@ class PluginMantisIssue {
       $content = '';
 
       $res = $DB->query("SELECT `glpi_tickettasks`.*
-                        FROM `glpi_tickettasks` 
+                        FROM `glpi_tickettasks`
                         WHERE `glpi_tickettasks`.`tickets_id` = '" . Toolbox::cleanInteger($ticket->fields["id"]) . "'");
 
       if ($res->num_rows > 0) {

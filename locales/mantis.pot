@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 14:59+0000\n"
+"POT-Creation-Date: 2019-07-08 13:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -438,22 +438,22 @@ msgstr ""
 msgid "Link to GLPi object = %1$s <br/>"
 msgstr ""
 
-#: inc/issue.class.php:875
+#: inc/issue.class.php:876
 #, php-format
 msgid ""
 "Followups = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content : "
 "%5$s<br/>"
 msgstr ""
 
-#: inc/issue.class.php:883
+#: inc/issue.class.php:884
 msgid "No follow-up"
 msgstr ""
 
-#: inc/issue.class.php:918
+#: inc/issue.class.php:919
 #, php-format
 msgid "Task = %1$s -> date : %2$s, description : %3$s, time : %4$s<br/>"
 msgstr ""
 
-#: inc/issue.class.php:925
+#: inc/issue.class.php:926
 msgid "No task"
 msgstr ""

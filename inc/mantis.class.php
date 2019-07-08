@@ -388,7 +388,7 @@ class PluginMantisMantis extends CommonDBTM {
 
       if ($conf->fields['doc_categorie'] != 0) {
          $query.= " AND `glpi_documents`.`documentcategories_id` = '"
-                        . Toolbox::cleanInteger($conf->fields['doc_categorie']);
+                        . Toolbox::cleanInteger($conf->fields['doc_categorie']) . "' ";
       }
 
       $res = $DB->query($query);

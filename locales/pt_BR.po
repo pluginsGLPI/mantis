@@ -3,17 +3,22 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+# Translators:
+# Arthur Ramos Schaefer <arthur.r.schaefer@gmail.com>, 2017
+# Legastelois François <flegastelois@teclib.com>, 2018
+# Rui Melo <viper5000pt@gmail.com>, 2019
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 14:59+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Legastelois François <flegastelois@teclib.com>, 2018\n"
+"POT-Creation-Date: 2019-07-08 13:00+0000\n"
+"PO-Revision-Date: 2016-10-05 17:06+0000\n"
+"Last-Translator: Rui Melo <viper5000pt@gmail.com>, 2019\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/teclib/teams/28042/pt_BR/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -335,7 +340,7 @@ msgstr "erro na criação da nota => '%1$s'"
 #: inc/mantisws.class.php:269
 #, php-format
 msgid "WARNING: %1$s already exists"
-msgstr ""
+msgstr "Aviso%1$s já existe"
 
 #: inc/mantisws.class.php:272
 #, php-format
@@ -453,7 +458,7 @@ msgstr "Categoria = %1$s <br/>"
 msgid "Link to GLPi object = %1$s <br/>"
 msgstr "Relacionar a objeto do GLPI = %1$s <br/>"
 
-#: inc/issue.class.php:875
+#: inc/issue.class.php:876
 #, php-format
 msgid ""
 "Followups = %1$s -> date : %2$s, request type : %3$s, user : %4$s, content :"
@@ -462,15 +467,15 @@ msgstr ""
 "Acompanhamentos =%1$s -> date : %2$s, tipo de requisição : %3$s, usuário : "
 "%4$s, conteúdo : %5$s <br/>"
 
-#: inc/issue.class.php:883
+#: inc/issue.class.php:884
 msgid "No follow-up"
 msgstr "Sem acompanhamento"
 
-#: inc/issue.class.php:918
+#: inc/issue.class.php:919
 #, php-format
 msgid "Task = %1$s -> date : %2$s, description : %3$s, time : %4$s<br/>"
 msgstr "Tarefa = %1$s -> : %2$s, descrição : %3$s, tempo : %4$s <br/>"
 
-#: inc/issue.class.php:925
+#: inc/issue.class.php:926
 msgid "No task"
 msgstr "Sem tarefas"

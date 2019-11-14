@@ -51,7 +51,7 @@ class PluginMantisConfig extends CommonDBTM {
    function prepareInputForUpdate($input) {
 
       if (isset($input["pwd"]) AND !empty($input["pwd"])) {
-         $input["pwd"] = Toolbox::encrypt(stripslashes($input["pwd"]), GLPIKEY);
+         $input["pwd"] = Toolbox::sodiumEncrypt(stripslashes($input["pwd"]));
       }
       return $input;
    }
@@ -117,7 +117,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT user password", "mantis") . "</td>";
       echo "<td><input id='pwd' name='pwd' type='password' size='30'
-                  value='" . Toolbox::decrypt($this->fields["pwd"], GLPIKEY) . "' /></td>";
+                  value='" . Toolbox::sodiumDecrypt($this->fields["pwd"]) . "' /></td>";
       echo "<td></td>";
       echo "</tr>";
 
@@ -258,6 +258,7 @@ class PluginMantisConfig extends CommonDBTM {
                      `users_id` int(11) NOT NULL DEFAULT 0,
                      `check_ssl` int(1) NOT NULL DEFAULT 0,
                      `use_proxy` int(1) NOT NULL DEFAULT 0,
+                     `is_password_sodium_encrypted` int(1) NOT NULL DEFAULT 1,
                      PRIMARY KEY (`id`)
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
@@ -286,6 +287,24 @@ class PluginMantisConfig extends CommonDBTM {
             $migration->addField($table, "use_proxy", "INT( 1 ) NOT NULL DEFAULT 0");
          }
 
+         if (!$DB->fieldExists($table, 'is_password_sodium_encrypted')) {
+            $config = new self();
+            $config->getFromDB(1);
+            if (!empty($config->fields['pwd'])) {
+               $migration->addPostQuery(
+                  $DB->buildUpdate(
+                     'glpi_plugin_mantis_configs',
+                     [
+                        'pwd' => Toolbox::sodiumEncrypt(Toolbox::decrypt($config->fields['pwd']))
+                     ],
+                     [
+                        'id' => 1,
+                     ]
+                  )
+               );
+            }
+            $migration->addField($table, "is_password_sodium_encrypted", "INT(1) NOT NULL DEFAULT 1");
+         }
       }
 
       $migration->executeMigration();

@@ -23,12 +23,12 @@
  * -------------------------------------------------------------------------
  */
 
-define("PLUGIN_MANTIS_VERSION", "4.3.2");
+define("PLUGIN_MANTIS_VERSION", "4.4.0");
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_MANTIS_MIN_GLPI", "9.4");
+define("PLUGIN_MANTIS_MIN_GLPI", "9.5");
 // Maximum GLPI version, exclusive
-define("PLUGIN_MANTIS_MAX_GLPI", "9.5");
+define("PLUGIN_MANTIS_MAX_GLPI", "9.6");
 
 /**
  * function to initialize the plugin
@@ -75,6 +75,9 @@ function plugin_init_mantis() {
          'ITILSolution' => ['PluginMantisMantis', 'forceSolutionUserOnSolutionAdd'],
       ];
    }
+
+   // Encryption
+   $PLUGIN_HOOKS['secured_fields']['metabase'] = ['glpi_plugin_mantis_configs.pwd'];
 }
 
 /**
@@ -94,7 +97,6 @@ function plugin_version_mantis() {
          'glpi' => [
             'min' => PLUGIN_MANTIS_MIN_GLPI,
             'max' => PLUGIN_MANTIS_MAX_GLPI,
-            'dev' => true, //Required to allow 9.2-dev
          ],
          'php' => [
             'exts' => [
@@ -107,41 +109,3 @@ function plugin_version_mantis() {
    ];
 }
 
-/**
- * Check pre-requisites before install
- *
- * @return boolean
- */
-function plugin_mantis_check_prerequisites() {
-
-   //Version check is not done by core in GLPI < 9.2 but has to be delegated to core in GLPI >= 9.2.
-   if (!method_exists('Plugin', 'checkGlpiVersion')) {
-      $version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
-      $matchMinGlpiReq = version_compare($version, PLUGIN_MANTIS_MIN_GLPI, '>=');
-      $matchMaxGlpiReq = version_compare($version, PLUGIN_MANTIS_MAX_GLPI, '<');
-
-      if (!$matchMinGlpiReq || !$matchMaxGlpiReq) {
-         echo vsprintf(
-            'This plugin requires GLPI >= %1$s and < %2$s.',
-            [
-               PLUGIN_MANTIS_MIN_GLPI,
-               PLUGIN_MANTIS_MAX_GLPI,
-            ]
-         );
-         return false;
-      }
-   }
-
-   return true;
-}
-
-/**
- * Check configuration process
- *
- * @param boolean $verbose Whether to display message on failure. Defaults to false
- *
- * @return boolean
- */
-function plugin_mantis_check_config($verbose = false) {
-   return true;
-}

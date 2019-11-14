@@ -31,6 +31,8 @@ if (isset($_POST['action'])) {
 
    $output = "";
 
+   $web_dir = Plugin::getWebDir('mantis');
+
    switch ($_POST['action']) {
 
       // TEST CONNECTION TO MANTIS
@@ -43,12 +45,12 @@ if (isset($_POST['action'])) {
                                          $_POST['login'],
                                          $_POST['pwd']);
             if ($res) {
-               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/check24.png'/>";
+               echo "<img src='" . $web_dir . "/pics/check24.png'/>";
             } else {
-               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross24.png'/>Access denied";
+               echo "<img src='" . $web_dir . "/pics/cross24.png'/>Access denied";
             }
          } catch (Exception $e) {
-            echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross24.png'/>Error IP or Path";
+            echo "<img src='" . $web_dir . "/pics/cross24.png'/>Error IP or Path";
          }
          break;
 
@@ -58,9 +60,9 @@ if (isset($_POST['action'])) {
          $ws->initializeConnection();
          $res = $ws->existIssueWithId($_POST['id']);
          if ($res) {
-            echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/check24.png' />";
+            echo "<img src='" . $web_dir . "/pics/check24.png' />";
          } else {
-            echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross24.png'/>";
+            echo "<img src='" . $web_dir . "/pics/cross24.png'/>";
          }
          break;
 
@@ -70,9 +72,9 @@ if (isset($_POST['action'])) {
          $ws->initializeConnection();
          $res = $ws->existProjectWithName($_POST['name']);
          if ($res) {
-            echo "<img id='resultImg' src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/check24.png' />";
+            echo "<img id='resultImg' src='" . $web_dir . "/pics/check24.png' />";
          } else {
-            echo "<img id='resultImg' src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/cross24.png'/>";
+            echo "<img id='resultImg' src='" . $web_dir . "/pics/cross24.png'/>";
          }
          break;
 
@@ -83,7 +85,7 @@ if (isset($_POST['action'])) {
          $ws->getConnexion($_POST['host'],
                            $_POST['url'],
                            $_POST['login'],
-                           Toolbox::decrypt($_POST['pwd'], GLPIKEY));
+                           Toolbox::sodiumDecrypt($_POST['pwd']));
          $result = $ws->getStateMantis();
 
          if (! $result) {
@@ -168,7 +170,7 @@ if (isset($_POST['action'])) {
             $mantis = new PluginMantisMantis();
             // verify if a link already exists
             if ($mantis->IfExistLink($idItem, $id_mantis_issue, $itemType)) {
-               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>"
+               echo "<img src='" . $web_dir . "/pics/warning24.png'/>"
                   ."ERROR :". __("This GLPi object is already linked to the selected MantisBT issue", "mantis");
             } else {
                $result = $ws->getIssueById($id_mantis_issue);
@@ -209,7 +211,7 @@ if (isset($_POST['action'])) {
             $mantis = new PluginMantisMantis();
             // on verifie si un lien est deja creé
             if ($mantis->IfExistLink($id_ticket, $id_mantis_issue, $itemType)) {
-               echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>"
+               echo "<img src='" . $web_dir . "/pics/warning24.png'/>"
                   . __("This GLPi object is already linked to the selected MantisBT issue", "mantis");
             } else {
 

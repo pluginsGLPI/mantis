@@ -1,35 +1,19 @@
 language: php
 php:
   - 5.6
-  - 7.0
-  - 7.1
-  - 7.2
+  - 7.4
   - nightly
 
-env:
-#  global:
-#  matrix:
-#    - GLPI_BRANCH=9.2.1
-#    - GLPI_BRANCH=9.2/bugfixes
-#    - GLPI_BRANCH=master
+before_script:
+  - composer self-update
+  - composer install --optimize-autoloader --prefer-dist --no-interaction --no-progress --no-suggest
+
+script:
+  - vendor/bin/robo --no-interaction code:cs --strict
 
 matrix:
   allow_failures:
     - php: nightly
-
-before_script:
-#  - mysql -u root -e 'create database glpitest;'
-#  - git clone --depth=1 $GLPI_SOURCE -b $GLPI_BRANCH ../glpi && cd ../glpi
-#  - mv ../formcreator plugins/formcreator
-#  - composer install --no-dev
-#  - if [ -e scripts/cliinstall.php ] ; then php scripts/cliinstall.php --db=glpitest --user=root --tests ; fi
-#  - if [ -e tools/cliinstall.php ] ; then php tools/cliinstall.php --db=glpitest --user=root --tests ; fi
-#  - cd plugins/formcreator
-  - composer self-update
-  - composer install
-
-script:
-  - vendor/bin/robo --no-interaction code:cs
 
 cache:
   directories:

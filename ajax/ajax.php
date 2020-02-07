@@ -169,7 +169,7 @@ if (isset($_POST['action'])) {
             // verify if a link already exists
             if ($mantis->IfExistLink($idItem, $id_mantis_issue, $itemType)) {
                echo "<img src='" . $CFG_GLPI['root_doc'] . "/plugins/mantis/pics/warning24.png'/>"
-                  . __("This GLPi object is already linked to the selected MantisBT issue", "mantis");
+                  ."ERROR :". __("This GLPi object is already linked to the selected MantisBT issue", "mantis");
             } else {
                $result = $ws->getIssueById($id_mantis_issue);
                if ($result->status->id == 90) {

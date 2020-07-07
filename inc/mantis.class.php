@@ -492,7 +492,7 @@ class PluginMantisMantis extends CommonDBTM {
       if ($ws->testConnectionWS($conf->getField('host'),
                                 $conf->getField('url'),
                                 $conf->getField('login'),
-                                Toolbox::decrypt($conf->getField('pwd'), GLPIKEY))) {
+                                Toolbox::sodiumDecrypt($conf->getField('pwd')))) {
 
          if ($item->fields['status'] == $conf->fields['neutralize_escalation']
                || $item->fields['status'] > $conf->fields['neutralize_escalation']) {
@@ -538,14 +538,14 @@ class PluginMantisMantis extends CommonDBTM {
       }
 
       if (!$neutralize_escalation) {
+         $web_dir = Plugin::getWebDir('mantis');
 
          echo "<div id='popupLinkGlpiIssuetoMantisIssue'></div>";
 
          echo "<div id='popupLinkGlpiIssuetoMantisProject'></div>";
 
          Ajax::createModalWindow('popupLinkGlpiIssuetoMantisIssue',
-                              $CFG_GLPI["root_doc"] .
-                              '/plugins/mantis/front/mantis.form.php?action=linkToIssue&idTicket=' .
+                              $web_dir . '/front/mantis.form.php?action=linkToIssue&idTicket=' .
                               $item->fields['id'] . '&itemType=' . $item->getType(),
                               ['title'  =>  __('Link to an existing MantisBT issue', 'mantis'),
                                'width'  => 650,
@@ -553,8 +553,7 @@ class PluginMantisMantis extends CommonDBTM {
          );
 
          Ajax::createModalWindow('popupLinkGlpiIssuetoMantisProject',
-                              $CFG_GLPI["root_doc"] .
-                              '/plugins/mantis/front/mantis.form.php?action=linkToProject&idTicket=' .
+                              $web_dir . '/front/mantis.form.php?action=linkToProject&idTicket=' .
                               $item->fields['id'] . '&itemType=' . $item->getType(),
                               ['title'  => __('Create a new MantisBT issue', 'mantis'),
                                'width'  => 650,
@@ -620,7 +619,7 @@ class PluginMantisMantis extends CommonDBTM {
                onclick='delLinkAndOrIssue(" . $id_link . "," . $id_mantis . "," . $id_Item . ");'></td>";
       echo "<td><div id='infoDel" . $id_link . "' ></div>";
       echo "<img id='waitDelete" . $id_link . "'
-               src='" . $CFG_GLPI["root_doc"] . "/plugins/mantis/pics/please_wait.gif'
+               src='" . Plugin::getWebDir('mantis') . "/pics/please_wait.gif'
                style='display:none;'/></td>";
       echo "</tr>";
 
@@ -733,8 +732,8 @@ class PluginMantisMantis extends CommonDBTM {
 
       echo "<td width='150' height='20'>";
       echo "<div id='infoLinIssueGlpiToIssueMantis' ></div>";
-      echo "<img id='waitForLinkIssueGlpiToIssueMantis' src='" . $CFG_GLPI['root_doc']
-                           . "/plugins/mantis/pics/please_wait.gif' style='display:none;'/></td>";
+      echo "<img id='waitForLinkIssueGlpiToIssueMantis' src='" . Plugin::getWebDir('mantis')
+                           . "/pics/please_wait.gif' style='display:none;'/></td>";
       echo "</tr>";
 
       echo "<input type='hidden' name='idTicket1' id='idTicket1' value='" . $item . "'/>";
@@ -878,8 +877,8 @@ class PluginMantisMantis extends CommonDBTM {
                   name='linktoProject' value='" . __("Link", "mantis") . "' class='submit'></td>";
       echo "<td width='150'>";
       echo "<div id='infoLinkIssueGlpiToProjectMantis' ></div>";
-      echo "<img id='waitForLinkIssueGlpiToProjectMantis' src='" . $CFG_GLPI['root_doc'] .
-                                 "/plugins/mantis/pics/please_wait.gif' style='display:none;'/>";
+      echo "<img id='waitForLinkIssueGlpiToProjectMantis' src='" . Plugin::getWebDir('mantis') .
+                                 "/pics/please_wait.gif' style='display:none;'/>";
       echo "</td></tr>";
 
       echo "</table>";
@@ -936,6 +935,8 @@ class PluginMantisMantis extends CommonDBTM {
          $ws = new PluginMantisMantisws();
          $ws->initializeConnection();
 
+         $web_dir = Plugin::getWebDir('mantis');
+
          while ($row = $res->fetch_assoc()) {
 
             $user->getFromDB($row["user"]);
@@ -945,8 +946,8 @@ class PluginMantisMantis extends CommonDBTM {
             echo "<div id='popupToDelete" . $row['id'] . "'></div>";
 
             Ajax::createModalWindow('popupToDelete' . $row['id'],
-                                    $CFG_GLPI["root_doc"]
-                                    . '/plugins/mantis/front/mantis.form.php?action=deleteIssue&id='
+                                    $web_dir
+                                    . '/front/mantis.form.php?action=deleteIssue&id='
                                     . $row['id'] . '&idTicket=' . $row['items_id'] . '&idMantis='
                                     . $row['idMantis'] . '&itemType=' . $itemType,
                                     ['title'  => __('Delete'),
@@ -958,7 +959,7 @@ class PluginMantisMantis extends CommonDBTM {
 
             if (!$issue) {
                echo "<td class='center'>
-                        <img src='" . $CFG_GLPI["root_doc"] . "/plugins/mantis/pics/cross16.png'/></td>";
+                        <img src='" . $web_dir . "/pics/cross16.png'/></td>";
                echo "<td>" . $row["idMantis"] . "</td>";
                echo "<td colspan='5' class='center'>"
                      . __('Error when loading MantisBT issue', 'mantis') . "</td>";
@@ -966,7 +967,7 @@ class PluginMantisMantis extends CommonDBTM {
                echo "<tr>";
                echo "<td class='center'>";
                echo "<a href='" . $conf->fields['host'] . "/view.php?id=" . $issue->id . "' target='_blank' >";
-               echo "<img src='" . $CFG_GLPI["root_doc"] . "/plugins/mantis/pics/arrowRight16.png'/>";
+               echo "<img src='" . $web_dir . "/pics/arrowRight16.png'/>";
                echo "</a></td>";
                echo "<td class='center'>" . $issue->id . "</td>";
                echo "<td class='center'>" . stripslashes($issue->summary) . "</td>";
@@ -978,7 +979,7 @@ class PluginMantisMantis extends CommonDBTM {
 
             if ($can_write && !$neutralize_escalation) {
                echo "<td class = 'center'>";
-               echo "<img src='" . $CFG_GLPI["root_doc"] . "/plugins/mantis/pics/bin16.png'
+               echo "<img src='" . $web_dir . "/pics/bin16.png'
                               onclick='popupToDelete" . $row['id'] . ".dialog(\"open\")'
                               style='cursor: pointer;' title='" . __('Delete') . "'/></td>";
             } else {

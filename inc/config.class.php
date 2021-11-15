@@ -296,11 +296,17 @@ class PluginMantisConfig extends CommonDBTM {
             $config = new self();
             $config->getFromDB(1);
             if (!empty($config->fields['pwd'])) {
+               $key = new GLPIKey();
                $migration->addPostQuery(
                   $DB->buildUpdate(
                      'glpi_plugin_mantis_configs',
                      [
-                        'pwd' => Toolbox::sodiumEncrypt(Toolbox::decrypt($config->fields['pwd']))
+                        'pwd' => Toolbox::sodiumEncrypt(
+                           $key->decryptUsingLegacyKey(
+                              $config->fields['pwd'],
+                              $key->getLegacyKey()
+                           )
+                        )
                      ],
                      [
                         'id' => 1,

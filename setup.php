@@ -31,7 +31,7 @@
 define("PLUGIN_MANTIS_VERSION", "4.4.1");
 
 // Minimal GLPI version, inclusive
-define("PLUGIN_MANTIS_MIN_GLPI", "9.5");
+define("PLUGIN_MANTIS_MIN_GLPI", "10.0.0");
 // Maximum GLPI version, exclusive
 define("PLUGIN_MANTIS_MAX_GLPI", "10.0.99");
 

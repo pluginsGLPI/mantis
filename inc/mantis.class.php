@@ -73,7 +73,7 @@ class PluginMantisMantis extends CommonDBTM {
 
          if (Session::haveRightsOr('plugin_mantis_use', [READ, UPDATE])) {
             $PluginMantisMantis = new self();
-            $PluginMantisMantis->showForm($item);
+            $PluginMantisMantis->showFormForItilItem($item);
          } else {
             echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] .
                      "/pics/warning.png\" alt=\"warning\"><br><br>";
@@ -484,7 +484,7 @@ class PluginMantisMantis extends CommonDBTM {
     *
     * @param $item
     */
-   public function showForm($item) {
+   public function showFormForItilItem($item) {
       global $CFG_GLPI;
 
       $ws = new PluginMantisMantisws();

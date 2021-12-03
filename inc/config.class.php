@@ -55,8 +55,8 @@ class PluginMantisConfig extends CommonDBTM {
    **/
    function prepareInputForUpdate($input) {
 
-      if (isset($input["pwd"]) AND !empty($input["pwd"])) {
-         $input["pwd"] = Toolbox::sodiumEncrypt(stripslashes($input["pwd"]));
+      if (isset($input["pwd"]) && !empty($input["pwd"])) {
+         $input["pwd"] = (new GLPIKey())->encrypt($input["pwd"]);
       }
       return $input;
    }
@@ -122,7 +122,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT user password", "mantis") . "</td>";
       echo "<td><input id='pwd' name='pwd' type='password' size='30'
-                  value='" . Toolbox::sodiumDecrypt($this->fields["pwd"]) . "' /></td>";
+                  value='" . Html::entities_deep((new GLPIKey())->decrypt($this->fields["pwd"])) . "' /></td>";
       echo "<td></td>";
       echo "</tr>";
 
@@ -301,12 +301,7 @@ class PluginMantisConfig extends CommonDBTM {
                   $DB->buildUpdate(
                      'glpi_plugin_mantis_configs',
                      [
-                        'pwd' => Toolbox::sodiumEncrypt(
-                           $key->decryptUsingLegacyKey(
-                              $config->fields['pwd'],
-                              $key->getLegacyKey()
-                           )
-                        )
+                        'pwd' => $key->encrypt($key->decryptUsingLegacyKey($config->fields['pwd']))
                      ],
                      [
                         'id' => 1,

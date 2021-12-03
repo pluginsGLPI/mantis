@@ -497,7 +497,7 @@ class PluginMantisMantis extends CommonDBTM {
       if ($ws->testConnectionWS($conf->getField('host'),
                                 $conf->getField('url'),
                                 $conf->getField('login'),
-                                Toolbox::sodiumDecrypt($conf->getField('pwd')))) {
+                                (new GLPIKey())->decrypt($conf->getField('pwd')))) {
 
          if ($item->fields['status'] == $conf->fields['neutralize_escalation']
                || $item->fields['status'] > $conf->fields['neutralize_escalation']) {

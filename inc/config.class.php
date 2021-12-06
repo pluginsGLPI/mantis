@@ -245,25 +245,25 @@ class PluginMantisConfig extends CommonDBTM {
 
       if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE `".$table."` (
-                     `id` int(11) NOT NULL AUTO_INCREMENT,
+                     `id` int NOT NULL AUTO_INCREMENT,
                      `host` varchar(255) NOT NULL default '',
                      `url` varchar(255) NOT NULL default '',
                      `login` varchar(255) NOT NULL default '',
                      `pwd` varchar(255) NOT NULL default '',
                      `champsUrlGlpi` varchar(100) NOT NULL default '',
                      `champsGlpi` varchar(100) NOT NULL default '',
-                     `enable_assign` int(3) NOT NULL default 0,
-                     `neutralize_escalation` int(3) NOT NULL default 0,
-                     `status_after_escalation` int(3) NOT NULL default 0,
-                     `show_option_delete` int(3) NOT NULL default 0,
-                     `doc_categorie` int(3) NOT NULL default 0,
+                     `enable_assign` int NOT NULL default 0,
+                     `neutralize_escalation` int NOT NULL default 0,
+                     `status_after_escalation` int NOT NULL default 0,
+                     `show_option_delete` int NOT NULL default 0,
+                     `doc_categorie` int NOT NULL default 0,
                      `itemType` varchar(255) NOT NULL default '',
                      `etatMantis` varchar(100) NOT NULL default '',
-                     `solutiontypes_id` int(11) NOT NULL DEFAULT 0,
-                     `users_id` int(11) NOT NULL DEFAULT 0,
-                     `check_ssl` int(1) NOT NULL DEFAULT 0,
-                     `use_proxy` int(1) NOT NULL DEFAULT 0,
-                     `is_password_sodium_encrypted` int(1) NOT NULL DEFAULT 1,
+                     `solutiontypes_id` int NOT NULL DEFAULT 0,
+                     `users_id` int NOT NULL DEFAULT 0,
+                     `check_ssl` int NOT NULL DEFAULT 0,
+                     `use_proxy` int NOT NULL DEFAULT 0,
+                     `is_password_sodium_encrypted` int NOT NULL DEFAULT 1,
                      PRIMARY KEY (`id`)
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
@@ -309,7 +309,7 @@ class PluginMantisConfig extends CommonDBTM {
                   )
                );
             }
-            $migration->addField($table, "is_password_sodium_encrypted", "INT(1) NOT NULL DEFAULT 1");
+            $migration->addField($table, "is_password_sodium_encrypted", "INT NOT NULL DEFAULT 1");
          }
       }
 

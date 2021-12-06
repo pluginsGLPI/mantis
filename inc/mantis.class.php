@@ -109,12 +109,12 @@ class PluginMantisMantis extends CommonDBTM {
       if (!$DB->tableExists($table)) {
 
          $query = "CREATE TABLE `".$table."` (
-                     `id` int(11) NOT NULL AUTO_INCREMENT,
-                     `items_id` int(11) NOT NULL,
-                     `idMantis` int(11) NOT NULL,
+                     `id` int NOT NULL AUTO_INCREMENT,
+                     `items_id` int NOT NULL,
+                     `idMantis` int NOT NULL,
                      `dateEscalade` date NOT NULL,
                      `itemtype` varchar(255) NOT NULL,
-                     `user` int(11) NOT NULL,
+                     `user` int NOT NULL,
                     PRIMARY KEY (`id`)
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());

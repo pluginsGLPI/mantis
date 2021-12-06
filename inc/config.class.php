@@ -268,7 +268,7 @@ class PluginMantisConfig extends CommonDBTM {
                      `use_proxy` int NOT NULL DEFAULT 0,
                      `is_password_sodium_encrypted` int NOT NULL DEFAULT 1,
                      PRIMARY KEY (`id`)
-                  ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation};";
+                  ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die($DB->error());
 
          $query = "INSERT INTO `$table` (id) VALUES (1)";

@@ -107,6 +107,8 @@ class PluginMantisMantis extends CommonDBTM {
       $table = getTableForItemType(__CLASS__);
 
       if (!$DB->tableExists($table)) {
+         $default_charset = DBConnection::getDefaultCharset();
+         $default_collation = DBConnection::getDefaultCollation();
 
          $query = "CREATE TABLE `".$table."` (
                      `id` int NOT NULL AUTO_INCREMENT,
@@ -116,7 +118,7 @@ class PluginMantisMantis extends CommonDBTM {
                      `itemtype` varchar(255) NOT NULL,
                      `user` int NOT NULL,
                     PRIMARY KEY (`id`)
-                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                  ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation};";
          $DB->query($query) or die($DB->error());
 
       } else {

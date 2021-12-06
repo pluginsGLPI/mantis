@@ -244,6 +244,9 @@ class PluginMantisConfig extends CommonDBTM {
       $table = getTableForItemType(__CLASS__);
 
       if (!$DB->tableExists($table)) {
+         $default_charset = DBConnection::getDefaultCharset();
+         $default_collation = DBConnection::getDefaultCollation();
+
          $query = "CREATE TABLE `".$table."` (
                      `id` int NOT NULL AUTO_INCREMENT,
                      `host` varchar(255) NOT NULL default '',
@@ -265,7 +268,7 @@ class PluginMantisConfig extends CommonDBTM {
                      `use_proxy` int NOT NULL DEFAULT 0,
                      `is_password_sodium_encrypted` int NOT NULL DEFAULT 1,
                      PRIMARY KEY (`id`)
-                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                  ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation};";
          $DB->query($query) or die($DB->error());
 
          $query = "INSERT INTO `$table` (id) VALUES (1)";

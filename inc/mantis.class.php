@@ -572,12 +572,12 @@ class PluginMantisMantis extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
 
          echo "<td style='text-align: center;'>";
-         echo "<input onclick='popupLinkGlpiIssuetoMantisIssue.dialog(\"open\");'
+         echo "<input onclick='popupLinkGlpiIssuetoMantisIssue.show();'
                      value='" . __('Link to an existing MantisBT issue', 'mantis') . "'
                   class='submit' style='width : 200px;'></td>";
 
          echo "<td style='text-align: center;'>";
-         echo "<input onclick='popupLinkGlpiIssuetoMantisProject.dialog(\"open\");'
+         echo "<input onclick='popupLinkGlpiIssuetoMantisProject.show();'
                      value='" . __('Create a new MantisBT issue', 'mantis') . "'
                   class='submit' style='width : 250px;'></td>";
 
@@ -987,7 +987,7 @@ class PluginMantisMantis extends CommonDBTM {
             if ($can_write && !$neutralize_escalation) {
                echo "<td class = 'center'>";
                echo "<img src='" . $web_dir . "/pics/bin16.png'
-                              onclick='popupToDelete" . $row['id'] . ".dialog(\"open\")'
+                              onclick='popupToDelete" . $row['id'] . ".show()'
                               style='cursor: pointer;' title='" . __('Delete') . "'/></td>";
             } else {
                echo "<td>-</td>";

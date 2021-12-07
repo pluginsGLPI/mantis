@@ -280,19 +280,19 @@ class PluginMantisConfig extends CommonDBTM {
          }
 
          if (!$DB->fieldExists($table, 'solutiontypes_id')) {
-            $migration->addField($table, "solutiontypes_id", "INT( 11 ) NOT NULL DEFAULT 0");
+            $migration->addField($table, "solutiontypes_id", "INT NOT NULL DEFAULT 0");
          }
 
          if (!$DB->fieldExists($table, 'users_id')) {
-            $migration->addField($table, "users_id", "INT( 11 ) NOT NULL DEFAULT 0");
+            $migration->addField($table, "users_id", "INT NOT NULL DEFAULT 0");
          }
 
          if (!$DB->fieldExists($table, 'check_ssl')) {
-            $migration->addField($table, "check_ssl", "INT( 1 ) NOT NULL DEFAULT 0");
+            $migration->addField($table, "check_ssl", "INT NOT NULL DEFAULT 0");
          }
 
          if (!$DB->fieldExists($table, 'use_proxy')) {
-            $migration->addField($table, "use_proxy", "INT( 1 ) NOT NULL DEFAULT 0");
+            $migration->addField($table, "use_proxy", "INT NOT NULL DEFAULT 0");
          }
 
          if (!$DB->fieldExists($table, 'is_password_sodium_encrypted')) {

@@ -55,6 +55,11 @@
    </authors>
    <versions>
       <version>
+         <num>4.4.1</num>
+         <compatibility>~9.5.0</compatibility>
+         <download_url>https://github.com/pluginsGLPI/mantis/releases/download/4.4.1/glpi-mantis-4.4.1.tar.bz2</download_url>
+      </version>
+      <version>
          <num>4.4.0</num>
          <compatibility>~9.5.0</compatibility>
          <download_url>https://github.com/pluginsGLPI/mantis/releases/download/4.4.0/glpi-mantis-4.4.0.tar.bz2</download_url>

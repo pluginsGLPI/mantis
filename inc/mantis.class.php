@@ -104,15 +104,16 @@ class PluginMantisMantis extends CommonDBTM {
    static function install(Migration $migration) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = method_exists('DBConnection', 'getDefaultPrimaryKeySignOption') ? DBConnection::getDefaultPrimaryKeySignOption() : '';
+
       $table = getTableForItemType(__CLASS__);
 
       if (!$DB->tableExists($table)) {
-         $default_charset = DBConnection::getDefaultCharset();
-         $default_collation = DBConnection::getDefaultCollation();
-
          $query = "CREATE TABLE `".$table."` (
-                     `id` int NOT NULL AUTO_INCREMENT,
-                     `items_id` int NOT NULL,
+                     `id` int {$default_key_sign} NOT NULL AUTO_INCREMENT,
+                     `items_id` int {$default_key_sign} NOT NULL,
                      `idMantis` int NOT NULL,
                      `dateEscalade` date NOT NULL,
                      `itemtype` varchar(255) NOT NULL,
@@ -134,7 +135,7 @@ class PluginMantisMantis extends CommonDBTM {
          }
 
          if ($DB->fieldExists($table, 'idTicket') && !$DB->fieldExists($table, 'items_id')) {
-            $migration->changeField($table, 'idTicket', 'items_id', 'integer', []);
+            $migration->changeField($table, 'idTicket', 'items_id', "`items_id` int {$default_key_sign} NOT NULL", []);
             $migration->executeMigration();
          }
       }

@@ -241,14 +241,15 @@ class PluginMantisConfig extends CommonDBTM {
    static function install(Migration $migration) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = method_exists('DBConnection', 'getDefaultPrimaryKeySignOption') ? DBConnection::getDefaultPrimaryKeySignOption() : '';
+
       $table = getTableForItemType(__CLASS__);
 
       if (!$DB->tableExists($table)) {
-         $default_charset = DBConnection::getDefaultCharset();
-         $default_collation = DBConnection::getDefaultCollation();
-
          $query = "CREATE TABLE `".$table."` (
-                     `id` int NOT NULL AUTO_INCREMENT,
+                     `id` int {$default_key_sign} NOT NULL AUTO_INCREMENT,
                      `host` varchar(255) NOT NULL default '',
                      `url` varchar(255) NOT NULL default '',
                      `login` varchar(255) NOT NULL default '',
@@ -262,8 +263,8 @@ class PluginMantisConfig extends CommonDBTM {
                      `doc_categorie` int NOT NULL default 0,
                      `itemType` varchar(255) NOT NULL default '',
                      `etatMantis` varchar(100) NOT NULL default '',
-                     `solutiontypes_id` int NOT NULL DEFAULT 0,
-                     `users_id` int NOT NULL DEFAULT 0,
+                     `solutiontypes_id` int {$default_key_sign} NOT NULL DEFAULT 0,
+                     `users_id` int {$default_key_sign} NOT NULL DEFAULT 0,
                      `check_ssl` int NOT NULL DEFAULT 0,
                      `use_proxy` int NOT NULL DEFAULT 0,
                      `is_password_sodium_encrypted` int NOT NULL DEFAULT 1,
@@ -280,11 +281,11 @@ class PluginMantisConfig extends CommonDBTM {
          }
 
          if (!$DB->fieldExists($table, 'solutiontypes_id')) {
-            $migration->addField($table, "solutiontypes_id", "INT NOT NULL DEFAULT 0");
+            $migration->addField($table, "solutiontypes_id", "INT {$default_key_sign} NOT NULL DEFAULT 0");
          }
 
          if (!$DB->fieldExists($table, 'users_id')) {
-            $migration->addField($table, "users_id", "INT NOT NULL DEFAULT 0");
+            $migration->addField($table, "users_id", "INT {$default_key_sign} NOT NULL DEFAULT 0");
          }
 
          if (!$DB->fieldExists($table, 'check_ssl')) {

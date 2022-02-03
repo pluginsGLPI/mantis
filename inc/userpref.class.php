@@ -42,18 +42,24 @@ class PluginMantisUserpref extends CommonDBTM {
    static function install($migration) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = method_exists('DBConnection', 'getDefaultPrimaryKeySignOption') ? DBConnection::getDefaultPrimaryKeySignOption() : '';
+
       if (!$DB->tableExists("glpi_plugin_mantis_userprefs")) {
          $query = "CREATE TABLE `glpi_plugin_mantis_userprefs` (
-               `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-               `users_id` int NOT NULL ,
-               `followTask` int NOT NULL default '0',
-               `followFollow` int NOT NULL default '0',
-               `followAttachment` int NOT NULL default '0',
-               `followTitle` int NOT NULL default '0',
-               `followDescription` int NOT NULL default '0',
-               `followCategorie` int NOT NULL default '0',
-               `followLinkedItem` int NOT NULL default '0',
-               UNIQUE KEY (`users_id`))";
+                     `id` int {$default_key_sign} NOT NULL AUTO_INCREMENT,
+                     `users_id` int {$default_key_sign} NOT NULL ,
+                     `followTask` int NOT NULL default '0',
+                     `followFollow` int NOT NULL default '0',
+                     `followAttachment` int NOT NULL default '0',
+                     `followTitle` int NOT NULL default '0',
+                     `followDescription` int NOT NULL default '0',
+                     `followCategorie` int NOT NULL default '0',
+                     `followLinkedItem` int NOT NULL default '0',
+                     PRIMARY KEY (`id`),
+                     UNIQUE KEY (`users_id`)
+                  ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die($DB->error());
       }
    }

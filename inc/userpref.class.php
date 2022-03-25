@@ -44,7 +44,7 @@ class PluginMantisUserpref extends CommonDBTM {
 
       $default_charset = DBConnection::getDefaultCharset();
       $default_collation = DBConnection::getDefaultCollation();
-      $default_key_sign = method_exists('DBConnection', 'getDefaultPrimaryKeySignOption') ? DBConnection::getDefaultPrimaryKeySignOption() : '';
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
 
       if (!$DB->tableExists("glpi_plugin_mantis_userprefs")) {
          $query = "CREATE TABLE `glpi_plugin_mantis_userprefs` (

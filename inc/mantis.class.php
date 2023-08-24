@@ -73,7 +73,7 @@ class PluginMantisMantis extends CommonDBTM {
 
          if (Session::haveRightsOr('plugin_mantis_use', [READ, UPDATE])) {
             $PluginMantisMantis = new self();
-            $PluginMantisMantis->showForm($item);
+            $PluginMantisMantis->showFormForItilItem($item);
          } else {
             echo "<div align='center'><br><br><img src=\"" . $CFG_GLPI["root_doc"] .
                      "/pics/warning.png\" alt=\"warning\"><br><br>";
@@ -104,19 +104,22 @@ class PluginMantisMantis extends CommonDBTM {
    static function install(Migration $migration) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+
       $table = getTableForItemType(__CLASS__);
 
       if (!$DB->tableExists($table)) {
-
          $query = "CREATE TABLE `".$table."` (
-                     `id` int(11) NOT NULL AUTO_INCREMENT,
-                     `items_id` int(11) NOT NULL,
-                     `idMantis` int(11) NOT NULL,
+                     `id` int {$default_key_sign} NOT NULL AUTO_INCREMENT,
+                     `items_id` int {$default_key_sign} NOT NULL,
+                     `idMantis` int NOT NULL,
                      `dateEscalade` date NOT NULL,
                      `itemtype` varchar(255) NOT NULL,
-                     `user` int(11) NOT NULL,
+                     `user` int NOT NULL,
                     PRIMARY KEY (`id`)
-                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                  ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die($DB->error());
 
       } else {
@@ -132,7 +135,7 @@ class PluginMantisMantis extends CommonDBTM {
          }
 
          if ($DB->fieldExists($table, 'idTicket') && !$DB->fieldExists($table, 'items_id')) {
-            $migration->changeField($table, 'idTicket', 'items_id', 'integer', []);
+            $migration->changeField($table, 'idTicket', 'items_id', "`items_id` int {$default_key_sign} NOT NULL", []);
             $migration->executeMigration();
          }
       }
@@ -484,7 +487,7 @@ class PluginMantisMantis extends CommonDBTM {
     *
     * @param $item
     */
-   public function showForm($item) {
+   public function showFormForItilItem($item) {
       global $CFG_GLPI;
 
       $ws = new PluginMantisMantisws();
@@ -497,7 +500,7 @@ class PluginMantisMantis extends CommonDBTM {
       if ($ws->testConnectionWS($conf->getField('host'),
                                 $conf->getField('url'),
                                 $conf->getField('login'),
-                                Toolbox::sodiumDecrypt($conf->getField('pwd')))) {
+                                (new GLPIKey())->decrypt($conf->getField('pwd')))) {
 
          if ($item->fields['status'] == $conf->fields['neutralize_escalation']
                || $item->fields['status'] > $conf->fields['neutralize_escalation']) {
@@ -570,12 +573,12 @@ class PluginMantisMantis extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
 
          echo "<td style='text-align: center;'>";
-         echo "<input onclick='popupLinkGlpiIssuetoMantisIssue.dialog(\"open\");'
+         echo "<input onclick='popupLinkGlpiIssuetoMantisIssue.show();'
                      value='" . __('Link to an existing MantisBT issue', 'mantis') . "'
                   class='submit' style='width : 200px;'></td>";
 
          echo "<td style='text-align: center;'>";
-         echo "<input onclick='popupLinkGlpiIssuetoMantisProject.dialog(\"open\");'
+         echo "<input onclick='popupLinkGlpiIssuetoMantisProject.show();'
                      value='" . __('Create a new MantisBT issue', 'mantis') . "'
                   class='submit' style='width : 250px;'></td>";
 
@@ -985,7 +988,7 @@ class PluginMantisMantis extends CommonDBTM {
             if ($can_write && !$neutralize_escalation) {
                echo "<td class = 'center'>";
                echo "<img src='" . $web_dir . "/pics/bin16.png'
-                              onclick='popupToDelete" . $row['id'] . ".dialog(\"open\")'
+                              onclick='popupToDelete" . $row['id'] . ".show()'
                               style='cursor: pointer;' title='" . __('Delete') . "'/></td>";
             } else {
                echo "<td>-</td>";

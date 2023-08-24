@@ -42,6 +42,11 @@ if (!isset($_GET["id"])) {
 $PluginMantisConfig = new PluginMantisConfig();
 
 if (isset($_POST["update"])) {
+   if (array_key_exists('pwd', $_POST)) {
+      // Password must not be altered, it will be encrypted and never displayed, so sanitize is not necessary.
+      $_POST['pwd'] = $_UPOST['pwd'];
+   }
+
    $PluginMantisConfig->check($_POST["id"], UPDATE);
    $PluginMantisConfig->update($_POST);
    Html::back();

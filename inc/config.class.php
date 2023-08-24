@@ -55,8 +55,8 @@ class PluginMantisConfig extends CommonDBTM {
    **/
    function prepareInputForUpdate($input) {
 
-      if (isset($input["pwd"]) AND !empty($input["pwd"])) {
-         $input["pwd"] = Toolbox::sodiumEncrypt(stripslashes($input["pwd"]));
+      if (isset($input["pwd"]) && !empty($input["pwd"])) {
+         $input["pwd"] = (new GLPIKey())->encrypt($input["pwd"]);
       }
       return $input;
    }
@@ -122,7 +122,7 @@ class PluginMantisConfig extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("MantisBT user password", "mantis") . "</td>";
       echo "<td><input id='pwd' name='pwd' type='password' size='30'
-                  value='" . Toolbox::sodiumDecrypt($this->fields["pwd"]) . "' /></td>";
+                  value='" . Html::entities_deep((new GLPIKey())->decrypt($this->fields["pwd"])) . "' /></td>";
       echo "<td></td>";
       echo "</tr>";
 
@@ -241,31 +241,35 @@ class PluginMantisConfig extends CommonDBTM {
    static function install(Migration $migration) {
       global $DB;
 
+      $default_charset = DBConnection::getDefaultCharset();
+      $default_collation = DBConnection::getDefaultCollation();
+      $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+
       $table = getTableForItemType(__CLASS__);
 
       if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE `".$table."` (
-                     `id` int(11) NOT NULL AUTO_INCREMENT,
+                     `id` int {$default_key_sign} NOT NULL AUTO_INCREMENT,
                      `host` varchar(255) NOT NULL default '',
                      `url` varchar(255) NOT NULL default '',
                      `login` varchar(255) NOT NULL default '',
                      `pwd` varchar(255) NOT NULL default '',
                      `champsUrlGlpi` varchar(100) NOT NULL default '',
                      `champsGlpi` varchar(100) NOT NULL default '',
-                     `enable_assign` int(3) NOT NULL default 0,
-                     `neutralize_escalation` int(3) NOT NULL default 0,
-                     `status_after_escalation` int(3) NOT NULL default 0,
-                     `show_option_delete` int(3) NOT NULL default 0,
-                     `doc_categorie` int(3) NOT NULL default 0,
+                     `enable_assign` int NOT NULL default 0,
+                     `neutralize_escalation` int NOT NULL default 0,
+                     `status_after_escalation` int NOT NULL default 0,
+                     `show_option_delete` int NOT NULL default 0,
+                     `doc_categorie` int NOT NULL default 0,
                      `itemType` varchar(255) NOT NULL default '',
                      `etatMantis` varchar(100) NOT NULL default '',
-                     `solutiontypes_id` int(11) NOT NULL DEFAULT 0,
-                     `users_id` int(11) NOT NULL DEFAULT 0,
-                     `check_ssl` int(1) NOT NULL DEFAULT 0,
-                     `use_proxy` int(1) NOT NULL DEFAULT 0,
-                     `is_password_sodium_encrypted` int(1) NOT NULL DEFAULT 1,
+                     `solutiontypes_id` int {$default_key_sign} NOT NULL DEFAULT 0,
+                     `users_id` int {$default_key_sign} NOT NULL DEFAULT 0,
+                     `check_ssl` int NOT NULL DEFAULT 0,
+                     `use_proxy` int NOT NULL DEFAULT 0,
+                     `is_password_sodium_encrypted` int NOT NULL DEFAULT 1,
                      PRIMARY KEY (`id`)
-                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                  ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset} COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
          $DB->query($query) or die($DB->error());
 
          $query = "INSERT INTO `$table` (id) VALUES (1)";
@@ -277,30 +281,31 @@ class PluginMantisConfig extends CommonDBTM {
          }
 
          if (!$DB->fieldExists($table, 'solutiontypes_id')) {
-            $migration->addField($table, "solutiontypes_id", "INT( 11 ) NOT NULL DEFAULT 0");
+            $migration->addField($table, "solutiontypes_id", "INT {$default_key_sign} NOT NULL DEFAULT 0");
          }
 
          if (!$DB->fieldExists($table, 'users_id')) {
-            $migration->addField($table, "users_id", "INT( 11 ) NOT NULL DEFAULT 0");
+            $migration->addField($table, "users_id", "INT {$default_key_sign} NOT NULL DEFAULT 0");
          }
 
          if (!$DB->fieldExists($table, 'check_ssl')) {
-            $migration->addField($table, "check_ssl", "INT( 1 ) NOT NULL DEFAULT 0");
+            $migration->addField($table, "check_ssl", "INT NOT NULL DEFAULT 0");
          }
 
          if (!$DB->fieldExists($table, 'use_proxy')) {
-            $migration->addField($table, "use_proxy", "INT( 1 ) NOT NULL DEFAULT 0");
+            $migration->addField($table, "use_proxy", "INT NOT NULL DEFAULT 0");
          }
 
          if (!$DB->fieldExists($table, 'is_password_sodium_encrypted')) {
             $config = new self();
             $config->getFromDB(1);
             if (!empty($config->fields['pwd'])) {
+               $key = new GLPIKey();
                $migration->addPostQuery(
                   $DB->buildUpdate(
                      'glpi_plugin_mantis_configs',
                      [
-                        'pwd' => Toolbox::sodiumEncrypt(Toolbox::decrypt($config->fields['pwd']))
+                        'pwd' => $key->encrypt($key->decryptUsingLegacyKey($config->fields['pwd']))
                      ],
                      [
                         'id' => 1,
@@ -308,7 +313,7 @@ class PluginMantisConfig extends CommonDBTM {
                   )
                );
             }
-            $migration->addField($table, "is_password_sodium_encrypted", "INT(1) NOT NULL DEFAULT 1");
+            $migration->addField($table, "is_password_sodium_encrypted", "INT NOT NULL DEFAULT 1");
          }
       }
 

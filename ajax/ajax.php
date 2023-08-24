@@ -90,7 +90,7 @@ if (isset($_POST['action'])) {
          $ws->getConnexion($_POST['host'],
                            $_POST['url'],
                            $_POST['login'],
-                           Toolbox::sodiumDecrypt($_POST['pwd']));
+                           (new GLPIKey())->decrypt($_POST['pwd']));
          $result = $ws->getStateMantis();
 
          if (! $result) {
